@@ -3,6 +3,7 @@
 #include <d3dcompiler.h>
 #include <dxgi1_3.h>
 #define _XM_NO_INTRINSICS_
+#define WIN32_LEAN_AND_MEAN
 #include <DirectXMath.h>
 
 
