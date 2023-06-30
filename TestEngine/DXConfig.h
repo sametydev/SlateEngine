@@ -15,6 +15,8 @@
 #pragma comment(lib,"dxguid.lib")
 #endif
 
+
+//its very ugly i know but its testing purposes
 #define HR(x)\
 { \
 HRESULT hr = (x); \
@@ -26,24 +28,3 @@ std::cout << "\033[1;31m**************************\n" <<"Error on this file : \n
 #define SAFE_RELEASE(x) if(x) {x->Release(); x = nullptr;}
 #define SAFE_DELETE(x) if(x) {delete x; x = nullptr;}
 using namespace DirectX;
-
-
-//operator overloading for testing purposes
-std::ostream& operator<<(std::ostream& os, FXMVECTOR v)
-{
-	XMFLOAT4 dest;
-	XMStoreFloat4(&dest, v);
-	os << "Vec (" << dest.x << ", " << dest.y << ", " << dest.z << ", " << dest.w << ")";
-	return os;
-}
-
-std::ostream& operator<<(std::ostream& os, CXMMATRIX m)
-{
-	for (int i = 0; i < 4; ++i)
-	{
-		for (int j = 0; j < 4; ++j)
-			os << m(i,j) << "\t";
-		os << std::endl;
-	}
-	return os;
-}
