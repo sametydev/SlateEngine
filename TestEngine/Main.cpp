@@ -33,7 +33,7 @@ LRESULT CALLBACK WndProc(HWND hwnd,
 }
 HWND hwnd;
 
-bool InitializeWindow(HINSTANCE hInstance,
+bool InitializeWindow(
 	int ShowWnd,
 	int width, int height,
 	bool fullscreen)
@@ -56,7 +56,7 @@ bool InitializeWindow(HINSTANCE hInstance,
 	wc.lpfnWndProc = WndProc;
 	wc.cbClsExtra = NULL;
 	wc.cbWndExtra = NULL;
-	wc.hInstance = hInstance;
+	wc.hInstance = nullptr;
 	wc.hIcon = LoadIcon(NULL, IDI_APPLICATION);
 	wc.hCursor = LoadCursor(NULL, IDC_ARROW);
 	wc.hbrBackground = (HBRUSH)(COLOR_WINDOW + 2);
@@ -79,7 +79,7 @@ bool InitializeWindow(HINSTANCE hInstance,
 		width, height,
 		NULL,
 		NULL,
-		hInstance,
+		nullptr,
 		NULL);
 
 	if (!hwnd)
@@ -101,7 +101,7 @@ bool InitializeWindow(HINSTANCE hInstance,
 
 
 int main() {
-	InitializeWindow(0, 1, 800, 600, 0);
+	InitializeWindow(1, 800, 600, 0);
 	MSG msg{};
 
 
@@ -244,6 +244,19 @@ int main() {
 
 	m_d3dContext->OMSetRenderTargets(
 		1, &mRenderTargetView, mDepthStencilView);
+
+	D3D11_VIEWPORT vp;
+	vp.TopLeftX = 0.0f;
+	vp.TopLeftY = 0.0f;
+	vp.Width = static_cast<float>(800);
+	vp.Height = static_cast<float>(600);
+	vp.MinDepth = 0.0f;
+	vp.MaxDepth = 1.0f;
+	m_d3dContext->RSSetViewports(1, &vp);
+
+	float rgba[4] = { 0,0,0,0 };
+
+	m_d3dContext->ClearRenderTargetView(mRenderTargetView, rgba);
 
 	while (true)
 	{
