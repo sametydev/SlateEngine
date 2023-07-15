@@ -31,7 +31,22 @@ void DXApplication::OnRenderScene()
 
 LRESULT DXApplication::MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
-	return LRESULT();
+	switch (msg)
+	{
+	case WM_ACTIVATE:
+		if (LOWORD(wParam) == WA_INACTIVE)
+		{
+			//Pause / Stop
+		}
+		else
+		{
+			// Continue
+		}
+		return 0;
+	default:
+		break;
+	}
+
 }
 
 HINSTANCE DXApplication::GetApplicationInstance() const
@@ -46,7 +61,7 @@ HWND DXApplication::GetMainHWND() const
 
 float DXApplication::GetAspectRatio() const
 {
-	return 0.0f;
+	return static_cast<float> (m_clientw) / m_clienth;
 }
 
 bool DXApplication::InitializeWindow()
