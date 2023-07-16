@@ -44,8 +44,15 @@
     <ClInclude Include="Engine\EngineConfig.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\Vertex.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\Header.hlsli" />
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="Shaders\TestVS.hlsl" />
+    <FxCompile Include="Shaders\TestPS.hlsl" />
   </ItemGroup>
 </Project>

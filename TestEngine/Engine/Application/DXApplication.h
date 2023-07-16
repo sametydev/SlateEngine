@@ -19,9 +19,17 @@ public:
 
 
 
-    ID3D11Device* GetDXDevice();
-    ID3D11DeviceContext* GetDXContext();
-    IDXGISwapChain *     GetDXSwapChain();
+    inline ComPtr<ID3D11Device>& GetDXDevice() {
+        return m_d3dDevice;
+    }
+
+    inline ComPtr<ID3D11DeviceContext>& GetDXContext() {
+        return m_d3dContext;
+    }
+
+    inline ComPtr<IDXGISwapChain>&     GetDXSwapChain() {
+        return m_swapChain;
+    }
 
 protected:
     bool InitializeWindow();      

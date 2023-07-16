@@ -258,22 +258,6 @@ LRESULT DXApplication::MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam
     return DefWindowProc(hwnd, msg, wParam, lParam);
 }
 
-ID3D11Device* DXApplication::GetDXDevice()
-{
-    return m_d3dDevice.Get();
-}
-
-ID3D11DeviceContext* DXApplication::GetDXContext()
-{
-    return m_d3dContext.Get();
-}
-
-IDXGISwapChain* DXApplication::GetDXSwapChain()
-{
-    return m_swapChain.Get();
-}
-
-
 bool DXApplication::InitializeWindow()
 {
     WNDCLASS wc{0};
