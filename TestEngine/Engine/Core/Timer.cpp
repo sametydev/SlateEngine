@@ -1,6 +1,6 @@
 #include <TestEngine/Engine/Core/Timer.h>
 
-Timer::Timer()
+Timer::Timer():bIsActive(true),m_deltaTime(0),m_elapsedSecond(0)
 {
 }
 
@@ -34,7 +34,7 @@ void Timer::OnTick()
 
     m_prevTime = m_currentTime;
 
-    auto deltaTime = (float)m_elapsedSecond.count();
+    m_deltaTime = (float)m_elapsedSecond.count();
 
 
 }

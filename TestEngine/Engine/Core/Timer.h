@@ -1,5 +1,4 @@
 #pragma once
-#include <stdint.h>
 #include <chrono>
 
 class Timer
@@ -11,7 +10,7 @@ public:
 	void OnTick();
 
 private:
-	double m_deltaTime;
+	float m_deltaTime;
 	std::chrono::system_clock::time_point m_prevTime;
 	std::chrono::system_clock::time_point m_currentTime;
 	std::chrono::duration<double> m_elapsedSecond;

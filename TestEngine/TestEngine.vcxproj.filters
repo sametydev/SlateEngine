@@ -18,16 +18,34 @@
     <ClCompile Include="Main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Window\Window32.cpp">
+    <ClCompile Include="Engine\Core\Timer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Application\DXApplication.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Game\Game.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="DXConfig.h">
+    <ClInclude Include="Engine\DXConfig.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Window\Window32.h">
+    <ClInclude Include="Engine\Core\Timer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\Application\DXApplication.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Game\Game.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\EngineConfig.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Shaders\Header.hlsli" />
   </ItemGroup>
 </Project>
