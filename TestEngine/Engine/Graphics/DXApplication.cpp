@@ -1,5 +1,5 @@
-﻿#include <TestEngine/Engine/Application/DXApplication.h>
-#include <TestEngine/Engine/EngineConfig.h>
+﻿#include <TestEngine/Engine/Graphics/DXApplication.h>
+#include <TestEngine/Engine/Core/EngineConfig.h>
 #include <sstream>
 
 #pragma warning(disable: 6031)

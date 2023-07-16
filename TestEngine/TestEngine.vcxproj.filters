@@ -21,7 +21,7 @@
     <ClCompile Include="Engine\Core\Timer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Application\DXApplication.cpp">
+    <ClCompile Include="Engine\Graphics\DXApplication.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Game\Game.cpp">
@@ -35,13 +35,13 @@
     <ClInclude Include="Engine\Core\Timer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Application\DXApplication.h">
+    <ClInclude Include="Engine\Graphics\DXApplication.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Game\Game.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\EngineConfig.h">
+    <ClInclude Include="Engine\Core\EngineConfig.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Vertex.h">

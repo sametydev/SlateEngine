@@ -80,7 +80,7 @@ void Game::OnRenderScene()
     m_d3dContext->ClearRenderTargetView(m_renderTargetView.Get(), rgba);
     m_d3dContext->ClearDepthStencilView(m_depthStencilView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 
-
+    //Drawing triangle
     m_d3dContext->Draw(3, 0);
     HR(m_swapChain->Present(0, 0));
 }
