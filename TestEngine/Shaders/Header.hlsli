@@ -1,3 +1,11 @@
+
+cbuffer ConstantBuffer : register(b0)
+{
+    matrix World;
+    matrix View;
+    matrix Proj;
+}
+
 struct VERTEX_IN
 {
     float3 pos : POSITION;

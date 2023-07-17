@@ -140,6 +140,7 @@
     <ClCompile Include="Engine\Core\Timer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Engine\Buffer.h" />
     <ClInclude Include="Engine\Graphics\DXApplication.h" />
     <ClInclude Include="Engine\DXConfig.h" />
     <ClInclude Include="Engine\Core\Timer.h" />
