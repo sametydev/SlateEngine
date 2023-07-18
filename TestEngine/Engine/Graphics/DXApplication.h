@@ -1,5 +1,8 @@
 ﻿#include <TestEngine/Engine/DXConfig.h>
 #include <TestEngine/Engine/Core/Timer.h>
+#include <imgui.h>
+#include <imgui_impl_dx11.h>
+#include <imgui_impl_win32.h>
 
 class DXApplication
 {
@@ -13,7 +16,7 @@ public:
     int OnRun();                                  
     virtual bool OnInit();                        
     virtual void OnResize();                   
-    virtual void OnUpdateScene(float dt) = 0;     
+    virtual void OnUpdateScene(float deltaTime) = 0;     
     virtual void OnRenderScene()         = 0;               
     virtual LRESULT MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
@@ -64,5 +67,5 @@ protected:
 
     std::wstring sWindowCaption;                       
     int m_clientW;                                   
-    int m_clientH;                                  
+    int m_clientH;
 };

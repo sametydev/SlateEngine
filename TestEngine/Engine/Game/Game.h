@@ -8,7 +8,7 @@ public:
 
     bool OnInit();
     void OnResize();
-    void OnUpdateScene(float dt);
+    void OnUpdateScene(float deltaTime);
 
     //Todo, Scene*
     void OnRenderScene();
@@ -19,6 +19,7 @@ public:
         XMMATRIX world;
         XMMATRIX view;
         XMMATRIX proj;
+        DirectX::XMFLOAT4 color;
     };
 
 private:
@@ -30,4 +31,7 @@ private:
     ComPtr<ID3D11VertexShader> m_vertexShader;
     ComPtr<ID3D11PixelShader> m_pixelShader;
     ComPtr<ID3D10Blob>  m_blob;
+
+    ImGuiIO io;
+
 };

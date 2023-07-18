@@ -13,6 +13,8 @@
 #include <string_view>
 #include <algorithm>
 
+#include <TestEngine/Engine/Core/EngineConfig.h>
+
 
 #pragma comment(lib,"d3d11.lib")
 #pragma comment(lib,"d3dcompiler.lib")
@@ -131,7 +133,7 @@ inline HRESULT CreateShaderFromFile(
 
     HRESULT hr = S_OK;
 
-    if (csoFileNameInOut && D3DReadFileToBlob(csoFileNameInOut, ppBlobOut) == S_OK)
+    if (IS_COOKED && csoFileNameInOut && D3DReadFileToBlob(csoFileNameInOut, ppBlobOut) == S_OK)
     {
         return hr;
     }
@@ -154,7 +156,7 @@ inline HRESULT CreateShaderFromFile(
             SAFE_RELEASE(errorBlob);
             return hr;
         }
-        if (csoFileNameInOut)
+        if (csoFileNameInOut && IS_COOKED)
         {
             return D3DWriteBlobToFile(*ppBlobOut, csoFileNameInOut, FALSE);
         }

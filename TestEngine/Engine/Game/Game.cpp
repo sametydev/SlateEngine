@@ -1,4 +1,4 @@
-#include <TestEngine/Engine/Game/Game.h>
+﻿#include <TestEngine/Engine/Game/Game.h>
 #include <TestEngine/Engine/Vertex.h>
 #include <TestEngine/Engine/Buffer.h>
 
@@ -14,11 +14,17 @@ Game::Game(HINSTANCE hInstance, const std::wstring& windowName, int initWidth, i
 
 Game::~Game()
 {
+    ImGui_ImplDX11_Shutdown();
+    ImGui_ImplWin32_Shutdown();
+    ImGui::DestroyContext();
 }
+
 
 bool Game::OnInit()
 {
     if (!DXApplication::OnInit()) { return 0; }
+
+    io = ImGui::GetIO();
 
     //-- Compiling Shader
     HR(CreateShaderFromFile(L"Shaders\\TestVS.cso", L"Shaders\\TestVS.hlsl", "VS", "vs_5_0", m_blob.ReleaseAndGetAddressOf()));
@@ -99,6 +105,7 @@ bool Game::OnInit()
         XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f),
         XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f)
     ));
+    cbuffer.color = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
     cbuffer.proj = XMMatrixTranspose(XMMatrixPerspectiveFovLH(XM_PIDIV2, GetAspectRatio(), 1.0f, 1000.0f));
 
     //Preparing the vertex buffer things
@@ -106,13 +113,14 @@ bool Game::OnInit()
     UINT offset = 0;
     m_d3dContext->IASetVertexBuffers(0, 1, m_vertexBuffer.GetAddressOf(), &stride, &offset);
 
-
-
+    // Set Vertex and Pixel Shaders
     m_d3dContext->VSSetShader(m_vertexShader.Get(), nullptr, 0);
-    //Binding constant buffer to vertex shader
-    m_d3dContext->VSSetConstantBuffers(0, 1, m_constantBuffer.GetAddressOf());
-
     m_d3dContext->PSSetShader(m_pixelShader.Get(), nullptr, 0);
+
+    //Binding constant buffer to vertex shader and pixel shader
+    m_d3dContext->VSSetConstantBuffers(0, 1, m_constantBuffer.GetAddressOf());
+    m_d3dContext->PSSetConstantBuffers(0, 1, m_constantBuffer.GetAddressOf());
+
 
     //Setting topology for drawing;
     m_d3dContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
@@ -128,27 +136,81 @@ void Game::OnResize()
     DXApplication::OnResize();
 }
 
-void Game::OnUpdateScene(float dt)
+void Game::OnUpdateScene(float deltaTime)
 {
-    static float x = 0.0f, y = 0.0f;
+    static float x = 0.0f;
+    static float y = 0.0f;
+    static float py = 0.0f;
+    static float tx = 0.0f;
+    static float scale = 1.0f;
 
-    x += 1.f * dt;
-    y += 1.f * dt;
 
-    cbuffer.world = XMMatrixTranspose(XMMatrixRotationX(x) * XMMatrixRotationY(y));
+    py += 0.17f * deltaTime, tx += 0.27f * deltaTime;
+    py = XMScalarModAngle(py);
+    tx = XMScalarModAngle(tx);
+
+    static bool dockspaceOpen = true;
+    if (ImGui::Begin("Dockspace", &dockspaceOpen, ImGuiWindowFlags_MenuBar)){
+        if (ImGui::BeginMenuBar())
+        {
+            if (ImGui::BeginMenu("Scene"))
+            {
+                ImGui::MenuItem("Test", NULL);
+                    ImGui::EndMenu();
+            }
+        }
+        ImGui::EndMenuBar();
+    }
+    ImGui::End();
+
+
+    if (ImGui::Begin("Inspector"))
+    {                 
+
+        ImGui::SliderFloat("Scale", &scale, 0.2f, 2.0f); 
+
+        ImGui::Text("py: %.2f degrees", XMConvertToDegrees(py));
+        ImGui::SliderFloat("##1", &py, -XM_PI, XM_PI, "");
+
+        ImGui::Text("tx: %.2f degrees", XMConvertToDegrees(tx));
+
+        ImGui::SliderFloat("##2", &tx, -XM_PI, XM_PI, "");
+
+        ImGui::Text("Position: (%.1f, %.1f, 0.0)", x, y);
+
+        ImGui::ColorEdit3("Color", reinterpret_cast<float*>(&cbuffer.color)); 
+    }
+    ImGui::End();
+
+    if (ImGui::Begin("Logs")) {
+        ImGui::Text("Test Log");
+    }
+    ImGui::End();
+
+    cbuffer.world = XMMatrixTranspose(
+        XMMatrixScalingFromVector(XMVectorReplicate(scale)) *
+        XMMatrixRotationX(py) * XMMatrixRotationY(tx) *
+        XMMatrixTranslation(x, y, 0.0f));
+    cbuffer.proj = XMMatrixTranspose(XMMatrixPerspectiveFovLH(1.37f, GetAspectRatio(), 1.0f, 1000.0f));
 
     D3D11_MAPPED_SUBRESOURCE mappedData;
     HR(m_d3dContext->Map(m_constantBuffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedData));
     memcpy_s(mappedData.pData, sizeof(cbuffer), &cbuffer, sizeof(cbuffer));
     m_d3dContext->Unmap(m_constantBuffer.Get(), 0);
+
 }
 
 void Game::OnRenderScene()
 {
+    ImGui::Render();
     static float rgba[4] = { 0.1f, 0.1f, 0.1f, 1.0f };
     m_d3dContext->ClearRenderTargetView(m_renderTargetView.Get(), rgba);
     m_d3dContext->ClearDepthStencilView(m_depthStencilView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 
     m_d3dContext->DrawIndexed(36, 0, 0);
+
+
+    ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
+
     HR(m_swapChain->Present(0, 0));
 }
