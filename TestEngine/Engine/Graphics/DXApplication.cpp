@@ -1,5 +1,6 @@
 ﻿#include <TestEngine/Engine/Graphics/DXApplication.h>
 #include <TestEngine/Engine/Core/EngineConfig.h>
+#include <TestEngine/Engine/Editor/EditorUI.h>
 #include <sstream>
 
 #pragma warning(disable: 6031)
@@ -10,18 +11,15 @@ extern "C"
     __declspec(dllexport) int AmdPowerXpressRequestHighPerformance = 0x00000001;
 }
 
-namespace
-{
-    DXApplication* DXApp = nullptr;
-}
 
 extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
+DXApplication* DXApplication::Instance = nullptr;
 
 LRESULT CALLBACK
 MainWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
-    return DXApp->MsgProc(hwnd, msg, wParam, lParam);
+    return DXApplication::Instance->MsgProc(hwnd, msg, wParam, lParam);
 }
 
 DXApplication::DXApplication(HINSTANCE hInstance, const std::wstring& windowName, int initWidth, int initHeight)
@@ -45,7 +43,10 @@ DXApplication::DXApplication(HINSTANCE hInstance, const std::wstring& windowName
 {
     ZeroMemory(&m_screenVp, sizeof(D3D11_VIEWPORT));
 
-    DXApp = this;
+    if (!Instance)
+    {
+        Instance = this;
+    }
 }
 
 DXApplication::~DXApplication()
@@ -88,10 +89,7 @@ int DXApplication::OnRun()
 
             if (!bPaused)
             {
-                //Imgui
-                ImGui_ImplDX11_NewFrame();
-                ImGui_ImplWin32_NewFrame();
-                ImGui::NewFrame();
+                EditorUI::instance()->NewFrame();
 
                 //Render Scene
                 OnUpdateScene(mTimer.deltaTime());
@@ -114,21 +112,6 @@ bool DXApplication::OnInit()
 
     if (!InitializeGraphics())
         return false;
-
-
-    //Initialize IMGUI for Test
-    ImGui::CreateContext();
-    ImGuiIO& io = ImGui::GetIO();
-    io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
-    io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
-    //io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
-    io.ConfigWindowsMoveFromTitleBarOnly = true;
-
-    ImGui::StyleColorsDark();
-
-    ImGui_ImplWin32_Init(hWindow);
-    ImGui_ImplDX11_Init(m_d3dDevice.Get(), m_d3dContext.Get());
-
     return true;
 }
 
@@ -284,6 +267,7 @@ LRESULT DXApplication::MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam
     return DefWindowProc(hwnd, msg, wParam, lParam);
 }
 
+
 bool DXApplication::InitializeWindow()
 {
     WNDCLASS wc{0};
@@ -324,6 +308,7 @@ bool DXApplication::InitializeWindow()
 
 bool DXApplication::InitializeGraphics()
 {
+
     HRESULT hr = S_OK;
 
     UINT createDeviceFlags = 0;

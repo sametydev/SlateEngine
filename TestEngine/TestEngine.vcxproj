@@ -135,6 +135,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Engine\Editor\EditorUI.cpp" />
     <ClCompile Include="Engine\Graphics\DXApplication.cpp" />
     <ClCompile Include="Engine\Game\Game.cpp" />
     <ClCompile Include="ImGui\imgui.cpp" />
@@ -148,6 +149,8 @@
     <ClCompile Include="Engine\Core\Timer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Engine\Core\Singleton.h" />
+    <ClInclude Include="Engine\Editor\EditorUI.h" />
     <ClInclude Include="Engine\Buffer.h" />
     <ClInclude Include="Engine\Graphics\DXApplication.h" />
     <ClInclude Include="Engine\DXConfig.h" />

@@ -1,22 +1,35 @@
 ﻿#include <TestEngine/Engine/Game/Game.h>
 #include <TestEngine/Engine/Vertex.h>
 #include <TestEngine/Engine/Buffer.h>
+#include <TestEngine/Engine/Editor/EditorUI.h>
 
 const D3D11_INPUT_ELEMENT_DESC VertexPC::inputLayout[2] = {
     { "POSITION",   0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
     { "COLOR",      0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0}
 };
 
+Game* Game::Instance = nullptr;
+
+
+//TEMPORARY!!
+float Game::x = 0.0f;
+float Game::y = 0.0f;
+float Game::py = 0.0f;
+float Game::tx = 0.0f;
+float Game::scale = 1.0f;
+
+
 Game::Game(HINSTANCE hInstance, const std::wstring& windowName, int initWidth, int initHeight)
     : DXApplication(hInstance, windowName, initWidth, initHeight)
 {
+    if (!Instance)
+    {
+        Instance = this;
+    }
 }
 
 Game::~Game()
 {
-    ImGui_ImplDX11_Shutdown();
-    ImGui_ImplWin32_Shutdown();
-    ImGui::DestroyContext();
 }
 
 
@@ -24,7 +37,7 @@ bool Game::OnInit()
 {
     if (!DXApplication::OnInit()) { return 0; }
 
-    io = ImGui::GetIO();
+    EditorUI::instance()->OnInit();
 
     //-- Compiling Shader
     HR(CreateShaderFromFile(L"Shaders\\TestVS.cso", L"Shaders\\TestVS.hlsl", "VS", "vs_5_0", m_blob.ReleaseAndGetAddressOf()));
@@ -138,60 +151,20 @@ void Game::OnResize()
 
 void Game::OnUpdateScene(float deltaTime)
 {
-    static float x = 0.0f;
-    static float y = 0.0f;
-    static float py = 0.0f;
-    static float tx = 0.0f;
-    static float scale = 1.0f;
-
 
     py += 0.17f * deltaTime, tx += 0.27f * deltaTime;
     py = XMScalarModAngle(py);
     tx = XMScalarModAngle(tx);
 
-    static bool dockspaceOpen = true;
-    if (ImGui::Begin("Dockspace", &dockspaceOpen, ImGuiWindowFlags_MenuBar)){
-        if (ImGui::BeginMenuBar())
-        {
-            if (ImGui::BeginMenu("Scene"))
-            {
-                ImGui::MenuItem("Test", NULL);
-                    ImGui::EndMenu();
-            }
-        }
-        ImGui::EndMenuBar();
-    }
-    ImGui::End();
-
-
-    if (ImGui::Begin("Inspector"))
-    {                 
-
-        ImGui::SliderFloat("Scale", &scale, 0.2f, 2.0f); 
-
-        ImGui::Text("py: %.2f degrees", XMConvertToDegrees(py));
-        ImGui::SliderFloat("##1", &py, -XM_PI, XM_PI, "");
-
-        ImGui::Text("tx: %.2f degrees", XMConvertToDegrees(tx));
-
-        ImGui::SliderFloat("##2", &tx, -XM_PI, XM_PI, "");
-
-        ImGui::Text("Position: (%.1f, %.1f, 0.0)", x, y);
-
-        ImGui::ColorEdit3("Color", reinterpret_cast<float*>(&cbuffer.color)); 
-    }
-    ImGui::End();
-
-    if (ImGui::Begin("Logs")) {
-        ImGui::Text("Test Log");
-    }
-    ImGui::End();
+    EditorUI::instance()->OnUpdate();
 
     cbuffer.world = XMMatrixTranspose(
         XMMatrixScalingFromVector(XMVectorReplicate(scale)) *
         XMMatrixRotationX(py) * XMMatrixRotationY(tx) *
         XMMatrixTranslation(x, y, 0.0f));
     cbuffer.proj = XMMatrixTranspose(XMMatrixPerspectiveFovLH(1.37f, GetAspectRatio(), 1.0f, 1000.0f));
+
+
 
     D3D11_MAPPED_SUBRESOURCE mappedData;
     HR(m_d3dContext->Map(m_constantBuffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedData));
@@ -202,15 +175,13 @@ void Game::OnUpdateScene(float deltaTime)
 
 void Game::OnRenderScene()
 {
-    ImGui::Render();
-    static float rgba[4] = { 0.1f, 0.1f, 0.1f, 1.0f };
+    static float rgba[4] = { 0.3f, 0.3f, 0.3f, 1.0f };
     m_d3dContext->ClearRenderTargetView(m_renderTargetView.Get(), rgba);
     m_d3dContext->ClearDepthStencilView(m_depthStencilView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 
     m_d3dContext->DrawIndexed(36, 0, 0);
+    EditorUI::instance()->OnRender();
 
-
-    ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
 
     HR(m_swapChain->Present(0, 0));
 }

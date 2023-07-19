@@ -1,4 +1,6 @@
+#pragma once
 #include <TestEngine/Engine/Graphics/DXApplication.h>
+#include <TestEngine/Engine/Editor/EditorUI.h>
 
 class Game : public DXApplication
 {
@@ -21,9 +23,19 @@ public:
         XMMATRIX proj;
         DirectX::XMFLOAT4 color;
     };
+    ConstantBuffer cbuffer;
+    
+
+
+    //Temporary variables
+    static Game* Instance;
+    static float x;
+    static float y;
+    static float py;
+    static float tx;
+    static float scale;
 
 private:
-    ConstantBuffer cbuffer;
     ComPtr<ID3D11InputLayout> m_inputLayout;
     ComPtr<ID3D11Buffer> m_vertexBuffer;
     ComPtr<ID3D11Buffer> m_indexBuffer;
@@ -31,7 +43,4 @@ private:
     ComPtr<ID3D11VertexShader> m_vertexShader;
     ComPtr<ID3D11PixelShader> m_pixelShader;
     ComPtr<ID3D10Blob>  m_blob;
-
-    ImGuiIO io;
-
 };

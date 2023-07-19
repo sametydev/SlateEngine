@@ -1,4 +1,6 @@
-﻿#include <TestEngine/Engine/DXConfig.h>
+﻿#pragma once
+
+#include <TestEngine/Engine/DXConfig.h>
 #include <TestEngine/Engine/Core/Timer.h>
 #include <imgui.h>
 #include <imgui_impl_dx11.h>
@@ -7,6 +9,7 @@
 class DXApplication
 {
 public:
+
     DXApplication(HINSTANCE hInstance, const std::wstring& windowName, int initWidth, int initHeight);
     virtual ~DXApplication();
 
@@ -33,6 +36,8 @@ public:
     inline ComPtr<IDXGISwapChain>&     GetDXSwapChain() {
         return m_swapChain;
     }
+
+    static DXApplication* Instance;
 
 protected:
     bool InitializeWindow();      
@@ -68,4 +73,9 @@ protected:
     std::wstring sWindowCaption;                       
     int m_clientW;                                   
     int m_clientH;
+
 };
+namespace
+{
+    //static DXApplication* DXApp = nullptr;
+}
