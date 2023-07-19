@@ -172,13 +172,12 @@ void Game::OnUpdateScene(float deltaTime)
     m_d3dContext->Unmap(m_constantBuffer.Get(), 0);
 
 }
+float Game::clear[4] = {0.3f, 0.3f, 0.3f, 1.0f};
 
 void Game::OnRenderScene()
 {
-    static float rgba[4] = { 0.3f, 0.3f, 0.3f, 1.0f };
-    m_d3dContext->ClearRenderTargetView(m_renderTargetView.Get(), rgba);
-    m_d3dContext->ClearDepthStencilView(m_depthStencilView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
-
+    
+    Clear(clear);
     m_d3dContext->DrawIndexed(36, 0, 0);
     EditorUI::instance()->OnRender();
 

@@ -23,7 +23,7 @@ public:
     virtual void OnRenderScene()         = 0;               
     virtual LRESULT MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
-
+    void Clear(float rgba[4]);
 
     inline ComPtr<ID3D11Device>& GetDXDevice() {
         return m_d3dDevice;

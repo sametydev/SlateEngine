@@ -35,6 +35,8 @@ public:
     static float tx;
     static float scale;
 
+    static float clear[4];
+
 private:
     ComPtr<ID3D11InputLayout> m_inputLayout;
     ComPtr<ID3D11Buffer> m_vertexBuffer;

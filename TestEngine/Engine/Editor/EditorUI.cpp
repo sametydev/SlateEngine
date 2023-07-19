@@ -70,6 +70,8 @@ void EditorUI::OnUpdate()
         ImGui::Text("Position: (%.1f, %.1f, 0.0)", Game::Instance->x, Game::Instance->y);
 
         ImGui::ColorEdit3("Color", reinterpret_cast<float*>(&Game::Instance->cbuffer.color));
+
+        ImGui::ColorEdit3("Clear Color", reinterpret_cast<float*>(&Game::Instance->clear));
     }
     ImGui::End();
 

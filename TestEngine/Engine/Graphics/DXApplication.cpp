@@ -267,6 +267,12 @@ LRESULT DXApplication::MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam
     return DefWindowProc(hwnd, msg, wParam, lParam);
 }
 
+void DXApplication::Clear(float rgba[4])
+{
+    m_d3dContext->ClearRenderTargetView(m_renderTargetView.Get(), rgba);
+    m_d3dContext->ClearDepthStencilView(m_depthStencilView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
+}
+
 
 bool DXApplication::InitializeWindow()
 {
