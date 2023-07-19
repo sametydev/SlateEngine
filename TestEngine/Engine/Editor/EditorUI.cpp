@@ -58,19 +58,29 @@ void EditorUI::OnUpdate()
     if (ImGui::Begin("Inspector"))
     {
 
-        ImGui::SliderFloat("Scale", &Game::Instance->scale, 0.2f, 2.0f);
+        ImGui::Text("Transform");
+        ImGui::Text("Position: (%.1f, %.1f, 0.0)", Game::Instance->x, Game::Instance->y);
+        ImGui::Text("X"); ImGui::SliderFloat("##1", &Game::Instance->x, 0, 10, "");
+        ImGui::Text("Y"); ImGui::SliderFloat("##2", &Game::Instance->y, 0, 10, "");
+
+        ImGui::Dummy(ImVec2(0.0f, 10.0f));
 
         ImGui::Text("py: %.2f degrees", XMConvertToDegrees(Game::Instance->py));
-        ImGui::SliderFloat("##1", &Game::Instance->py, -XM_PI, XM_PI, "");
+        ImGui::SliderFloat("##3", &Game::Instance->py, -XM_PI, XM_PI, "");
 
         ImGui::Text("tx: %.2f degrees", XMConvertToDegrees(Game::Instance->tx));
+        ImGui::SliderFloat("##4", &Game::Instance->tx, -XM_PI, XM_PI, "");
 
-        ImGui::SliderFloat("##2", &Game::Instance->tx, -XM_PI, XM_PI, "");
+        ImGui::SliderFloat("Scale", &Game::Instance->scale, 0.2f, 2.0f);
 
-        ImGui::Text("Position: (%.1f, %.1f, 0.0)", Game::Instance->x, Game::Instance->y);
+        ImGui::Dummy(ImVec2(0.0f, 20.0f));
 
+        ImGui::Text("Shader");
         ImGui::ColorEdit3("Color", reinterpret_cast<float*>(&Game::Instance->cbuffer.color));
 
+        ImGui::Dummy(ImVec2(0.0f, 20.0f));
+
+        ImGui::Text("Graphic Pipeline");
         ImGui::ColorEdit3("Clear Color", reinterpret_cast<float*>(&Game::Instance->clear));
     }
     ImGui::End();
