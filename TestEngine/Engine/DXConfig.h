@@ -177,3 +177,12 @@ inline HRESULT CreateShaderFromFile(
     }
     return hr;
 }
+
+inline static wchar_t* charToWChar(const char* text)
+{
+    const size_t size = strlen(text) + 1;
+    wchar_t* wText = new wchar_t[size];
+    size_t outsize;
+    mbstowcs_s(&outsize, wText, size, text, size - 1);
+    return wText;
+}

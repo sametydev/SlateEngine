@@ -3,7 +3,6 @@
 #include <TestEngine/Engine/Graphics/DXApplication.h>
 #include <TestEngine/Engine/Editor/Windows/LogWindow.h>
 #include <TestEngine/Engine/Graphics/2D/Components/C2DText.h>
-#include <imgui_stdlib.h>
 
 InspectorWindow::InspectorWindow()
 {
@@ -22,6 +21,7 @@ void InspectorWindow::OnInit()
 void InspectorWindow::OnDraw(const char* title)
 {
 }
+
 float ui_x, ui_y;
 void InspectorWindow::OnDraw()
 {
@@ -104,12 +104,13 @@ void InspectorWindow::OnDraw()
         ImGui::Dummy(ImVec2(0.0f, 15.0f));
         ImGui::Text("UI Text Summoner:");
         
-        ImGui::InputFloat("X", &ui_x);
-        ImGui::InputFloat("Y", &ui_y);
-
+        ImGui::InputFloat("Text X", &ui_x);
+        ImGui::InputFloat("Text Y", &ui_y);
+        static char bufpass[64] = "MyLabel";
+        ImGui::InputText("Label", bufpass,64);
         if (ImGui::Button("Add Text To Render"))
         {
-            new C2DText(L"Test Text for Render",ui_x,ui_y,600.0f,200.0f);
+            new C2DText(charToWChar(bufpass), ui_x, ui_y, 600.0f, 200.0f);
         }
     }
     ImGui::End();

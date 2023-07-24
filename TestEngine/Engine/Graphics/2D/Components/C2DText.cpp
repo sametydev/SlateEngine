@@ -12,6 +12,7 @@ C2DText::C2DText(LPCWSTR text, float x, float y, float w, float h) : m_text(text
 
 C2DText::~C2DText()
 {
+	D2DContext::Instance->RemoveTextForRender(this);
 }
 
 void C2DText::OnRender()

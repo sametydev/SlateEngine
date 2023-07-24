@@ -30,6 +30,7 @@ public:
 	}
 
 	void AddTextForRender(C2DText* text);
+	void RemoveTextForRender(C2DText* text);
 
 private:
 	ComPtr<ID2D1Factory> m_d2dFactory;
