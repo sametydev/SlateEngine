@@ -2,7 +2,8 @@
 #include <TestEngine/Engine/DXConfig.h>
 #include <TestEngine/Engine/Graphics/DXApplication.h>
 #include <TestEngine/Engine/Editor/Windows/LogWindow.h>
-
+#include <TestEngine/Engine/Graphics/2D/Components/C2DText.h>
+#include <imgui_stdlib.h>
 
 InspectorWindow::InspectorWindow()
 {
@@ -99,6 +100,13 @@ void InspectorWindow::OnDraw()
 
         ImGui::Dummy(ImVec2(0.0f, 10.0f));
         ImGui::Checkbox("WireFrame Mode", &game->renderWireframe);
+
+        ImGui::Dummy(ImVec2(0.0f, 15.0f));
+
+        if (ImGui::Button("Add Text To Render"))
+        {
+            new C2DText(L"Test Text for Render");
+        }
     }
     ImGui::End();
 }

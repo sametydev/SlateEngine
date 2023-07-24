@@ -135,6 +135,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Engine\Graphics\2D\Components\C2DText.cpp" />
     <ClCompile Include="Engine\Graphics\2D\D2DContext.cpp" />
     <ClCompile Include="Engine\Graphics\Buffer\DXConstantBuffer.cpp" />
     <ClCompile Include="Engine\Graphics\Buffer\DXIndexBuffer.cpp" />
@@ -151,6 +152,7 @@
     <ClCompile Include="ImGui\imgui_draw.cpp" />
     <ClCompile Include="ImGui\imgui_impl_dx11.cpp" />
     <ClCompile Include="ImGui\imgui_impl_win32.cpp" />
+    <ClCompile Include="ImGui\imgui_stdlib.cpp" />
     <ClCompile Include="ImGui\imgui_tables.cpp" />
     <ClCompile Include="ImGui\imgui_widgets.cpp" />
     <ClCompile Include="Engine\Editor\Windows\LogWindow.cpp" />
@@ -159,6 +161,7 @@
     <ClCompile Include="Engine\Core\Timer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Engine\Graphics\2D\Components\C2DText.h" />
     <ClInclude Include="Engine\Graphics\2D\D2DContext.h" />
     <ClInclude Include="Engine\Editor\Windows\IWindow.h" />
     <ClInclude Include="Engine\Graphics\Buffer\DXConstantBuffer.h" />

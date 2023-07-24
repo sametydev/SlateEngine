@@ -64,11 +64,18 @@ void D2DContext::OnRender()
     if (m_d2dRenderTarget != nullptr)
     {
         m_d2dRenderTarget->BeginDraw();
-        std::wstring textStr = L"TestEngine 2D Font Rendering Test with\nDirect2D! Its amazing.";
 
-        m_d2dRenderTarget->DrawTextW(textStr.c_str(), textStr.size(), m_textFormat.Get(),
-            D2D1_RECT_F{ 0.0f, 0.0f, 600.0f, 200.0f }, m_solidColorBrush.Get());
+        for (auto t:m_texts)
+        {
+            t->OnRender();
+        }
+
         HR(m_d2dRenderTarget->EndDraw());
     }
 
+}
+
+void D2DContext::AddTextForRender(C2DText* text)
+{
+    m_texts.emplace(text);
 }
