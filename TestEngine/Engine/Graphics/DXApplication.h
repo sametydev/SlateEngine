@@ -1,10 +1,14 @@
 ﻿#pragma once
-
 #include <TestEngine/Engine/DXConfig.h>
 #include <TestEngine/Engine/Core/Timer.h>
+#include <TestEngine/Engine/Graphics/2D/D2DContext.h>
+
 #include <imgui.h>
 #include <imgui_impl_dx11.h>
 #include <imgui_impl_win32.h>
+
+
+
 
 class DXApplication
 {
@@ -23,7 +27,7 @@ public:
     virtual void OnRenderScene()         = 0;               
     virtual LRESULT MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
-    void Clear(float rgba[4]);
+    void ClearRenderTarget(float rgba[4]);
 
     inline ComPtr<ID3D11Device>& GetDXDevice() {
         return m_d3dDevice;
@@ -41,10 +45,9 @@ public:
 
 protected:
     bool InitializeWindow();      
-    bool InitializeGraphics();        
+    bool InitializeGraphics();   
 
 protected:
-
     HINSTANCE hInstance;       
     HWND      hWindow;       
     bool      bPaused;      
@@ -57,25 +60,26 @@ protected:
 
     Timer mTimer;           
 
+    //DirectX 3D;
     ComPtr<ID3D11Device> m_d3dDevice;                   
     ComPtr<ID3D11DeviceContext> m_d3dContext;  
     ComPtr<IDXGISwapChain> m_swapChain;                 
-
+    //For 11_1
     ComPtr<ID3D11Device1> m_d3dDevice1;                 
     ComPtr<ID3D11DeviceContext1> m_d3dContext1;
     ComPtr<IDXGISwapChain1> m_swapChain1;               
 
-    ComPtr<ID3D11Texture2D> m_depthStencilBuffer;       
-    ComPtr<ID3D11RenderTargetView> m_renderTargetView;  
-    ComPtr<ID3D11DepthStencilView> m_depthStencilView;  
+    //RTV and DST
+    ComPtr<ID3D11Texture2D> m_depthStencilBuffer;
+    ComPtr<ID3D11RenderTargetView> m_renderTargetView;
+    ComPtr<ID3D11DepthStencilView> m_depthStencilView;
+
     D3D11_VIEWPORT m_screenVp;                     
 
-    std::wstring sWindowCaption;                       
-    int m_clientW;                                   
+    std::wstring sWindowCaption;              
+    int m_clientW;                          
     int m_clientH;
 
+private:
+    D2DContext* m_d2dContext;
 };
-namespace
-{
-    //static DXApplication* DXApp = nullptr;
-}

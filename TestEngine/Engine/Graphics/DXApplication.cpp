@@ -1,7 +1,9 @@
 ﻿#include <TestEngine/Engine/Graphics/DXApplication.h>
 #include <TestEngine/Engine/Core/EngineConfig.h>
 #include <TestEngine/Engine/Editor/EditorUI.h>
+#include <TestEngine/Engine/Graphics/2D/D2DContext.h>
 #include <sstream>
+#include <TestEngine/Engine/Editor/Windows/LogWindow.h>
 
 #pragma warning(disable: 6031)
 
@@ -107,11 +109,21 @@ int DXApplication::OnRun()
 
 bool DXApplication::OnInit()
 {
+    m_d2dContext = new D2DContext();
     if (!InitializeWindow())
         return false;
 
+    if (!m_d2dContext->CreateDevices())
+    {
+        return false;
+    }
+
     if (!InitializeGraphics())
         return false;
+
+    if (!IS_COOKED) {
+        EditorUI::instance()->OnInit();
+    }
     return true;
 }
 
@@ -136,12 +148,10 @@ void DXApplication::OnResize()
     HR(m_swapChain->ResizeBuffers(1, m_clientW, m_clientH, DXGI_FORMAT_R8G8B8A8_UNORM, 0));
     HR(m_swapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), reinterpret_cast<void**>(backBuffer.GetAddressOf())));
     HR(m_d3dDevice->CreateRenderTargetView(backBuffer.Get(), nullptr, m_renderTargetView.GetAddressOf()));
-
-
     backBuffer.Reset();
 
 
-    D3D11_TEXTURE2D_DESC depthStencilDesc;
+    D3D11_TEXTURE2D_DESC depthStencilDesc{};
 
     depthStencilDesc.Width = m_clientW;
     depthStencilDesc.Height = m_clientH;
@@ -267,7 +277,7 @@ LRESULT DXApplication::MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam
     return DefWindowProc(hwnd, msg, wParam, lParam);
 }
 
-void DXApplication::Clear(float rgba[4])
+void DXApplication::ClearRenderTarget(float rgba[4])
 {
     m_d3dContext->ClearRenderTargetView(m_renderTargetView.Get(), rgba);
     m_d3dContext->ClearDepthStencilView(m_depthStencilView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
@@ -317,10 +327,11 @@ bool DXApplication::InitializeGraphics()
 
     HRESULT hr = S_OK;
 
-    UINT createDeviceFlags = 0;
+    UINT createDeviceFlags = D3D11_CREATE_DEVICE_BGRA_SUPPORT;
 #if defined(DEBUG) || defined(_DEBUG)  
     createDeviceFlags |= D3D11_CREATE_DEVICE_DEBUG;
 #endif
+
 
     D3D_DRIVER_TYPE driverTypes[] =
     {
@@ -387,8 +398,7 @@ bool DXApplication::InitializeGraphics()
     HR(m_d3dDevice.As(&m_d3dDevice1));
     HR(m_d3dContext.As(&m_d3dContext1));
 
-    DXGI_SWAP_CHAIN_DESC1 sd;
-    ZeroMemory(&sd, sizeof(sd));
+    DXGI_SWAP_CHAIN_DESC1 sd{};
     sd.Width = m_clientW;
     sd.Height = m_clientH;
     sd.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
@@ -408,7 +418,7 @@ bool DXApplication::InitializeGraphics()
     sd.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
     sd.Flags = 0;
 
-    DXGI_SWAP_CHAIN_FULLSCREEN_DESC fd;
+    DXGI_SWAP_CHAIN_FULLSCREEN_DESC fd{};
     fd.RefreshRate.Numerator = MAX_FPS;
     fd.RefreshRate.Denominator = 1;
     fd.Scaling = DXGI_MODE_SCALING_UNSPECIFIED;
@@ -417,7 +427,6 @@ bool DXApplication::InitializeGraphics()
 
     HR(dxgiFactory2->CreateSwapChainForHwnd(m_d3dDevice.Get(), hWindow, &sd, &fd, nullptr, m_swapChain1.GetAddressOf()));
     HR(m_swapChain1->QueryInterface(IID_PPV_ARGS(& m_swapChain)));
-    
 
     dxgiFactory1->MakeWindowAssociation(hWindow, DXGI_MWA_NO_ALT_ENTER | DXGI_MWA_NO_WINDOW_CHANGES);
 
@@ -425,3 +434,4 @@ bool DXApplication::InitializeGraphics()
 
     return true;
 }
+

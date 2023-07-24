@@ -1,5 +1,6 @@
 #include <TestEngine/Engine/Editor/EditorUI.h>
-#include <TestEngine/Engine/Graphics/DXApplication.h>
+#include <TestEngine/Engine/Editor/Windows/LogWindow.h>
+#include <TestEngine/Engine/Editor/Windows/InspectorWindow.h>
 
 EditorUI::EditorUI()
 {
@@ -16,11 +17,10 @@ void EditorUI::OnInit()
 {
     //Initialize IMGUI for Test
     ImGui::CreateContext();
-    ImGuiIO& io = ImGui::GetIO(); (void)io;
-    io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
-    io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
-    //io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
-    io.ConfigWindowsMoveFromTitleBarOnly = true;
+    io = &ImGui::GetIO(); (void)io;
+    io->ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
+    io->ConfigFlags |= ImGuiConfigFlags_DockingEnable;
+    io->ConfigWindowsMoveFromTitleBarOnly = true;
 
     ImGui::StyleColorsDark();
 
@@ -29,6 +29,17 @@ void EditorUI::OnInit()
     
 
     InitTheme();
+
+    LogWindow* logWindow = new LogWindow();
+    InspectorWindow* inspectorWindow = new InspectorWindow();
+
+    windows.emplace(inspectorWindow);
+    windows.emplace(logWindow);
+
+    for (auto w : windows)
+    {
+        w->OnInit();
+    }
 }
 
 void EditorUI::NewFrame()
@@ -42,7 +53,7 @@ void EditorUI::NewFrame()
 void EditorUI::OnUpdate()
 {
     static bool dockspaceOpen = true;
-    if (ImGui::Begin("Dockspace", &dockspaceOpen, ImGuiWindowFlags_MenuBar)) {
+    if (ImGui::Begin("Editor", &dockspaceOpen, ImGuiWindowFlags_MenuBar)) {
         if (ImGui::BeginMenuBar())
         {
             if (ImGui::BeginMenu("Scene"))
@@ -55,40 +66,13 @@ void EditorUI::OnUpdate()
     }
     ImGui::End();
 
-    if (ImGui::Begin("Inspector"))
+
+
+    for (auto w : windows)
     {
-
-        ImGui::Text("Transform");
-        ImGui::Text("Position: (%.1f, %.1f, 0.0)", Game::Instance->x, Game::Instance->y);
-        ImGui::Text("X"); ImGui::SliderFloat("##1", &Game::Instance->x, 0, 10, "");
-        ImGui::Text("Y"); ImGui::SliderFloat("##2", &Game::Instance->y, 0, 10, "");
-
-        ImGui::Dummy(ImVec2(0.0f, 10.0f));
-
-        ImGui::Text("py: %.2f degrees", XMConvertToDegrees(Game::Instance->py));
-        ImGui::SliderFloat("##3", &Game::Instance->py, -XM_PI, XM_PI, "");
-
-        ImGui::Text("tx: %.2f degrees", XMConvertToDegrees(Game::Instance->tx));
-        ImGui::SliderFloat("##4", &Game::Instance->tx, -XM_PI, XM_PI, "");
-
-        ImGui::SliderFloat("Scale", &Game::Instance->scale, 0.2f, 2.0f);
-
-        ImGui::Dummy(ImVec2(0.0f, 20.0f));
-
-        ImGui::Text("Shader");
-        ImGui::ColorEdit3("Color", reinterpret_cast<float*>(&Game::Instance->cbuffer.color));
-
-        ImGui::Dummy(ImVec2(0.0f, 20.0f));
-
-        ImGui::Text("Graphic Pipeline");
-        ImGui::ColorEdit3("Clear Color", reinterpret_cast<float*>(&Game::Instance->clear));
+        w->OnDraw();
     }
-    ImGui::End();
-
-    if (ImGui::Begin("Logs")) {
-        ImGui::Text("Test Log");
-    }
-    ImGui::End();
+    
 }
 
 void EditorUI::InitTheme()

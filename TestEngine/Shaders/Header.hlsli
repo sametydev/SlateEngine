@@ -1,3 +1,5 @@
+
+//DEPRECATED RIGHT NOW!
 cbuffer ConstantBuffer : register(b0)
 {
     matrix World;
@@ -6,15 +8,17 @@ cbuffer ConstantBuffer : register(b0)
     vector Color;
 }
 
-
 struct VERTEX_IN
 {
-    float3 pos : POSITION;
-    float4 color : COLOR;
+    float3 PosL : POSITION;
+    float3 Normal : NORMAL;
+    float4 Color : COLOR;
 };
 
 struct VERTEX_OUT
 {
-    float4 pos : SV_POSITION;
-    float4 color : COLOR;
+    float4 PosH : SV_POSITION;
+    float3 PosW : POSITION;
+    float3 Normal : NORMAL;
+    float4 Color : COLOR;
 };
