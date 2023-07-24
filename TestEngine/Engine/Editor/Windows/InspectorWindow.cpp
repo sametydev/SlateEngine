@@ -22,7 +22,7 @@ void InspectorWindow::OnInit()
 void InspectorWindow::OnDraw(const char* title)
 {
 }
-
+float ui_x, ui_y;
 void InspectorWindow::OnDraw()
 {
     if (ImGui::Begin("Inspector"))
@@ -102,10 +102,14 @@ void InspectorWindow::OnDraw()
         ImGui::Checkbox("WireFrame Mode", &game->renderWireframe);
 
         ImGui::Dummy(ImVec2(0.0f, 15.0f));
+        ImGui::Text("UI Text Summoner:");
+        
+        ImGui::InputFloat("X", &ui_x);
+        ImGui::InputFloat("Y", &ui_y);
 
         if (ImGui::Button("Add Text To Render"))
         {
-            new C2DText(L"Test Text for Render");
+            new C2DText(L"Test Text for Render",ui_x,ui_y,600.0f,200.0f);
         }
     }
     ImGui::End();

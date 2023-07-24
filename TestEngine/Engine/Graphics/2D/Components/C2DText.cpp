@@ -5,7 +5,7 @@ C2DText::C2DText()
 {
 }
 
-C2DText::C2DText(LPCWSTR text) : m_text(text)
+C2DText::C2DText(LPCWSTR text, float x, float y, float w, float h) : m_text(text),m_rect{x,y,w,h}
 {
 	D2DContext::Instance->AddTextForRender(this);
 }
@@ -17,5 +17,5 @@ C2DText::~C2DText()
 void C2DText::OnRender()
 {
 	D2DContext::Instance->GetRenderTarget()->DrawTextW(m_text, wcslen(m_text), D2DContext::Instance->GetTextFormat().Get(),
-		D2D1_RECT_F{ 0.0f, 0.0f, 600.0f, 200.0f }, D2DContext::Instance->GetSolidColorBrush().Get());
+		m_rect, D2DContext::Instance->GetSolidColorBrush().Get());
 }
