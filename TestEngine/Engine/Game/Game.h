@@ -4,7 +4,6 @@
 #include <TestEngine/Engine/Component/PointLight.h>
 #include <TestEngine/Engine/Component/SpotLight.h>
 #include <TestEngine/Engine/Component/DirectionalLight.h>
-#include <TestEngine/Engine/BuiltInMesh.h>
 #include <TestEngine/Engine/Graphics/Vertex.h>
 #include <TestEngine/Engine/Graphics/Buffer/DXBuffer.h>
 #include <TestEngine/Engine/Graphics/Shader/DXVertexShader.h>
@@ -12,6 +11,7 @@
 #include <TestEngine/Engine/Graphics/Buffer/DXVertexBuffer.h>
 #include <TestEngine/Engine/Graphics/Buffer/DXIndexBuffer.h>
 #include <TestEngine/Engine/Graphics/Buffer/DXConstantBuffer.h>
+#include <TestEngine/Engine/Graphics/BuiltInMesh.h>
 
 class Game : public DXApplication
 {

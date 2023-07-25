@@ -87,6 +87,9 @@
     <ClCompile Include="ImGui\imgui_stdlib.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Editor\Windows\UIRenderablesWindow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\DXConfig.h">
@@ -125,7 +128,7 @@
     <ClInclude Include="Engine\Component\SpotLight.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\BuiltInMesh.h">
+    <ClInclude Include="Engine\Graphics\BuiltInMesh.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Graphics\DXRasterizerState.h">
@@ -165,6 +168,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Graphics\2D\Components\C2DText.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Editor\Windows\UIRenderablesWindow.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -79,8 +79,3 @@ void D2DContext::AddTextForRender(C2DText* text)
 {
     m_texts.emplace(text);
 }
-
-void D2DContext::RemoveTextForRender(C2DText* text)
-{
-    m_texts.erase(text);
-}

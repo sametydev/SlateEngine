@@ -1,9 +1,11 @@
 #pragma once
 #include <TestEngine/Engine/DXConfig.h>
 #include <TestEngine/Engine/Graphics/2D/Components/C2DText.h>
+
 #include <d2d1.h>
 #include <dwrite.h>
 #include <set>
+
 class D2DContext
 {
 public:
@@ -30,9 +32,8 @@ public:
 	}
 
 	void AddTextForRender(C2DText* text);
-	void RemoveTextForRender(C2DText* text);
-
 private:
+	friend class UIRenderablesWindow;
 	ComPtr<ID2D1Factory> m_d2dFactory;
 	ComPtr<ID2D1RenderTarget> m_d2dRenderTarget;
 	ComPtr<IDWriteFactory> m_d2dWriteFactory;

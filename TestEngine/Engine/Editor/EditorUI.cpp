@@ -1,6 +1,7 @@
 #include <TestEngine/Engine/Editor/EditorUI.h>
 #include <TestEngine/Engine/Editor/Windows/LogWindow.h>
 #include <TestEngine/Engine/Editor/Windows/InspectorWindow.h>
+#include <TestEngine/Engine/Editor/Windows/UIRenderablesWindow.h>
 
 EditorUI::EditorUI()
 {
@@ -32,9 +33,11 @@ void EditorUI::OnInit()
 
     LogWindow* logWindow = new LogWindow();
     InspectorWindow* inspectorWindow = new InspectorWindow();
+    UIRenderablesWindow* uirenderables = new UIRenderablesWindow();
 
     windows.emplace(inspectorWindow);
     windows.emplace(logWindow);
+    windows.emplace(uirenderables);
 
     for (auto w : windows)
     {

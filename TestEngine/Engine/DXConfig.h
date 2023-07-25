@@ -25,10 +25,6 @@
 #include <TestEngine/Engine/Core/EngineConfig.h>
 
 
-
-
-
-
 using namespace DirectX;
 
 template <class T>
@@ -185,4 +181,12 @@ inline static wchar_t* charToWChar(const char* text)
     size_t outsize;
     mbstowcs_s(&outsize, wText, size, text, size - 1);
     return wText;
+}
+
+inline void convertWStringToCharPtr(_In_ std::wstring input, _Out_ char* outputString)
+{
+    size_t outputSize = input.length() + 1;
+    outputString = new char[outputSize];
+    size_t charsConverted = 0;
+    wcstombs_s(&charsConverted, outputString, outputSize, input.c_str(), input.length());
 }

@@ -11,8 +11,11 @@ public:
 	~C2DText();
 
 	void OnRender();
+
+	const char* GetText();
 private:
 	LPCWSTR m_text;
+	const char* m_textc;
 	D2D1_RECT_F m_rect;
 };
 

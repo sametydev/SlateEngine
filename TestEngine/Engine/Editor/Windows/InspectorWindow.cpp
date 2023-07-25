@@ -3,6 +3,7 @@
 #include <TestEngine/Engine/Graphics/DXApplication.h>
 #include <TestEngine/Engine/Editor/Windows/LogWindow.h>
 #include <TestEngine/Engine/Graphics/2D/Components/C2DText.h>
+#include <TestEngine/Engine/Graphics/BuiltInMesh.h>
 
 InspectorWindow::InspectorWindow()
 {

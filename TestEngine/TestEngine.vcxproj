@@ -159,6 +159,7 @@
     <ClCompile Include="Engine\Editor\Windows\InspectorWindow.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Engine\Core\Timer.cpp" />
+    <ClCompile Include="Engine\Editor\Windows\UIRenderablesWindow.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Graphics\2D\Components\C2DText.h" />
@@ -175,7 +176,7 @@
     <ClInclude Include="Engine\Core\Singleton.h" />
     <ClInclude Include="Engine\Editor\EditorUI.h" />
     <ClInclude Include="Engine\Graphics\Buffer\DXBuffer.h" />
-    <ClInclude Include="Engine\BuiltInMesh.h" />
+    <ClInclude Include="Engine\Graphics\BuiltInMesh.h" />
     <ClInclude Include="Engine\Graphics\DXApplication.h" />
     <ClInclude Include="Engine\DXConfig.h" />
     <ClInclude Include="Engine\Core\Timer.h" />
@@ -187,6 +188,7 @@
     <ClInclude Include="Engine\Graphics\Vertex.h" />
     <ClInclude Include="Engine\Editor\Windows\LogWindow.h" />
     <ClInclude Include="Engine\Editor\Windows\InspectorWindow.h" />
+    <ClInclude Include="Engine\Editor\Windows\UIRenderablesWindow.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\Header.hlsli" />

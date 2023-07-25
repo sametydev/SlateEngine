@@ -2,6 +2,7 @@
 #include <TestEngine/Engine/Editor/Windows/LogWindow.h>
 #include <TestEngine/Engine/Graphics/2D/D2DContext.h>
 
+
 Game* Game::Instance = nullptr;
 
 //TEMPORARY!!
