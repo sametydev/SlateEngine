@@ -1,7 +1,9 @@
 ﻿#include <TestEngine/Engine/Game/Game.h>
 #include <TestEngine/Engine/Editor/Windows/LogWindow.h>
 #include <TestEngine/Engine/Graphics/2D/D2DContext.h>
-
+#include <DirectXTex.h>
+#include <DDSTextureLoader11.h>
+#include <WICTextureLoader11.h>
 
 Game* Game::Instance = nullptr;
 
@@ -38,6 +40,7 @@ bool Game::OnInit()
     LogWindow::Instance->AddLog("[Info] DirectX 11 Initialized!\n");
     LogWindow::Instance->AddLog("[Info] Game OnInit\n");
     LogWindow::Instance->AddLog("[Info] 2D UI System OnInit\n");
+
 
     //Create Vertex Shader
     vertexShader = new DXVertexShader();
@@ -120,8 +123,7 @@ bool Game::OnInit()
 
 
 
-    D3D11_RASTERIZER_DESC rasterizerDesc;
-    ZeroMemory(&rasterizerDesc, sizeof(rasterizerDesc));
+    D3D11_RASTERIZER_DESC rasterizerDesc{};
     rasterizerDesc.FillMode = D3D11_FILL_WIREFRAME;
     rasterizerDesc.CullMode = D3D11_CULL_NONE;
     rasterizerDesc.FrontCounterClockwise = false;

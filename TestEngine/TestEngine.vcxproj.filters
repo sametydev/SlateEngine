@@ -27,25 +27,25 @@
     <ClCompile Include="Engine\Game\Game.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ImGui\imgui.cpp">
+    <ClCompile Include="LibarySources\imgui.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ImGui\imgui_demo.cpp">
+    <ClCompile Include="LibarySources\imgui_demo.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ImGui\imgui_draw.cpp">
+    <ClCompile Include="LibarySources\imgui_draw.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ImGui\imgui_impl_dx11.cpp">
+    <ClCompile Include="LibarySources\imgui_impl_dx11.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ImGui\imgui_impl_win32.cpp">
+    <ClCompile Include="LibarySources\imgui_impl_win32.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ImGui\imgui_tables.cpp">
+    <ClCompile Include="LibarySources\imgui_tables.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ImGui\imgui_widgets.cpp">
+    <ClCompile Include="LibarySources\imgui_widgets.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Editor\EditorUI.cpp">
@@ -84,10 +84,16 @@
     <ClCompile Include="Engine\Graphics\2D\Components\C2DText.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ImGui\imgui_stdlib.cpp">
+    <ClCompile Include="LibarySources\imgui_stdlib.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Editor\Windows\UIRenderablesWindow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LibarySources\DDSTextureLoader11.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LibarySources\WICTextureLoader11.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -179,9 +185,17 @@
     <None Include="Shaders\LightsHeader.hlsli" />
     <None Include="Shaders\TestVS.hlsl" />
     <None Include="Shaders\TestPS.hlsl" />
+    <None Include="Shaders\TexturedLit\Lit.hlsli" />
+    <None Include="Shaders\TexturedLit\Lit3DVS.hlsl" />
+    <None Include="Shaders\TexturedLit\Lit2DPS.hlsl" />
+    <None Include="Shaders\TexturedLit\Lit2DVS.hlsl" />
+    <None Include="Shaders\TexturedLit\Lit3DPS.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Shaders\LitPS.hlsl" />
     <FxCompile Include="Shaders\LitVS.hlsl" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Textures\Crate.dds" />
   </ItemGroup>
 </Project>

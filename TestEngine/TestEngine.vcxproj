@@ -147,16 +147,18 @@
     <ClCompile Include="Engine\Graphics\DXApplication.cpp" />
     <ClCompile Include="Engine\Game\Game.cpp" />
     <ClCompile Include="Engine\Graphics\Vertex.cpp" />
-    <ClCompile Include="ImGui\imgui.cpp" />
-    <ClCompile Include="ImGui\imgui_demo.cpp" />
-    <ClCompile Include="ImGui\imgui_draw.cpp" />
-    <ClCompile Include="ImGui\imgui_impl_dx11.cpp" />
-    <ClCompile Include="ImGui\imgui_impl_win32.cpp" />
-    <ClCompile Include="ImGui\imgui_stdlib.cpp" />
-    <ClCompile Include="ImGui\imgui_tables.cpp" />
-    <ClCompile Include="ImGui\imgui_widgets.cpp" />
+    <ClCompile Include="LibarySources\DDSTextureLoader11.cpp" />
+    <ClCompile Include="LibarySources\imgui.cpp" />
+    <ClCompile Include="LibarySources\imgui_demo.cpp" />
+    <ClCompile Include="LibarySources\imgui_draw.cpp" />
+    <ClCompile Include="LibarySources\imgui_impl_dx11.cpp" />
+    <ClCompile Include="LibarySources\imgui_impl_win32.cpp" />
+    <ClCompile Include="LibarySources\imgui_stdlib.cpp" />
+    <ClCompile Include="LibarySources\imgui_tables.cpp" />
+    <ClCompile Include="LibarySources\imgui_widgets.cpp" />
     <ClCompile Include="Engine\Editor\Windows\LogWindow.cpp" />
     <ClCompile Include="Engine\Editor\Windows\InspectorWindow.cpp" />
+    <ClCompile Include="LibarySources\WICTextureLoader11.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Engine\Core\Timer.cpp" />
     <ClCompile Include="Engine\Editor\Windows\UIRenderablesWindow.cpp" />
@@ -195,6 +197,20 @@
     <None Include="Shaders\LightsHeader.hlsli" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Shaders\TexturedLit\Lit2DPS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+      <FileType>Document</FileType>
+    </None>
+    <None Include="Shaders\TexturedLit\Lit2DVS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+      <FileType>Document</FileType>
+    </None>
     <FxCompile Include="Shaders\LitPS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
@@ -209,6 +225,22 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
       <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">VS</EntryPointName>
     </FxCompile>
+    <None Include="Shaders\TexturedLit\Lit3DPS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+      <FileType>Document</FileType>
+    </None>
+    <None Include="Shaders\TexturedLit\Lit3DVS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+      <FileType>Document</FileType>
+    </None>
+    <None Include="Shaders\TexturedLit\Lit.hlsli" />
     <None Include="Shaders\TestPS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">4.0</ShaderModel>
@@ -233,6 +265,9 @@
       <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">VS</EntryPointName>
       <FileType>Document</FileType>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Textures\Crate.dds" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

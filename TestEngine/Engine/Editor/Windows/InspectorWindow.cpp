@@ -41,9 +41,9 @@ void InspectorWindow::OnDraw()
             MeshData<VertexPNC> meshData;
             switch (curr_mesh_item)
             {
-            case 0: meshData = BuiltInMesh::CreateBox<VertexPNC>(); break;
-            case 1: meshData = BuiltInMesh::CreateSphere<VertexPNC>(); break;
-            case 2: meshData = BuiltInMesh::CreateCylinder<VertexPNC>(); break;
+                case 0: meshData = BuiltInMesh::CreateBox<VertexPNC>(); break;
+                case 1: meshData = BuiltInMesh::CreateSphere<VertexPNC>(); break;
+                case 2: meshData = BuiltInMesh::CreateCylinder<VertexPNC>(); break;
             }
             game->SetMesh(meshData);
         }

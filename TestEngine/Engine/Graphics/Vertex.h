@@ -7,6 +7,25 @@
 //T = TEXTURE
 //S = SIZE
 
+
+struct VertexPT
+{
+    VertexPT() = default;
+
+    VertexPT(const VertexPT&) = default;
+    VertexPT& operator=(const VertexPT&) = default;
+
+    VertexPT(VertexPT&&) = default;
+    VertexPT& operator=(VertexPT&&) = default;
+
+    constexpr VertexPT(const DirectX::XMFLOAT3& _pos, const DirectX::XMFLOAT2& _tex) :
+        pos(_pos), tex(_tex) {}
+
+    DirectX::XMFLOAT3 pos;
+    DirectX::XMFLOAT2 tex;
+    static const D3D11_INPUT_ELEMENT_DESC inputLayout[2];
+};
+
 struct VertexPNC
 {
     VertexPNC() = default;
