@@ -267,6 +267,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Image Include="Textures\AnimatedTex\tex1.png" />
+    <Image Include="Textures\AnimatedTex\tex2.png" />
+    <Image Include="Textures\AnimatedTex\tex3.png" />
+    <Image Include="Textures\AnimatedTex\tex4.png" />
     <Image Include="Textures\Crate.dds" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -41,6 +41,15 @@ bool Game::OnInit()
     LogWindow::Instance->AddLog("[Info] Game OnInit\n");
     LogWindow::Instance->AddLog("[Info] 2D UI System OnInit\n");
 
+    HR(CreateDDSTextureFromFile(m_d3dDevice.Get(), L"Textures\\Crate.dds", nullptr, m_crateTexture.GetAddressOf()));
+
+    WCHAR strFile[40];
+    m_animTexture.resize(4);
+    for (int i = 1; i <= 4; ++i)
+    {
+        wsprintf(strFile, L"Textures\\AnimatedTex\\tex%d.png", i);
+        HR(CreateWICTextureFromFile(m_d3dDevice.Get(), strFile, nullptr, m_animTexture[i - 1].GetAddressOf()));
+    }
 
     //Create Vertex Shader
     vertexShader = new DXVertexShader();
