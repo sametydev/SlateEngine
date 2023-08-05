@@ -50,6 +50,8 @@ public:
 
 
 private:
+    //For Testing
+    void InitializeLighting();
     ComPtr<ID3D11InputLayout> m_inputLayout = nullptr;
     DXVertexBuffer* m_vertexBuffer = nullptr;
     DXIndexBuffer* m_indexBuffer = nullptr;

@@ -79,44 +79,7 @@ bool Game::OnInit()
     cbdps.cbSize = sizeof(PS_ConstantBuffer);
     m_constantBufferPS->Create(cbdps);
  
-    m_directionalLight.ambient = XMFLOAT4(0.2f, 0.2f, 0.2f, 1.0f);
-    m_directionalLight.diffuse = XMFLOAT4(0.8f, 0.8f, 0.8f, 1.0f);
-    m_directionalLight.specular = XMFLOAT4(0.5f, 0.5f, 0.5f, 1.0f);
-    m_directionalLight.direction = XMFLOAT3(-0.577f, -0.577f, 0.577f);
-  
-    m_pointLight.position = XMFLOAT3(0.0f, 0.0f, -10.0f);
-    m_pointLight.ambient = XMFLOAT4(0.3f, 0.3f, 0.3f, 1.0f);
-    m_pointLight.diffuse = XMFLOAT4(0.7f, 0.7f, 0.7f, 1.0f);
-    m_pointLight.specular = XMFLOAT4(0.5f, 0.5f, 0.5f, 1.0f);
-    m_pointLight.attenutation = XMFLOAT3(0.0f, 0.1f, 0.0f);
-    m_pointLight.range = 25.0f;
-
-    m_spotLight.position = XMFLOAT3(0.0f, 0.0f, -5.0f);
-    m_spotLight.direction = XMFLOAT3(0.0f, 0.0f, 1.0f);
-    m_spotLight.ambient = XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f);
-    m_spotLight.diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
-    m_spotLight.specular = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
-    m_spotLight.attenutation = XMFLOAT3(1.0f, 0.0f, 0.0f);
-    m_spotLight.spot = 12.0f;
-    m_spotLight.range = 10000.0f;
-
-    m_vsCBufferData.world = XMMatrixIdentity();
-    m_vsCBufferData.view = XMMatrixTranspose(XMMatrixLookAtLH(
-        XMVectorSet(0.0f, 0.0f, -5.0f, 0.0f),
-        XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f),
-        XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f)
-    ));
-    m_vsCBufferData.proj = XMMatrixTranspose(XMMatrixPerspectiveFovLH(XM_PIDIV2, GetAspectRatio(), 1.0f, 1000.0f));
-    m_vsCBufferData.worldInvTranspose = XMMatrixIdentity();
-
-
-    m_psCBufferData.material.ambient = XMFLOAT4(0.5f, 0.5f, 0.5f, 1.0f);
-    m_psCBufferData.material.diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
-    m_psCBufferData.material.specular = XMFLOAT4(0.5f, 0.5f, 0.5f, 5.0f);
-
-    m_psCBufferData.dirLight = m_directionalLight;
-
-    m_psCBufferData.eyePos = XMFLOAT4(0.0f, 0.0f, -5.0f, 0.0f);
+    InitializeLighting();
 
     m_constantBufferPS->Map(sizeof(PS_ConstantBuffer), &m_psCBufferData);
     m_constantBufferPS->UnMap();
@@ -211,4 +174,46 @@ void Game::OnRenderScene()
 
     EditorUI::instance()->OnRender();
     HR(m_swapChain->Present(0, 0));
+}
+
+void Game::InitializeLighting()
+{
+    m_directionalLight.ambient = XMFLOAT4(0.2f, 0.2f, 0.2f, 1.0f);
+    m_directionalLight.diffuse = XMFLOAT4(0.8f, 0.8f, 0.8f, 1.0f);
+    m_directionalLight.specular = XMFLOAT4(0.5f, 0.5f, 0.5f, 1.0f);
+    m_directionalLight.direction = XMFLOAT3(-0.577f, -0.577f, 0.577f);
+
+    m_pointLight.position = XMFLOAT3(0.0f, 0.0f, -10.0f);
+    m_pointLight.ambient = XMFLOAT4(0.3f, 0.3f, 0.3f, 1.0f);
+    m_pointLight.diffuse = XMFLOAT4(0.7f, 0.7f, 0.7f, 1.0f);
+    m_pointLight.specular = XMFLOAT4(0.5f, 0.5f, 0.5f, 1.0f);
+    m_pointLight.attenutation = XMFLOAT3(0.0f, 0.1f, 0.0f);
+    m_pointLight.range = 25.0f;
+
+    m_spotLight.position = XMFLOAT3(0.0f, 0.0f, -5.0f);
+    m_spotLight.direction = XMFLOAT3(0.0f, 0.0f, 1.0f);
+    m_spotLight.ambient = XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f);
+    m_spotLight.diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
+    m_spotLight.specular = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
+    m_spotLight.attenutation = XMFLOAT3(1.0f, 0.0f, 0.0f);
+    m_spotLight.spot = 12.0f;
+    m_spotLight.range = 10000.0f;
+
+    m_vsCBufferData.world = XMMatrixIdentity();
+    m_vsCBufferData.view = XMMatrixTranspose(XMMatrixLookAtLH(
+        XMVectorSet(0.0f, 0.0f, -5.0f, 0.0f),
+        XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f),
+        XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f)
+    ));
+    m_vsCBufferData.proj = XMMatrixTranspose(XMMatrixPerspectiveFovLH(XM_PIDIV2, GetAspectRatio(), 1.0f, 1000.0f));
+    m_vsCBufferData.worldInvTranspose = XMMatrixIdentity();
+
+
+    m_psCBufferData.material.ambient = XMFLOAT4(0.5f, 0.5f, 0.5f, 1.0f);
+    m_psCBufferData.material.diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
+    m_psCBufferData.material.specular = XMFLOAT4(0.5f, 0.5f, 0.5f, 5.0f);
+
+    m_psCBufferData.dirLight = m_directionalLight;
+
+    m_psCBufferData.eyePos = XMFLOAT4(0.0f, 0.0f, -5.0f, 0.0f);
 }
