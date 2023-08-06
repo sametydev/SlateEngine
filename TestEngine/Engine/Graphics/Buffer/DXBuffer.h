@@ -21,23 +21,25 @@ struct ConstantBufferDesc {
     UINT    cbSize;
 };
 
-__declspec(align(16))
+
 struct VS_ConstantBuffer
 {
     DirectX::XMMATRIX world;
     DirectX::XMMATRIX view;
     DirectX::XMMATRIX proj;
     DirectX::XMMATRIX worldInvTranspose;
-
 };
 
-__declspec(align(16))
 struct PS_ConstantBuffer
 {
-    DirectionalLight dirLight;
-    PointLight pointLight;
-    SpotLight spotLight;
+    DirectionalLight dirLight[10];
+    PointLight pointLight[10];
+    SpotLight spotLight[10];
     Material material;
+    int numDirLight;
+    int numPointLight;
+    int numSpotLight;
+    float dummy;
     DirectX::XMFLOAT4 eyePos;
 };
 

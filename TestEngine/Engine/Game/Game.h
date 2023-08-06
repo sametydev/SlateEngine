@@ -24,7 +24,7 @@ public:
     void OnUpdateScene(float deltaTime);
 
 
-    void SetMesh(const MeshData<VertexPNC>& meshData);
+    void SetMesh(const MeshData<VertexPNT>& meshData);
 
     //Todo, Scene*
     void OnRenderScene();
@@ -42,9 +42,6 @@ public:
 
     bool renderWireframe = false;
 
-    DirectionalLight m_directionalLight;
-    PointLight m_pointLight;
-    SpotLight m_spotLight;
     VS_ConstantBuffer   m_vsCBufferData;
     PS_ConstantBuffer   m_psCBufferData;
 
@@ -61,8 +58,10 @@ private:
 
     UINT m_indexCount;
 
-    DXVertexShader* vertexShader = nullptr;
-    DXPixelShader* pixelShader = nullptr;	
+    ComPtr<ID3D11SamplerState> samplerState;				    
+
+    DXVertexShader* vertexShader3D = nullptr;
+    DXPixelShader* pixelShader3D = nullptr;
 
     ComPtr<ID3D11RasterizerState> m_wireFrameRasterizer = nullptr;
 

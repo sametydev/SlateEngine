@@ -18,10 +18,7 @@ float Game::scale = 1.0f;
 Game::Game(HINSTANCE hInstance, const std::wstring& windowName, int initWidth, int initHeight)
     : DXApplication(hInstance, windowName, initWidth, initHeight),
     m_vsCBufferData(),
-    m_psCBufferData(),
-    m_directionalLight(),
-    m_pointLight(),
-    m_spotLight()
+    m_psCBufferData()
 {
     if (!Instance)
     {
@@ -43,26 +40,27 @@ bool Game::OnInit()
 
     HR(CreateDDSTextureFromFile(m_d3dDevice.Get(), L"Textures\\Crate.dds", nullptr, m_crateTexture.GetAddressOf()));
 
-    WCHAR strFile[40];
-    m_animTexture.resize(4);
-    for (int i = 1; i <= 4; ++i)
-    {
-        wsprintf(strFile, L"Textures\\AnimatedTex\\tex%d.png", i);
-        HR(CreateWICTextureFromFile(m_d3dDevice.Get(), strFile, nullptr, m_animTexture[i - 1].GetAddressOf()));
-    }
 
-    //Create Vertex Shader
-    vertexShader = new DXVertexShader();
-    vertexShader->Compile(L"Shaders\\LitVS.cso", L"Shaders\\LitVS.hlsl", "VS");
-    vertexShader->CreateInputLayout(VertexPNC::inputLayout,ARRAYSIZE(VertexPNC::inputLayout));
+    D3D11_SAMPLER_DESC sampDesc{};
+    sampDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
+    sampDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
+    sampDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
+    sampDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
+    sampDesc.ComparisonFunc = D3D11_COMPARISON_NEVER;
+    sampDesc.MinLOD = 0;
+    sampDesc.MaxLOD = D3D11_FLOAT32_MAX;
+    HR(m_d3dDevice->CreateSamplerState(&sampDesc, samplerState.GetAddressOf()));
+
+    //Create Vertex Shader 3D
+    vertexShader3D = new DXVertexShader();
+    vertexShader3D->Compile(L"Shaders\\TexturedLit\\Lit3DVS.cso", L"Shaders\\TexturedLit\\Lit3DVS.hlsl", "main");
+    vertexShader3D->CreateInputLayout(VertexPNT::inputLayout, ARRAYSIZE(VertexPNT::inputLayout));
     LogWindow::Instance->AddLog("[Debug] Compiled Vertex Shader\n");
 
-
-    //Create Pixel Shader
-    pixelShader = new DXPixelShader();
-    pixelShader->Compile(L"Shaders\\LitPS.cso", L"Shaders\\LitPS.hlsl", "PS");
+    //Create Pixel Shader 3D
+    pixelShader3D = new DXPixelShader();
+    pixelShader3D->Compile(L"Shaders\\TexturedLit\\Lit3DPS.cso", L"Shaders\\TexturedLit\\Lit3DPS.hlsl", "main");
     LogWindow::Instance->AddLog("[Debug] Compiled Pixel Shader\n");
-
 
     //Create our Vertex Buffer
     m_vertexBuffer = new DXVertexBuffer();
@@ -71,7 +69,7 @@ bool Game::OnInit()
     m_indexBuffer = new DXIndexBuffer();
 
     //Creating Mesh
-    auto meshData = BuiltInMesh::CreateBox<VertexPNC>();
+    auto meshData = BuiltInMesh::CreateBox<VertexPNT>();
     SetMesh(meshData);
 
 
@@ -94,7 +92,6 @@ bool Game::OnInit()
     m_constantBufferPS->UnMap();
 
 
-
     D3D11_RASTERIZER_DESC rasterizerDesc{};
     rasterizerDesc.FillMode = D3D11_FILL_WIREFRAME;
     rasterizerDesc.CullMode = D3D11_CULL_NONE;
@@ -105,13 +102,13 @@ bool Game::OnInit()
 
     m_d3dContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
-    vertexShader->Bind();
+    vertexShader3D->Bind();
     m_constantBufferVS->BindVS(0);
 
     m_constantBufferPS->BindPS(1);
-    pixelShader->Bind();
-
-
+    m_d3dContext->PSSetSamplers(0, 1, samplerState.GetAddressOf());
+    m_d3dContext->PSSetShaderResources(0, 1, m_crateTexture.GetAddressOf());
+    pixelShader3D->Bind();
 
     return true;
 }
@@ -146,7 +143,7 @@ void Game::OnUpdateScene(float deltaTime)
 
     m_d3dContext->RSSetState(renderWireframe ? m_wireFrameRasterizer.Get() : nullptr);
 }
-void Game::SetMesh(const MeshData<VertexPNC>& meshData)
+void Game::SetMesh(const MeshData<VertexPNT>& meshData)
 {
     //Reset old buffers
     m_vertexBuffer->Reset();
@@ -154,8 +151,8 @@ void Game::SetMesh(const MeshData<VertexPNC>& meshData)
 
     //Creating Vertex Buffer
     VertexBufferDesc vbd{};
-    vbd.cbSize = (UINT)meshData.vVertex.size() * sizeof(VertexPNC);
-    vbd.cbStride = sizeof(VertexPNC);
+    vbd.cbSize = (UINT)meshData.vVertex.size() * sizeof(VertexPNT);
+    vbd.cbStride = sizeof(VertexPNT);
     vbd.pData = meshData.vVertex.data();
     m_vertexBuffer->Create(vbd);
     m_vertexBuffer->BindPipeline(0);
@@ -187,27 +184,6 @@ void Game::OnRenderScene()
 
 void Game::InitializeLighting()
 {
-    m_directionalLight.ambient = XMFLOAT4(0.2f, 0.2f, 0.2f, 1.0f);
-    m_directionalLight.diffuse = XMFLOAT4(0.8f, 0.8f, 0.8f, 1.0f);
-    m_directionalLight.specular = XMFLOAT4(0.5f, 0.5f, 0.5f, 1.0f);
-    m_directionalLight.direction = XMFLOAT3(-0.577f, -0.577f, 0.577f);
-
-    m_pointLight.position = XMFLOAT3(0.0f, 0.0f, -10.0f);
-    m_pointLight.ambient = XMFLOAT4(0.3f, 0.3f, 0.3f, 1.0f);
-    m_pointLight.diffuse = XMFLOAT4(0.7f, 0.7f, 0.7f, 1.0f);
-    m_pointLight.specular = XMFLOAT4(0.5f, 0.5f, 0.5f, 1.0f);
-    m_pointLight.attenutation = XMFLOAT3(0.0f, 0.1f, 0.0f);
-    m_pointLight.range = 25.0f;
-
-    m_spotLight.position = XMFLOAT3(0.0f, 0.0f, -5.0f);
-    m_spotLight.direction = XMFLOAT3(0.0f, 0.0f, 1.0f);
-    m_spotLight.ambient = XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f);
-    m_spotLight.diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
-    m_spotLight.specular = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
-    m_spotLight.attenutation = XMFLOAT3(1.0f, 0.0f, 0.0f);
-    m_spotLight.spot = 12.0f;
-    m_spotLight.range = 10000.0f;
-
     m_vsCBufferData.world = XMMatrixIdentity();
     m_vsCBufferData.view = XMMatrixTranspose(XMMatrixLookAtLH(
         XMVectorSet(0.0f, 0.0f, -5.0f, 0.0f),
@@ -217,12 +193,18 @@ void Game::InitializeLighting()
     m_vsCBufferData.proj = XMMatrixTranspose(XMMatrixPerspectiveFovLH(XM_PIDIV2, GetAspectRatio(), 1.0f, 1000.0f));
     m_vsCBufferData.worldInvTranspose = XMMatrixIdentity();
 
-
+    m_psCBufferData.pointLight[0].position = XMFLOAT3(0.0f, 0.0f, -10.0f);
+    m_psCBufferData.pointLight[0].ambient = XMFLOAT4(0.3f, 0.3f, 0.3f, 1.0f);
+    m_psCBufferData.pointLight[0].diffuse = XMFLOAT4(0.7f, 0.7f, 0.7f, 1.0f);
+    m_psCBufferData.pointLight[0].specular = XMFLOAT4(0.5f, 0.5f, 0.5f, 1.0f);
+    m_psCBufferData.pointLight[0].attenutation = XMFLOAT3(0.0f, 0.1f, 0.0f);
+    m_psCBufferData.pointLight[0].range = 25.0f;
+    m_psCBufferData.numDirLight = 0;
+    m_psCBufferData.numPointLight = 1;
+    m_psCBufferData.numSpotLight = 0;
+    m_psCBufferData.eyePos = XMFLOAT4(0.0f, 0.0f, -5.0f, 0.0f);
     m_psCBufferData.material.ambient = XMFLOAT4(0.5f, 0.5f, 0.5f, 1.0f);
     m_psCBufferData.material.diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
-    m_psCBufferData.material.specular = XMFLOAT4(0.5f, 0.5f, 0.5f, 5.0f);
-
-    m_psCBufferData.dirLight = m_directionalLight;
-
+    m_psCBufferData.material.specular = XMFLOAT4(0.1f, 0.1f, 0.1f, 5.0f);
     m_psCBufferData.eyePos = XMFLOAT4(0.0f, 0.0f, -5.0f, 0.0f);
 }

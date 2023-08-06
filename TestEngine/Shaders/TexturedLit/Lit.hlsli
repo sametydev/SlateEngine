@@ -1,46 +1,55 @@
 #include "../LightsHeader.hlsli"
+Texture2D m_texture : register(t0);
+SamplerState m_samplerState : register(s0);
 
-Texture2D g_Tex : register(t0);
-SamplerState g_SamLinear : register(s0);
 
-cbuffer PSConstantBuffer_t : register(b1)
+cbuffer VSConstantBuffer : register(b0)
 {
-    DirectionalLight g_DirLight[10];
-    PointLight g_PointLight[10];
-    SpotLight g_SpotLight[10];
-    Material g_Material;
-    int g_NumDirLight;
-    int g_NumPointLight;
-    int g_NumSpotLight;
-    float g_Pad1;
-
-    float3 g_EyePosW;
-    float g_Pad2;
+    matrix World; 
+    matrix View;  
+    matrix Proj;  
+    matrix WorldInverseTranspose;
 }
+
+cbuffer PSConstantBuffer : register(b1)
+{
+    DirectionalLight m_dirLight[10];
+    PointLight m_pointLight[10];
+    SpotLight m_spotLight[10];
+    Material m_material;
+    int NumOfDirLight;
+    int NumOfPointLight;
+    int NumOfSpotLight;
+    float dummy1;
+
+    float3 EyePos;
+    float dummy2;
+}
+
 
 struct VertexPNT
 {
-    float3 PosL : POSITION;
-    float3 NormalL : NORMAL;
-    float2 Tex : TEXCOORD;
+    float3 posL : POSITION;
+    float3 normal : NORMAL;
+    float2 tex : TEXCOORD;
 };
 
 struct VertexPT
 {
-    float3 PosL : POSITION;
-    float2 Tex : TEXCOORD;
+    float3 pos : POSITION;
+    float2 tex : TEXCOORD;
 };
 
-struct VertexPosHWNormalTex
+struct VertexPhwNT
 {
-    float4 PosH : SV_POSITION;
-    float3 PosW : POSITION; 
-    float3 NormalW : NORMAL;
-    float2 Tex : TEXCOORD;
+    float4 posH : SV_POSITION;
+    float3 posW : POSITION;   
+    float3 normal : NORMAL;  
+    float2 tex : TEXCOORD;
 };
 
-struct VertexPosHTex
+struct VertexPhT
 {
-    float4 PosH : SV_POSITION;
-    float2 Tex : TEXCOORD;
+    float4 posH : SV_POSITION;
+    float2 tex : TEXCOORD;
 };

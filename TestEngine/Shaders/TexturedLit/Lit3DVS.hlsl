@@ -1,14 +1,14 @@
 #include "Lit.hlsli"
 
-VertexPosHWNormalTex VS_3D(VertexPNT vIn)
+VertexPhwNT main(VertexPNT vIn)
 {
-    VertexPosHWNormalTex vOut;
-    matrix viewProj = mul(g_View, g_Proj);
-    float4 posW = mul(float4(vIn.PosL, 1.0f), g_World);
+    VertexPhwNT vOut;
+    matrix viewProj = mul(View, Proj);
+    float4 posW = mul(float4(vIn.posL, 1.0f), World);
 
-    vOut.PosH = mul(posW, viewProj);
-    vOut.PosW = posW.xyz;
-    vOut.NormalW = mul(vIn.NormalL, (float3x3) g_WorldInvTranspose);
-    vOut.Tex = vIn.Tex;
+    vOut.posH = mul(posW, viewProj);
+    vOut.posW = posW.xyz;
+    vOut.normal = mul(vIn.normal, (float3x3) WorldInverseTranspose);
+    vOut.tex = vIn.tex;
     return vOut;
 }

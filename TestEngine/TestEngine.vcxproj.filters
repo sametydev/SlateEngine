@@ -181,19 +181,8 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Shaders\Header.hlsli" />
     <None Include="Shaders\LightsHeader.hlsli" />
-    <None Include="Shaders\TestVS.hlsl" />
-    <None Include="Shaders\TestPS.hlsl" />
     <None Include="Shaders\TexturedLit\Lit.hlsli" />
-    <None Include="Shaders\TexturedLit\Lit3DVS.hlsl" />
-    <None Include="Shaders\TexturedLit\Lit2DPS.hlsl" />
-    <None Include="Shaders\TexturedLit\Lit2DVS.hlsl" />
-    <None Include="Shaders\TexturedLit\Lit3DPS.hlsl" />
-  </ItemGroup>
-  <ItemGroup>
-    <FxCompile Include="Shaders\LitPS.hlsl" />
-    <FxCompile Include="Shaders\LitVS.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Textures\Crate.dds" />
@@ -209,5 +198,9 @@
     <Image Include="Textures\AnimatedTex\tex3.png">
       <Filter>Resource Files</Filter>
     </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="Shaders\TexturedLit\Lit3DVS.hlsl" />
+    <FxCompile Include="Shaders\TexturedLit\Lit3DPS.hlsl" />
   </ItemGroup>
 </Project>
