@@ -12,6 +12,9 @@ public:
 
 	ComPtr<ID3D11ShaderResourceView> GetShaderResourceView() { return mSRV; }
 
+	UINT Width;
+	UINT Height;
+
 private:
 	UINT slot;
 	ComPtr<ID3D11ShaderResourceView> mSRV;
