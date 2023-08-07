@@ -96,6 +96,9 @@
     <ClCompile Include="LibarySources\WICTextureLoader11.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Graphics\Texture\DXTexture.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\DXConfig.h">
@@ -177,6 +180,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Editor\Windows\UIRenderablesWindow.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Graphics\Texture\DXTexture.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -68,7 +68,7 @@ void EditorUI::OnUpdate()
         }
         ImGui::EndMenuBar();
 
-        ImGui::Image(Game::Instance->m_crateTexture.Get(), ImGui::GetWindowSize());
+        ImGui::Image(Game::Instance->m_crateTexture->GetShaderResourceView().Get(), ImGui::GetWindowSize());
     }
     ImGui::End();
 

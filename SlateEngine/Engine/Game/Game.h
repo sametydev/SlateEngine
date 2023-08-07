@@ -12,6 +12,7 @@
 #include <SlateEngine/Engine/Graphics/Buffer/DXIndexBuffer.h>
 #include <SlateEngine/Engine/Graphics/Buffer/DXConstantBuffer.h>
 #include <SlateEngine/Engine/Graphics/BuiltInMesh.h>
+#include <SlateEngine/Engine/Graphics/Texture/DXTexture.h>
 
 class Game : public DXApplication
 {
@@ -45,7 +46,7 @@ public:
     VS_ConstantBuffer   m_vsCBufferData;
     PS_ConstantBuffer   m_psCBufferData;
 
-    ComPtr<ID3D11ShaderResourceView> m_crateTexture;
+    DXTexture* m_crateTexture = nullptr;
 private:
     //For Testing
     void InitializeLighting();

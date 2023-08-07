@@ -1,9 +1,7 @@
 ﻿#include <SlateEngine/Engine/Game/Game.h>
 #include <SlateEngine/Engine/Editor/Windows/LogWindow.h>
 #include <SlateEngine/Engine/Graphics/2D/D2DContext.h>
-#include <DirectXTex.h>
-#include <DDSTextureLoader11.h>
-#include <WICTextureLoader11.h>
+
 
 Game* Game::Instance = nullptr;
 
@@ -38,8 +36,8 @@ bool Game::OnInit()
     LogWindow::Instance->AddLog("[Info] Game OnInit\n");
     LogWindow::Instance->AddLog("[Info] 2D UI System OnInit\n");
 
-    HR(CreateDDSTextureFromFile(m_d3dDevice.Get(), L"Textures\\Crate.dds", nullptr, m_crateTexture.GetAddressOf()));
-
+    m_crateTexture = new DXTexture();
+    m_crateTexture->Load(L"Textures\\Crate.dds");
 
     D3D11_SAMPLER_DESC sampDesc{};
     sampDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
@@ -107,7 +105,7 @@ bool Game::OnInit()
 
     m_constantBufferPS->BindPS(1);
     m_d3dContext->PSSetSamplers(0, 1, samplerState.GetAddressOf());
-    m_d3dContext->PSSetShaderResources(0, 1, m_crateTexture.GetAddressOf());
+    m_crateTexture->Bind();
     pixelShader3D->Bind();
 
     return true;

@@ -136,6 +136,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Engine\Graphics\Texture\DXTexture.cpp" />
     <ClCompile Include="Engine\Graphics\2D\Components\C2DText.cpp" />
     <ClCompile Include="Engine\Graphics\2D\D2DContext.cpp" />
     <ClCompile Include="Engine\Graphics\Buffer\DXConstantBuffer.cpp" />
@@ -165,6 +166,7 @@
     <ClCompile Include="Engine\Editor\Windows\UIRenderablesWindow.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Engine\Graphics\Texture\DXTexture.h" />
     <ClInclude Include="Engine\Graphics\2D\Components\C2DText.h" />
     <ClInclude Include="Engine\Graphics\2D\D2DContext.h" />
     <ClInclude Include="Engine\Editor\Windows\IWindow.h" />
