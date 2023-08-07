@@ -57,6 +57,7 @@ void EditorUI::OnUpdate()
 {
     static bool dockspaceOpen = true;
     if (ImGui::Begin("Editor", &dockspaceOpen, ImGuiWindowFlags_MenuBar)) {
+
         if (ImGui::BeginMenuBar())
         {
             if (ImGui::BeginMenu("Scene"))
@@ -66,9 +67,10 @@ void EditorUI::OnUpdate()
             }
         }
         ImGui::EndMenuBar();
+
+        ImGui::Image(Game::Instance->m_crateTexture.Get(), ImGui::GetWindowSize());
     }
     ImGui::End();
-
 
 
     for (auto w : windows)

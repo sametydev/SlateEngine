@@ -27,6 +27,7 @@ public:
 
 private:
 	friend class Game;
+	friend class DXApplication;
 	void InitTheme();
 
 	ImGuiIO* io = nullptr;

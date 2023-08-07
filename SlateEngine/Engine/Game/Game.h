@@ -45,7 +45,7 @@ public:
     VS_ConstantBuffer   m_vsCBufferData;
     PS_ConstantBuffer   m_psCBufferData;
 
-
+    ComPtr<ID3D11ShaderResourceView> m_crateTexture;
 private:
     //For Testing
     void InitializeLighting();
@@ -65,7 +65,5 @@ private:
 
     ComPtr<ID3D11RasterizerState> m_wireFrameRasterizer = nullptr;
 
-    ComPtr<ID3D11ShaderResourceView> m_crateTexture;
-    std::vector<ComPtr<ID3D11ShaderResourceView>> m_animTexture;
 
 };

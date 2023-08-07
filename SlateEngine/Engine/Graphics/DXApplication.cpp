@@ -286,7 +286,7 @@ void DXApplication::ClearRenderTarget(float rgba[4])
 
 bool DXApplication::InitializeWindow()
 {
-    WNDCLASS wc{0};
+    WNDCLASS wc{ 0 };
     wc.style = CS_HREDRAW | CS_VREDRAW;
     wc.lpfnWndProc = MainWndProc;
     wc.hInstance = hInstance;
@@ -402,7 +402,7 @@ bool DXApplication::InitializeGraphics()
     sd.Width = m_clientW;
     sd.Height = m_clientH;
     sd.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
-    
+
     if (bEnableMsaa)
     {
         sd.SampleDesc.Count = 4;
@@ -426,7 +426,7 @@ bool DXApplication::InitializeGraphics()
     fd.Windowed = TRUE;
 
     HR(dxgiFactory2->CreateSwapChainForHwnd(m_d3dDevice.Get(), hWindow, &sd, &fd, nullptr, m_swapChain1.GetAddressOf()));
-    HR(m_swapChain1->QueryInterface(IID_PPV_ARGS(& m_swapChain)));
+    HR(m_swapChain1->QueryInterface(IID_PPV_ARGS(&m_swapChain)));
 
     dxgiFactory1->MakeWindowAssociation(hWindow, DXGI_MWA_NO_ALT_ENTER | DXGI_MWA_NO_WINDOW_CHANGES);
 
@@ -434,4 +434,3 @@ bool DXApplication::InitializeGraphics()
 
     return true;
 }
-

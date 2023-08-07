@@ -74,6 +74,7 @@ protected:
     ComPtr<ID3D11RenderTargetView> m_renderTargetView;
     ComPtr<ID3D11DepthStencilView> m_depthStencilView;
 
+
     D3D11_VIEWPORT m_screenVp;                     
 
     std::wstring sWindowCaption;              
