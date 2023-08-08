@@ -115,6 +115,7 @@ bool Game::OnInit()
     m_frameBuffer->BindPS(1);
     m_resizeBuffer->BindPS(2);
     m_lightBuffer->BindPS(3);
+
     m_d3dContext->PSSetSamplers(0, 1, samplerState.GetAddressOf());
     m_crateTexture->Bind();
     pixelShader3D->Bind();
