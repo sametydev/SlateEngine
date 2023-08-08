@@ -51,9 +51,9 @@ void InspectorWindow::OnDraw()
         ImGui::Dummy(ImVec2(0.0f, 20.0f));
         ImGui::Text("Material");
         ImGui::PushID(3);
-        ImGui::ColorEdit3("Ambient", &game->LightObject.material.ambient.x);
-        ImGui::ColorEdit3("Diffuse", &game->LightObject.material.diffuse.x);
-        ImGui::ColorEdit3("Specular", &game->LightObject.material.specular.x);
+        ImGui::ColorEdit3("Ambient", &game->LightConstantObject.material.ambient.x);
+        ImGui::ColorEdit3("Diffuse", &game->LightConstantObject.material.diffuse.x);
+        ImGui::ColorEdit3("Specular", &game->LightConstantObject.material.specular.x);
         ImGui::PopID();
 
         ImGui::Dummy(ImVec2(0.0f, 23.0f));
@@ -71,38 +71,38 @@ void InspectorWindow::OnDraw()
         ImGui::PushID(currentLightMode);
         if (currentLightMode == 0)
         {
-            game->LightObject.numSpotLight = 0;
-            game->LightObject.numPointLight = 0;
-            game->LightObject.numDirLight = 1;
+            game->LightConstantObject.numSpotLight = 0;
+            game->LightConstantObject.numPointLight = 0;
+            game->LightConstantObject.numDirLight = 1;
 
-            ImGui::ColorEdit3("Ambient", &game->LightObject.dirLight[0].ambient.x);
-            ImGui::ColorEdit3("Diffuse", &game->LightObject.dirLight[0].diffuse.x);
-            ImGui::ColorEdit3("Specular", &game->LightObject.dirLight[0].specular.x);
+            ImGui::ColorEdit3("Ambient", &game->LightConstantObject.dirLight[0].ambient.x);
+            ImGui::ColorEdit3("Diffuse", &game->LightConstantObject.dirLight[0].diffuse.x);
+            ImGui::ColorEdit3("Specular", &game->LightConstantObject.dirLight[0].specular.x);
         }
         else if (currentLightMode == 1)
         {
-            game->LightObject.numSpotLight = 0;
-            game->LightObject.numPointLight = 1;
-            game->LightObject.numDirLight = 0;
+            game->LightConstantObject.numSpotLight = 0;
+            game->LightConstantObject.numPointLight = 1;
+            game->LightConstantObject.numDirLight = 0;
 
-            ImGui::ColorEdit3("Ambient", &game->LightObject.pointLight[0].ambient.x);
-            ImGui::ColorEdit3("Diffuse", &game->LightObject.pointLight[0].diffuse.x);
-            ImGui::ColorEdit3("Specular", &game->LightObject.pointLight[0].specular.x);
-            ImGui::InputFloat("Range", &game->LightObject.pointLight[0].range);
-            ImGui::InputFloat3("Attenutation", &game->LightObject.pointLight[0].attenutation.x);
+            ImGui::ColorEdit3("Ambient", &game->LightConstantObject.pointLight[0].ambient.x);
+            ImGui::ColorEdit3("Diffuse", &game->LightConstantObject.pointLight[0].diffuse.x);
+            ImGui::ColorEdit3("Specular", &game->LightConstantObject.pointLight[0].specular.x);
+            ImGui::InputFloat("Range", &game->LightConstantObject.pointLight[0].range);
+            ImGui::InputFloat3("Attenutation", &game->LightConstantObject.pointLight[0].attenutation.x);
         }
         else
         {
-            game->LightObject.numSpotLight = 1;
-            game->LightObject.numPointLight = 0;
-            game->LightObject.numDirLight = 0;
+            game->LightConstantObject.numSpotLight = 1;
+            game->LightConstantObject.numPointLight = 0;
+            game->LightConstantObject.numDirLight = 0;
 
-            ImGui::ColorEdit3("Ambient", &game->LightObject.spotLight[0].ambient.x);
-            ImGui::ColorEdit3("Diffuse", &game->LightObject.spotLight[0].diffuse.x);
-            ImGui::ColorEdit3("Specular", &game->LightObject.spotLight[0].specular.x);
-            ImGui::InputFloat("Spot", &game->LightObject.spotLight[0].spot);
-            ImGui::InputFloat("Range", &game->LightObject.spotLight[0].range);
-            ImGui::InputFloat3("Attenutation", &game->LightObject.spotLight[0].attenutation.x);
+            ImGui::ColorEdit3("Ambient", &game->LightConstantObject.spotLight[0].ambient.x);
+            ImGui::ColorEdit3("Diffuse", &game->LightConstantObject.spotLight[0].diffuse.x);
+            ImGui::ColorEdit3("Specular", &game->LightConstantObject.spotLight[0].specular.x);
+            ImGui::InputFloat("Spot", &game->LightConstantObject.spotLight[0].spot);
+            ImGui::InputFloat("Range", &game->LightConstantObject.spotLight[0].range);
+            ImGui::InputFloat3("Attenutation", &game->LightConstantObject.spotLight[0].attenutation.x);
         }
         ImGui::PopID();
 
