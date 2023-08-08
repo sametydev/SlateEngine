@@ -13,6 +13,7 @@
 #include <SlateEngine/Engine/Graphics/Buffer/DXConstantBuffer.h>
 #include <SlateEngine/Engine/Graphics/BuiltInMesh.h>
 #include <SlateEngine/Engine/Graphics/Texture/DXTexture.h>
+#include <SlateEngine/Engine/Component/RenderableObject.h>
 
 class Game : public DXApplication
 {
@@ -44,7 +45,7 @@ public:
     bool renderWireframe = false;
 
     OnFrameConstantBuffer   FrameBufferConstantObject;
-    OnRenderConstantBuffer   OnRenderConstantObject;
+
     OnResizeConstantBuffer OnResizeConstantObject;
     LightConstantBuffer  LightConstantObject;
 
@@ -53,16 +54,15 @@ private:
     //For Testing
     void InitializeLighting();
     ComPtr<ID3D11InputLayout> m_inputLayout = nullptr;
-    DXVertexBuffer* m_vertexBuffer = nullptr;
-    DXIndexBuffer* m_indexBuffer = nullptr;
+
 
     DXConstantBuffer* m_frameConstantBuffer = nullptr;
-    DXConstantBuffer* m_renderConstantBuffer = nullptr;
+
     DXConstantBuffer* m_resizeConstantBuffer = nullptr;
     DXConstantBuffer* m_lightConstantBuffer = nullptr;
 
 
-    UINT m_indexCount;
+    RenderableObject* m_box;
 
     ComPtr<ID3D11SamplerState> samplerState;				    
 

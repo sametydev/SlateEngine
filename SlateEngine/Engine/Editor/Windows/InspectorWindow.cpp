@@ -29,24 +29,6 @@ void InspectorWindow::OnDraw()
     if (ImGui::Begin("Inspector"))
     {
         ImGui::Text("Object");
-        ImGui::Dummy(ImVec2(0.0f, 10.0f));
-        static int curr_mesh_item = 0;
-        const char* mesh_strs[] = {
-            "Box",
-            "Sphere",
-            "Cylinder",
-        };
-        if (ImGui::Combo("Set Mesh", &curr_mesh_item, mesh_strs, ARRAYSIZE(mesh_strs)))
-        {
-            MeshData<VertexPNT> meshData;
-            switch (curr_mesh_item)
-            {
-                case 0: meshData = BuiltInMesh::CreateBox<VertexPNT>(); break;
-                case 1: meshData = BuiltInMesh::CreateSphere<VertexPNT>(); break;
-                case 2: meshData = BuiltInMesh::CreateCylinder<VertexPNT>(); break;
-            }
-            game->SetMesh(meshData);
-        }
 
         ImGui::Dummy(ImVec2(0.0f, 20.0f));
         ImGui::Text("Material");

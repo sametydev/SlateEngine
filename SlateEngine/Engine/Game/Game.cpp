@@ -5,14 +5,6 @@
 
 Game* Game::Instance = nullptr;
 
-//TEMPORARY!!
-float Game::x = 0.0f;
-float Game::y = 0.0f;
-float Game::py = 0.0f;
-float Game::tx = 0.0f;
-float Game::scale = 1.0f;
-
-
 Game::Game(HINSTANCE hInstance, const std::wstring& windowName, int initWidth, int initHeight)
     : DXApplication(hInstance, windowName, initWidth, initHeight)
 {
@@ -58,20 +50,13 @@ bool Game::OnInit()
     pixelShader3D->Compile(L"Shaders\\TexturedLit\\Lit3DPS.cso", L"Shaders\\TexturedLit\\Lit3DPS.hlsl", "main");
     LogWindow::Instance->AddLog("[Debug] Compiled Pixel Shader\n");
 
-    //Create our Vertex Buffer
-    m_vertexBuffer = new DXVertexBuffer();
-
-    //Create our Index Buffer
-    m_indexBuffer = new DXIndexBuffer();
-
-    //Creating Mesh
-    auto meshData = BuiltInMesh::CreateBox<VertexPNT>();
-    SetMesh(meshData);
+    m_box = new RenderableObject();
+    m_box->SetTexture(m_crateTexture);
+    m_box->SetBuffer(BuiltInMesh::CreateBox<VertexPNT>());
 
 
     //Creating Constant Buffers;
     m_frameConstantBuffer = new DXConstantBuffer();
-    m_renderConstantBuffer = new DXConstantBuffer();
     m_resizeConstantBuffer = new DXConstantBuffer();
     m_lightConstantBuffer = new DXConstantBuffer();
 
@@ -80,8 +65,6 @@ bool Game::OnInit()
     cbd.cbSize = sizeof(OnFrameConstantBuffer);
     m_frameConstantBuffer->Create(cbd);
 
-    cbd.cbSize = sizeof(OnRenderConstantBuffer);
-    m_renderConstantBuffer->Create(cbd);
 
     cbd.cbSize = sizeof(OnResizeConstantBuffer);
     m_resizeConstantBuffer->Create(cbd);
@@ -107,17 +90,17 @@ bool Game::OnInit()
 
     vertexShader3D->Bind();
 
-    m_renderConstantBuffer->BindVS(0);
+
     m_frameConstantBuffer->BindVS(1);
     m_resizeConstantBuffer->BindVS(2);
 
-    m_renderConstantBuffer->BindPS(0);
+    m_box->ConstantBufferBind();
+
     m_frameConstantBuffer->BindPS(1);
     m_resizeConstantBuffer->BindPS(2);
     m_lightConstantBuffer->BindPS(3);
 
     m_d3dContext->PSSetSamplers(0, 1, samplerState.GetAddressOf());
-    m_crateTexture->Bind();
     pixelShader3D->Bind();
 
     return true;
@@ -132,21 +115,18 @@ void Game::OnResize()
 
 void Game::OnUpdateScene(float deltaTime)
 {
+    //py += 0.17f * deltaTime, tx += 0.27f * deltaTime;
+    //py = XMScalarModAngle(py);
+    //tx = XMScalarModAngle(tx);
 
-    py += 0.17f * deltaTime, tx += 0.27f * deltaTime;
-    py = XMScalarModAngle(py);
-    tx = XMScalarModAngle(tx);
-
-    XMMATRIX W = XMMatrixRotationX(py) * XMMatrixRotationY(tx);
-    OnRenderConstantObject.world = XMMatrixTranspose(W);
-    OnRenderConstantObject.worldInverseTranspose = XMMatrixTranspose(InverseTranspose(W));
+    //XMMATRIX W = XMMatrixRotationX(py) * XMMatrixRotationY(tx);
+    //OnRenderConstantObject.world = XMMatrixTranspose(W);
+    //OnRenderConstantObject.worldInverseTranspose = XMMatrixTranspose(InverseTranspose(W));
 
     EditorUI::instance()->OnUpdate();
 
+    m_box->OnUpdate(deltaTime);
     //Updating VS Cbuffer
-    m_renderConstantBuffer->Map(sizeof(OnRenderConstantBuffer), &OnRenderConstantObject);
-    m_renderConstantBuffer->UnMap();
-
     m_frameConstantBuffer->Map(sizeof(OnFrameConstantBuffer), &FrameBufferConstantObject);
     m_frameConstantBuffer->UnMap();
 
@@ -159,55 +139,29 @@ void Game::OnUpdateScene(float deltaTime)
 
     m_d3dContext->RSSetState(renderWireframe ? m_wireFrameRasterizer.Get() : nullptr);
 }
-void Game::SetMesh(const MeshData<VertexPNT>& meshData)
-{
-    //Reset old buffers
-    m_vertexBuffer->Reset();
-    m_indexBuffer->Reset();
-
-    //Creating Vertex Buffer
-    VertexBufferDesc vbd{};
-    vbd.cbSize = (UINT)meshData.vVertex.size() * sizeof(VertexPNT);
-    vbd.cbStride = sizeof(VertexPNT);
-    vbd.pData = meshData.vVertex.data();
-    m_vertexBuffer->Create(vbd);
-    m_vertexBuffer->BindPipeline(0);
-
-    //Storing indices count
-    m_indexCount = (UINT)meshData.vIndices.size();
-
-    //Creating Index Buffer
-    IndexBufferDesc ibd{};
-    ibd.cbSize = m_indexCount * sizeof(DWORD);
-    ibd.pData = meshData.vIndices.data();
-    m_indexBuffer->Create(ibd);
-    m_indexBuffer->BindPipeline(0);
-
-}
 
 float Game::clear[4] = {0.3f, 0.3f, 0.3f, 1.0f};
 
 void Game::OnRenderScene()
 {
     ClearRenderTarget(clear);
-    m_d3dContext->DrawIndexed(m_indexCount, 0, 0);
+    m_box->OnRender();
 
     D2DContext::Instance->OnRender();
-
     EditorUI::instance()->OnRender();
     HR(m_swapChain->Present(0, 0));
 }
 
 void Game::InitializeLighting()
 {
-    OnRenderConstantObject.world = XMMatrixIdentity();
+    
     FrameBufferConstantObject.view = XMMatrixTranspose(XMMatrixLookAtLH(
         XMVectorSet(0.0f, 0.0f, -5.0f, 0.0f),
         XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f),
         XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f)
     ));
     OnResizeConstantObject.proj = XMMatrixTranspose(XMMatrixPerspectiveFovLH(XM_PIDIV2, GetAspectRatio(), 1.0f, 1000.0f));
-    OnRenderConstantObject.worldInverseTranspose = XMMatrixIdentity();
+
 
     LightConstantObject.pointLight[0].position = XMFLOAT3(0.0f, 0.0f, -10.0f);
     LightConstantObject.pointLight[0].ambient = XMFLOAT4(0.3f, 0.3f, 0.3f, 1.0f);
