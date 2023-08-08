@@ -91,7 +91,7 @@ bool Game::OnInit()
  
     InitializeLighting();
 
-    m_lightBuffer->Map(sizeof(LightConstantBuffer), &LightObject);
+    m_lightBuffer->Map(sizeof(LightConstantBuffer), &LightConstantObject);
     m_lightBuffer->UnMap();
 
 
@@ -107,14 +107,14 @@ bool Game::OnInit()
 
     vertexShader3D->Bind();
 
-    m_renderBuffer->BindVS(0);
-    m_frameBuffer->BindVS(1);
-    m_resizeBuffer->BindVS(2);
+    m_renderConstantBuffer->BindVS(0);
+    m_frameConstantBuffer->BindVS(1);
+    m_resizeConstantBuffer->BindVS(2);
 
-    m_renderBuffer->BindPS(0);
-    m_frameBuffer->BindPS(1);
-    m_resizeBuffer->BindPS(2);
-    m_lightBuffer->BindPS(3);
+    m_renderConstantBuffer->BindPS(0);
+    m_frameConstantBuffer->BindPS(1);
+    m_resizeConstantBuffer->BindPS(2);
+    m_lightConstantBuffer->BindPS(3);
 
     m_d3dContext->PSSetSamplers(0, 1, samplerState.GetAddressOf());
     m_crateTexture->Bind();
@@ -138,24 +138,24 @@ void Game::OnUpdateScene(float deltaTime)
     tx = XMScalarModAngle(tx);
 
     XMMATRIX W = XMMatrixRotationX(py) * XMMatrixRotationY(tx);
-    OnRenderObject.world = XMMatrixTranspose(W);
-    OnRenderObject.worldInverseTranspose = XMMatrixTranspose(InverseTranspose(W));
+    OnRenderConstantObject.world = XMMatrixTranspose(W);
+    OnRenderConstantObject.worldInverseTranspose = XMMatrixTranspose(InverseTranspose(W));
 
     EditorUI::instance()->OnUpdate();
 
     //Updating VS Cbuffer
-    m_renderBuffer->Map(sizeof(OnRenderConstantBuffer), &OnRenderObject);
-    m_renderBuffer->UnMap();
+    m_renderConstantBuffer->Map(sizeof(OnRenderConstantBuffer), &OnRenderConstantObject);
+    m_renderConstantBuffer->UnMap();
 
-    m_frameBuffer->Map(sizeof(OnFrameConstantBuffer), &FrameBufferObject);
-    m_frameBuffer->UnMap();
+    m_frameConstantBuffer->Map(sizeof(OnFrameConstantBuffer), &FrameBufferConstantObject);
+    m_frameConstantBuffer->UnMap();
 
-    m_resizeBuffer->Map(sizeof(OnResizeConstantBuffer), &OnResizeObject);
-    m_resizeBuffer->UnMap();
+    m_resizeConstantBuffer->Map(sizeof(OnResizeConstantBuffer), &OnResizeConstantObject);
+    m_resizeConstantBuffer->UnMap();
 
     //Updating PS Cbuffer
-    m_lightBuffer->Map(sizeof(LightConstantBuffer), &LightObject);
-    m_lightBuffer->UnMap();
+    m_lightConstantBuffer->Map(sizeof(LightConstantBuffer), &LightConstantObject);
+    m_lightConstantBuffer->UnMap();
 
     m_d3dContext->RSSetState(renderWireframe ? m_wireFrameRasterizer.Get() : nullptr);
 }
@@ -200,27 +200,27 @@ void Game::OnRenderScene()
 
 void Game::InitializeLighting()
 {
-    OnRenderObject.world = XMMatrixIdentity();
-    FrameBufferObject.view = XMMatrixTranspose(XMMatrixLookAtLH(
+    OnRenderConstantObject.world = XMMatrixIdentity();
+    FrameBufferConstantObject.view = XMMatrixTranspose(XMMatrixLookAtLH(
         XMVectorSet(0.0f, 0.0f, -5.0f, 0.0f),
         XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f),
         XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f)
     ));
-    OnResizeObject.proj = XMMatrixTranspose(XMMatrixPerspectiveFovLH(XM_PIDIV2, GetAspectRatio(), 1.0f, 1000.0f));
-    OnRenderObject.worldInverseTranspose = XMMatrixIdentity();
+    OnResizeConstantObject.proj = XMMatrixTranspose(XMMatrixPerspectiveFovLH(XM_PIDIV2, GetAspectRatio(), 1.0f, 1000.0f));
+    OnRenderConstantObject.worldInverseTranspose = XMMatrixIdentity();
 
-    LightObject.pointLight[0].position = XMFLOAT3(0.0f, 0.0f, -10.0f);
-    LightObject.pointLight[0].ambient = XMFLOAT4(0.3f, 0.3f, 0.3f, 1.0f);
-    LightObject.pointLight[0].diffuse = XMFLOAT4(0.7f, 0.7f, 0.7f, 1.0f);
-    LightObject.pointLight[0].specular = XMFLOAT4(0.5f, 0.5f, 0.5f, 1.0f);
-    LightObject.pointLight[0].attenutation = XMFLOAT3(0.0f, 0.1f, 0.0f);
-    LightObject.pointLight[0].range = 25.0f;
-    LightObject.numDirLight = 0;
-    LightObject.numPointLight = 1;
-    LightObject.numSpotLight = 0;
-    FrameBufferObject.eyePos = XMFLOAT4(0.0f, 0.0f, -5.0f, 0.0f);
-    LightObject.material.ambient = XMFLOAT4(0.5f, 0.5f, 0.5f, 1.0f);
-    LightObject.material.diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
-    LightObject.material.specular = XMFLOAT4(0.1f, 0.1f, 0.1f, 5.0f);
-    FrameBufferObject.eyePos = XMFLOAT4(0.0f, 0.0f, -5.0f, 0.0f);
+    LightConstantObject.pointLight[0].position = XMFLOAT3(0.0f, 0.0f, -10.0f);
+    LightConstantObject.pointLight[0].ambient = XMFLOAT4(0.3f, 0.3f, 0.3f, 1.0f);
+    LightConstantObject.pointLight[0].diffuse = XMFLOAT4(0.7f, 0.7f, 0.7f, 1.0f);
+    LightConstantObject.pointLight[0].specular = XMFLOAT4(0.5f, 0.5f, 0.5f, 1.0f);
+    LightConstantObject.pointLight[0].attenutation = XMFLOAT3(0.0f, 0.1f, 0.0f);
+    LightConstantObject.pointLight[0].range = 25.0f;
+    LightConstantObject.numDirLight = 0;
+    LightConstantObject.numPointLight = 1;
+    LightConstantObject.numSpotLight = 0;
+    FrameBufferConstantObject.eyePos = XMFLOAT4(0.0f, 0.0f, -5.0f, 0.0f);
+    LightConstantObject.material.ambient = XMFLOAT4(0.5f, 0.5f, 0.5f, 1.0f);
+    LightConstantObject.material.diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
+    LightConstantObject.material.specular = XMFLOAT4(0.1f, 0.1f, 0.1f, 5.0f);
+    FrameBufferConstantObject.eyePos = XMFLOAT4(0.0f, 0.0f, -5.0f, 0.0f);
 }

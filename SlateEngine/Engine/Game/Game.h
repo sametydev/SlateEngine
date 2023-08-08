@@ -43,10 +43,10 @@ public:
 
     bool renderWireframe = false;
 
-    OnFrameConstantBuffer   FrameBufferObject;
-    OnRenderConstantBuffer   OnRenderObject;
-    OnResizeConstantBuffer OnResizeObject;
-    LightConstantBuffer  LightObject;
+    OnFrameConstantBuffer   FrameBufferConstantObject;
+    OnRenderConstantBuffer   OnRenderConstantObject;
+    OnResizeConstantBuffer OnResizeConstantObject;
+    LightConstantBuffer  LightConstantObject;
 
     DXTexture* m_crateTexture = nullptr;
 private:
@@ -56,10 +56,10 @@ private:
     DXVertexBuffer* m_vertexBuffer = nullptr;
     DXIndexBuffer* m_indexBuffer = nullptr;
 
-    DXConstantBuffer* m_frameBuffer = nullptr;
-    DXConstantBuffer* m_renderBuffer = nullptr;
-    DXConstantBuffer* m_resizeBuffer = nullptr;
-    DXConstantBuffer* m_lightBuffer = nullptr;
+    DXConstantBuffer* m_frameConstantBuffer = nullptr;
+    DXConstantBuffer* m_renderConstantBuffer = nullptr;
+    DXConstantBuffer* m_resizeConstantBuffer = nullptr;
+    DXConstantBuffer* m_lightConstantBuffer = nullptr;
 
 
     UINT m_indexCount;
