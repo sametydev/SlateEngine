@@ -70,29 +70,29 @@ bool Game::OnInit()
 
 
     //Creating Constant Buffers;
-    m_frameBuffer = new DXConstantBuffer();
-    m_renderBuffer = new DXConstantBuffer();
-    m_resizeBuffer = new DXConstantBuffer();
-    m_lightBuffer = new DXConstantBuffer();
+    m_frameConstantBuffer = new DXConstantBuffer();
+    m_renderConstantBuffer = new DXConstantBuffer();
+    m_resizeConstantBuffer = new DXConstantBuffer();
+    m_lightConstantBuffer = new DXConstantBuffer();
 
     ConstantBufferDesc cbd{};
 
     cbd.cbSize = sizeof(OnFrameConstantBuffer);
-    m_frameBuffer->Create(cbd);
+    m_frameConstantBuffer->Create(cbd);
 
     cbd.cbSize = sizeof(OnRenderConstantBuffer);
-    m_renderBuffer->Create(cbd);
+    m_renderConstantBuffer->Create(cbd);
 
     cbd.cbSize = sizeof(OnResizeConstantBuffer);
-    m_resizeBuffer->Create(cbd);
+    m_resizeConstantBuffer->Create(cbd);
 
     cbd.cbSize = sizeof(LightConstantBuffer);
-    m_lightBuffer->Create(cbd);
+    m_lightConstantBuffer->Create(cbd);
  
     InitializeLighting();
 
-    m_lightBuffer->Map(sizeof(LightConstantBuffer), &LightConstantObject);
-    m_lightBuffer->UnMap();
+    m_lightConstantBuffer->Map(sizeof(LightConstantBuffer), &LightConstantObject);
+    m_lightConstantBuffer->UnMap();
 
 
     D3D11_RASTERIZER_DESC rasterizerDesc{};
