@@ -137,6 +137,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Engine\Component\Camera.cpp" />
+    <ClCompile Include="Engine\Component\RenderableObject.cpp" />
     <ClCompile Include="Engine\Component\Transform.cpp" />
     <ClCompile Include="Engine\Graphics\Texture\DXTexture.cpp" />
     <ClCompile Include="Engine\Graphics\2D\Components\C2DText.cpp" />
@@ -166,10 +167,10 @@
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Engine\Core\Timer.cpp" />
     <ClCompile Include="Engine\Editor\Windows\UIRenderablesWindow.cpp" />
-    <ClCompile Include="RenderableObject.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Component\Camera.h" />
+    <ClInclude Include="Engine\Component\RenderableObject.h" />
     <ClInclude Include="Engine\Component\Transform.h" />
     <ClInclude Include="Engine\Graphics\Texture\DXTexture.h" />
     <ClInclude Include="Engine\Graphics\2D\Components\C2DText.h" />
@@ -199,7 +200,6 @@
     <ClInclude Include="Engine\Editor\Windows\LogWindow.h" />
     <ClInclude Include="Engine\Editor\Windows\InspectorWindow.h" />
     <ClInclude Include="Engine\Editor\Windows\UIRenderablesWindow.h" />
-    <ClInclude Include="RenderableObject.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\LightsHeader.hlsli" />
