@@ -22,15 +22,24 @@ struct ConstantBufferDesc {
 };
 
 
-struct VS_ConstantBuffer
+struct OnRenderConstantBuffer
 {
     DirectX::XMMATRIX world;
-    DirectX::XMMATRIX view;
-    DirectX::XMMATRIX proj;
-    DirectX::XMMATRIX worldInvTranspose;
+    DirectX::XMMATRIX worldInverseTranspose;
 };
 
-struct PS_ConstantBuffer
+struct OnFrameConstantBuffer
+{
+    DirectX::XMMATRIX view;
+    DirectX::XMFLOAT4 eyePos;
+};
+
+struct OnResizeConstantBuffer
+{
+    DirectX::XMMATRIX proj;
+};
+
+struct LightConstantBuffer
 {
     DirectionalLight dirLight[10];
     PointLight pointLight[10];
@@ -40,7 +49,6 @@ struct PS_ConstantBuffer
     int numPointLight;
     int numSpotLight;
     float dummy;
-    DirectX::XMFLOAT4 eyePos;
 };
 
 class DXBuffer {

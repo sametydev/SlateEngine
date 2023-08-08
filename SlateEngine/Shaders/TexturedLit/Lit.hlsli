@@ -2,16 +2,24 @@
 Texture2D m_texture : register(t0);
 SamplerState m_samplerState : register(s0);
 
-
-cbuffer VSConstantBuffer : register(b0)
+cbuffer OnRenderConstantBuffer : register(b0)
 {
-    matrix World; 
-    matrix View;  
-    matrix Proj;  
+    matrix World;
     matrix WorldInverseTranspose;
 }
 
-cbuffer PSConstantBuffer : register(b1)
+cbuffer OnFrameConstantBuffer : register(b1)
+{
+    matrix View;
+    float3 EyePos;
+}
+
+cbuffer OnResizeConstantBuffer : register(b2)
+{
+    matrix Proj;
+}
+
+cbuffer LightConstantBuffer : register(b3)
 {
     DirectionalLight m_dirLight[10];
     PointLight m_pointLight[10];
@@ -20,11 +28,30 @@ cbuffer PSConstantBuffer : register(b1)
     int NumOfDirLight;
     int NumOfPointLight;
     int NumOfSpotLight;
-    float dummy1;
-
-    float3 EyePos;
-    float dummy2;
 }
+
+//cbuffer VSConstantBuffer : register(b0)
+//{
+//    matrix World; 
+//    matrix View;  
+//    matrix Proj;  
+//    matrix WorldInverseTranspose;
+//}
+
+//cbuffer PSConstantBuffer : register(b1)
+//{
+//    DirectionalLight m_dirLight[10];
+//    PointLight m_pointLight[10];
+//    SpotLight m_spotLight[10];
+//    Material m_material;
+//    int NumOfDirLight;
+//    int NumOfPointLight;
+//    int NumOfSpotLight;
+//    float dummy1;
+
+//    float3 EyePos;
+//    float dummy2;
+//}
 
 
 struct VertexPNT

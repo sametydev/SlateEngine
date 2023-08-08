@@ -22,6 +22,11 @@ public:
     XMFLOAT3 GetForward() const;
 
 
+    DirectX::XMFLOAT4X4 GetLocalToWorldMatrix() const;
+    DirectX::XMMATRIX GetLocalToWorldMatrixXM() const;
+    DirectX::XMFLOAT4X4 GetWorldToLocalMatrix() const;
+    DirectX::XMMATRIX GetWorldToLocalMatrixXM() const;
+
     void SetScale(const XMFLOAT3& scale);
     void SetScale(float x, float y, float z);
 
@@ -32,6 +37,9 @@ public:
     void SetPosition(float x, float y, float z);
 
     void RotateEulerAnglesRadian(const XMFLOAT3& _m);
+
+    void RotateAxis(const XMFLOAT3& axis, float radian);
+    void RotateAround(const XMFLOAT3& point, const XMFLOAT3& axis, float radian);
 
     void Translate(const XMFLOAT3& direction, float magnitude);
 
@@ -49,5 +57,7 @@ public:
 private:
     XMFLOAT3 m_scale = { 1.0f, 1.0f, 1.0f }; 
     XMFLOAT3 m_rotation = {};                
-    XMFLOAT3 m_position = {};                
+    XMFLOAT3 m_position = {};       
+
+    DirectX::XMFLOAT3 GetEulerAnglesFromRotationMatrix(const DirectX::XMFLOAT4X4& rotationMatrix);
 };
