@@ -14,9 +14,7 @@ float Game::scale = 1.0f;
 
 
 Game::Game(HINSTANCE hInstance, const std::wstring& windowName, int initWidth, int initHeight)
-    : DXApplication(hInstance, windowName, initWidth, initHeight),
-    m_vsCBufferData(),
-    m_psCBufferData()
+    : DXApplication(hInstance, windowName, initWidth, initHeight)
 {
     if (!Instance)
     {
@@ -72,22 +70,29 @@ bool Game::OnInit()
 
 
     //Creating Constant Buffers;
-    m_constantBufferVS = new DXConstantBuffer();
-    m_constantBufferPS = new DXConstantBuffer();
+    m_frameBuffer = new DXConstantBuffer();
+    m_renderBuffer = new DXConstantBuffer();
+    m_resizeBuffer = new DXConstantBuffer();
+    m_lightBuffer = new DXConstantBuffer();
 
+    ConstantBufferDesc cbd{};
 
-    ConstantBufferDesc cbdvs{};
-    cbdvs.cbSize = sizeof(VS_ConstantBuffer);
-    m_constantBufferVS->Create(cbdvs);
+    cbd.cbSize = sizeof(OnFrameConstantBuffer);
+    m_frameBuffer->Create(cbd);
 
-    ConstantBufferDesc cbdps{};
-    cbdps.cbSize = sizeof(PS_ConstantBuffer);
-    m_constantBufferPS->Create(cbdps);
+    cbd.cbSize = sizeof(OnRenderConstantBuffer);
+    m_renderBuffer->Create(cbd);
+
+    cbd.cbSize = sizeof(OnResizeConstantBuffer);
+    m_resizeBuffer->Create(cbd);
+
+    cbd.cbSize = sizeof(LightConstantBuffer);
+    m_lightBuffer->Create(cbd);
  
     InitializeLighting();
 
-    m_constantBufferPS->Map(sizeof(PS_ConstantBuffer), &m_psCBufferData);
-    m_constantBufferPS->UnMap();
+    m_lightBuffer->Map(sizeof(LightConstantBuffer), &LightObject);
+    m_lightBuffer->UnMap();
 
 
     D3D11_RASTERIZER_DESC rasterizerDesc{};
@@ -101,9 +106,15 @@ bool Game::OnInit()
     m_d3dContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
     vertexShader3D->Bind();
-    m_constantBufferVS->BindVS(0);
 
-    m_constantBufferPS->BindPS(1);
+    m_renderBuffer->BindVS(0);
+    m_frameBuffer->BindVS(1);
+    m_resizeBuffer->BindVS(2);
+
+    m_renderBuffer->BindPS(0);
+    m_frameBuffer->BindPS(1);
+    m_resizeBuffer->BindPS(2);
+    m_lightBuffer->BindPS(3);
     m_d3dContext->PSSetSamplers(0, 1, samplerState.GetAddressOf());
     m_crateTexture->Bind();
     pixelShader3D->Bind();
@@ -126,18 +137,24 @@ void Game::OnUpdateScene(float deltaTime)
     tx = XMScalarModAngle(tx);
 
     XMMATRIX W = XMMatrixRotationX(py) * XMMatrixRotationY(tx);
-    m_vsCBufferData.world = XMMatrixTranspose(W);
-    m_vsCBufferData.worldInvTranspose = XMMatrixTranspose(InverseTranspose(W));
+    OnRenderObject.world = XMMatrixTranspose(W);
+    OnRenderObject.worldInverseTranspose = XMMatrixTranspose(InverseTranspose(W));
 
     EditorUI::instance()->OnUpdate();
 
     //Updating VS Cbuffer
-    m_constantBufferVS->Map(sizeof(VS_ConstantBuffer), &m_vsCBufferData);
-    m_constantBufferVS->UnMap();
+    m_renderBuffer->Map(sizeof(OnRenderConstantBuffer), &OnRenderObject);
+    m_renderBuffer->UnMap();
+
+    m_frameBuffer->Map(sizeof(OnFrameConstantBuffer), &FrameBufferObject);
+    m_frameBuffer->UnMap();
+
+    m_resizeBuffer->Map(sizeof(OnResizeConstantBuffer), &OnResizeObject);
+    m_resizeBuffer->UnMap();
 
     //Updating PS Cbuffer
-    m_constantBufferPS->Map(sizeof(PS_ConstantBuffer), &m_psCBufferData);
-    m_constantBufferPS->UnMap();
+    m_lightBuffer->Map(sizeof(LightConstantBuffer), &LightObject);
+    m_lightBuffer->UnMap();
 
     m_d3dContext->RSSetState(renderWireframe ? m_wireFrameRasterizer.Get() : nullptr);
 }
@@ -182,27 +199,27 @@ void Game::OnRenderScene()
 
 void Game::InitializeLighting()
 {
-    m_vsCBufferData.world = XMMatrixIdentity();
-    m_vsCBufferData.view = XMMatrixTranspose(XMMatrixLookAtLH(
+    OnRenderObject.world = XMMatrixIdentity();
+    FrameBufferObject.view = XMMatrixTranspose(XMMatrixLookAtLH(
         XMVectorSet(0.0f, 0.0f, -5.0f, 0.0f),
         XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f),
         XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f)
     ));
-    m_vsCBufferData.proj = XMMatrixTranspose(XMMatrixPerspectiveFovLH(XM_PIDIV2, GetAspectRatio(), 1.0f, 1000.0f));
-    m_vsCBufferData.worldInvTranspose = XMMatrixIdentity();
+    OnResizeObject.proj = XMMatrixTranspose(XMMatrixPerspectiveFovLH(XM_PIDIV2, GetAspectRatio(), 1.0f, 1000.0f));
+    OnRenderObject.worldInverseTranspose = XMMatrixIdentity();
 
-    m_psCBufferData.pointLight[0].position = XMFLOAT3(0.0f, 0.0f, -10.0f);
-    m_psCBufferData.pointLight[0].ambient = XMFLOAT4(0.3f, 0.3f, 0.3f, 1.0f);
-    m_psCBufferData.pointLight[0].diffuse = XMFLOAT4(0.7f, 0.7f, 0.7f, 1.0f);
-    m_psCBufferData.pointLight[0].specular = XMFLOAT4(0.5f, 0.5f, 0.5f, 1.0f);
-    m_psCBufferData.pointLight[0].attenutation = XMFLOAT3(0.0f, 0.1f, 0.0f);
-    m_psCBufferData.pointLight[0].range = 25.0f;
-    m_psCBufferData.numDirLight = 0;
-    m_psCBufferData.numPointLight = 1;
-    m_psCBufferData.numSpotLight = 0;
-    m_psCBufferData.eyePos = XMFLOAT4(0.0f, 0.0f, -5.0f, 0.0f);
-    m_psCBufferData.material.ambient = XMFLOAT4(0.5f, 0.5f, 0.5f, 1.0f);
-    m_psCBufferData.material.diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
-    m_psCBufferData.material.specular = XMFLOAT4(0.1f, 0.1f, 0.1f, 5.0f);
-    m_psCBufferData.eyePos = XMFLOAT4(0.0f, 0.0f, -5.0f, 0.0f);
+    LightObject.pointLight[0].position = XMFLOAT3(0.0f, 0.0f, -10.0f);
+    LightObject.pointLight[0].ambient = XMFLOAT4(0.3f, 0.3f, 0.3f, 1.0f);
+    LightObject.pointLight[0].diffuse = XMFLOAT4(0.7f, 0.7f, 0.7f, 1.0f);
+    LightObject.pointLight[0].specular = XMFLOAT4(0.5f, 0.5f, 0.5f, 1.0f);
+    LightObject.pointLight[0].attenutation = XMFLOAT3(0.0f, 0.1f, 0.0f);
+    LightObject.pointLight[0].range = 25.0f;
+    LightObject.numDirLight = 0;
+    LightObject.numPointLight = 1;
+    LightObject.numSpotLight = 0;
+    FrameBufferObject.eyePos = XMFLOAT4(0.0f, 0.0f, -5.0f, 0.0f);
+    LightObject.material.ambient = XMFLOAT4(0.5f, 0.5f, 0.5f, 1.0f);
+    LightObject.material.diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
+    LightObject.material.specular = XMFLOAT4(0.1f, 0.1f, 0.1f, 5.0f);
+    FrameBufferObject.eyePos = XMFLOAT4(0.0f, 0.0f, -5.0f, 0.0f);
 }

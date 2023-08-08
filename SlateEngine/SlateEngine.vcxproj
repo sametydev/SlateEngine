@@ -136,6 +136,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Engine\Component\Camera.cpp" />
+    <ClCompile Include="Engine\Component\Transform.cpp" />
     <ClCompile Include="Engine\Graphics\Texture\DXTexture.cpp" />
     <ClCompile Include="Engine\Graphics\2D\Components\C2DText.cpp" />
     <ClCompile Include="Engine\Graphics\2D\D2DContext.cpp" />
@@ -166,6 +168,8 @@
     <ClCompile Include="Engine\Editor\Windows\UIRenderablesWindow.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Engine\Component\Camera.h" />
+    <ClInclude Include="Engine\Component\Transform.h" />
     <ClInclude Include="Engine\Graphics\Texture\DXTexture.h" />
     <ClInclude Include="Engine\Graphics\2D\Components\C2DText.h" />
     <ClInclude Include="Engine\Graphics\2D\D2DContext.h" />
@@ -199,6 +203,12 @@
     <None Include="Shaders\LightsHeader.hlsli" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Shaders\Misc\RTT_PS.hlsl">
+      <FileType>Document</FileType>
+    </None>
+    <None Include="Shaders\Misc\RTT_VS.hlsl">
+      <FileType>Document</FileType>
+    </None>
     <FxCompile Include="Shaders\TexturedLit\Lit3DPS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>

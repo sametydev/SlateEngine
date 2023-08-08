@@ -99,6 +99,12 @@
     <ClCompile Include="Engine\Graphics\Texture\DXTexture.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Component\Transform.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Component\Camera.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\DXConfig.h">
@@ -185,10 +191,18 @@
     <ClInclude Include="Engine\Graphics\Texture\DXTexture.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\Component\Transform.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Component\Camera.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\LightsHeader.hlsli" />
     <None Include="Shaders\TexturedLit\Lit.hlsli" />
+    <None Include="Shaders\Misc\RTT_PS.hlsl" />
+    <None Include="Shaders\Misc\RTT_VS.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Textures\Crate.dds" />

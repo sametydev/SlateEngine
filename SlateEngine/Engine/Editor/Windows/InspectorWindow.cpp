@@ -48,63 +48,63 @@ void InspectorWindow::OnDraw()
             game->SetMesh(meshData);
         }
 
-        ImGui::Dummy(ImVec2(0.0f, 20.0f));
-        ImGui::Text("Material");
-        ImGui::PushID(3);
-        ImGui::ColorEdit3("Ambient", &game->m_psCBufferData.material.ambient.x);
-        ImGui::ColorEdit3("Diffuse", &game->m_psCBufferData.material.diffuse.x);
-        ImGui::ColorEdit3("Specular", &game->m_psCBufferData.material.specular.x);
-        ImGui::PopID();
+        //ImGui::Dummy(ImVec2(0.0f, 20.0f));
+        //ImGui::Text("Material");
+        //ImGui::PushID(3);
+        //ImGui::ColorEdit3("Ambient", &game->m_psCBufferData.material.ambient.x);
+        //ImGui::ColorEdit3("Diffuse", &game->m_psCBufferData.material.diffuse.x);
+        //ImGui::ColorEdit3("Specular", &game->m_psCBufferData.material.specular.x);
+        //ImGui::PopID();
 
-        ImGui::Dummy(ImVec2(0.0f, 23.0f));
-        static int currentLightMode = 1;
-        static const char* lightModes[] = {
-            "Directional Light",
-            "Point Light",
-            "Spot Light"
-        };
-        ImGui::Text("Light");
-        ImGui::Combo("Light Type", &currentLightMode, lightModes, ARRAYSIZE(lightModes));
+        //ImGui::Dummy(ImVec2(0.0f, 23.0f));
+        //static int currentLightMode = 1;
+        //static const char* lightModes[] = {
+        //    "Directional Light",
+        //    "Point Light",
+        //    "Spot Light"
+        //};
+        //ImGui::Text("Light");
+        //ImGui::Combo("Light Type", &currentLightMode, lightModes, ARRAYSIZE(lightModes));
 
-        bool light_changed = false;
+        //bool light_changed = false;
 
-        ImGui::PushID(currentLightMode);
-        if (currentLightMode == 0)
-        {
-            game->m_psCBufferData.numSpotLight = 0;
-            game->m_psCBufferData.numPointLight = 0;
-            game->m_psCBufferData.numDirLight = 1;
+        //ImGui::PushID(currentLightMode);
+        //if (currentLightMode == 0)
+        //{
+        //    game->m_psCBufferData.numSpotLight = 0;
+        //    game->m_psCBufferData.numPointLight = 0;
+        //    game->m_psCBufferData.numDirLight = 1;
 
-            ImGui::ColorEdit3("Ambient", &game->m_psCBufferData.dirLight[0].ambient.x);
-            ImGui::ColorEdit3("Diffuse", &game->m_psCBufferData.dirLight[0].diffuse.x);
-            ImGui::ColorEdit3("Specular", &game->m_psCBufferData.dirLight[0].specular.x);
-        }
-        else if (currentLightMode == 1)
-        {
-            game->m_psCBufferData.numSpotLight = 0;
-            game->m_psCBufferData.numPointLight = 1;
-            game->m_psCBufferData.numDirLight = 0;
+        //    ImGui::ColorEdit3("Ambient", &game->m_psCBufferData.dirLight[0].ambient.x);
+        //    ImGui::ColorEdit3("Diffuse", &game->m_psCBufferData.dirLight[0].diffuse.x);
+        //    ImGui::ColorEdit3("Specular", &game->m_psCBufferData.dirLight[0].specular.x);
+        //}
+        //else if (currentLightMode == 1)
+        //{
+        //    game->m_psCBufferData.numSpotLight = 0;
+        //    game->m_psCBufferData.numPointLight = 1;
+        //    game->m_psCBufferData.numDirLight = 0;
 
-            ImGui::ColorEdit3("Ambient", &game->m_psCBufferData.pointLight[0].ambient.x);
-            ImGui::ColorEdit3("Diffuse", &game->m_psCBufferData.pointLight[0].diffuse.x);
-            ImGui::ColorEdit3("Specular", &game->m_psCBufferData.pointLight[0].specular.x);
-            ImGui::InputFloat("Range", &game->m_psCBufferData.pointLight[0].range);
-            ImGui::InputFloat3("Attenutation", &game->m_psCBufferData.pointLight[0].attenutation.x);
-        }
-        else
-        {
-            game->m_psCBufferData.numSpotLight = 1;
-            game->m_psCBufferData.numPointLight = 0;
-            game->m_psCBufferData.numDirLight = 0;
+        //    ImGui::ColorEdit3("Ambient", &game->m_psCBufferData.pointLight[0].ambient.x);
+        //    ImGui::ColorEdit3("Diffuse", &game->m_psCBufferData.pointLight[0].diffuse.x);
+        //    ImGui::ColorEdit3("Specular", &game->m_psCBufferData.pointLight[0].specular.x);
+        //    ImGui::InputFloat("Range", &game->m_psCBufferData.pointLight[0].range);
+        //    ImGui::InputFloat3("Attenutation", &game->m_psCBufferData.pointLight[0].attenutation.x);
+        //}
+        //else
+        //{
+        //    game->m_psCBufferData.numSpotLight = 1;
+        //    game->m_psCBufferData.numPointLight = 0;
+        //    game->m_psCBufferData.numDirLight = 0;
 
-            ImGui::ColorEdit3("Ambient", &game->m_psCBufferData.spotLight[0].ambient.x);
-            ImGui::ColorEdit3("Diffuse", &game->m_psCBufferData.spotLight[0].diffuse.x);
-            ImGui::ColorEdit3("Specular", &game->m_psCBufferData.spotLight[0].specular.x);
-            ImGui::InputFloat("Spot", &game->m_psCBufferData.spotLight[0].spot);
-            ImGui::InputFloat("Range", &game->m_psCBufferData.spotLight[0].range);
-            ImGui::InputFloat3("Attenutation", &game->m_psCBufferData.spotLight[0].attenutation.x);
-        }
-        ImGui::PopID();
+        //    ImGui::ColorEdit3("Ambient", &game->m_psCBufferData.spotLight[0].ambient.x);
+        //    ImGui::ColorEdit3("Diffuse", &game->m_psCBufferData.spotLight[0].diffuse.x);
+        //    ImGui::ColorEdit3("Specular", &game->m_psCBufferData.spotLight[0].specular.x);
+        //    ImGui::InputFloat("Spot", &game->m_psCBufferData.spotLight[0].spot);
+        //    ImGui::InputFloat("Range", &game->m_psCBufferData.spotLight[0].range);
+        //    ImGui::InputFloat3("Attenutation", &game->m_psCBufferData.spotLight[0].attenutation.x);
+        //}
+        //ImGui::PopID();
 
         ImGui::Dummy(ImVec2(0.0f, 10.0f));
         ImGui::Checkbox("WireFrame Mode", &game->renderWireframe);
