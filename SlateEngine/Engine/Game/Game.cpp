@@ -94,7 +94,7 @@ bool Game::OnInit()
     m_frameConstantBuffer->BindVS(1);
     m_resizeConstantBuffer->BindVS(2);
 
-    m_box->ConstantBufferBind();
+    //m_box->ConstantBufferBind();
 
     m_frameConstantBuffer->BindPS(1);
     m_resizeConstantBuffer->BindPS(2);

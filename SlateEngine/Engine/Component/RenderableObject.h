@@ -12,7 +12,7 @@
 #include <SlateEngine/Engine/DXConfig.h>
 #include <SlateEngine/Engine/Graphics/DXApplication.h>
 
-class RenderableObject {
+struct RenderableObject {
 public:
 	RenderableObject();
 	~RenderableObject();
@@ -24,14 +24,13 @@ public:
     void SetWorldMatrix(const XMFLOAT4X4& world);
     void OnUpdate(float deltaTime);
     void OnRender();
-    void ConstantBufferBind(UINT slot = 0);
 
 private:
     DXVertexBuffer* m_vertexBuffer = nullptr;
     DXIndexBuffer* m_indexBuffer = nullptr;
     OnRenderConstantBuffer   OnRenderConstantObject;
     DXConstantBuffer* m_renderConstantBuffer = nullptr;
-    UINT m_indices;
+    UINT m_indices = 0;
 
     //TEMPORARY!!
     float x = 0.0f;

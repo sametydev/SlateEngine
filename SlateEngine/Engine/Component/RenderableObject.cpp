@@ -16,6 +16,9 @@ RenderableObject::RenderableObject()
     ConstantBufferDesc cbd{};
     cbd.cbSize = sizeof(OnRenderConstantBuffer);
     m_renderConstantBuffer->Create(cbd);
+
+    m_renderConstantBuffer->BindVS(0);
+    m_renderConstantBuffer->BindPS(0);
 }
 
 RenderableObject::~RenderableObject()
@@ -54,10 +57,4 @@ void RenderableObject::OnUpdate(float deltaTime)
 void RenderableObject::OnRender()
 {
     DXApplication::Instance->GetDXContext().Get()->DrawIndexed(m_indices, 0, 0);
-}
-
-void RenderableObject::ConstantBufferBind(UINT slot)
-{
-    m_renderConstantBuffer->BindVS(slot);
-    m_renderConstantBuffer->BindPS(slot);
 }
