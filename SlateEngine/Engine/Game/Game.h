@@ -44,8 +44,7 @@ public:
 
     bool renderWireframe = false;
 
-    OnFrameConstantBuffer   FrameBufferConstantObject;
-    OnResizeConstantBuffer OnResizeConstantObject;
+    FrameConstantBuffer   FrameBufferConstantObject;
     LightConstantBuffer  LightConstantObject;
 
     DXTexture* m_crateTexture = nullptr;
@@ -55,7 +54,6 @@ private:
     ComPtr<ID3D11InputLayout> m_inputLayout = nullptr;
 
     DXConstantBuffer* m_frameConstantBuffer = nullptr;
-    DXConstantBuffer* m_resizeConstantBuffer = nullptr;
     DXConstantBuffer* m_lightConstantBuffer = nullptr;
 
     RenderableObject* m_box;

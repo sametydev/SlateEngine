@@ -28,8 +28,8 @@ public:
 private:
     DXVertexBuffer* m_vertexBuffer = nullptr;
     DXIndexBuffer* m_indexBuffer = nullptr;
-    OnRenderConstantBuffer   OnRenderConstantObject;
-    DXConstantBuffer* m_renderConstantBuffer = nullptr;
+    ObjectConstantBuffer   ObjectConstantBufferObject;
+    DXConstantBuffer* m_objectConstantBuffer = nullptr;
     UINT m_indices = 0;
 
     //TEMPORARY!!

@@ -12,14 +12,10 @@ cbuffer OnFrameConstantBuffer : register(b1)
 {
     matrix View;
     float3 EyePos;
-}
-
-cbuffer OnResizeConstantBuffer : register(b2)
-{
     matrix Proj;
 }
 
-cbuffer LightConstantBuffer : register(b3)
+cbuffer LightConstantBuffer : register(b2)
 {
     DirectionalLight m_dirLight[10];
     PointLight m_pointLight[10];

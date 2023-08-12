@@ -8,17 +8,17 @@ RenderableObject::RenderableObject()
     //Create our Index Buffer
     m_indexBuffer = new DXIndexBuffer();
 
-    m_renderConstantBuffer = new DXConstantBuffer();
+    m_objectConstantBuffer = new DXConstantBuffer();
 
-    OnRenderConstantObject.world = XMMatrixIdentity();
-    OnRenderConstantObject.worldInverseTranspose = XMMatrixIdentity();
+    ObjectConstantBufferObject.world = XMMatrixIdentity();
+    ObjectConstantBufferObject.worldInverseTranspose = XMMatrixIdentity();
 
     ConstantBufferDesc cbd{};
-    cbd.cbSize = sizeof(OnRenderConstantBuffer);
-    m_renderConstantBuffer->Create(cbd);
+    cbd.cbSize = sizeof(ObjectConstantBuffer);
+    m_objectConstantBuffer->Create(cbd);
 
-    m_renderConstantBuffer->BindVS(0);
-    m_renderConstantBuffer->BindPS(0);
+    m_objectConstantBuffer->BindVS(0);
+    m_objectConstantBuffer->BindPS(0);
 }
 
 RenderableObject::~RenderableObject()
@@ -46,12 +46,12 @@ void RenderableObject::OnUpdate(float deltaTime)
     py = XMScalarModAngle(py);
     tx = XMScalarModAngle(tx);
     XMMATRIX W = XMMatrixRotationX(py) * XMMatrixRotationY(tx);
-    OnRenderConstantObject.world = XMMatrixTranspose(W);
-    OnRenderConstantObject.worldInverseTranspose = XMMatrixTranspose(InverseTranspose(W));
+    ObjectConstantBufferObject.world = XMMatrixTranspose(W);
+    ObjectConstantBufferObject.worldInverseTranspose = XMMatrixTranspose(InverseTranspose(W));
     //TEMPORARY!
 
-    m_renderConstantBuffer->Map(sizeof(OnRenderConstantBuffer), &OnRenderConstantObject);
-    m_renderConstantBuffer->UnMap();
+    m_objectConstantBuffer->Map(sizeof(ObjectConstantBuffer), &ObjectConstantBufferObject);
+    m_objectConstantBuffer->UnMap();
 }
 
 void RenderableObject::OnRender()

@@ -57,17 +57,12 @@ bool Game::OnInit()
 
     //Creating Constant Buffers;
     m_frameConstantBuffer = new DXConstantBuffer();
-    m_resizeConstantBuffer = new DXConstantBuffer();
     m_lightConstantBuffer = new DXConstantBuffer();
 
     ConstantBufferDesc cbd{};
 
-    cbd.cbSize = sizeof(OnFrameConstantBuffer);
+    cbd.cbSize = sizeof(FrameConstantBuffer);
     m_frameConstantBuffer->Create(cbd);
-
-
-    cbd.cbSize = sizeof(OnResizeConstantBuffer);
-    m_resizeConstantBuffer->Create(cbd);
 
     cbd.cbSize = sizeof(LightConstantBuffer);
     m_lightConstantBuffer->Create(cbd);
@@ -92,13 +87,10 @@ bool Game::OnInit()
 
 
     m_frameConstantBuffer->BindVS(1);
-    m_resizeConstantBuffer->BindVS(2);
-
     //m_box->ConstantBufferBind();
 
     m_frameConstantBuffer->BindPS(1);
-    m_resizeConstantBuffer->BindPS(2);
-    m_lightConstantBuffer->BindPS(3);
+    m_lightConstantBuffer->BindPS(2);
 
     m_d3dContext->PSSetSamplers(0, 1, samplerState.GetAddressOf());
     pixelShader3D->Bind();
@@ -127,11 +119,8 @@ void Game::OnUpdateScene(float deltaTime)
 
     m_box->OnUpdate(deltaTime);
     //Updating VS Cbuffer
-    m_frameConstantBuffer->Map(sizeof(OnFrameConstantBuffer), &FrameBufferConstantObject);
+    m_frameConstantBuffer->Map(sizeof(FrameConstantBuffer), &FrameBufferConstantObject);
     m_frameConstantBuffer->UnMap();
-
-    m_resizeConstantBuffer->Map(sizeof(OnResizeConstantBuffer), &OnResizeConstantObject);
-    m_resizeConstantBuffer->UnMap();
 
     //Updating PS Cbuffer
     m_lightConstantBuffer->Map(sizeof(LightConstantBuffer), &LightConstantObject);
@@ -160,7 +149,7 @@ void Game::InitializeLighting()
         XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f),
         XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f)
     ));
-    OnResizeConstantObject.proj = XMMatrixTranspose(XMMatrixPerspectiveFovLH(XM_PIDIV2, GetAspectRatio(), 1.0f, 1000.0f));
+    FrameBufferConstantObject.proj = XMMatrixTranspose(XMMatrixPerspectiveFovLH(XM_PIDIV2, GetAspectRatio(), 1.0f, 1000.0f));
 
 
     LightConstantObject.pointLight[0].position = XMFLOAT3(0.0f, 0.0f, -10.0f);

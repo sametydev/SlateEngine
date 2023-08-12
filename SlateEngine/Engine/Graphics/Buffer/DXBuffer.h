@@ -22,20 +22,16 @@ struct ConstantBufferDesc {
 };
 
 
-struct OnRenderConstantBuffer
+struct ObjectConstantBuffer
 {
     DirectX::XMMATRIX world;
     DirectX::XMMATRIX worldInverseTranspose;
 };
 
-struct OnFrameConstantBuffer
+struct FrameConstantBuffer
 {
     DirectX::XMMATRIX view;
     DirectX::XMFLOAT4 eyePos;
-};
-
-struct OnResizeConstantBuffer
-{
     DirectX::XMMATRIX proj;
 };
 
