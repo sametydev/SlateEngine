@@ -19,6 +19,7 @@ void UIRenderablesWindow::OnDraw(const char* title)
 {
 
 }
+
 float ui_x, ui_y;
 void UIRenderablesWindow::OnDraw()
 {

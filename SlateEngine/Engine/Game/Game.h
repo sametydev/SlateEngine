@@ -13,6 +13,7 @@
 #include <SlateEngine/Engine/Graphics/Texture/DXTexture.h>
 #include <SlateEngine/Engine/Component/RenderableObject.h>
 #include <SlateEngine/Engine/Component/Camera.h>
+#include <SlateEngine/Engine/Entity/EntityManager.h>
 
 
 class Game : public DXApplication
@@ -57,7 +58,10 @@ private:
     DXConstantBuffer* m_frameConstantBuffer = nullptr;
     DXConstantBuffer* m_lightConstantBuffer = nullptr;
 
-    RenderableObject* m_box;
+
+    entt::entity testEntity;
+    entt::registry entityRegistar;
+
     Camera* m_camera{};
     ComPtr<ID3D11SamplerState> samplerState;				    
 

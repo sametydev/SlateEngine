@@ -33,6 +33,7 @@ void Camera::Update(float dt)
 	vec3f u = { R[0][1], R[1][1], R[2][1] };
 	//foward
 	vec3f f = { R[0][2], R[1][2], R[2][2] };
+
 	r.normalize();
 	u.normalize();
 	f.normalize();
