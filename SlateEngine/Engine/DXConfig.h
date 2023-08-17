@@ -14,7 +14,6 @@
 #include <dxgi1_3.h>
 #define _XM_NO_INTRINSICS_
 
-#include <DirectXMath.h>
 #include <stdio.h>
 #include <iostream>
 #include <vector>
@@ -23,7 +22,8 @@
 #include <algorithm>
 
 #include <SlateEngine/Engine/Core/EngineConfig.h>
-
+#include <SlateEngine/Engine/Math/LinearMath.h>
+#include <DirectXMath.h>
 
 using namespace DirectX;
 
@@ -61,15 +61,15 @@ std::cout << "\033[1;31m**************************\n" <<"Error on this file : \n
 #define SAFE_RELEASE(x) if(x) {x->Release(); x = nullptr;}
 #define SAFE_DELETE(x) if(x) {delete x; x = nullptr;}
 
-inline DirectX::XMMATRIX XM_CALLCONV InverseTranspose(DirectX::FXMMATRIX M)
-{
-    using namespace DirectX;
-
-    XMMATRIX A = M;
-    A.r[3] = g_XMIdentityR3;
-
-    return XMMatrixTranspose(XMMatrixInverse(nullptr, A));
-}
+//inline DirectX::XMMATRIX XM_CALLCONV InverseTranspose(DirectX::FXMMATRIX M)
+//{
+//    using namespace DirectX;
+//
+//    XMMATRIX A = M;
+//    A.r[3] = g_XMIdentityR3;
+//
+//    return XMMatrixTranspose(XMMatrixInverse(nullptr, A));
+//}
 
 //For Debugging
 inline HRESULT WINAPI DXTraceW(_In_z_ const WCHAR * strFile, _In_ DWORD dwLine, _In_ HRESULT hr,

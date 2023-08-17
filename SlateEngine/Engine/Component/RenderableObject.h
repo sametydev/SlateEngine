@@ -18,11 +18,11 @@ public:
 	RenderableObject();
 	~RenderableObject();
 
-    XMFLOAT3 GetPosition() const;
+    vec3f GetPosition() const;
     template<class VertexType, class IndexType>
     void SetBuffer(const MeshData<VertexType, IndexType>& meshData);
     void SetTexture(DXTexture* texture);
-    void SetWorldMatrix(const XMFLOAT4X4& world);
+    void SetWorldMatrix(const mat4x4& world);
     void OnUpdate(float deltaTime);
     void OnRender();
 

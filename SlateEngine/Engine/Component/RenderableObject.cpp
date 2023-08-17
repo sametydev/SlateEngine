@@ -27,9 +27,9 @@ RenderableObject::~RenderableObject()
 {
 }
 
-XMFLOAT3 RenderableObject::GetPosition() const
+vec3f RenderableObject::GetPosition() const
 {
-	return XMFLOAT3();
+	return vec3f();
 }
 
 void RenderableObject::SetTexture(DXTexture* texture)
@@ -37,7 +37,7 @@ void RenderableObject::SetTexture(DXTexture* texture)
     texture->Bind(0);
 }
 
-void RenderableObject::SetWorldMatrix(const XMFLOAT4X4& world)
+void RenderableObject::SetWorldMatrix(const mat4x4& world)
 {
 }
 

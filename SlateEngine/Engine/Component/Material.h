@@ -3,8 +3,8 @@
 
 struct Material
 {
-    DirectX::XMFLOAT4 ambient;
-    DirectX::XMFLOAT4 diffuse;
-    DirectX::XMFLOAT4 specular;
-    DirectX::XMFLOAT4 reflect;
+    vec4f ambient;
+    vec4f diffuse;
+    vec4f specular;
+    vec4f reflect;
 };

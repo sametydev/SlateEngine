@@ -11,16 +11,16 @@ struct PointLight
     PointLight(PointLight&&) = default;
     PointLight& operator=(PointLight&&) = default;
 
-    PointLight(const DirectX::XMFLOAT4& _ambient, const DirectX::XMFLOAT4& _diffuse, const DirectX::XMFLOAT4& _specular,
-        const DirectX::XMFLOAT3& _position, float _range, const DirectX::XMFLOAT3& _att) :
+    PointLight(const vec4f& _ambient, const vec4f& _diffuse, const vec4f& _specular,
+        const vec3f& _position, float _range, const vec3f& _att) :
         ambient(_ambient), diffuse(_diffuse), specular(_specular), position(_position), range(_range), attenutation(_att), dummy() {}
 
 
-    DirectX::XMFLOAT4 ambient;
-    DirectX::XMFLOAT4 diffuse;
-    DirectX::XMFLOAT4 specular;
-    DirectX::XMFLOAT3 position;
+    vec4f ambient;
+    vec4f diffuse;
+    vec4f specular;
+    vec3f position;
     float range;
-    DirectX::XMFLOAT3 attenutation;
+    vec3f attenutation;
     float dummy;
 };

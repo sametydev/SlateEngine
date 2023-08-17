@@ -205,6 +205,7 @@
     <ClInclude Include="Engine\Math\rect.h" />
     <ClInclude Include="Engine\Math\vec2f.h" />
     <ClInclude Include="Engine\Math\vec3f.h" />
+    <ClInclude Include="Engine\Math\vec4f.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\LightsHeader.hlsli" />

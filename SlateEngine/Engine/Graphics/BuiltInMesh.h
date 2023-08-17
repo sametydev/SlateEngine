@@ -23,11 +23,11 @@ namespace BuiltInMesh {
 
     struct VertexData
     {
-        DirectX::XMFLOAT3 pos;
-        DirectX::XMFLOAT3 normal;
-        DirectX::XMFLOAT4 tangent;
-        DirectX::XMFLOAT4 color;
-        DirectX::XMFLOAT2 tex;
+        vec3f pos;
+        vec3f normal;
+        vec4f tangent;
+        vec4f color;
+        vec2f tex;
     };
 
     template<class Vertex>
@@ -57,22 +57,22 @@ namespace BuiltInMesh {
 
     template<class Vertex = VertexPNT, class Index = DWORD>
     MeshData<Vertex, Index> CreateSphere(float radius = 1.0f, UINT levels = 20, UINT slices = 20,
-        const DirectX::XMFLOAT4& color = { 1.0f, 1.0f, 1.0f, 1.0f });
+        const vec4f& color = { 1.0f, 1.0f, 1.0f, 1.0f });
 
     template<class Vertex = VertexPNT, class Index = DWORD>
     MeshData<Vertex, Index> CreateBox(float width = 2.0f, float height = 2.0f, float depth = 2.0f,
-        const DirectX::XMFLOAT4& color = { 1.0f, 1.0f, 1.0f, 1.0f });
+        const vec4f& color = { 1.0f, 1.0f, 1.0f, 1.0f });
 
     template<class Vertex = VertexPNT, class Index = DWORD>
     MeshData<Vertex, Index> CreateCylinder(float radius = 1.0f, float height = 2.0f, UINT slices = 20, UINT stacks = 10,
-        float texU = 1.0f, float texV = 1.0f, const DirectX::XMFLOAT4& color = { 1.0f, 1.0f, 1.0f, 1.0f });
+        float texU = 1.0f, float texV = 1.0f, const vec4f& color = { 1.0f, 1.0f, 1.0f, 1.0f });
 
     template<class Vertex = VertexPNT, class Index = DWORD>
     MeshData<Vertex, Index> CreateCylinderNoCap(float radius = 1.0f, float height = 2.0f, UINT slices = 20, UINT stacks = 10,
-        float texU = 1.0f, float texV = 1.0f, const DirectX::XMFLOAT4& color = { 1.0f, 1.0f, 1.0f, 1.0f });
+        float texU = 1.0f, float texV = 1.0f, const vec4f& color = { 1.0f, 1.0f, 1.0f, 1.0f });
 
     template<class Vertex, class Index>
-    inline MeshData<Vertex, Index> CreateBox(float width, float height, float depth, const DirectX::XMFLOAT4& color)
+    inline MeshData<Vertex, Index> CreateBox(float width, float height, float depth, const vec4f& color)
     {
         using namespace DirectX;
 
@@ -82,70 +82,70 @@ namespace BuiltInMesh {
         VertexData vertexDataArr[24];
         float w2 = width / 2, h2 = height / 2, d2 = depth / 2;
 
-        vertexDataArr[0].pos = XMFLOAT3(w2, -h2, -d2);
-        vertexDataArr[1].pos = XMFLOAT3(w2, h2, -d2);
-        vertexDataArr[2].pos = XMFLOAT3(w2, h2, d2);
-        vertexDataArr[3].pos = XMFLOAT3(w2, -h2, d2);
+        vertexDataArr[0].pos = vec3f(w2, -h2, -d2);
+        vertexDataArr[1].pos = vec3f(w2, h2, -d2);
+        vertexDataArr[2].pos = vec3f(w2, h2, d2);
+        vertexDataArr[3].pos = vec3f(w2, -h2, d2);
 
-        vertexDataArr[4].pos = XMFLOAT3(-w2, -h2, d2);
-        vertexDataArr[5].pos = XMFLOAT3(-w2, h2, d2);
-        vertexDataArr[6].pos = XMFLOAT3(-w2, h2, -d2);
-        vertexDataArr[7].pos = XMFLOAT3(-w2, -h2, -d2);
+        vertexDataArr[4].pos = vec3f(-w2, -h2, d2);
+        vertexDataArr[5].pos = vec3f(-w2, h2, d2);
+        vertexDataArr[6].pos = vec3f(-w2, h2, -d2);
+        vertexDataArr[7].pos = vec3f(-w2, -h2, -d2);
 
-        vertexDataArr[8].pos = XMFLOAT3(-w2, h2, -d2);
-        vertexDataArr[9].pos = XMFLOAT3(-w2, h2, d2);
-        vertexDataArr[10].pos = XMFLOAT3(w2, h2, d2);
-        vertexDataArr[11].pos = XMFLOAT3(w2, h2, -d2);
+        vertexDataArr[8].pos = vec3f(-w2, h2, -d2);
+        vertexDataArr[9].pos = vec3f(-w2, h2, d2);
+        vertexDataArr[10].pos = vec3f(w2, h2, d2);
+        vertexDataArr[11].pos = vec3f(w2, h2, -d2);
 
-        vertexDataArr[12].pos = XMFLOAT3(w2, -h2, -d2);
-        vertexDataArr[13].pos = XMFLOAT3(w2, -h2, d2);
-        vertexDataArr[14].pos = XMFLOAT3(-w2, -h2, d2);
-        vertexDataArr[15].pos = XMFLOAT3(-w2, -h2, -d2);
+        vertexDataArr[12].pos = vec3f(w2, -h2, -d2);
+        vertexDataArr[13].pos = vec3f(w2, -h2, d2);
+        vertexDataArr[14].pos = vec3f(-w2, -h2, d2);
+        vertexDataArr[15].pos = vec3f(-w2, -h2, -d2);
 
-        vertexDataArr[16].pos = XMFLOAT3(w2, -h2, d2);
-        vertexDataArr[17].pos = XMFLOAT3(w2, h2, d2);
-        vertexDataArr[18].pos = XMFLOAT3(-w2, h2, d2);
-        vertexDataArr[19].pos = XMFLOAT3(-w2, -h2, d2);
+        vertexDataArr[16].pos = vec3f(w2, -h2, d2);
+        vertexDataArr[17].pos = vec3f(w2, h2, d2);
+        vertexDataArr[18].pos = vec3f(-w2, h2, d2);
+        vertexDataArr[19].pos = vec3f(-w2, -h2, d2);
 
-        vertexDataArr[20].pos = XMFLOAT3(-w2, -h2, -d2);
-        vertexDataArr[21].pos = XMFLOAT3(-w2, h2, -d2);
-        vertexDataArr[22].pos = XMFLOAT3(w2, h2, -d2);
-        vertexDataArr[23].pos = XMFLOAT3(w2, -h2, -d2);
+        vertexDataArr[20].pos = vec3f(-w2, -h2, -d2);
+        vertexDataArr[21].pos = vec3f(-w2, h2, -d2);
+        vertexDataArr[22].pos = vec3f(w2, h2, -d2);
+        vertexDataArr[23].pos = vec3f(w2, -h2, -d2);
 
         for (UINT i = 0; i < 4; ++i)
         {
 
-            vertexDataArr[i].normal = XMFLOAT3(1.0f, 0.0f, 0.0f);
-            vertexDataArr[i].tangent = XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f);
+            vertexDataArr[i].normal = vec3f(1.0f, 0.0f, 0.0f);
+            vertexDataArr[i].tangent = vec4f(0.0f, 0.0f, 1.0f, 1.0f);
             vertexDataArr[i].color = color;
 
-            vertexDataArr[i + 4].normal = XMFLOAT3(-1.0f, 0.0f, 0.0f);
-            vertexDataArr[i + 4].tangent = XMFLOAT4(0.0f, 0.0f, -1.0f, 1.0f);
+            vertexDataArr[i + 4].normal = vec3f(-1.0f, 0.0f, 0.0f);
+            vertexDataArr[i + 4].tangent = vec4f(0.0f, 0.0f, -1.0f, 1.0f);
             vertexDataArr[i + 4].color = color;
 
-            vertexDataArr[i + 8].normal = XMFLOAT3(0.0f, 1.0f, 0.0f);
-            vertexDataArr[i + 8].tangent = XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f);
+            vertexDataArr[i + 8].normal = vec3f(0.0f, 1.0f, 0.0f);
+            vertexDataArr[i + 8].tangent = vec4f(1.0f, 0.0f, 0.0f, 1.0f);
             vertexDataArr[i + 8].color = color;
 
-            vertexDataArr[i + 12].normal = XMFLOAT3(0.0f, -1.0f, 0.0f);
-            vertexDataArr[i + 12].tangent = XMFLOAT4(-1.0f, 0.0f, 0.0f, 1.0f);
+            vertexDataArr[i + 12].normal = vec3f(0.0f, -1.0f, 0.0f);
+            vertexDataArr[i + 12].tangent = vec4f(-1.0f, 0.0f, 0.0f, 1.0f);
             vertexDataArr[i + 12].color = color;
 
-            vertexDataArr[i + 16].normal = XMFLOAT3(0.0f, 0.0f, 1.0f);
-            vertexDataArr[i + 16].tangent = XMFLOAT4(-1.0f, 0.0f, 0.0f, 1.0f);
+            vertexDataArr[i + 16].normal = vec3f(0.0f, 0.0f, 1.0f);
+            vertexDataArr[i + 16].tangent = vec4f(-1.0f, 0.0f, 0.0f, 1.0f);
             vertexDataArr[i + 16].color = color;
 
-            vertexDataArr[i + 20].normal = XMFLOAT3(0.0f, 0.0f, -1.0f);
-            vertexDataArr[i + 20].tangent = XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f);
+            vertexDataArr[i + 20].normal = vec3f(0.0f, 0.0f, -1.0f);
+            vertexDataArr[i + 20].tangent = vec4f(1.0f, 0.0f, 0.0f, 1.0f);
             vertexDataArr[i + 20].color = color;
         }
 
         for (UINT i = 0; i < 6; ++i)
         {
-            vertexDataArr[i * 4].tex = XMFLOAT2(0.0f, 1.0f);
-            vertexDataArr[i * 4 + 1].tex = XMFLOAT2(0.0f, 0.0f);
-            vertexDataArr[i * 4 + 2].tex = XMFLOAT2(1.0f, 0.0f);
-            vertexDataArr[i * 4 + 3].tex = XMFLOAT2(1.0f, 1.0f);
+            vertexDataArr[i * 4].tex = vec2f(0.0f, 1.0f);
+            vertexDataArr[i * 4 + 1].tex = vec2f(0.0f, 0.0f);
+            vertexDataArr[i * 4 + 2].tex = vec2f(1.0f, 0.0f);
+            vertexDataArr[i * 4 + 3].tex = vec2f(1.0f, 1.0f);
         }
 
         for (UINT i = 0; i < 24; ++i)
@@ -166,7 +166,7 @@ namespace BuiltInMesh {
     }
 
     template<class Vertex, class Index>
-    inline MeshData<Vertex, Index> CreateSphere(float radius, UINT levels, UINT slices, const DirectX::XMFLOAT4& color)
+    inline MeshData<Vertex, Index> CreateSphere(float radius, UINT levels, UINT slices, const vec4f& color)
     {
         using namespace DirectX;
 
@@ -184,7 +184,7 @@ namespace BuiltInMesh {
         float per_theta = XM_2PI / slices;
         float x, y, z;
 
-        vertexData = { XMFLOAT3(0.0f, radius, 0.0f), XMFLOAT3(0.0f, 1.0f, 0.0f), XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f), color, XMFLOAT2(0.0f, 0.0f) };
+        vertexData = { vec3f(0.0f, radius, 0.0f), vec3f(0.0f, 1.0f, 0.0f), vec4f(1.0f, 0.0f, 0.0f, 1.0f), color, vec2f(0.0f, 0.0f) };
         InsertVertexElement(meshData.vVertex[vIndex++], vertexData);
 
         for (UINT i = 1; i < levels; ++i)
@@ -198,16 +198,16 @@ namespace BuiltInMesh {
                 y = radius * cosf(phi);
                 z = radius * sinf(phi) * sinf(theta);
 
-                XMFLOAT3 pos = XMFLOAT3(x, y, z), normal;
-                XMStoreFloat3(&normal, XMVector3Normalize(XMLoadFloat3(&pos)));
+                vec3f pos = vec3f(x, y, z), normal;
+                normal = pos.normalized();
 
-                vertexData = { pos, normal, XMFLOAT4(-sinf(theta), 0.0f, cosf(theta), 1.0f), color, XMFLOAT2(theta / XM_2PI, phi / XM_PI) };
+                vertexData = { pos, normal, vec4f(-sinf(theta), 0.0f, cosf(theta), 1.0f), color, vec2f(theta / XM_2PI, phi / XM_PI) };
                 InsertVertexElement(meshData.vVertex[vIndex++], vertexData);
             }
         }
 
-        vertexData = { XMFLOAT3(0.0f, -radius, 0.0f), XMFLOAT3(0.0f, -1.0f, 0.0f),
-            XMFLOAT4(-1.0f, 0.0f, 0.0f, 1.0f), color, XMFLOAT2(0.0f, 1.0f) };
+        vertexData = { vec3f(0.0f, -radius, 0.0f), vec3f(0.0f, -1.0f, 0.0f),
+            vec4f(-1.0f, 0.0f, 0.0f, 1.0f), color, vec2f(0.0f, 1.0f) };
         InsertVertexElement(meshData.vVertex[vIndex++], vertexData);
 
 
@@ -251,7 +251,7 @@ namespace BuiltInMesh {
     }
 
     template<class Vertex, class Index>
-    inline MeshData<Vertex, Index> CreateCylinder(float radius, float height, UINT slices, UINT stacks, float texU, float texV, const DirectX::XMFLOAT4& color)
+    inline MeshData<Vertex, Index> CreateCylinder(float radius, float height, UINT slices, UINT stacks, float texU, float texV, const vec4f& color)
     {
         using namespace DirectX;
 
@@ -269,8 +269,8 @@ namespace BuiltInMesh {
         Index offset = vIndex;
         VertexData vertexData;
 
-        vertexData = { XMFLOAT3(0.0f, h2, 0.0f), XMFLOAT3(0.0f, 1.0f, 0.0f),
-                        XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f), color, XMFLOAT2(0.5f, 0.5f) };
+        vertexData = { vec3f(0.0f, h2, 0.0f), vec3f(0.0f, 1.0f, 0.0f),
+                        vec4f(1.0f, 0.0f, 0.0f, 1.0f), color, vec2f(0.5f, 0.5f) };
         InsertVertexElement(meshData.vVertex[vIndex++], vertexData);
 
         for (UINT i = 0; i <= slices; ++i)
@@ -278,13 +278,13 @@ namespace BuiltInMesh {
             theta = i * per_theta;
             float u = cosf(theta) * radius / height + 0.5f;
             float v = sinf(theta) * radius / height + 0.5f;
-            vertexData = { XMFLOAT3(radius * cosf(theta), h2, radius * sinf(theta)), XMFLOAT3(0.0f, 1.0f, 0.0f),
-                            XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f), color, XMFLOAT2(u, v) };
+            vertexData = { vec3f(radius * cosf(theta), h2, radius * sinf(theta)), vec3f(0.0f, 1.0f, 0.0f),
+                            vec4f(1.0f, 0.0f, 0.0f, 1.0f), color, vec2f(u, v) };
             InsertVertexElement(meshData.vVertex[vIndex++], vertexData);
         }
 
-        vertexData = { XMFLOAT3(0.0f, -h2, 0.0f), XMFLOAT3(0.0f, -1.0f, 0.0f),
-                        XMFLOAT4(-1.0f, 0.0f, 0.0f, 1.0f), color, XMFLOAT2(0.5f, 0.5f) };
+        vertexData = { vec3f(0.0f, -h2, 0.0f), vec3f(0.0f, -1.0f, 0.0f),
+                        vec4f(-1.0f, 0.0f, 0.0f, 1.0f), color, vec2f(0.5f, 0.5f) };
         InsertVertexElement(meshData.vVertex[vIndex++], vertexData);
 
         for (UINT i = 0; i <= slices; ++i)
@@ -292,8 +292,8 @@ namespace BuiltInMesh {
             theta = i * per_theta;
             float u = cosf(theta) * radius / height + 0.5f;
             float v = sinf(theta) * radius / height + 0.5f;
-            vertexData = { XMFLOAT3(radius * cosf(theta), -h2, radius * sinf(theta)), XMFLOAT3(0.0f, -1.0f, 0.0f),
-                            XMFLOAT4(-1.0f, 0.0f, 0.0f, 1.0f), color, XMFLOAT2(u, v) };
+            vertexData = { vec3f(radius * cosf(theta), -h2, radius * sinf(theta)), vec3f(0.0f, -1.0f, 0.0f),
+                            vec4f(-1.0f, 0.0f, 0.0f, 1.0f), color, vec2f(u, v) };
             InsertVertexElement(meshData.vVertex[vIndex++], vertexData);
         }
 
@@ -319,7 +319,7 @@ namespace BuiltInMesh {
 
     template<class Vertex, class Index>
     inline MeshData<Vertex, Index> CreateCylinderNoCap(float radius, float height, UINT slices, UINT stacks,
-        float texU, float texV, const DirectX::XMFLOAT4& color)
+        float texU, float texV, const vec4f& color)
     {
         using namespace DirectX;
 
@@ -347,8 +347,8 @@ namespace BuiltInMesh {
                 theta = j * per_theta;
                 float u = theta / XM_2PI;
                 float v = 1.0f - (float)i / stacks;
-                vertexData = { XMFLOAT3(radius * cosf(theta), y, radius * sinf(theta)), XMFLOAT3(cosf(theta), 0.0f, sinf(theta)),
-                    XMFLOAT4(-sinf(theta), 0.0f, cosf(theta), 1.0f), color, XMFLOAT2(u * texU, v * texV) };
+                vertexData = { vec3f(radius * cosf(theta), y, radius * sinf(theta)), vec3f(cosf(theta), 0.0f, sinf(theta)),
+                    vec4f(-sinf(theta), 0.0f, cosf(theta), 1.0f), color, vec2f(u * texU, v * texV) };
                 InsertVertexElement(meshData.vVertex[vIndex++], vertexData);
             }
         }

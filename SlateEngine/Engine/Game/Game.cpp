@@ -150,16 +150,16 @@ void Game::InitializeLighting()
     FrameBufferConstantObject.proj = m_camera->GetProjectionMatrix();
 
 
-    LightConstantObject.pointLight[0].position = XMFLOAT3(0.0f, 0.0f, -10.0f);
-    LightConstantObject.pointLight[0].ambient = XMFLOAT4(0.3f, 0.3f, 0.3f, 1.0f);
-    LightConstantObject.pointLight[0].diffuse = XMFLOAT4(0.7f, 0.7f, 0.7f, 1.0f);
-    LightConstantObject.pointLight[0].specular = XMFLOAT4(0.5f, 0.5f, 0.5f, 1.0f);
-    LightConstantObject.pointLight[0].attenutation = XMFLOAT3(0.0f, 0.1f, 0.0f);
+    LightConstantObject.pointLight[0].position = vec3f(0.0f, 0.0f, -10.0f);
+    LightConstantObject.pointLight[0].ambient = vec4f(0.3f, 0.3f, 0.3f, 1.0f);
+    LightConstantObject.pointLight[0].diffuse = vec4f(0.7f, 0.7f, 0.7f, 1.0f);
+    LightConstantObject.pointLight[0].specular = vec4f(0.5f, 0.5f, 0.5f, 1.0f);
+    LightConstantObject.pointLight[0].attenutation = vec3f(0.0f, 0.1f, 0.0f);
     LightConstantObject.pointLight[0].range = 25.0f;
     LightConstantObject.numDirLight = 0;
     LightConstantObject.numPointLight = 1;
     LightConstantObject.numSpotLight = 0;
-    LightConstantObject.material.ambient = XMFLOAT4(0.5f, 0.5f, 0.5f, 1.0f);
-    LightConstantObject.material.diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
-    LightConstantObject.material.specular = XMFLOAT4(0.1f, 0.1f, 0.1f, 5.0f);
+    LightConstantObject.material.ambient = vec4f(0.5f, 0.5f, 0.5f, 1.0f);
+    LightConstantObject.material.diffuse = vec4f(1.0f, 1.0f, 1.0f, 1.0f);
+    LightConstantObject.material.specular = vec4f(0.1f, 0.1f, 0.1f, 5.0f);
 }

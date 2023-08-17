@@ -12,13 +12,13 @@ struct DirectionalLight
     DirectionalLight(DirectionalLight&&) = default;
     DirectionalLight& operator=(DirectionalLight&&) = default;
 
-    DirectionalLight(const DirectX::XMFLOAT4& _ambient, const DirectX::XMFLOAT4& _diffuse, const DirectX::XMFLOAT4& _specular,
-        const DirectX::XMFLOAT3& _direction) :
+    DirectionalLight(const vec4f& _ambient, const vec4f& _diffuse, const vec4f& _specular,
+        const vec3f& _direction) :
         ambient(_ambient), diffuse(_diffuse), specular(_specular), direction(_direction), dummy() {}
 
-    DirectX::XMFLOAT4 ambient;
-    DirectX::XMFLOAT4 diffuse;
-    DirectX::XMFLOAT4 specular;
-    DirectX::XMFLOAT3 direction;
+    vec4f ambient;
+    vec4f diffuse;
+    vec4f specular;
+    vec3f direction;
     float dummy;
 };

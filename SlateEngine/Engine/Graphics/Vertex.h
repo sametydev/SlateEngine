@@ -18,11 +18,11 @@ struct VertexPT
     VertexPT(VertexPT&&) = default;
     VertexPT& operator=(VertexPT&&) = default;
 
-    constexpr VertexPT(const DirectX::XMFLOAT3& _pos, const DirectX::XMFLOAT2& _tex) :
+    VertexPT(const vec3f& _pos, const vec2f& _tex) :
         pos(_pos), tex(_tex) {}
 
-    DirectX::XMFLOAT3 pos;
-    DirectX::XMFLOAT2 tex;
+    vec3f pos{};
+    vec2f tex{};
     static const D3D11_INPUT_ELEMENT_DESC inputLayout[2];
 };
 
@@ -36,13 +36,13 @@ struct VertexPNC
     VertexPNC(VertexPNC&&) = default;
     VertexPNC& operator=(VertexPNC&&) = default;
 
-    constexpr VertexPNC(const DirectX::XMFLOAT3& _pos, const DirectX::XMFLOAT3& _normal,
-        const DirectX::XMFLOAT4& _color) :
+    VertexPNC(const vec3f& _pos, const vec3f& _normal,
+        const vec4f& _color) :
         pos(_pos), normal(_normal), color(_color) {}
 
-    DirectX::XMFLOAT3 pos;
-    DirectX::XMFLOAT3 normal;
-    DirectX::XMFLOAT4 color;
+    vec3f pos;
+    vec3f normal;
+    vec4f color;
     static const D3D11_INPUT_ELEMENT_DESC inputLayout[3];
 };
 
@@ -57,12 +57,12 @@ struct VertexPNT
     VertexPNT(VertexPNT&&) = default;
     VertexPNT& operator=(VertexPNT&&) = default;
 
-    constexpr VertexPNT(const DirectX::XMFLOAT3& _pos, const DirectX::XMFLOAT3& _normal,
-        const DirectX::XMFLOAT2& _tex) :
+    VertexPNT(const vec3f& _pos, const vec3f& _normal,
+        const vec2f& _tex) :
         pos(_pos), normal(_normal), tex(_tex) {}
 
-    DirectX::XMFLOAT3 pos;
-    DirectX::XMFLOAT3 normal;
-    DirectX::XMFLOAT2 tex;
+    vec3f pos;
+    vec3f normal;
+    vec2f tex;
     static const D3D11_INPUT_ELEMENT_DESC inputLayout[3];
 };

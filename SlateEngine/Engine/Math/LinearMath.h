@@ -9,4 +9,5 @@ constexpr float DEGREES = (180.f / M_PI);
 #include <iostream>
 #include <SlateEngine/Engine/Math/vec2f.h>
 #include <SlateEngine/Engine/Math/vec3f.h>
+#include <SlateEngine/Engine/Math/vec4f.h>
 #include <SlateEngine/Engine/Math/mat4x4.h>
