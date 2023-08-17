@@ -29,6 +29,29 @@ mat4x4& Transform::GetGlobal()
 	return mGlobal;
 }
 
+mat4x4& Transform::GetLocal()
+{
+	return mLocal;
+}
+
+void Transform::SetParent(Transform* parent)
+{
+	if (parent == nullptr)
+	{
+		mParent = nullptr;
+		hasParent = false;
+		return;
+	}
+
+	mParent = parent;
+	hasParent = true;
+}
+
+bool Transform::HasParent()
+{
+	return hasParent;
+}
+
 void Transform::Update()
 {
 
@@ -44,13 +67,12 @@ void Transform::Update()
 
 	mLocal = S * T * R;
 
-	//NOT GOOD FOR PERFORMANCE ITS TEMPORARY
-	if (mParent == nullptr)
+	if (!hasParent)
 	{
 		mGlobal = mLocal;
 	}
 
-	if (mParent)
+	if (hasParent)
 	{
 		mGlobal = this->mLocal * mParent->mGlobal;
 	}

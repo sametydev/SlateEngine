@@ -48,12 +48,10 @@ bool Game::OnInit()
     vertexShader3D = new DXVertexShader();
     vertexShader3D->Compile(L"Shaders\\TexturedLit\\Lit3DVS.cso", L"Shaders\\TexturedLit\\Lit3DVS.hlsl", "main");
     vertexShader3D->CreateInputLayout(VertexPNT::inputLayout, ARRAYSIZE(VertexPNT::inputLayout));
-    LogWindow::Instance->AddLog("[Debug] Compiled Vertex Shader\n");
 
     //Create Pixel Shader 3D
     pixelShader3D = new DXPixelShader();
     pixelShader3D->Compile(L"Shaders\\TexturedLit\\Lit3DPS.cso", L"Shaders\\TexturedLit\\Lit3DPS.hlsl", "main");
-    LogWindow::Instance->AddLog("[Debug] Compiled Pixel Shader\n");
 
     m_box = new RenderableObject();
     m_box->SetTexture(m_crateTexture);

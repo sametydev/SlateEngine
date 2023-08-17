@@ -11,22 +11,29 @@ public:
 	void SetScale(const vec3f& scale);
 
 	mat4x4& GetGlobal();
+	mat4x4& GetLocal();
 
 	Transform* mParent = nullptr;
 
-	void Update();
+	void SetParent(Transform* parent);
+	bool HasParent();
 
-	mat4x4 mGlobal;
-	mat4x4 mLocal;
+
+	void Update();
 
 	vec3f mPosition;
 	vec3f mRotation;
 	vec3f mScale;
 
+private:
+	bool hasParent = false;
+	bool mIsAutoUpdate = false;
+
+	mat4x4 mGlobal;
+	mat4x4 mLocal;
+
 	union {
 		struct { vec3f mAxis[3]; };
 		struct { vec3f mRight, mUp, mForward; };
 	};
-
-	bool mIsAutoUpdate = false;
 };

@@ -37,7 +37,6 @@ void Camera::Update(float dt)
 	u.normalize();
 	f.normalize();
 
-
 	mLocal = {
 		r.x, u.x, f.x, mPos.x,
 		r.y, u.y, f.y, mPos.y,
