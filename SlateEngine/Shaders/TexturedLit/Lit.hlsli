@@ -26,28 +26,6 @@ cbuffer LightConstantBuffer : register(b2)
     int NumOfSpotLight;
 }
 
-//cbuffer VSConstantBuffer : register(b0)
-//{
-//    matrix World; 
-//    matrix View;  
-//    matrix Proj;  
-//    matrix WorldInverseTranspose;
-//}
-
-//cbuffer PSConstantBuffer : register(b1)
-//{
-//    DirectionalLight m_dirLight[10];
-//    PointLight m_pointLight[10];
-//    SpotLight m_spotLight[10];
-//    Material m_material;
-//    int NumOfDirLight;
-//    int NumOfPointLight;
-//    int NumOfSpotLight;
-//    float dummy1;
-
-//    float3 EyePos;
-//    float dummy2;
-//}
 
 
 struct VertexPNT
