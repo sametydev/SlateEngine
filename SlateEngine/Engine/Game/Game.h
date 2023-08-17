@@ -51,7 +51,7 @@ public:
     DXTexture* m_crateTexture = nullptr;
 private:
     //For Testing
-    void InitializeLighting();
+    void InitializeLightCb();
     ComPtr<ID3D11InputLayout> m_inputLayout = nullptr;
 
     DXConstantBuffer* m_frameConstantBuffer = nullptr;

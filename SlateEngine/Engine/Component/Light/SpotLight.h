@@ -4,7 +4,17 @@
 struct SpotLight
 {
 
-    SpotLight() = default;
+    SpotLight() {
+
+        position = vec3f(0.0f, 0.0f, -5.0f);
+        direction = vec3f(0.0f, 0.0f, 1.0f);
+        ambient = vec4f(0.0f, 0.0f, 0.0f, 1.0f);
+        diffuse = vec4f(1.0f, 1.0f, 1.0f, 1.0f);
+        specular = vec4f(1.0f, 1.0f, 1.0f, 1.0f);
+        attenutation = vec3f(1.0f, 0.0f, 0.0f);
+        spot = 12.0f;
+        range = 10000.0f;
+    }
 
     SpotLight(const SpotLight&) = default;
     SpotLight& operator=(const SpotLight&) = default;

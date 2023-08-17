@@ -4,7 +4,11 @@
 struct DirectionalLight
 {
 
-    DirectionalLight() = default;
+    DirectionalLight() {
+        ambient = vec4f(0.2f, 0.2f, 0.2f, 1.0f);
+        diffuse = vec4f(0.8f, 0.8f, 0.8f, 1.0f);
+        specular = vec4f(0.5f, 0.5f, 0.5f, 1.0f);
+    }
 
     DirectionalLight(const DirectionalLight&) = default;
     DirectionalLight& operator=(const DirectionalLight&) = default;
