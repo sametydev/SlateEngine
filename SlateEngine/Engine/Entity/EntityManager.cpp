@@ -14,14 +14,29 @@ EntityManager::~EntityManager()
 {
 }
 
-void EntityManager::OnAwake()
+void EntityManager::AddEntity(Entity* entity)
 {
-
+	entity->entity = entityRegistar.create();
 }
 
-entt::entity EntityManager::CreateEntity()
+void EntityManager::OnUpdate(float dt)
 {
-	entt::entity e = entityRegistar.create();
+	auto view = entityRegistar.view<RenderableObject>();
+	for (auto entity : view)
+	{
+		auto renderableObject = view.get<RenderableObject>(entity);
 
-	return e;
+		renderableObject.OnUpdate(dt);
+	}
+}
+
+void EntityManager::OnRender()
+{
+	auto view = entityRegistar.view<RenderableObject>();
+	for (auto entity : view)
+	{
+		auto renderableObject = view.get<RenderableObject>(entity);
+
+		renderableObject.OnRender();
+	}
 }

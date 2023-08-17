@@ -13,6 +13,7 @@
 #include <SlateEngine/Engine/Graphics/Texture/DXTexture.h>
 #include <SlateEngine/Engine/Component/RenderableObject.h>
 #include <SlateEngine/Engine/Component/Camera.h>
+#include <SlateEngine/Engine/Entity/Entity.h>
 #include <SlateEngine/Engine/Entity/EntityManager.h>
 
 
@@ -59,8 +60,8 @@ private:
     DXConstantBuffer* m_lightConstantBuffer = nullptr;
 
 
-    entt::entity testEntity;
-    entt::registry entityRegistar;
+    Entity* testEntity;
+    EntityManager* entityManager;
 
     Camera* m_camera{};
     ComPtr<ID3D11SamplerState> samplerState;				    

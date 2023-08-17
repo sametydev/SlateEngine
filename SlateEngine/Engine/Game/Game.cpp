@@ -53,11 +53,14 @@ bool Game::OnInit()
     pixelShader3D = new DXPixelShader();
     pixelShader3D->Compile(L"Shaders\\TexturedLit\\Lit3DPS.cso", L"Shaders\\TexturedLit\\Lit3DPS.hlsl", "main");
 
+    entityManager = new EntityManager();
 
-    testEntity = entityRegistar.create();
-    entityRegistar.emplace<RenderableObject>(testEntity);
+    testEntity = new Entity();
 
-    RenderableObject& r = entityRegistar.get<RenderableObject>(testEntity);
+    entityManager->AddEntity(testEntity);
+    testEntity->AddComponent<RenderableObject>();
+
+    RenderableObject& r = testEntity->GetComponent<RenderableObject>();
     r.SetTexture(m_crateTexture);
     r.SetBuffer(BuiltInMesh::CreateBox<VertexPNT>());
 
@@ -124,16 +127,9 @@ void Game::OnUpdateScene(float deltaTime)
 
     py += 10.f * deltaTime, tx += 10.f * deltaTime;
 
-    entityRegistar.get<RenderableObject>(testEntity).GetTransform()->SetRotation({py,tx,0});
+    testEntity->GetComponent<RenderableObject>().GetTransform()->SetRotation({py,tx,0});
 
-    auto view = entityRegistar.view<RenderableObject>();
-    for (auto entity : view)
-    {
-        auto renderableObject = view.get<RenderableObject>(entity);
-
-        renderableObject.OnUpdate(deltaTime);
-    }
-
+    entityManager->OnUpdate(deltaTime);
 
     UpdateGlobalConstantBuffers();
 
@@ -146,7 +142,7 @@ void Game::OnRenderScene()
 {
     ClearRenderTarget(clear);
 
-    entityRegistar.get<RenderableObject>(testEntity).OnRender();
+    entityManager->OnRender();
 
     D2DContext::Instance->OnRender();
     EditorUI::instance()->OnRender();

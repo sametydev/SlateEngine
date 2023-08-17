@@ -1,5 +1,5 @@
 #pragma once
-#include <entt.hpp>
+#include <SlateEngine/Engine/Entity/Entity.h>
 
 class EntityManager
 {
@@ -7,14 +7,16 @@ public:
 	EntityManager();
 	~EntityManager();
 
-	void OnAwake();
+	void AddEntity(Entity* entity);
 
-	entt::entity CreateEntity();
+	void OnUpdate(float dt);
+	void OnRender();
+
+	entt::registry& GetRegistar() { return entityRegistar; };
 
 	static EntityManager* Instance;
 
 private:
 	entt::registry entityRegistar;
-	
 };
 
