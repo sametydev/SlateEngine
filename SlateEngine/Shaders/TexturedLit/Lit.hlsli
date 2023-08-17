@@ -17,9 +17,9 @@ cbuffer OnFrameConstantBuffer : register(b1)
 
 cbuffer LightConstantBuffer : register(b2)
 {
-    DirectionalLight m_dirLight[10];
-    PointLight m_pointLight[10];
-    SpotLight m_spotLight[10];
+    DirectionalLight m_dirLight[1];
+    PointLight m_pointLight[1];
+    SpotLight m_spotLight[1];
     Material m_material;
     int NumOfDirLight;
     int NumOfPointLight;

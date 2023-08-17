@@ -1,5 +1,5 @@
 #pragma once
-#include <SlateEngine/Engine/DXConfig.h>
+#include <SlateEngine/Engine/Math/LineerMath.h>
 
 struct DirectionalLight
 {

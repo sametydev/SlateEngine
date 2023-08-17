@@ -25,6 +25,7 @@ bool Game::OnInit()
     LogWindow::Instance->AddLog("[Info] DirectX 11 Initialized!\n");
     LogWindow::Instance->AddLog("[Info] Game OnInit\n");
     LogWindow::Instance->AddLog("[Info] 2D UI System OnInit\n");
+    InitializeLighting();
 
     m_camera = new Camera(45.f, GetAspectRatio(), 0.01f, 1000.0f);
     m_camera->SetPosition(vec3f(0,0,-10));
@@ -69,8 +70,6 @@ bool Game::OnInit()
 
     cbd.cbSize = sizeof(LightConstantBuffer);
     m_lightConstantBuffer->Create(cbd);
- 
-    InitializeLighting();
 
     m_lightConstantBuffer->Map(sizeof(LightConstantBuffer), &LightConstantObject);
     m_lightConstantBuffer->UnMap();
@@ -115,18 +114,14 @@ void Game::OnUpdateScene(float deltaTime)
 {
     m_camera->Update(deltaTime);
     EditorUI::instance()->OnUpdate();
+
     FrameBufferConstantObject.eyePos = m_camera->GetPos();
     FrameBufferConstantObject.view = m_camera->GetViewMatrix();
     FrameBufferConstantObject.proj = m_camera->GetProjectionMatrix();
 
     m_box->OnUpdate(deltaTime);
-    //Updating VS Cbuffer
-    m_frameConstantBuffer->Map(sizeof(FrameConstantBuffer), &FrameBufferConstantObject);
-    m_frameConstantBuffer->UnMap();
 
-    //Updating PS Cbuffer
-    m_lightConstantBuffer->Map(sizeof(LightConstantBuffer), &LightConstantObject);
-    m_lightConstantBuffer->UnMap();
+    UpdateGlobalConstantBuffers();
 
     m_d3dContext->RSSetState(renderWireframe ? m_wireFrameRasterizer.Get() : nullptr);
 }
@@ -136,6 +131,7 @@ float Game::clear[4] = {0.3f, 0.3f, 0.3f, 1.0f};
 void Game::OnRenderScene()
 {
     ClearRenderTarget(clear);
+
     m_box->OnRender();
 
     D2DContext::Instance->OnRender();
@@ -143,9 +139,19 @@ void Game::OnRenderScene()
     HR(m_swapChain->Present(0, 0));
 }
 
+void Game::UpdateGlobalConstantBuffers()
+{
+    //Updating VS Cbuffer
+    m_frameConstantBuffer->Map(sizeof(FrameConstantBuffer), &FrameBufferConstantObject);
+    m_frameConstantBuffer->UnMap();
+
+    //Updating PS Cbuffer
+    m_lightConstantBuffer->Map(sizeof(LightConstantBuffer), &LightConstantObject);
+    m_lightConstantBuffer->UnMap();
+}
+
 void Game::InitializeLighting()
 {
-    
     LightConstantObject.pointLight[0].position = vec3f(0.0f, 0.0f, -10.0f);
     LightConstantObject.pointLight[0].ambient = vec4f(0.3f, 0.3f, 0.3f, 1.0f);
     LightConstantObject.pointLight[0].diffuse = vec4f(0.7f, 0.7f, 0.7f, 1.0f);

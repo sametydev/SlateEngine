@@ -1,9 +1,7 @@
 #pragma once
 #include <SlateEngine/Engine/Graphics/DXApplication.h>
 #include <SlateEngine/Engine/Editor/EditorUI.h>
-#include <SlateEngine/Engine/Component/PointLight.h>
-#include <SlateEngine/Engine/Component/SpotLight.h>
-#include <SlateEngine/Engine/Component/DirectionalLight.h>
+#include <SlateEngine/Engine/Component/Components.h>
 #include <SlateEngine/Engine/Graphics/Vertex.h>
 #include <SlateEngine/Engine/Graphics/Buffer/DXBuffer.h>
 #include <SlateEngine/Engine/Graphics/Shader/DXVertexShader.h>
@@ -32,6 +30,8 @@ public:
 
     //Todo, Scene*
     void OnRenderScene();
+
+    void UpdateGlobalConstantBuffers();
 
 
     //Temporary variables

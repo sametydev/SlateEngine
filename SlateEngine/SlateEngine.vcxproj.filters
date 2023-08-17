@@ -140,10 +140,10 @@
     <ClInclude Include="Engine\Component\Material.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Component\PointLight.h">
+    <ClInclude Include="Engine\Component\Light\PointLight.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Component\SpotLight.h">
+    <ClInclude Include="Engine\Component\Light\SpotLight.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Graphics\BuiltInMesh.h">
@@ -152,7 +152,7 @@
     <ClInclude Include="Engine\Graphics\DXRasterizerState.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Component\DirectionalLight.h">
+    <ClInclude Include="Engine\Component\Light\DirectionalLight.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Graphics\Shader\DXShader.h">
@@ -219,6 +219,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Math\vec4f.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Component\Components.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

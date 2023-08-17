@@ -1,9 +1,7 @@
 #pragma once
 #include <SlateEngine/Engine/DXConfig.h>
 #include <SlateEngine/Engine/Component/Material.h>
-#include <SlateEngine/Engine/Component/DirectionalLight.h>
-#include <SlateEngine/Engine/Component/SpotLight.h>
-#include <SlateEngine/Engine/Component/PointLight.h>
+#include <SlateEngine/Engine/Component/Components.h>
 
 
 struct VertexBufferDesc {
@@ -38,9 +36,9 @@ struct FrameConstantBuffer
 
 struct LightConstantBuffer
 {
-    DirectionalLight dirLight[10];
-    PointLight pointLight[10];
-    SpotLight spotLight[10];
+    DirectionalLight dirLight[1];
+    PointLight pointLight[1];
+    SpotLight spotLight[1];
     Material material;
     int numDirLight;
     int numPointLight;

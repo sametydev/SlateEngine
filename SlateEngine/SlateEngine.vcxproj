@@ -169,6 +169,7 @@
     <ClCompile Include="Engine\Editor\Windows\UIRenderablesWindow.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Engine\Component\Components.h" />
     <ClInclude Include="Engine\Component\RenderableObject.h" />
     <ClInclude Include="Engine\Component\Camera.h" />
     <ClInclude Include="Engine\Component\Transform.h" />
@@ -182,7 +183,7 @@
     <ClInclude Include="Engine\Graphics\Shader\DXPixelShader.h" />
     <ClInclude Include="Engine\Graphics\Shader\DXVertexShader.h" />
     <ClInclude Include="Engine\Graphics\Shader\DXShader.h" />
-    <ClInclude Include="Engine\Component\DirectionalLight.h" />
+    <ClInclude Include="Engine\Component\Light\DirectionalLight.h" />
     <ClInclude Include="Engine\Graphics\DXRasterizerState.h" />
     <ClInclude Include="Engine\Core\Singleton.h" />
     <ClInclude Include="Engine\Editor\EditorUI.h" />
@@ -194,8 +195,8 @@
     <ClInclude Include="Engine\Core\EngineConfig.h" />
     <ClInclude Include="Engine\Game\Game.h" />
     <ClInclude Include="Engine\Component\Material.h" />
-    <ClInclude Include="Engine\Component\PointLight.h" />
-    <ClInclude Include="Engine\Component\SpotLight.h" />
+    <ClInclude Include="Engine\Component\Light\PointLight.h" />
+    <ClInclude Include="Engine\Component\Light\SpotLight.h" />
     <ClInclude Include="Engine\Graphics\Vertex.h" />
     <ClInclude Include="Engine\Editor\Windows\LogWindow.h" />
     <ClInclude Include="Engine\Editor\Windows\InspectorWindow.h" />
