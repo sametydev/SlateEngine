@@ -119,6 +119,9 @@ void Game::OnUpdateScene(float deltaTime)
     FrameBufferConstantObject.view = m_camera->GetViewMatrix();
     FrameBufferConstantObject.proj = m_camera->GetProjectionMatrix();
 
+    py += 10.f * deltaTime, tx += 10.f * deltaTime;
+    m_box->GetTransform()->SetRotation({py,tx,0});
+
     m_box->OnUpdate(deltaTime);
 
     UpdateGlobalConstantBuffers();

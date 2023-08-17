@@ -18,28 +18,24 @@ public:
 	RenderableObject();
 	~RenderableObject();
 
-    vec3f GetPosition() const;
     template<class VertexType, class IndexType>
     void SetBuffer(const MeshData<VertexType, IndexType>& meshData);
     void SetTexture(DXTexture* texture);
-    void SetWorldMatrix(const mat4x4& world);
     void OnUpdate(float deltaTime);
     void OnRender();
 
+    Transform* GetTransform() { return transform; };
+
 private:
     Transform* transform{};
+
     DXVertexBuffer* m_vertexBuffer = nullptr;
     DXIndexBuffer* m_indexBuffer = nullptr;
+
     ObjectConstantBuffer   ObjectConstantBufferObject;
     DXConstantBuffer* m_objectConstantBuffer = nullptr;
-    UINT m_indices = 0;
 
-    //TEMPORARY!!
-    float x = 0.0f;
-    float y = 0.0f;
-    float py = 0.0f;
-    float tx = 0.0f;
-    float scale = 1.0f;
+    UINT m_indices = 0;
 
 };
 

@@ -36,11 +36,10 @@ public:
 
     //Temporary variables
     static Game* Instance;
-    static float x;
-    static float y;
-    static float py;
-    static float tx;
-    static float scale;
+
+    float py;
+    float tx;
+
 
     static float clear[4];
 
@@ -66,6 +65,5 @@ private:
     DXPixelShader* pixelShader3D = nullptr;
 
     ComPtr<ID3D11RasterizerState> m_wireFrameRasterizer = nullptr;
-
 
 };
