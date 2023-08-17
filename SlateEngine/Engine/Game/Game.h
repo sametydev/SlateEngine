@@ -14,6 +14,8 @@
 #include <SlateEngine/Engine/Graphics/BuiltInMesh.h>
 #include <SlateEngine/Engine/Graphics/Texture/DXTexture.h>
 #include <SlateEngine/Engine/Component/RenderableObject.h>
+#include <SlateEngine/Engine/Component/Camera.h>
+#include <SlateEngine/Engine/Math/LinearMath.h>
 
 class Game : public DXApplication
 {
@@ -57,7 +59,7 @@ private:
     DXConstantBuffer* m_lightConstantBuffer = nullptr;
 
     RenderableObject* m_box;
-
+    Camera* m_camera{};
     ComPtr<ID3D11SamplerState> samplerState;				    
 
     DXVertexShader* vertexShader3D = nullptr;

@@ -11,6 +11,7 @@
 #include <SlateEngine/Engine/Graphics/Texture/DXTexture.h>
 #include <SlateEngine/Engine/DXConfig.h>
 #include <SlateEngine/Engine/Graphics/DXApplication.h>
+#include <SlateEngine/Engine/Component/Transform.h>
 
 struct RenderableObject {
 public:
@@ -26,6 +27,7 @@ public:
     void OnRender();
 
 private:
+    Transform* transform{};
     DXVertexBuffer* m_vertexBuffer = nullptr;
     DXIndexBuffer* m_indexBuffer = nullptr;
     ObjectConstantBuffer   ObjectConstantBufferObject;

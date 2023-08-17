@@ -2,6 +2,8 @@
 
 RenderableObject::RenderableObject()
 {
+    transform = new Transform();
+    transform->SetPosition({ 0,0,0 });
     //Create our Vertex Buffer
     m_vertexBuffer = new DXVertexBuffer();
 
@@ -10,8 +12,8 @@ RenderableObject::RenderableObject()
 
     m_objectConstantBuffer = new DXConstantBuffer();
 
-    ObjectConstantBufferObject.world = XMMatrixIdentity();
-    ObjectConstantBufferObject.worldInverseTranspose = XMMatrixIdentity();
+    ObjectConstantBufferObject.world = mat4x4();
+    ObjectConstantBufferObject.worldInverseTranspose = mat4x4();
 
     ConstantBufferDesc cbd{};
     cbd.cbSize = sizeof(ObjectConstantBuffer);
@@ -41,13 +43,13 @@ void RenderableObject::SetWorldMatrix(const XMFLOAT4X4& world)
 
 void RenderableObject::OnUpdate(float deltaTime)
 {
+    
     //TEMPORARY!
-    py += 0.17f * deltaTime, tx += 0.27f * deltaTime;
-    py = XMScalarModAngle(py);
-    tx = XMScalarModAngle(tx);
-    XMMATRIX W = XMMatrixRotationX(py) * XMMatrixRotationY(tx);
-    ObjectConstantBufferObject.world = XMMatrixTranspose(W);
-    ObjectConstantBufferObject.worldInverseTranspose = XMMatrixTranspose(InverseTranspose(W));
+    py += 10.f * deltaTime, tx += 10.f * deltaTime;
+    transform->SetRotation({ py,tx,0 });
+    ObjectConstantBufferObject.world = transform->GetGlobal();
+    ObjectConstantBufferObject.worldInverseTranspose = mat4x4::transposed(transform->GetGlobal().inverted());
+    transform->Update();
     //TEMPORARY!
 
     m_objectConstantBuffer->Map(sizeof(ObjectConstantBuffer), &ObjectConstantBufferObject);

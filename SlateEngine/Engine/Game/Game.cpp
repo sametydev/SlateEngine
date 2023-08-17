@@ -26,6 +26,9 @@ bool Game::OnInit()
     LogWindow::Instance->AddLog("[Info] Game OnInit\n");
     LogWindow::Instance->AddLog("[Info] 2D UI System OnInit\n");
 
+    m_camera = new Camera(45.f, GetAspectRatio(), 0.01f, 1000.0f);
+    m_camera->SetPosition(vec3f(0,0,-10));
+
     m_crateTexture = new DXTexture();
     m_crateTexture->Load(L"Textures\\Crate.dds");
 
@@ -85,9 +88,7 @@ bool Game::OnInit()
 
     vertexShader3D->Bind();
 
-
     m_frameConstantBuffer->BindVS(1);
-    //m_box->ConstantBufferBind();
 
     m_frameConstantBuffer->BindPS(1);
     m_lightConstantBuffer->BindPS(2);
@@ -103,19 +104,20 @@ void Game::OnResize()
     D2DContext::Instance->BeginResize();
     DXApplication::OnResize();
     D2DContext::Instance->OnResize();
+
+    if (m_camera != nullptr)
+    {
+        FrameBufferConstantObject.proj = m_camera->GetProjectionMatrix();
+    }
 }
 
 void Game::OnUpdateScene(float deltaTime)
 {
-    //py += 0.17f * deltaTime, tx += 0.27f * deltaTime;
-    //py = XMScalarModAngle(py);
-    //tx = XMScalarModAngle(tx);
-
-    //XMMATRIX W = XMMatrixRotationX(py) * XMMatrixRotationY(tx);
-    //OnRenderConstantObject.world = XMMatrixTranspose(W);
-    //OnRenderConstantObject.worldInverseTranspose = XMMatrixTranspose(InverseTranspose(W));
-
+    m_camera->Update(deltaTime);
     EditorUI::instance()->OnUpdate();
+    FrameBufferConstantObject.eyePos = m_camera->GetPos();
+    FrameBufferConstantObject.view = m_camera->GetViewMatrix();
+    FrameBufferConstantObject.proj = m_camera->GetProjectionMatrix();
 
     m_box->OnUpdate(deltaTime);
     //Updating VS Cbuffer
@@ -144,12 +146,8 @@ void Game::OnRenderScene()
 void Game::InitializeLighting()
 {
     
-    FrameBufferConstantObject.view = XMMatrixTranspose(XMMatrixLookAtLH(
-        XMVectorSet(0.0f, 0.0f, -5.0f, 0.0f),
-        XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f),
-        XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f)
-    ));
-    FrameBufferConstantObject.proj = XMMatrixTranspose(XMMatrixPerspectiveFovLH(XM_PIDIV2, GetAspectRatio(), 1.0f, 1000.0f));
+
+    FrameBufferConstantObject.proj = m_camera->GetProjectionMatrix();
 
 
     LightConstantObject.pointLight[0].position = XMFLOAT3(0.0f, 0.0f, -10.0f);
@@ -161,9 +159,7 @@ void Game::InitializeLighting()
     LightConstantObject.numDirLight = 0;
     LightConstantObject.numPointLight = 1;
     LightConstantObject.numSpotLight = 0;
-    FrameBufferConstantObject.eyePos = XMFLOAT4(0.0f, 0.0f, -5.0f, 0.0f);
     LightConstantObject.material.ambient = XMFLOAT4(0.5f, 0.5f, 0.5f, 1.0f);
     LightConstantObject.material.diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
     LightConstantObject.material.specular = XMFLOAT4(0.1f, 0.1f, 0.1f, 5.0f);
-    FrameBufferConstantObject.eyePos = XMFLOAT4(0.0f, 0.0f, -5.0f, 0.0f);
 }

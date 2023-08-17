@@ -6,7 +6,7 @@ float4 main(VertexPhwNT pIn) : SV_Target
     pIn.normal = normalize(pIn.normal);
 
 
-    float3 toEye = normalize(EyePos - pIn.posW);
+    float3 toEye = normalize(EyePos - pIn.posWorld);
 
     float4 ambient = float4(0.0f, 0.0f, 0.0f, 0.0f);
     float4 diffuse = float4(0.0f, 0.0f, 0.0f, 0.0f);
@@ -26,7 +26,7 @@ float4 main(VertexPhwNT pIn) : SV_Target
     
     for (i = 0; i < NumOfPointLight; ++i)
     {
-        ComputePointLight(m_material, m_pointLight[i], pIn.posW, pIn.normal, toEye, A, D, S);
+        ComputePointLight(m_material, m_pointLight[i], pIn.posWorld, pIn.normal, toEye, A, D, S);
         ambient += A;
         diffuse += D;
         spec += S;
@@ -34,7 +34,7 @@ float4 main(VertexPhwNT pIn) : SV_Target
     
     for (i = 0; i < NumOfSpotLight; ++i)
     {
-        ComputeSpotLight(m_material, m_spotLight[i], pIn.posW, pIn.normal, toEye, A, D, S);
+        ComputeSpotLight(m_material, m_spotLight[i], pIn.posWorld, pIn.normal, toEye, A, D, S);
         ambient += A;
         diffuse += D;
         spec += S;

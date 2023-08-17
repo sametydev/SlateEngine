@@ -2,7 +2,7 @@
 Texture2D m_texture : register(t0);
 SamplerState m_samplerState : register(s0);
 
-cbuffer OnRenderConstantBuffer : register(b0)
+cbuffer ObjectConstantBuffer : register(b0)
 {
     matrix World;
     matrix WorldInverseTranspose;
@@ -52,7 +52,7 @@ cbuffer LightConstantBuffer : register(b2)
 
 struct VertexPNT
 {
-    float3 posL : POSITION;
+    float3 pos : POSITION;
     float3 normal : NORMAL;
     float2 tex : TEXCOORD;
 };
@@ -65,14 +65,8 @@ struct VertexPT
 
 struct VertexPhwNT
 {
-    float4 posH : SV_POSITION;
-    float3 posW : POSITION;   
+    float4 posHom : SV_POSITION;
+    float3 posWorld : POSITION;   
     float3 normal : NORMAL;  
-    float2 tex : TEXCOORD;
-};
-
-struct VertexPhT
-{
-    float4 posH : SV_POSITION;
     float2 tex : TEXCOORD;
 };

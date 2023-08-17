@@ -4,6 +4,7 @@
 #include <SlateEngine/Engine/Component/DirectionalLight.h>
 #include <SlateEngine/Engine/Component/SpotLight.h>
 #include <SlateEngine/Engine/Component/PointLight.h>
+#include <SlateEngine/Engine/Math/LinearMath.h>
 
 struct VertexBufferDesc {
     const void* pData;
@@ -24,15 +25,15 @@ struct ConstantBufferDesc {
 
 struct ObjectConstantBuffer
 {
-    DirectX::XMMATRIX world;
-    DirectX::XMMATRIX worldInverseTranspose;
+    mat4x4 world;
+    mat4x4 worldInverseTranspose;
 };
 
 struct FrameConstantBuffer
 {
-    DirectX::XMMATRIX view;
-    DirectX::XMFLOAT4 eyePos;
-    DirectX::XMMATRIX proj;
+    mat4x4 view;
+    vec3f eyePos;
+    mat4x4 proj;
 };
 
 struct LightConstantBuffer
