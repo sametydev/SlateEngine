@@ -1,5 +1,5 @@
 #pragma once
-#include <SlateEngine/Engine/Math/LinearMath.h>
+#include <SlateEngine/Engine/Math/LineerMath.h>
 
 struct vec2f
 {

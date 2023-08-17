@@ -15,7 +15,7 @@
 #include <SlateEngine/Engine/Graphics/Texture/DXTexture.h>
 #include <SlateEngine/Engine/Component/RenderableObject.h>
 #include <SlateEngine/Engine/Component/Camera.h>
-#include <SlateEngine/Engine/Math/LinearMath.h>
+
 
 class Game : public DXApplication
 {

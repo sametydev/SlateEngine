@@ -22,7 +22,7 @@
 #include <algorithm>
 
 #include <SlateEngine/Engine/Core/EngineConfig.h>
-#include <SlateEngine/Engine/Math/LinearMath.h>
+#include <SlateEngine/Engine/Math/LineerMath.h>
 #include <DirectXMath.h>
 
 using namespace DirectX;

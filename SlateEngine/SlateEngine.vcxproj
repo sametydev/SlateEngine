@@ -200,7 +200,7 @@
     <ClInclude Include="Engine\Editor\Windows\LogWindow.h" />
     <ClInclude Include="Engine\Editor\Windows\InspectorWindow.h" />
     <ClInclude Include="Engine\Editor\Windows\UIRenderablesWindow.h" />
-    <ClInclude Include="Engine\Math\LinearMath.h" />
+    <ClInclude Include="Engine\Math\LineerMath.h" />
     <ClInclude Include="Engine\Math\mat4x4.h" />
     <ClInclude Include="Engine\Math\rect.h" />
     <ClInclude Include="Engine\Math\vec2f.h" />
@@ -239,10 +239,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="Textures\AnimatedTex\tex1.png" />
-    <Image Include="Textures\AnimatedTex\tex2.png" />
-    <Image Include="Textures\AnimatedTex\tex3.png" />
-    <Image Include="Textures\AnimatedTex\tex4.png" />
     <Image Include="Textures\Crate.dds" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -200,7 +200,7 @@
     <ClInclude Include="Engine\Component\RenderableObject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Math\LinearMath.h">
+    <ClInclude Include="Engine\Math\LineerMath.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Math\mat4x4.h">
@@ -230,18 +230,6 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="Textures\Crate.dds" />
-    <Image Include="Textures\AnimatedTex\tex4.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="Textures\AnimatedTex\tex1.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="Textures\AnimatedTex\tex2.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="Textures\AnimatedTex\tex3.png">
-      <Filter>Resource Files</Filter>
-    </Image>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Shaders\TexturedLit\Lit3DVS.hlsl" />

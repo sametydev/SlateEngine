@@ -4,7 +4,7 @@
 #include <SlateEngine/Engine/Component/DirectionalLight.h>
 #include <SlateEngine/Engine/Component/SpotLight.h>
 #include <SlateEngine/Engine/Component/PointLight.h>
-#include <SlateEngine/Engine/Math/LinearMath.h>
+
 
 struct VertexBufferDesc {
     const void* pData;
