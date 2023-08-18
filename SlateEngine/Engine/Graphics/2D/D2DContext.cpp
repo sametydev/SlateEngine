@@ -65,9 +65,12 @@ void D2DContext::OnRender()
     {
         m_d2dRenderTarget->BeginDraw();
 
-        for (auto t:m_texts)
+        auto view = r2registar.view<C2DText>();
+        for (auto entity : view)
         {
-            t->OnRender();
+            auto renderableObject = view.get<C2DText>(entity);
+
+            renderableObject.OnRender();
         }
 
         HR(m_d2dRenderTarget->EndDraw());
@@ -75,7 +78,8 @@ void D2DContext::OnRender()
 
 }
 
-void D2DContext::AddTextForRender(C2DText* text)
+void D2DContext::AddTextForRender(LPCWSTR t, float x, float y, float w, float h)
 {
-    m_texts.emplace(text);
+    entt::entity dummy = r2registar.create();
+    r2registar.emplace<C2DText>(dummy,t,x,y,w,h);
 }

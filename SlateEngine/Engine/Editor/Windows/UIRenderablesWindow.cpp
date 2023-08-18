@@ -34,16 +34,17 @@ void UIRenderablesWindow::OnDraw()
 	ImGui::InputText("Label", bufpass, 64);
 	if (ImGui::Button("Add Text To Render"))
 	{
-		new C2DText(charToWChar(bufpass), ui_x, ui_y, 600.0f, 200.0f);
+		D2DContext::Instance->AddTextForRender(charToWChar(bufpass), ui_x, ui_y, 600.0f, 200.0f);
 	}
 
-	for (auto r : D2DContext::Instance->m_texts)
-	{
-		if (ImGui::TreeNode(r->GetText()))
+	D2DContext::Instance->GetRegistar().each([](auto entity)
 		{
-			ImGui::TreePop();
-		}
-	}
+			C2DText& name = D2DContext::Instance->GetRegistar().get<C2DText>(entity);
+			if (ImGui::TreeNode(name.GetText()))
+			{
+				ImGui::TreePop();
+			}
+		});
 
 	ImGui::End();
 }

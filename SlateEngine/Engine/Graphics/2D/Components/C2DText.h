@@ -3,13 +3,10 @@
 #include <d2d1.h>
 #include <dwrite.h>
 
-class C2DText
+struct C2DText
 {
 public:
-	C2DText();
 	C2DText(LPCWSTR text,float x, float y, float w, float h);
-	~C2DText();
-
 	void OnRender();
 
 	const char* GetText();

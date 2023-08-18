@@ -32,3 +32,9 @@ inline T& Entity::GetComponent()
 {
 	return EntityManager::Instance->GetRegistar().get<T>(entity);
 }
+
+struct EntityName {
+public:
+	EntityName(const char* n) : name(n) {};
+	const char* name;
+};

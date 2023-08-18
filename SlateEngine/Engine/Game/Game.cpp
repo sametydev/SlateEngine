@@ -57,7 +57,7 @@ bool Game::OnInit()
 
     testEntity = new Entity();
 
-    entityManager->AddEntity(testEntity);
+    entityManager->AddEntity(testEntity,"Test Object");
     testEntity->AddComponent<RenderableObject>();
 
     RenderableObject& r = testEntity->GetComponent<RenderableObject>();

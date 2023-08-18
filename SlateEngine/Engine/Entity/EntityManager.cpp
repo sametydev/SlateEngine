@@ -17,6 +17,13 @@ EntityManager::~EntityManager()
 void EntityManager::AddEntity(Entity* entity)
 {
 	entity->entity = entityRegistar.create();
+	entityRegistar.emplace<EntityName>(entity->entity,"Entity");
+}
+
+void EntityManager::AddEntity(Entity* entity, const char* name)
+{
+	entity->entity = entityRegistar.create();
+	entityRegistar.emplace<EntityName>(entity->entity, name);
 }
 
 void EntityManager::OnUpdate(float dt)

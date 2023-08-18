@@ -2,6 +2,7 @@
 #include <SlateEngine/Engine/Editor/Windows/LogWindow.h>
 #include <SlateEngine/Engine/Editor/Windows/InspectorWindow.h>
 #include <SlateEngine/Engine/Editor/Windows/UIRenderablesWindow.h>
+#include <SlateEngine/Engine/Editor/Windows/SceneHierarchy.h>
 
 EditorUI::EditorUI()
 {
@@ -34,10 +35,13 @@ void EditorUI::OnInit()
     LogWindow* logWindow = new LogWindow();
     InspectorWindow* inspectorWindow = new InspectorWindow();
     UIRenderablesWindow* uirenderables = new UIRenderablesWindow();
+    SceneHierarchy* scene = new SceneHierarchy();
+
 
     windows.emplace(inspectorWindow);
     windows.emplace(logWindow);
     windows.emplace(uirenderables);
+    windows.emplace(scene);
 
     for (auto w : windows)
     {

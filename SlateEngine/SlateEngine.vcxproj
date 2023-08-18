@@ -169,6 +169,7 @@
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Engine\Core\Timer.cpp" />
     <ClCompile Include="Engine\Editor\Windows\UIRenderablesWindow.cpp" />
+    <ClCompile Include="Engine\Editor\Windows\SceneHierarchy.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Component\Components.h" />
@@ -211,6 +212,7 @@
     <ClInclude Include="Engine\Math\vec4f.h" />
     <ClInclude Include="Engine\Entity\EntityManager.h" />
     <ClInclude Include="Engine\Entity\Entity.h" />
+    <ClInclude Include="Engine\Editor\Windows\SceneHierarchy.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\LightsHeader.hlsli" />

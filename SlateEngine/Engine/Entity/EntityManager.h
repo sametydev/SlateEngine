@@ -8,6 +8,7 @@ public:
 	~EntityManager();
 
 	void AddEntity(Entity* entity);
+	void AddEntity(Entity* entity,const char* name);
 
 	void OnUpdate(float dt);
 	void OnRender();

@@ -6,6 +6,8 @@
 #include <dwrite.h>
 #include <set>
 
+#include <entt.hpp>
+
 class D2DContext
 {
 public:
@@ -31,7 +33,9 @@ public:
 		return m_textFormat;
 	}
 
-	void AddTextForRender(C2DText* text);
+	entt::registry& GetRegistar() { return r2registar; };
+
+	void AddTextForRender(LPCWSTR t, float x, float y, float w, float h);
 private:
 	friend class UIRenderablesWindow;
 	ComPtr<ID2D1Factory> m_d2dFactory;
@@ -42,6 +46,6 @@ private:
 	ComPtr<IDWriteFont> m_writeFont;
 	ComPtr<IDWriteTextFormat> m_textFormat;
 
-	std::set<C2DText*> m_texts;
+	entt::registry r2registar;
 };
 
