@@ -51,6 +51,7 @@ public:
     LightConstantBuffer  LightConstantObject;
 
     DXTexture* m_crateTexture = nullptr;
+    Entity* testEntity;
 private:
     //For Testing
     void InitializeLightCb();
@@ -60,7 +61,7 @@ private:
     DXConstantBuffer* m_lightConstantBuffer = nullptr;
 
 
-    Entity* testEntity;
+
     EntityManager* entityManager;
 
     Camera* m_camera{};

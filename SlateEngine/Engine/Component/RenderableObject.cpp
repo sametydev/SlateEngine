@@ -16,6 +16,10 @@ RenderableObject::RenderableObject()
     ObjectConstantBufferObject.world = mat4x4();
     ObjectConstantBufferObject.worldInverseTranspose = mat4x4();
 
+    ObjectConstantBufferObject.material.ambient = vec4f(0.5f, 0.5f, 0.5f, 1.0f);
+    ObjectConstantBufferObject.material.diffuse = vec4f(1.0f, 1.0f, 1.0f, 1.0f);
+    ObjectConstantBufferObject.material.specular = vec4f(0.1f, 0.1f, 0.1f, 5.0f);
+
     ConstantBufferDesc cbd{};
     cbd.cbSize = sizeof(ObjectConstantBuffer);
     m_objectConstantBuffer->Create(cbd);

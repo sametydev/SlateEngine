@@ -25,6 +25,7 @@ public:
     void OnRender();
 
     Transform* GetTransform() { return transform; };
+    ObjectConstantBuffer& GetObjectCb() { return ObjectConstantBufferObject; };
 
 private:
     Transform* transform{};

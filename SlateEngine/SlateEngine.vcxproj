@@ -166,6 +166,7 @@
     <ClCompile Include="Engine\Editor\Windows\LogWindow.cpp" />
     <ClCompile Include="Engine\Editor\Windows\InspectorWindow.cpp" />
     <ClCompile Include="LibarySources\WICTextureLoader11.cpp" />
+    <ClCompile Include="Engine\Editor\Windows\LightingSettingsWindow.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Engine\Core\Timer.cpp" />
     <ClCompile Include="Engine\Editor\Windows\UIRenderablesWindow.cpp" />
@@ -213,6 +214,7 @@
     <ClInclude Include="Engine\Entity\EntityManager.h" />
     <ClInclude Include="Engine\Entity\Entity.h" />
     <ClInclude Include="Engine\Editor\Windows\SceneHierarchy.h" />
+    <ClInclude Include="Engine\Editor\Windows\LightingSettingsWindow.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\LightsHeader.hlsli" />

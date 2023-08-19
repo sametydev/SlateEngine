@@ -25,6 +25,7 @@ struct ObjectConstantBuffer
 {
     mat4x4 world;
     mat4x4 worldInverseTranspose;
+    Material material;
 };
 
 struct FrameConstantBuffer
@@ -39,7 +40,6 @@ struct LightConstantBuffer
     DirectionalLight dirLight[1];
     PointLight pointLight[1];
     SpotLight spotLight[1];
-    Material material;
     int numDirLight;
     int numPointLight;
     int numSpotLight;

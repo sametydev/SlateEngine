@@ -25,7 +25,7 @@ bool Game::OnInit()
     LogWindow::Instance->AddLog("[Info] DirectX 11 Initialized!\n");
     LogWindow::Instance->AddLog("[Info] Game OnInit\n");
     LogWindow::Instance->AddLog("[Info] 2D UI System OnInit\n");
-    InitializeLightCb();
+
 
     m_camera = new Camera(45.f, GetAspectRatio(), 0.01f, 1000.0f);
     m_camera->SetPosition(vec3f(0,0,-10));
@@ -64,7 +64,7 @@ bool Game::OnInit()
     r.SetTexture(m_crateTexture);
     r.SetBuffer(BuiltInMesh::CreateBox<VertexPNT>());
 
-
+    InitializeLightCb();
     //Creating Constant Buffers;
     m_frameConstantBuffer = new DXConstantBuffer();
     m_lightConstantBuffer = new DXConstantBuffer();
@@ -165,8 +165,4 @@ void Game::InitializeLightCb()
     LightConstantObject.numDirLight = 0;
     LightConstantObject.numPointLight = 1;
     LightConstantObject.numSpotLight = 0;
-
-    LightConstantObject.material.ambient = vec4f(0.5f, 0.5f, 0.5f, 1.0f);
-    LightConstantObject.material.diffuse = vec4f(1.0f, 1.0f, 1.0f, 1.0f);
-    LightConstantObject.material.specular = vec4f(0.1f, 0.1f, 0.1f, 5.0f);
 }

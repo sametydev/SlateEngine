@@ -3,6 +3,7 @@
 #include <SlateEngine/Engine/Editor/Windows/InspectorWindow.h>
 #include <SlateEngine/Engine/Editor/Windows/UIRenderablesWindow.h>
 #include <SlateEngine/Engine/Editor/Windows/SceneHierarchy.h>
+#include <SlateEngine/Engine/Editor/Windows/LightingSettingsWindow.h>
 
 EditorUI::EditorUI()
 {
@@ -36,12 +37,13 @@ void EditorUI::OnInit()
     InspectorWindow* inspectorWindow = new InspectorWindow();
     UIRenderablesWindow* uirenderables = new UIRenderablesWindow();
     SceneHierarchy* scene = new SceneHierarchy();
-
+    LightingSettingsWindow* light = new LightingSettingsWindow();
 
     windows.emplace(inspectorWindow);
     windows.emplace(logWindow);
     windows.emplace(uirenderables);
     windows.emplace(scene);
+    windows.emplace(light);
 
     for (auto w : windows)
     {

@@ -19,17 +19,19 @@ void UIRenderablesWindow::OnDraw(const char* title)
 {
 
 }
+#define EntityRegistar D2DContext::Instance->GetRegistar()
 
 float ui_x, ui_y;
 void UIRenderablesWindow::OnDraw()
 {
 	ImGui::Begin(windowName);
 
-	ImGui::Dummy(ImVec2(0.0f, 15.0f));
+
 	ImGui::Text("UI Text Summoner:");
 
 	ImGui::InputFloat("Text X", &ui_x);
 	ImGui::InputFloat("Text Y", &ui_y);
+
 	static char bufpass[64] = "MyLabel";
 	ImGui::InputText("Label", bufpass, 64);
 	if (ImGui::Button("Add Text To Render"))
@@ -39,14 +41,16 @@ void UIRenderablesWindow::OnDraw()
 
 	if (ImGui::Button("Remove"))
 	{
-		if (D2DContext::Instance->GetRegistar().valid(selectedEntity)) {
-			D2DContext::Instance->GetRegistar().destroy(selectedEntity);
+		if (EntityRegistar.valid(selectedEntity)) {
+			EntityRegistar.destroy(selectedEntity);
 		}
 	}
 
-	D2DContext::Instance->GetRegistar().each([&](auto entity)
+	ImGui::Dummy(ImVec2(0.0f, 15.0f));
+	ImGui::Text("2D Renderables List : ");
+	EntityRegistar.each([&](auto entity)
 		{
-			C2DText& name = D2DContext::Instance->GetRegistar().get<C2DText>(entity);
+			C2DText& name = EntityRegistar.get<C2DText>(entity);
 
 			ImGuiTreeNodeFlags flags = ((selectedEntity == entity) ? ImGuiTreeNodeFlags_Selected : 0) | ImGuiTreeNodeFlags_OpenOnArrow;
 			flags |= ImGuiTreeNodeFlags_SpanAvailWidth;
