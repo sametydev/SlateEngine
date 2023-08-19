@@ -37,13 +37,30 @@ void UIRenderablesWindow::OnDraw()
 		D2DContext::Instance->AddTextForRender(charToWChar(bufpass), ui_x, ui_y, 600.0f, 200.0f);
 	}
 
-	D2DContext::Instance->GetRegistar().each([](auto entity)
+	if (ImGui::Button("Remove"))
+	{
+		if (D2DContext::Instance->GetRegistar().valid(selectedEntity)) {
+			D2DContext::Instance->GetRegistar().destroy(selectedEntity);
+		}
+	}
+
+	D2DContext::Instance->GetRegistar().each([&](auto entity)
 		{
 			C2DText& name = D2DContext::Instance->GetRegistar().get<C2DText>(entity);
-			if (ImGui::TreeNode(name.GetText()))
+
+			ImGuiTreeNodeFlags flags = ((selectedEntity == entity) ? ImGuiTreeNodeFlags_Selected : 0) | ImGuiTreeNodeFlags_OpenOnArrow;
+			flags |= ImGuiTreeNodeFlags_SpanAvailWidth;
+
+			if (ImGui::TreeNodeEx(name.GetText(),flags))
 			{
 				ImGui::TreePop();
+				
 			}
+			if (ImGui::IsItemClicked())
+			{
+				selectedEntity = entity;
+			}
+
 		});
 
 	ImGui::End();

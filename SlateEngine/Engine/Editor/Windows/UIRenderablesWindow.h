@@ -2,6 +2,7 @@
 #include <SlateEngine/Engine/Editor/Windows/IWindow.h>
 #include <SlateEngine/Engine/Game/Game.h>
 
+
 class UIRenderablesWindow :
 	public IWindow
 {
@@ -16,5 +17,6 @@ private:
 	const char* windowName;
 
 	Game* game = nullptr;
+	entt::entity selectedEntity;
 };
 
