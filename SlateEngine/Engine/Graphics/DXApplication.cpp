@@ -4,7 +4,7 @@
 #include <SlateEngine/Engine/Graphics/2D/D2DContext.h>
 #include <sstream>
 #include <SlateEngine/Engine/Editor/Windows/LogWindow.h>
-
+#include <SlateEngine/Engine/Input/InputSystem.h>
 #pragma warning(disable: 6031)
 
 extern "C"
@@ -88,7 +88,7 @@ int DXApplication::OnRun()
         else
         {
             mTimer.OnTick();
-
+            InputSystem::Update(hWindow);
             if (!bPaused)
             {
                 EditorUI::instance()->NewFrame();

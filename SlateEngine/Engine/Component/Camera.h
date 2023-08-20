@@ -7,7 +7,7 @@ class Camera
 		Right = 0, Up, Forward
 	};
 public:
-	Camera(float fov, float aspectRatio, float near, float far);
+	Camera(float fov, float aspectRatio, float _near, float _far);
 
 	void SetFOV(float value);
 	void SetAspectRatio(float value);

@@ -12,6 +12,8 @@ public:
 	void OnInit() override;
 	void OnDraw(const char* title) override;
 	void OnDraw() override;
+
+	void DrawTransform(const char* label,vec3f& val);
 private:
 	const char* windowName;
 

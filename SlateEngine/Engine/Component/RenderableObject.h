@@ -24,7 +24,7 @@ public:
     void OnUpdate(float deltaTime);
     void OnRender();
 
-    Transform* GetTransform() { return transform; };
+    Transform& GetTransform() { return *transform; };
     ObjectConstantBuffer& GetObjectCb() { return ObjectConstantBufferObject; };
 
 private:

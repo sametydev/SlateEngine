@@ -154,6 +154,7 @@
     <ClCompile Include="Engine\Graphics\Vertex.cpp" />
     <ClCompile Include="Engine\Entity\EntityManager.cpp" />
     <ClCompile Include="Engine\Entity\Entity.cpp" />
+    <ClCompile Include="Engine\Input\InputSystem.cpp" />
     <ClCompile Include="LibarySources\DDSTextureLoader11.cpp" />
     <ClCompile Include="LibarySources\imgui.cpp" />
     <ClCompile Include="LibarySources\imgui_demo.cpp" />
@@ -215,6 +216,7 @@
     <ClInclude Include="Engine\Entity\Entity.h" />
     <ClInclude Include="Engine\Editor\Windows\SceneHierarchy.h" />
     <ClInclude Include="Engine\Editor\Windows\LightingSettingsWindow.h" />
+    <ClInclude Include="Engine\Input\InputSystem.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\LightsHeader.hlsli" />
