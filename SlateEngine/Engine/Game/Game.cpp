@@ -27,14 +27,14 @@ bool Game::OnInit()
 
     LogWindow::Instance->AddLog("[Info] DirectX 11 Initialized!\n");
     LogWindow::Instance->AddLog("[Info] Game OnInit\n");
-    LogWindow::Instance->AddLog("[Info] 2D UI System OnInit\n");
 
 
     m_camera = new Camera(45.f, GetAspectRatio(), 0.01f, 1000.0f);
     m_camera->SetPosition(vec3f(0,0,-10));
 
-    m_crateTexture = new DXTexture();
-    m_crateTexture->Load(L"Textures\\Crate.dds");
+
+    entityManager = new EntityManager();
+
 
     D3D11_SAMPLER_DESC sampDesc{};
     sampDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
@@ -47,28 +47,19 @@ bool Game::OnInit()
     sampDesc.MaxAnisotropy = D3D11_MAX_MAXANISOTROPY;
     HR(m_d3dDevice->CreateSamplerState(&sampDesc, samplerState.GetAddressOf()));
 
-    //Create Vertex Shader 3D
-    vertexShader3D = new DXVertexShader();
-    vertexShader3D->Compile(L"Shaders\\TexturedLit\\Lit3DVS.cso", L"Shaders\\TexturedLit\\Lit3DVS.hlsl", "main");
-    vertexShader3D->CreateInputLayout(VertexPNT::inputLayout, ARRAYSIZE(VertexPNT::inputLayout));
-
-    //Create Pixel Shader 3D
-    pixelShader3D = new DXPixelShader();
-    pixelShader3D->Compile(L"Shaders\\TexturedLit\\Lit3DPS.cso", L"Shaders\\TexturedLit\\Lit3DPS.hlsl", "main");
-
-    entityManager = new EntityManager();
+    m_crateTexture = new DXTexture();
+    m_crateTexture->Load(L"Textures\\Crate.dds");
 
     testEntity = new Entity();
 
-    entityManager->AddEntity(testEntity,"Test Object");
+    entityManager->RegisterEntity(testEntity,"Test Object");
     testEntity->AddComponent<RenderableObject>();
 
     RenderableObject& r = testEntity->GetComponent<RenderableObject>();
     r.SetTexture(m_crateTexture);
-    r.SetBuffer(BuiltInMesh::CreateBox<VertexPNT>());
 
     Entity* entttt = new Entity();
-    entityManager->AddEntity(entttt, "Test Empty Entity");
+    entityManager->RegisterEntity(entttt, "Test Empty Entity");
 
     //Creating Constant Buffers;
     m_frameConstantBuffer = new DXConstantBuffer();
@@ -96,7 +87,6 @@ bool Game::OnInit()
 
     m_d3dContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
-    vertexShader3D->Bind();
 
     m_frameConstantBuffer->BindVS(1);
 
@@ -104,7 +94,7 @@ bool Game::OnInit()
     m_lightConstantBuffer->BindPS(2);
 
     m_d3dContext->PSSetSamplers(0, 1, samplerState.GetAddressOf());
-    pixelShader3D->Bind();
+    
 
     return true;
 }

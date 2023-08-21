@@ -15,18 +15,25 @@ EntityManager::~EntityManager()
 {
 }
 
-void EntityManager::AddEntity(Entity* entity)
+void EntityManager::RegisterEntity(Entity* entity)
 {
 	entity->rawEntity = entityRegistar.create();
 	entityRegistar.emplace<EntityName>(entity->rawEntity,"Entity",entity);
 	entityRegistar.emplace<Transform>(entity->rawEntity);
 }
 
-void EntityManager::AddEntity(Entity* entity, const char* name)
+void EntityManager::RegisterEntity(Entity* entity, const char* name)
 {
 	entity->rawEntity = entityRegistar.create();
 	entityRegistar.emplace<EntityName>(entity->rawEntity, name,entity);
 	entityRegistar.emplace<Transform>(entity->rawEntity);
+}
+
+Entity* EntityManager::GetEntityFromRaw(entt::entity e)
+{
+	EntityName& en = entityRegistar.get<EntityName>(e);
+
+	return en.entityClass;
 }
 
 void EntityManager::OnUpdate(float dt)

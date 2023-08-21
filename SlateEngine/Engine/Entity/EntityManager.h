@@ -7,8 +7,10 @@ public:
 	EntityManager();
 	~EntityManager();
 
-	void AddEntity(Entity* entity);
-	void AddEntity(Entity* entity,const char* name);
+	void RegisterEntity(Entity* entity);
+	void RegisterEntity(Entity* entity,const char* name);
+
+	Entity* GetEntityFromRaw(entt::entity e);
 
 	void OnUpdate(float dt);
 	void OnRender();

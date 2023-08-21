@@ -38,6 +38,9 @@ private:
     ObjectConstantBuffer   ObjectConstantBufferObject;
     DXConstantBuffer* m_objectConstantBuffer = nullptr;
 
+    DXVertexShader* vertexShader3D = nullptr;
+    DXPixelShader* pixelShader3D = nullptr;
+
     UINT m_indices = 0;
 
 };

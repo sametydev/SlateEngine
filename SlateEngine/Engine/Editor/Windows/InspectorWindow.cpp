@@ -42,8 +42,6 @@ void InspectorWindow::OnDraw(Entity* entity)
 			DrawTransform("Rotation", t.mRotation);
 			DrawTransform("Scale", t.mScale);
 
-
-
 			ImGui::Dummy(ImVec2(0.0f, 30.0f));
 			ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.1f, 0.25f, 0.8f, 1.0f });
 			ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ 0.1f, 0.25f, 0.8f, 1.0f });
@@ -52,25 +50,14 @@ void InspectorWindow::OnDraw(Entity* entity)
 			ImVec2 buttonSize = { lineHeight + 3.0f, 25 };
 			ImGui::Button("Components", buttonSize);
 			ImGui::PopStyleColor(3);
+			ImGui::Dummy(ImVec2(0.0f, 4.0f));
 
 			if (entityRegistar.try_get<RenderableObject>(entity->rawEntity)) {
-				RenderableObject& r = entityRegistar.get<RenderableObject>(entity->rawEntity);
-				if (ImGui::TreeNode("Material"))
-				{
-					ImGui::PushID(3);
-					ObjectConstantBuffer& objCb = r.GetObjectCb();
-					ImGui::ColorEdit3("Ambient", &objCb.material.ambient.x);
-					ImGui::ColorEdit3("Diffuse", &objCb.material.diffuse.x);
-					ImGui::ColorEdit3("Specular", &objCb.material.specular.x);
-					ImGui::PopID();
-					ImGui::TreePop();
-				}
+				DrawRenderableObjectComponent(entity);
 			}
 
 			ImGui::Dummy(ImVec2(0.0f, 10.0f));
 			ImGui::Checkbox("WireFrame Mode", &game->renderWireframe);
-
-			
 		}
 	}
 	ImGui::End();
@@ -122,6 +109,51 @@ void InspectorWindow::DrawTransform(const char* label, vec3f& val)
 	ImGui::PopStyleVar();
 	ImGui::Columns(1);
 	ImGui::PopID();
+}
+
+void InspectorWindow::DrawRenderableObjectComponent(Entity* entity)
+{
+	RenderableObject& r = entityRegistar.get<RenderableObject>(entity->rawEntity);
+
+	static int curr_mesh_item = 0;
+	const char* mesh_strs[] = {
+		"Box",
+		"Sphere",
+		"Cylinder"
+	};
+
+	if (ImGui::TreeNode("Renderable Object"))
+	{
+		ImGui::Dummy(ImVec2(0.0f, 4.0f));
+		ImGui::Text("Select Built-In Geometry");
+		if (ImGui::Combo("Mesh", &curr_mesh_item, mesh_strs, ARRAYSIZE(mesh_strs)))
+		{
+			MeshData<VertexPNT> meshData;
+			switch (curr_mesh_item)
+			{
+			case 0: meshData = BuiltInMesh::CreateBox<VertexPNT>(); break;
+			case 1: meshData = BuiltInMesh::CreateSphere<VertexPNT>(); break;
+			case 2: meshData = BuiltInMesh::CreateCylinder<VertexPNT>(); break;
+			}
+
+			r.SetBuffer(meshData);
+		}
+		ImGui::Dummy(ImVec2(0.0f, 4.0f));
+		ImGui::TreePop();
+	}
+
+	ImGui::Dummy(ImVec2(0.0f, 4.0f));
+
+	if (ImGui::TreeNode("Material"))
+	{
+		ImGui::PushID(3);
+		ObjectConstantBuffer& objCb = r.GetObjectCb();
+		ImGui::ColorEdit3("Ambient", &objCb.material.ambient.x);
+		ImGui::ColorEdit3("Diffuse", &objCb.material.diffuse.x);
+		ImGui::ColorEdit3("Specular", &objCb.material.specular.x);
+		ImGui::PopID();
+		ImGui::TreePop();
+	}
 }
 
 

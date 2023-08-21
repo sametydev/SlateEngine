@@ -63,9 +63,6 @@ private:
     Camera* m_camera{};
     ComPtr<ID3D11SamplerState> samplerState;				    
 
-    DXVertexShader* vertexShader3D = nullptr;
-    DXPixelShader* pixelShader3D = nullptr;
-
     ComPtr<ID3D11RasterizerState> m_wireFrameRasterizer = nullptr;
 
 };
