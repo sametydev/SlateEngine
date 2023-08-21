@@ -53,19 +53,24 @@ void InspectorWindow::OnDraw(Entity* entity)
 			ImGui::Button("Components", buttonSize);
 			ImGui::PopStyleColor(3);
 
-			if (ImGui::TreeNode("Material"))
-			{
-				ImGui::PushID(3);
-				ObjectConstantBuffer& objCb = game->testEntity->GetComponent<RenderableObject>().GetObjectCb();
-				ImGui::ColorEdit3("Ambient", &objCb.material.ambient.x);
-				ImGui::ColorEdit3("Diffuse", &objCb.material.diffuse.x);
-				ImGui::ColorEdit3("Specular", &objCb.material.specular.x);
-				ImGui::PopID();
-
-				ImGui::Dummy(ImVec2(0.0f, 10.0f));
-				ImGui::Checkbox("WireFrame Mode", &game->renderWireframe);
-				ImGui::TreePop();
+			if (entityRegistar.try_get<RenderableObject>(entity->rawEntity)) {
+				RenderableObject& r = entityRegistar.get<RenderableObject>(entity->rawEntity);
+				if (ImGui::TreeNode("Material"))
+				{
+					ImGui::PushID(3);
+					ObjectConstantBuffer& objCb = r.GetObjectCb();
+					ImGui::ColorEdit3("Ambient", &objCb.material.ambient.x);
+					ImGui::ColorEdit3("Diffuse", &objCb.material.diffuse.x);
+					ImGui::ColorEdit3("Specular", &objCb.material.specular.x);
+					ImGui::PopID();
+					ImGui::TreePop();
+				}
 			}
+
+			ImGui::Dummy(ImVec2(0.0f, 10.0f));
+			ImGui::Checkbox("WireFrame Mode", &game->renderWireframe);
+
+			
 		}
 	}
 	ImGui::End();

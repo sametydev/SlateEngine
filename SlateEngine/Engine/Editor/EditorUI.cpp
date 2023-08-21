@@ -37,13 +37,11 @@ void EditorUI::OnInit()
 
     LogWindow* logWindow = new LogWindow();
     inspectorWindow = new InspectorWindow();
-    UIRenderablesWindow* uirenderables = new UIRenderablesWindow();
 	sceneWindow = new SceneHierarchy();
     LightingSettingsWindow* light = new LightingSettingsWindow();
 
     //windows.emplace(inspectorWindow);
     windows.emplace(logWindow);
-    windows.emplace(uirenderables);
     windows.emplace(sceneWindow);
     windows.emplace(light);
 

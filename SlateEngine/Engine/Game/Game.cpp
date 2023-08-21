@@ -1,6 +1,5 @@
 ﻿#include <SlateEngine/Engine/Game/Game.h>
 #include <SlateEngine/Engine/Editor/Windows/LogWindow.h>
-#include <SlateEngine/Engine/Graphics/2D/D2DContext.h>
 #include <SlateEngine/Engine/Input/InputSystem.h>
 #include <SlateEngine/Engine/Editor/EditorUI.h>
 
@@ -112,9 +111,7 @@ bool Game::OnInit()
 
 void Game::OnResize()
 {
-    D2DContext::Instance->BeginResize();
     DXApplication::OnResize();
-    D2DContext::Instance->OnResize();
     EditorUI::instance()->ResizeViewport(m_clientW, m_clientH);
 
     if (m_camera != nullptr)
@@ -132,7 +129,7 @@ void Game::OnUpdateScene(float deltaTime)
 
 #pragma region CAMERA_MOVEMENT
     constexpr float movementSpeed = 4.2f;
-    constexpr float mouseSpeed = 0.19999f;
+    constexpr float mouseSpeed = 0.1333f;
 
     if (InputSystem::IsKeyDown(Key::RMB)) {
         vec2f delta = InputSystem::delta;
@@ -181,7 +178,6 @@ void Game::OnRenderScene()
         EditorUI::instance()->ClearViewport(clear);
     }
 
-    D2DContext::Instance->OnRender();
     entityManager->OnRender();
     
     if (!IS_COOKED) {
