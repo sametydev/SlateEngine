@@ -25,11 +25,11 @@ void Camera::Update(float dt)
 	mat4x4 R = mat4x4::RotationYawPitchRoll(mRot.y, mRot.x, mRot.z);
 
 	//right
-	mRight = { R[0][0], R[1][0], R[2][0] };
+	mRight    = { R[0][0], R[1][0], R[2][0] };
 	//up
-	mUp = { R[0][1], R[1][1], R[2][1] };
+	mUp       = { R[0][1], R[1][1], R[2][1] };
 	//foward
-	mForward = { R[0][2], R[1][2], R[2][2] };
+	mForward  = { R[0][2], R[1][2], R[2][2] };
 
 	mRight.normalize();
 	mUp.normalize();

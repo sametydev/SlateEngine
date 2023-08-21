@@ -1,6 +1,5 @@
 #pragma once
 #include <SlateEngine/Engine/Graphics/DXApplication.h>
-#include <SlateEngine/Engine/Editor/EditorUI.h>
 #include <SlateEngine/Engine/Component/Components.h>
 #include <SlateEngine/Engine/Graphics/Vertex.h>
 #include <SlateEngine/Engine/Graphics/Buffer/DXBuffer.h>
@@ -52,15 +51,12 @@ public:
 
     DXTexture* m_crateTexture = nullptr;
     Entity* testEntity;
+
 private:
-    //For Testing
-    void InitializeLightCb();
     ComPtr<ID3D11InputLayout> m_inputLayout = nullptr;
 
     DXConstantBuffer* m_frameConstantBuffer = nullptr;
     DXConstantBuffer* m_lightConstantBuffer = nullptr;
-
-
 
     EntityManager* entityManager;
 

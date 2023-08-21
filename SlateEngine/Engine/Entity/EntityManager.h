@@ -16,8 +16,7 @@ public:
 	entt::registry& GetRegistar() { return entityRegistar; };
 
 	static EntityManager* Instance;
-
-private:
-	entt::registry entityRegistar;
 };
+
+
 

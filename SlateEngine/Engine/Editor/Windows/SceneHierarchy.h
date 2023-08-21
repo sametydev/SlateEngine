@@ -12,6 +12,9 @@ public:
 	void OnInit() override;
 	void OnDraw(const char* title) override;
 	void OnDraw() override;
+
+	Entity* selectedEntity = nullptr;
+
 private:
 	const char* windowName;
 };

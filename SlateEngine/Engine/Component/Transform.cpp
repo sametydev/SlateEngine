@@ -9,6 +9,14 @@ Transform::Transform()
 	mScale = vec3f(1.0f);
 }
 
+Transform::~Transform()
+{
+}
+
+void Transform::OnInternalInit()
+{
+}
+
 void Transform::SetPosition(const vec3f& position)
 {
 	mPosition = position;
@@ -52,7 +60,12 @@ bool Transform::HasParent()
 	return hasParent;
 }
 
-void Transform::Update()
+
+void Transform::OnRender()
+{
+}
+
+void Transform::OnUpdate(float deltaTime)
 {
 
 	mat4x4 S = mat4x4::scaled(mScale);

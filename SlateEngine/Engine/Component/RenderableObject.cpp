@@ -2,8 +2,15 @@
 
 RenderableObject::RenderableObject()
 {
-    transform = new Transform();
-    transform->SetPosition({ 0,0,0 });
+
+}
+
+RenderableObject::~RenderableObject()
+{
+}
+void RenderableObject::OnInternalInit()
+{
+    connectedEntity->GetComponent<Transform>().SetPosition({ 0,0,0 });
 
     //Create our Vertex Buffer
     m_vertexBuffer = new DXVertexBuffer();
@@ -28,9 +35,6 @@ RenderableObject::RenderableObject()
     m_objectConstantBuffer->BindPS(0);
 }
 
-RenderableObject::~RenderableObject()
-{
-}
 void RenderableObject::SetTexture(DXTexture* texture)
 {
     texture->Bind(0);
@@ -39,9 +43,9 @@ void RenderableObject::SetTexture(DXTexture* texture)
 
 void RenderableObject::OnUpdate(float deltaTime)
 {
-    ObjectConstantBufferObject.world = transform->GetGlobal();
-    ObjectConstantBufferObject.worldInverseTranspose = mat4x4::transposed(transform->GetGlobal().inverted());
-    transform->Update();
+    ObjectConstantBufferObject.world = connectedEntity->GetComponent<Transform>().GetGlobal();
+    ObjectConstantBufferObject.worldInverseTranspose = mat4x4::transposed(connectedEntity->GetComponent<Transform>().GetGlobal().inverted());
+    //connectedEntity->GetComponent<Transform>().Update();
 
     m_objectConstantBuffer->Map(sizeof(ObjectConstantBuffer), &ObjectConstantBufferObject);
     m_objectConstantBuffer->UnMap();

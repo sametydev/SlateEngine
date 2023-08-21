@@ -12,24 +12,26 @@
 #include <SlateEngine/Engine/DXConfig.h>
 #include <SlateEngine/Engine/Graphics/DXApplication.h>
 #include <SlateEngine/Engine/Component/Transform.h>
+#include <SlateEngine/Engine/Entity/Entity.h>
+#include <SlateEngine/Engine/Component/Component.h>
 
-struct RenderableObject {
+struct RenderableObject : public Component {
 public:
-	RenderableObject();
+    RenderableObject();
 	~RenderableObject();
+
+    void OnInternalInit() override;
 
     template<class VertexType, class IndexType>
     void SetBuffer(const MeshData<VertexType, IndexType>& meshData);
     void SetTexture(DXTexture* texture);
-    void OnUpdate(float deltaTime);
-    void OnRender();
+    void OnUpdate(float deltaTime) override;
+    void OnRender() override;
 
-    Transform& GetTransform() { return *transform; };
+    Transform& GetTransform() { return connectedEntity->GetComponent<Transform>(); };
     ObjectConstantBuffer& GetObjectCb() { return ObjectConstantBufferObject; };
 
 private:
-    Transform* transform{};
-
     DXVertexBuffer* m_vertexBuffer = nullptr;
     DXIndexBuffer* m_indexBuffer = nullptr;
 

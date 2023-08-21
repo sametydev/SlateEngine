@@ -2,6 +2,7 @@
 #include <SlateEngine/Engine/Editor/Windows/LogWindow.h>
 #include <SlateEngine/Engine/Graphics/2D/D2DContext.h>
 #include <SlateEngine/Engine/Input/InputSystem.h>
+#include <SlateEngine/Engine/Editor/EditorUI.h>
 
 Game* Game::Instance = nullptr;
 
@@ -22,6 +23,9 @@ Game::~Game()
 bool Game::OnInit()
 {
     if (!DXApplication::OnInit()) { return 0; }
+
+    if(!IS_COOKED)EditorUI::instance()->ResizeViewport(m_clientW, m_clientH);
+
     LogWindow::Instance->AddLog("[Info] DirectX 11 Initialized!\n");
     LogWindow::Instance->AddLog("[Info] Game OnInit\n");
     LogWindow::Instance->AddLog("[Info] 2D UI System OnInit\n");
@@ -64,7 +68,9 @@ bool Game::OnInit()
     r.SetTexture(m_crateTexture);
     r.SetBuffer(BuiltInMesh::CreateBox<VertexPNT>());
 
-    InitializeLightCb();
+    Entity* entttt = new Entity();
+    entityManager->AddEntity(entttt, "Test Empty Entity");
+
     //Creating Constant Buffers;
     m_frameConstantBuffer = new DXConstantBuffer();
     m_lightConstantBuffer = new DXConstantBuffer();
@@ -109,6 +115,7 @@ void Game::OnResize()
     D2DContext::Instance->BeginResize();
     DXApplication::OnResize();
     D2DContext::Instance->OnResize();
+    EditorUI::instance()->ResizeViewport(m_clientW, m_clientH);
 
     if (m_camera != nullptr)
     {
@@ -119,7 +126,9 @@ void Game::OnResize()
 void Game::OnUpdateScene(float deltaTime)
 {
     m_camera->Update(deltaTime);
-    EditorUI::instance()->OnUpdate();
+#pragma region EDITOR_STUFF
+    if (!IS_COOKED)EditorUI::instance()->OnUpdate();
+#pragma endregion
 
 #pragma region CAMERA_MOVEMENT
     constexpr float movementSpeed = 4.2f;
@@ -164,12 +173,21 @@ float Game::clear[4] = {0.3f, 0.3f, 0.3f, 1.0f};
 
 void Game::OnRenderScene()
 {
-    ClearRenderTarget(clear);
-
-    entityManager->OnRender();
+    if (IS_COOKED) {
+        ClearRenderTarget(clear);
+    }
+    else
+    {
+        EditorUI::instance()->ClearViewport(clear);
+    }
 
     D2DContext::Instance->OnRender();
-    EditorUI::instance()->OnRender();
+    entityManager->OnRender();
+    
+    if (!IS_COOKED) {
+        ClearRenderTarget(clear);
+        EditorUI::instance()->OnRender();
+    }
     HR(m_swapChain->Present(0, 0));
 }
 
@@ -182,11 +200,4 @@ void Game::UpdateGlobalConstantBuffers()
     //Updating PS Cbuffer
     m_lightConstantBuffer->Map(sizeof(LightConstantBuffer), &LightConstantObject);
     m_lightConstantBuffer->UnMap();
-}
-
-void Game::InitializeLightCb()
-{
-    LightConstantObject.numDirLight = 0;
-    LightConstantObject.numPointLight = 1;
-    LightConstantObject.numSpotLight = 0;
 }

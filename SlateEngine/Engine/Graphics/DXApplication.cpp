@@ -34,7 +34,7 @@ DXApplication::DXApplication(HINSTANCE hInstance, const std::wstring& windowName
     bIsMinimized(false),
     bIsMaximized(false),
     bIsResizing(false),
-    bEnableMsaa(true),
+    bEnableMsaa(false),
     mMsaaQuality(0),
     m_d3dDevice(nullptr),
     m_d3dContext(nullptr),
@@ -279,6 +279,7 @@ LRESULT DXApplication::MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam
 
 void DXApplication::ClearRenderTarget(float rgba[4])
 {
+    m_d3dContext->OMSetRenderTargets(1, m_renderTargetView.GetAddressOf(), m_depthStencilView.Get());
     m_d3dContext->ClearRenderTargetView(m_renderTargetView.Get(), rgba);
     m_d3dContext->ClearDepthStencilView(m_depthStencilView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 }

@@ -1,10 +1,14 @@
 #pragma once
 #include <SlateEngine/Engine/Math/LineerMath.h>
-
-class Transform
+#include <SlateEngine/Engine/Component/Component.h>
+class Transform : public Component
 {
 public:
 	Transform();
+	~Transform();
+
+
+	void OnInternalInit() override;
 
 	void SetPosition(const vec3f& position);
 	void SetRotation(const vec3f& rotation);
@@ -18,8 +22,8 @@ public:
 	void SetParent(Transform* parent);
 	bool HasParent();
 
-
-	void Update();
+	void OnUpdate(float deltaTime) override;
+	void OnRender() override;
 
 	vec3f mPosition;
 	vec3f mRotation;

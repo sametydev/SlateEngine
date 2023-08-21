@@ -27,42 +27,48 @@ void InspectorWindow::OnDraw(const char* title)
 
 void InspectorWindow::OnDraw()
 {
-    if (ImGui::Begin("Inspector"))
-    {
+}
+#define EntityRegistar EntityManager::Instance->GetRegistar()
 
-		Transform& t = game->testEntity->GetComponent<RenderableObject>().GetTransform();
+void InspectorWindow::OnDraw(Entity* entity)
+{
+	if (ImGui::Begin("Inspector"))
+	{
+		if (entity != nullptr) {
 
-		DrawTransform("Position", t.mPosition);
-		DrawTransform("Rotation", t.mRotation);
-		DrawTransform("Scale", t.mScale);
+			Transform& t = entity->GetComponent<Transform>();
+
+			DrawTransform("Position", t.mPosition);
+			DrawTransform("Rotation", t.mRotation);
+			DrawTransform("Scale", t.mScale);
 
 
 
-        ImGui::Dummy(ImVec2(0.0f, 30.0f));
-		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.1f, 0.25f, 0.8f, 1.0f });
-		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ 0.1f, 0.25f, 0.8f, 1.0f });
-		ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 0.1f, 0.25f, 0.8f, 1.0f });
-		float lineHeight = GImGui->Font->FontSize + GImGui->Style.FramePadding.y * 70.f;
-		ImVec2 buttonSize = { lineHeight + 3.0f, 25 };
-		ImGui::Button("Components", buttonSize);
-		ImGui::PopStyleColor(3);
+			ImGui::Dummy(ImVec2(0.0f, 30.0f));
+			ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.1f, 0.25f, 0.8f, 1.0f });
+			ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ 0.1f, 0.25f, 0.8f, 1.0f });
+			ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 0.1f, 0.25f, 0.8f, 1.0f });
+			float lineHeight = GImGui->Font->FontSize + GImGui->Style.FramePadding.y * 70.f;
+			ImVec2 buttonSize = { lineHeight + 3.0f, 25 };
+			ImGui::Button("Components", buttonSize);
+			ImGui::PopStyleColor(3);
 
-		if (ImGui::TreeNode("Material"))
-		{
-			ImGui::PushID(3);
-			ObjectConstantBuffer& objCb = game->testEntity->GetComponent<RenderableObject>().GetObjectCb();
-			ImGui::ColorEdit3("Ambient", &objCb.material.ambient.x);
-			ImGui::ColorEdit3("Diffuse", &objCb.material.diffuse.x);
-			ImGui::ColorEdit3("Specular", &objCb.material.specular.x);
-			ImGui::PopID();
+			if (ImGui::TreeNode("Material"))
+			{
+				ImGui::PushID(3);
+				ObjectConstantBuffer& objCb = game->testEntity->GetComponent<RenderableObject>().GetObjectCb();
+				ImGui::ColorEdit3("Ambient", &objCb.material.ambient.x);
+				ImGui::ColorEdit3("Diffuse", &objCb.material.diffuse.x);
+				ImGui::ColorEdit3("Specular", &objCb.material.specular.x);
+				ImGui::PopID();
 
-			ImGui::Dummy(ImVec2(0.0f, 10.0f));
-			ImGui::Checkbox("WireFrame Mode", &game->renderWireframe);
-			ImGui::TreePop();
+				ImGui::Dummy(ImVec2(0.0f, 10.0f));
+				ImGui::Checkbox("WireFrame Mode", &game->renderWireframe);
+				ImGui::TreePop();
+			}
 		}
-
-    }
-    ImGui::End();
+	}
+	ImGui::End();
 }
 
 void InspectorWindow::DrawTransform(const char* label, vec3f& val)

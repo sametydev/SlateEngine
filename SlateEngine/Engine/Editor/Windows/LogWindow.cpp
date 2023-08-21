@@ -101,6 +101,7 @@ void LogWindow::OnDraw()
 
 void LogWindow::AddLog(const char* fmt, ...)
 {
+    if (IS_COOKED) return;
     int old_size = m_buffer.size();
     va_list args;
     va_start(args, fmt);

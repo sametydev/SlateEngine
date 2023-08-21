@@ -40,8 +40,14 @@ public:
     inline ComPtr<IDXGISwapChain>&     GetDXSwapChain() {
         return m_swapChain;
     }
-
+    inline ComPtr<ID3D11DepthStencilView>& GetDepthStencilView() {
+        return m_depthStencilView;
+    }
     static DXApplication* Instance;
+
+
+    bool      bEnableMsaa;
+    UINT      mMsaaQuality;
 
 protected:
     bool InitializeWindow();      
@@ -53,10 +59,7 @@ protected:
     bool      bPaused;      
     bool      bIsMinimized;      
     bool      bIsMaximized;      
-    bool      bIsResizing;       
-    bool      bEnableMsaa;   
-    UINT      mMsaaQuality;  
-
+    bool      bIsResizing; 
 
     Timer mTimer;           
 

@@ -1,6 +1,7 @@
 #pragma once
 #include <entt.hpp>
-#include <SlateEngine/Engine/Component/RenderableObject.h>
+
+extern entt::registry entityRegistar;
 
 class Entity
 {
@@ -14,27 +15,28 @@ public:
 	template<typename T>
 	T& GetComponent();
 
+
+	entt::entity rawEntity;
+
 private:
 	friend class EntityManager;
-	entt::entity entity;
 };
 
 template<typename T>
 inline void Entity::AddComponent()
 {
-	if (typeid(T) == typeid(RenderableObject)) {
-		EntityManager::Instance->GetRegistar().emplace<T>(entity);
-	}
+	entityRegistar.emplace<T>(rawEntity).SetEntity(this);
 }
 
 template<typename T>
 inline T& Entity::GetComponent()
 {
-	return EntityManager::Instance->GetRegistar().get<T>(entity);
+	return entityRegistar.get<T>(rawEntity);
 }
 
 struct EntityName {
 public:
-	EntityName(const char* n) : name(n) {};
+	EntityName(const char* n,Entity* e) : name(n), entityClass(e) {};
 	const char* name;
+	Entity* entityClass = nullptr;
 };

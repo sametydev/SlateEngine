@@ -1,4 +1,5 @@
 #include <SlateEngine/Engine/Entity/EntityManager.h>
+#include <SlateEngine/Engine/Component/RenderableObject.h>
 
 EntityManager* EntityManager::Instance = nullptr;
 
@@ -16,34 +17,39 @@ EntityManager::~EntityManager()
 
 void EntityManager::AddEntity(Entity* entity)
 {
-	entity->entity = entityRegistar.create();
-	entityRegistar.emplace<EntityName>(entity->entity,"Entity");
+	entity->rawEntity = entityRegistar.create();
+	entityRegistar.emplace<EntityName>(entity->rawEntity,"Entity",entity);
+	entityRegistar.emplace<Transform>(entity->rawEntity);
 }
 
 void EntityManager::AddEntity(Entity* entity, const char* name)
 {
-	entity->entity = entityRegistar.create();
-	entityRegistar.emplace<EntityName>(entity->entity, name);
+	entity->rawEntity = entityRegistar.create();
+	entityRegistar.emplace<EntityName>(entity->rawEntity, name,entity);
+	entityRegistar.emplace<Transform>(entity->rawEntity);
 }
 
 void EntityManager::OnUpdate(float dt)
 {
-	auto view = entityRegistar.view<RenderableObject>();
-	for (auto entity : view)
+	auto transforms = entityRegistar.view<Transform>();
+	for (auto entity : transforms)
 	{
-		auto renderableObject = view.get<RenderableObject>(entity);
-
-		renderableObject.OnUpdate(dt);
+		transforms.get<Transform>(entity).OnUpdate(dt);
 	}
+
+	auto renderableObjects = entityRegistar.view<RenderableObject>();
+	for (auto entity : renderableObjects)
+	{
+		renderableObjects.get<RenderableObject>(entity).OnUpdate(dt);
+	}
+
 }
 
 void EntityManager::OnRender()
 {
-	auto view = entityRegistar.view<RenderableObject>();
-	for (auto entity : view)
+	auto renderableObjects = entityRegistar.view<RenderableObject>();
+	for (auto entity : renderableObjects)
 	{
-		auto renderableObject = view.get<RenderableObject>(entity);
-
-		renderableObject.OnRender();
+		renderableObjects.get<RenderableObject>(entity).OnRender();
 	}
 }

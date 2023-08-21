@@ -40,9 +40,9 @@ struct LightConstantBuffer
     DirectionalLight dirLight[1];
     PointLight pointLight[1];
     SpotLight spotLight[1];
-    int numDirLight;
-    int numPointLight;
-    int numSpotLight;
+    int numDirLight = 0;
+    int numPointLight = 1;
+    int numSpotLight = 0;
     float dummy;
 };
 

@@ -1,0 +1,18 @@
+#pragma once
+#include <SlateEngine/Engine/Entity/Entity.h>
+class Component {
+public:
+	Component() {};
+
+	virtual ~Component() {};
+	virtual void OnInternalInit() = 0;
+	virtual void OnUpdate(float deltaTime) = 0;
+	virtual void OnRender() = 0;
+
+	Entity* connectedEntity = nullptr;
+
+	inline void SetEntity(Entity* entity) {
+		connectedEntity = entity;
+		OnInternalInit();
+	}
+};
