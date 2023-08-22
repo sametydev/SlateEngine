@@ -136,6 +136,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Engine\Editor\Windows\AssetsBrowser.cpp" />
     <ClCompile Include="Engine\Component\RenderableObject.cpp" />
     <ClCompile Include="Engine\Component\Camera.cpp" />
     <ClCompile Include="Engine\Component\Transform.cpp" />
@@ -156,7 +157,11 @@
     <ClCompile Include="Engine\Entity\Entity.cpp" />
     <ClCompile Include="Engine\Input\InputSystem.cpp" />
     <ClCompile Include="LibarySources\DDSTextureLoader11.cpp" />
+    <ClCompile Include="LibarySources\GraphEditor.cpp" />
+    <ClCompile Include="LibarySources\ImCurveEdit.cpp" />
+    <ClCompile Include="LibarySources\ImGradient.cpp" />
     <ClCompile Include="LibarySources\imgui.cpp" />
+    <ClCompile Include="LibarySources\ImGuizmo.cpp" />
     <ClCompile Include="LibarySources\imgui_demo.cpp" />
     <ClCompile Include="LibarySources\imgui_draw.cpp" />
     <ClCompile Include="LibarySources\imgui_impl_dx11.cpp" />
@@ -166,6 +171,7 @@
     <ClCompile Include="LibarySources\imgui_widgets.cpp" />
     <ClCompile Include="Engine\Editor\Windows\LogWindow.cpp" />
     <ClCompile Include="Engine\Editor\Windows\InspectorWindow.cpp" />
+    <ClCompile Include="LibarySources\ImSequencer.cpp" />
     <ClCompile Include="LibarySources\WICTextureLoader11.cpp" />
     <ClCompile Include="Engine\Editor\Windows\LightingSettingsWindow.cpp" />
     <ClCompile Include="Main.cpp" />
@@ -174,6 +180,7 @@
     <ClCompile Include="Engine\Editor\Windows\SceneHierarchy.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Engine\Editor\Windows\AssetsBrowser.h" />
     <ClInclude Include="Engine\Component\Component.h" />
     <ClInclude Include="Engine\Component\Components.h" />
     <ClInclude Include="Engine\Component\RenderableObject.h" />

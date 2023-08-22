@@ -14,11 +14,6 @@ void UIRenderablesWindow::OnInit()
 	game = Game::Instance;
 }
 
-
-void UIRenderablesWindow::OnDraw(const char* title)
-{
-
-}
 #define EntityRegistar D2DContext::Instance->GetRegistar()
 
 float ui_x, ui_y;

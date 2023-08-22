@@ -1,10 +1,12 @@
 #include <SlateEngine/Engine/Editor/EditorUI.h>
 #include <SlateEngine/Engine/Editor/Windows/LogWindow.h>
-
+#include <SlateEngine/Engine/Editor/Windows/AssetsBrowser.h>
 #include <SlateEngine/Engine/Editor/Windows/UIRenderablesWindow.h>
-
 #include <SlateEngine/Engine/Editor/Windows/LightingSettingsWindow.h>
 #include <entt.hpp>
+#include <ImGuizmo.h>
+#include <comdef.h>
+
 EditorUI::EditorUI()
 {
 }
@@ -16,6 +18,8 @@ EditorUI::~EditorUI()
     ImGui_ImplWin32_Shutdown();
     ImGui::DestroyContext();
 }
+
+
 
 void EditorUI::OnInit()
 {
@@ -35,15 +39,19 @@ void EditorUI::OnInit()
 
     InitTheme();
 
+	game = Game::Instance;
+
     LogWindow* logWindow = new LogWindow();
     inspectorWindow = new InspectorWindow();
 	sceneWindow = new SceneHierarchy();
     LightingSettingsWindow* light = new LightingSettingsWindow();
+	AssetsBrowser* assetBrowser = new AssetsBrowser();
 
-    //windows.emplace(inspectorWindow);
+
     windows.emplace(logWindow);
     windows.emplace(sceneWindow);
     windows.emplace(light);
+	windows.emplace(assetBrowser);
 
     for (auto w : windows)
     {
@@ -51,6 +59,7 @@ void EditorUI::OnInit()
     }
 
 	inspectorWindow->OnInit();
+
 }
 
 void EditorUI::NewFrame()
@@ -59,6 +68,7 @@ void EditorUI::NewFrame()
     ImGui_ImplDX11_NewFrame();
     ImGui_ImplWin32_NewFrame();
     ImGui::NewFrame();
+	ImGuizmo::BeginFrame();
 
 }
 
@@ -119,6 +129,65 @@ void EditorUI::OnUpdate()
 
 		ImGui::Image(m_viewportSRV.Get(), ImGui::GetContentRegionAvail());
 	}
+
+	if (ImGui::IsKeyPressed(ImGuiKey_T))
+	{
+		gizmoType = ImGuizmo::OPERATION::TRANSLATE;
+	}
+
+	if (ImGui::IsKeyPressed(ImGuiKey_R))
+	{
+		gizmoType = ImGuizmo::OPERATION::ROTATE;
+	}
+
+	if (ImGui::IsKeyPressed(ImGuiKey_S))
+	{
+		gizmoType = ImGuizmo::OPERATION::SCALE;
+	}
+
+
+
+	if (sceneWindow->selectedEntity && gizmoType != -1)
+	{
+		ImGuizmo::SetOrthographic(false);
+		ImGuizmo::SetDrawlist();
+
+		float w = (float)ImGui::GetWindowWidth();
+		float h = (float)ImGui::GetWindowHeight();
+
+		ImGuizmo::SetRect(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y, w, h);
+
+		const mat4x4& cproj = mat4x4::transposed(game->m_camera->GetProjectionMatrix());
+		const mat4x4& cview = mat4x4::transposed(game->m_camera->GetViewMatrix());
+
+		auto& tc = sceneWindow->selectedEntity->GetComponent<Transform>();
+
+		mat4x4 t = mat4x4::transposed(tc.GetLocal());
+
+		float translation[3] = { tc.mPosition.x, tc.mPosition.y, tc.mPosition.z };
+		float rotation[3]    = { tc.mRotation.x, tc.mRotation.y, tc.mRotation.z };
+		float scale[3]       = { tc.mScale.x, tc.mScale.y, tc.mScale.z };
+
+		ImGuizmo::RecomposeMatrixFromComponents(translation, rotation, scale, *t.m);
+		//ImGuizmo::DrawGrid(cview.f, cproj.f, mat4x4().f, 100.f);
+		ImGuizmo::Manipulate(cview.f, cproj.f, (ImGuizmo::OPERATION)gizmoType, ImGuizmo::LOCAL, *t.m);
+		
+		/*
+		S R  T
+		4 8  12
+		5 9  13
+		6 10 14
+		*/
+
+		if (ImGuizmo::IsUsing()) {
+
+			ImGuizmo::DecomposeMatrixToComponents(*t.m, translation, rotation, scale);
+
+			tc.mPosition = vec3f(translation[0], translation[1], translation[2]);
+			tc.mRotation = vec3f(rotation[0], rotation[1], rotation[2]);
+			tc.mScale = vec3f(scale[0], scale[1], scale[2]);
+		}
+	}
 	ImGui::End();
 
     for (auto w : windows)
@@ -127,6 +196,19 @@ void EditorUI::OnUpdate()
     }
 
 	inspectorWindow->OnDraw(sceneWindow->selectedEntity);
+
+	if (ImGui::Begin("Render")) {
+
+		ImGui::Dummy(ImVec2(0.0f, 10.0f));
+		ImGui::Checkbox("WireFrame Mode", &game->renderWireframe);
+
+		_bstr_t gxd(DXApplication::Instance->adapterDesc.Description);
+
+		const char* gcardDesc = gxd;
+		ImGui::Text("Graphics Device : ");
+		ImGui::Text(gcardDesc);
+
+	}ImGui::End();
 
 }
 

@@ -35,6 +35,8 @@ private:
 	friend class DXApplication;
 	void InitTheme();
 
+	Game* game = nullptr;
+
 	ImGuiIO* io = nullptr;
 
 	std::set<IWindow*> windows;
@@ -44,6 +46,8 @@ private:
 	ComPtr<ID3D11Texture2D> m_viewportTexture;
 	ComPtr<ID3D11RenderTargetView> m_viewportRTV;
 	ComPtr<ID3D11ShaderResourceView> m_viewportSRV;
+
+	int gizmoType = 7;
 
 	int viewportW, viewportH;
 };

@@ -430,7 +430,7 @@ bool DXApplication::InitializeGraphics()
     HR(m_swapChain1->QueryInterface(IID_PPV_ARGS(&m_swapChain)));
 
     dxgiFactory1->MakeWindowAssociation(hWindow, DXGI_MWA_NO_ALT_ENTER | DXGI_MWA_NO_WINDOW_CHANGES);
-
+    dxgiAdapter->GetDesc(&adapterDesc);
     OnResize();
 
     return true;

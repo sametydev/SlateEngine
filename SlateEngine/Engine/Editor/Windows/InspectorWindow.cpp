@@ -21,9 +21,6 @@ void InspectorWindow::OnInit()
     game = Game::Instance;
 }
 
-void InspectorWindow::OnDraw(const char* title)
-{
-}
 
 void InspectorWindow::OnDraw()
 {
@@ -55,9 +52,6 @@ void InspectorWindow::OnDraw(Entity* entity)
 			if (entityRegistar.try_get<RenderableObject>(entity->rawEntity)) {
 				DrawRenderableObjectComponent(entity);
 			}
-
-			ImGui::Dummy(ImVec2(0.0f, 10.0f));
-			ImGui::Checkbox("WireFrame Mode", &game->renderWireframe);
 		}
 	}
 	ImGui::End();

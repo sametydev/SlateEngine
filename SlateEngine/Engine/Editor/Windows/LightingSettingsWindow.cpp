@@ -14,9 +14,6 @@ void LightingSettingsWindow::OnInit()
     game = Game::Instance;
 }
 
-void LightingSettingsWindow::OnDraw(const char* title)
-{
-}
 
 void LightingSettingsWindow::OnDraw()
 {

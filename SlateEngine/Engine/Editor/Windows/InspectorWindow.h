@@ -11,7 +11,6 @@ public:
 	~InspectorWindow();
 
 	void OnInit() override;
-	void OnDraw(const char* title) override;
 	void OnDraw() override;
 	void OnDraw(Entity* entity);
 

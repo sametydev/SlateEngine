@@ -2,7 +2,7 @@
 #include <SlateEngine/Engine/Editor/Windows/LogWindow.h>
 #include <SlateEngine/Engine/Input/InputSystem.h>
 #include <SlateEngine/Engine/Editor/EditorUI.h>
-
+#include <ImGuizmo.h>
 Game* Game::Instance = nullptr;
 
 Game::Game(HINSTANCE hInstance, const std::wstring& windowName, int initWidth, int initHeight)
@@ -125,19 +125,19 @@ void Game::OnUpdateScene(float deltaTime)
         vec2f delta = InputSystem::delta;
         m_camera->mRot.y += delta.x * mouseSpeed;
         m_camera->mRot.x += delta.y * mouseSpeed;
-    }
 
-    if (InputSystem::IsKeyDown(Key::W)) {
-        m_camera->mPos += m_camera->mForward * movementSpeed * deltaTime;
-    }
-    if (InputSystem::IsKeyDown(Key::S)) {
-        m_camera->mPos -= m_camera->mForward * movementSpeed * deltaTime;
-    }
-    if (InputSystem::IsKeyDown(Key::D)) {
-        m_camera->mPos += m_camera->mRight * movementSpeed * deltaTime;
-    }
-    if (InputSystem::IsKeyDown(Key::A)) {
-        m_camera->mPos -= m_camera->mRight * movementSpeed * deltaTime;
+        if (InputSystem::IsKeyDown(Key::W)) {
+            m_camera->mPos += m_camera->mForward * movementSpeed * deltaTime;
+        }
+        if (InputSystem::IsKeyDown(Key::S)) {
+            m_camera->mPos -= m_camera->mForward * movementSpeed * deltaTime;
+        }
+        if (InputSystem::IsKeyDown(Key::D)) {
+            m_camera->mPos += m_camera->mRight * movementSpeed * deltaTime;
+        }
+        if (InputSystem::IsKeyDown(Key::A)) {
+            m_camera->mPos -= m_camera->mRight * movementSpeed * deltaTime;
+        }
     }
 #pragma endregion
 
@@ -147,7 +147,7 @@ void Game::OnUpdateScene(float deltaTime)
 
     py += 10.f * deltaTime, tx += 10.f * deltaTime;
 
-    testEntity->GetComponent<RenderableObject>().GetTransform().SetRotation({py,tx,0});
+    //testEntity->GetComponent<RenderableObject>().GetTransform().SetRotation({py,tx,0});
 
     entityManager->OnUpdate(deltaTime);
 

@@ -9,7 +9,6 @@ public:
 	~LogWindow();
 
 	void OnInit() override;
-	void OnDraw(const char* title) override;
 	void OnDraw() override;
 	void AddLog(const char* fmt,...);
 	void ClearLogs();

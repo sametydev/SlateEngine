@@ -1,17 +1,15 @@
 #pragma once
 #include <SlateEngine/Engine/Editor/Windows/IWindow.h>
-#include <SlateEngine/Engine/Game/Game.h>
 
-class LightingSettingsWindow :public IWindow
+class AssetsBrowser : public IWindow
 {
 public:
-	LightingSettingsWindow();
-	~LightingSettingsWindow();
+	AssetsBrowser();
+	~AssetsBrowser();
 
 	void OnInit() override;
 	void OnDraw() override;
 private:
 	const char* windowName;
-	Game* game = nullptr;
 };
 

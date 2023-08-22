@@ -49,6 +49,9 @@ public:
     bool      bEnableMsaa;
     UINT      mMsaaQuality;
 
+
+    DXGI_ADAPTER_DESC adapterDesc{};
+
 protected:
     bool InitializeWindow();      
     bool InitializeGraphics();   

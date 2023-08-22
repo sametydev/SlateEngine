@@ -13,9 +13,6 @@ void SceneHierarchy::OnInit()
 	windowName = "Scene";
 }
 
-void SceneHierarchy::OnDraw(const char* title)
-{
-}
 #define EntityRegistar EntityManager::Instance->GetRegistar()
 
 void SceneHierarchy::OnDraw()

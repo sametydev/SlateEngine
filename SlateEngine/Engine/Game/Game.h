@@ -34,6 +34,8 @@ public:
 
     void UpdateGlobalConstantBuffers();
 
+    inline float GetClientW() { return m_clientW; }
+    inline float GetClientH() { return m_clientH; }
 
     //Temporary variables
     static Game* Instance;
@@ -51,7 +53,7 @@ public:
 
     DXTexture* m_crateTexture = nullptr;
     Entity* testEntity;
-
+    Camera* m_camera{};
 private:
     ComPtr<ID3D11InputLayout> m_inputLayout = nullptr;
 
@@ -60,9 +62,7 @@ private:
 
     EntityManager* entityManager;
 
-    Camera* m_camera{};
     ComPtr<ID3D11SamplerState> samplerState;				    
-
     ComPtr<ID3D11RasterizerState> m_wireFrameRasterizer = nullptr;
 
 };

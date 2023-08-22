@@ -19,45 +19,6 @@ void LogWindow::OnInit()
     windowName = "Logs";
 }
 
-void LogWindow::OnDraw(const char* title)
-{
-    ImGui::SetNextWindowSize(ImVec2(500, 400));
-    ImGui::Begin(title);
-    if (ImGui::Button("Clear")) ClearLogs();
-    ImGui::SameLine();
-    bool copy = ImGui::Button("Copy");
-    ImGui::SameLine();
-    m_filter.Draw("Filter", -100.0f);
-    ImGui::Separator();
-    ImGui::BeginChild("scrolling");
-    ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(0, 1));
-    if (copy) ImGui::LogToClipboard();
-
-    if (m_filter.IsActive())
-    {
-        const char* buf_begin = m_buffer.begin();
-        const char* line = buf_begin;
-        for (int line_no = 0; line != NULL; line_no++)
-        {
-            const char* line_end = (line_no < m_lineOffset.Size) ? buf_begin + m_lineOffset[line_no] : NULL;
-            if (m_filter.PassFilter(line, line_end))
-                ImGui::TextUnformatted(line, line_end);
-            line = line_end && line_end[1] ? line_end + 1 : NULL;
-        }
-    }
-    else
-    {
-        ImGui::TextUnformatted(m_buffer.begin());
-    }
-
-    if (b_scrollBottom)
-        ImGui::SetScrollHereY(1.0f);
-
-    b_scrollBottom = false;
-    ImGui::PopStyleVar();
-    ImGui::EndChild();
-    ImGui::End();
-}
 
 void LogWindow::OnDraw()
 {
