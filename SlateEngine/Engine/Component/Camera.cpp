@@ -18,6 +18,7 @@ void Camera::SetFOV(float value)
 void Camera::SetAspectRatio(float value)
 {
 	mAspect = value;
+	mProj = mat4x4::perspectiveLH(mFov, mAspect, zNear, zFar);
 }
 
 void Camera::Update(float dt)

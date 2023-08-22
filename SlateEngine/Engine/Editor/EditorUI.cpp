@@ -6,7 +6,7 @@
 #include <entt.hpp>
 #include <ImGuizmo.h>
 #include <comdef.h>
-
+#include <SlateEngine/Engine/Input/InputSystem.h>
 EditorUI::EditorUI()
 {
 }
@@ -74,7 +74,7 @@ void EditorUI::NewFrame()
 
 #define DXInstance DXApplication::Instance
 
-void EditorUI::OnUpdate()
+void EditorUI::OnUpdate(float deltaTime)
 {
 	if (IS_COOKED) return;
     static bool dockspaceOpen = true;
@@ -124,6 +124,29 @@ void EditorUI::OnUpdate()
 	ImGui::EndMenuBar();
 	ImGui::End();
 
+	constexpr float movementSpeed = 4.2f;
+	constexpr float mouseSpeed = 0.1333f;
+
+	if (ImGui::IsKeyDown(ImGuiKey_MouseRight)) {
+
+		vec2f delta = InputSystem::delta;
+
+		game->m_camera->mRot.y += delta.x * mouseSpeed;
+		game->m_camera->mRot.x += delta.y * mouseSpeed;
+
+		if (ImGui::IsKeyDown(ImGuiKey_W)) {
+			game->m_camera->mPos += game->m_camera->mForward * movementSpeed * deltaTime;
+		}
+		if (ImGui::IsKeyDown(ImGuiKey_S)) {
+			game->m_camera->mPos -= game->m_camera->mForward * movementSpeed * deltaTime;
+		}
+		if (ImGui::IsKeyDown(ImGuiKey_D)) {
+			game->m_camera->mPos += game->m_camera->mRight * movementSpeed * deltaTime;
+		}
+		if (ImGui::IsKeyDown(ImGuiKey_A)) {
+			game->m_camera->mPos -= game->m_camera->mRight * movementSpeed * deltaTime;
+		}
+	}
 
 	if (ImGui::Begin("Editor")) {
 
@@ -144,7 +167,6 @@ void EditorUI::OnUpdate()
 	{
 		gizmoType = ImGuizmo::OPERATION::SCALE;
 	}
-
 
 
 	if (sceneWindow->selectedEntity && gizmoType != -1)
@@ -199,7 +221,6 @@ void EditorUI::OnUpdate()
 
 	if (ImGui::Begin("Render")) {
 
-		ImGui::Dummy(ImVec2(0.0f, 10.0f));
 		ImGui::Checkbox("WireFrame Mode", &game->renderWireframe);
 
 		_bstr_t gxd(DXApplication::Instance->adapterDesc.Description);

@@ -24,7 +24,7 @@ public:
 	void OnRender();
 
 	//Update first render later
-	void OnUpdate();
+	void OnUpdate(float deltaTime);
 
 	void ClearViewport(float rgba[4]);
 

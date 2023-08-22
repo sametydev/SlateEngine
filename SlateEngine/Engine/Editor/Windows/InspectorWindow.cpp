@@ -52,6 +52,23 @@ void InspectorWindow::OnDraw(Entity* entity)
 			if (entityRegistar.try_get<RenderableObject>(entity->rawEntity)) {
 				DrawRenderableObjectComponent(entity);
 			}
+
+			ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.1f, 0.25f, 0.8f, 1.0f });
+			if (ImGui::Button("Add Component")) {
+				ImGui::OpenPopup("AddComponent");
+			}
+			ImGui::PopStyleColor(1);
+			if (ImGui::BeginPopup("AddComponent"))
+			{
+				if (ImGui::MenuItem("Test"))
+				{
+
+					ImGui::CloseCurrentPopup();
+				}
+
+			ImGui::EndPopup();
+			}
+
 		}
 	}
 	ImGui::End();

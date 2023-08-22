@@ -29,7 +29,7 @@ bool Game::OnInit()
     LogWindow::Instance->AddLog("[Info] Game OnInit\n");
 
 
-    m_camera = new Camera(45.f, GetAspectRatio(), 0.01f, 1000.0f);
+    m_camera = new Camera(65.f, GetAspectRatio(), 0.01f, 1000.0f);
     m_camera->SetPosition(vec3f(0,0,-10));
 
 
@@ -106,6 +106,7 @@ void Game::OnResize()
 
     if (m_camera != nullptr)
     {
+        m_camera->SetAspectRatio(GetAspectRatio());
         FrameBufferConstantObject.proj = m_camera->GetProjectionMatrix();
     }
 }
@@ -114,44 +115,18 @@ void Game::OnUpdateScene(float deltaTime)
 {
     m_camera->Update(deltaTime);
 #pragma region EDITOR_STUFF
-    if (!IS_COOKED)EditorUI::instance()->OnUpdate();
-#pragma endregion
-
-#pragma region CAMERA_MOVEMENT
-    constexpr float movementSpeed = 4.2f;
-    constexpr float mouseSpeed = 0.1333f;
-
-    if (InputSystem::IsKeyDown(Key::RMB)) {
-        vec2f delta = InputSystem::delta;
-        m_camera->mRot.y += delta.x * mouseSpeed;
-        m_camera->mRot.x += delta.y * mouseSpeed;
-
-        if (InputSystem::IsKeyDown(Key::W)) {
-            m_camera->mPos += m_camera->mForward * movementSpeed * deltaTime;
-        }
-        if (InputSystem::IsKeyDown(Key::S)) {
-            m_camera->mPos -= m_camera->mForward * movementSpeed * deltaTime;
-        }
-        if (InputSystem::IsKeyDown(Key::D)) {
-            m_camera->mPos += m_camera->mRight * movementSpeed * deltaTime;
-        }
-        if (InputSystem::IsKeyDown(Key::A)) {
-            m_camera->mPos -= m_camera->mRight * movementSpeed * deltaTime;
-        }
-    }
+    if (!IS_COOKED) { EditorUI::instance()->OnUpdate(deltaTime);}
 #pragma endregion
 
     FrameBufferConstantObject.eyePos = m_camera->GetPos();
     FrameBufferConstantObject.view = m_camera->GetViewMatrix();
     FrameBufferConstantObject.proj = m_camera->GetProjectionMatrix();
+    UpdateGlobalConstantBuffers();
 
     py += 10.f * deltaTime, tx += 10.f * deltaTime;
-
-    //testEntity->GetComponent<RenderableObject>().GetTransform().SetRotation({py,tx,0});
+    testEntity->GetComponent<RenderableObject>().GetTransform().SetRotation({py,tx,0});
 
     entityManager->OnUpdate(deltaTime);
-
-    UpdateGlobalConstantBuffers();
 
     m_d3dContext->RSSetState(renderWireframe ? m_wireFrameRasterizer.Get() : nullptr);
 }
