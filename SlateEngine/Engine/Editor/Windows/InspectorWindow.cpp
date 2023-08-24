@@ -49,7 +49,7 @@ void InspectorWindow::OnDraw(Entity* entity)
 			ImGui::PopStyleColor(3);
 			ImGui::Dummy(ImVec2(0.0f, 4.0f));
 
-			if (entityRegistar.try_get<RenderableObject>(entity->rawEntity)) {
+			if (entityRegistar.any_of<RenderableObject>(entity->rawEntity)) {
 				DrawRenderableObjectComponent(entity);
 			}
 

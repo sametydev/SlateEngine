@@ -126,7 +126,7 @@ void Game::OnUpdateScene(float deltaTime)
     py += 10.f * deltaTime, tx += 10.f * deltaTime;
     testEntity->GetComponent<RenderableObject>().GetTransform().SetRotation({py,tx,0});
 
-    entityManager->OnUpdate(deltaTime);
+    entityManager->OnUpdate(deltaTime,gameState);
 
     m_d3dContext->RSSetState(renderWireframe ? m_wireFrameRasterizer.Get() : nullptr);
 }
@@ -135,20 +135,12 @@ float Game::clear[4] = {0.3f, 0.3f, 0.3f, 1.0f};
 
 void Game::OnRenderScene()
 {
-    if (IS_COOKED) {
-        ClearRenderTarget(clear);
-    }
-    else
-    {
-        EditorUI::instance()->ClearViewport(clear);
-    }
+    BeginClear();
 
     entityManager->OnRender();
     
-    if (!IS_COOKED) {
-        ClearRenderTarget(clear);
-        EditorUI::instance()->OnRender();
-    }
+    PostClear();
+
     HR(m_swapChain->Present(0, 0));
 }
 
@@ -161,4 +153,23 @@ void Game::UpdateGlobalConstantBuffers()
     //Updating PS Cbuffer
     m_lightConstantBuffer->Map(sizeof(LightConstantBuffer), &LightConstantObject);
     m_lightConstantBuffer->UnMap();
+}
+
+void Game::BeginClear()
+{
+    if (IS_COOKED) {
+        ClearRenderTarget(clear);
+    }
+    else
+    {
+        EditorUI::instance()->ClearViewport(clear);
+    }
+}
+
+void Game::PostClear()
+{
+    if (!IS_COOKED) {
+        ClearRenderTarget(clear);
+        EditorUI::instance()->OnRender();
+    }
 }

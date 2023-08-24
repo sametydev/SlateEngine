@@ -149,7 +149,11 @@ void EditorUI::OnUpdate(float deltaTime)
 	}
 
 	if (ImGui::Begin("Editor")) {
-
+		if (ImGui::Button("PLAY")) { game->gameState = (GameState)1; }
+		ImGui::SameLine();
+		if (ImGui::Button("PAUSE")) { game->gameState = (GameState)2; }
+		ImGui::SameLine();
+		if (ImGui::Button("STOP")) { game->gameState = (GameState)0; }
 		ImGui::Image(m_viewportSRV.Get(), ImGui::GetContentRegionAvail());
 	}
 
@@ -184,7 +188,7 @@ void EditorUI::OnUpdate(float deltaTime)
 
 		auto& tc = sceneWindow->selectedEntity->GetComponent<Transform>();
 
-		mat4x4 t = mat4x4::transposed(tc.GetLocal());
+		mat4x4 t = mat4x4::transposed(tc.GetGlobal());
 
 		float translation[3] = { tc.mPosition.x, tc.mPosition.y, tc.mPosition.z };
 		float rotation[3]    = { tc.mRotation.x, tc.mRotation.y, tc.mRotation.z };
@@ -192,7 +196,7 @@ void EditorUI::OnUpdate(float deltaTime)
 
 		ImGuizmo::RecomposeMatrixFromComponents(translation, rotation, scale, *t.m);
 		//ImGuizmo::DrawGrid(cview.f, cproj.f, mat4x4().f, 100.f);
-		ImGuizmo::Manipulate(cview.f, cproj.f, (ImGuizmo::OPERATION)gizmoType, ImGuizmo::LOCAL, *t.m);
+		ImGuizmo::Manipulate(cview.f, cproj.f, (ImGuizmo::OPERATION)gizmoType, ImGuizmo::WORLD, *t.m);
 		
 		/*
 		S R  T
@@ -220,7 +224,7 @@ void EditorUI::OnUpdate(float deltaTime)
 	inspectorWindow->OnDraw(sceneWindow->selectedEntity);
 
 	if (ImGui::Begin("Render")) {
-
+		ImGui::ColorEdit3("Clear Color", game->clear);
 		ImGui::Checkbox("WireFrame Mode", &game->renderWireframe);
 
 		_bstr_t gxd(DXApplication::Instance->adapterDesc.Description);

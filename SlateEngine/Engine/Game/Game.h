@@ -15,6 +15,11 @@
 #include <SlateEngine/Engine/Entity/Entity.h>
 #include <SlateEngine/Engine/Entity/EntityManager.h>
 
+enum GameState {
+    NONE = 0,
+    PLAYING,
+    PAUSED
+};
 
 class Game : public DXApplication
 {
@@ -34,19 +39,24 @@ public:
 
     void UpdateGlobalConstantBuffers();
 
-    inline float GetClientW() { return m_clientW; }
-    inline float GetClientH() { return m_clientH; }
+    void BeginClear();
+    void PostClear();
 
-    //Temporary variables
+    inline int GetClientW() { return m_clientW; }
+    inline int GetClientH() { return m_clientH; }
+
+    GameState gameState = GameState::NONE;
+
     static Game* Instance;
 
+    //Temporary variables
     float py;
     float tx;
 
+    bool renderWireframe = false;
+    //--
 
     static float clear[4];
-
-    bool renderWireframe = false;
 
     FrameConstantBuffer   FrameBufferConstantObject;
     LightConstantBuffer  LightConstantObject;
@@ -55,8 +65,6 @@ public:
     Entity* testEntity;
     Camera* m_camera{};
 private:
-    ComPtr<ID3D11InputLayout> m_inputLayout = nullptr;
-
     DXConstantBuffer* m_frameConstantBuffer = nullptr;
     DXConstantBuffer* m_lightConstantBuffer = nullptr;
 

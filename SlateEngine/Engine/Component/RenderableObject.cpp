@@ -47,6 +47,9 @@ void RenderableObject::OnInternalInit()
     pixelShader3D->Bind();
 
     SetBuffer(BuiltInMesh::CreateBox<VertexPNT>());
+
+    //Calling Update once
+    OnUpdate(0);
 }
 
 void RenderableObject::SetTexture(DXTexture* texture)
