@@ -204,16 +204,15 @@ void EditorUI::OnUpdate(float deltaTime)
 		const mat4x4& cproj = mat4x4::transposed(game->m_camera->GetProjectionMatrix());
 		const mat4x4& cview = mat4x4::transposed(game->m_camera->GetViewMatrix());
 
-		auto& tc = sceneWindow->selectedEntity->GetComponent<Transform>();
+		Transform& tc = sceneWindow->selectedEntity->GetComponent<Transform>();
 
 		mat4x4 t = mat4x4::transposed(tc.GetGlobal());
 
-		float translation[3] = { tc.mPosition.x, tc.mPosition.y, tc.mPosition.z };
-		float rotation[3]    = { tc.mRotation.x, tc.mRotation.y, tc.mRotation.z };
-		float scale[3]       = { tc.mScale.x, tc.mScale.y, tc.mScale.z };
+		float translation[3]	= { tc.mPosition.x, tc.mPosition.y, tc.mPosition.z };
+		float rotation[3]		= { tc.mRotation.x, tc.mRotation.y, tc.mRotation.z };
+		float scale[3]			= { tc.mScale.x, tc.mScale.y, tc.mScale.z };
 
 		ImGuizmo::RecomposeMatrixFromComponents(translation, rotation, scale, *t.m);
-		//ImGuizmo::DrawGrid(cview.f, cproj.f, mat4x4().f, 100.f);
 		ImGuizmo::Manipulate(cview.f, cproj.f, (ImGuizmo::OPERATION)gizmoType, ImGuizmo::LOCAL, *t.m);
 		
 		/*
@@ -228,9 +227,9 @@ void EditorUI::OnUpdate(float deltaTime)
 
 			ImGuizmo::DecomposeMatrixToComponents(*t.m, translation, rotation, scale);
 			
-			tc.mPosition = vec3f(translation[0], translation[1], translation[2]);
-			tc.mRotation = vec3f(rotation[0], rotation[1], rotation[2]);
-			tc.mScale	 = vec3f(scale[0], scale[1], scale[2]);
+			tc.mPosition	= vec3f(translation[0], translation[1], translation[2]);
+			tc.mRotation	= vec3f(rotation[0], rotation[1], rotation[2]);
+			tc.mScale		= vec3f(scale[0], scale[1], scale[2]);
 		}
 	}
 	ImGui::End();
