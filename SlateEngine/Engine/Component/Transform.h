@@ -39,5 +39,6 @@ private:
 	union {
 		struct { vec3f mAxis[3]; };
 		struct { vec3f mRight, mUp, mForward; };
+
 	};
 };

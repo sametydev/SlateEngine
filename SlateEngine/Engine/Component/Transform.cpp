@@ -70,15 +70,16 @@ void Transform::OnUpdate(float deltaTime)
 
 	mat4x4 S = mat4x4::scaled(mScale);
 	mat4x4 T = mat4x4::translated(mPosition);
-	mat4x4 R = mat4x4::RotationYawPitchRoll(mRotation.x,mRotation.y,mRotation.z);
+	//mat4x4 R = mat4x4::RotationYawPitchRoll(mRotation.x,mRotation.y,mRotation.z);
 
-	//mat4x4 rx = mat4x4::RotationAxis(mRight, mRotation.x);
-	//mat4x4 ry = mat4x4::RotationAxis(mUp, mRotation.y);
-	//mat4x4 rz = mat4x4::RotationAxis(mForward, mRotation.z);
+	mat4x4 rx = mat4x4::RotationAxis(vec3f(1,0,0), mRotation.x);
+	mat4x4 ry = mat4x4::RotationAxis(vec3f(0, 1, 0), mRotation.y);
+	mat4x4 rz = mat4x4::RotationAxis(vec3f(0, 0, 1), mRotation.z);
 
-	//mat4x4 R = ry * rx * rz;
+	mat4x4 R = rx * ry * rz;
 
-	mLocal = S * T * R;
+	//mLocal = S * T * R;
+	mLocal = T * R * S;
 
 	if (!hasParent)
 	{
@@ -89,7 +90,4 @@ void Transform::OnUpdate(float deltaTime)
 	{
 		mGlobal = this->mLocal * mParent->mGlobal;
 	}
-
-	mLocal = S * T * R;
-
 }

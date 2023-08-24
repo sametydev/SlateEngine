@@ -214,7 +214,7 @@ void EditorUI::OnUpdate(float deltaTime)
 
 		ImGuizmo::RecomposeMatrixFromComponents(translation, rotation, scale, *t.m);
 		//ImGuizmo::DrawGrid(cview.f, cproj.f, mat4x4().f, 100.f);
-		ImGuizmo::Manipulate(cview.f, cproj.f, (ImGuizmo::OPERATION)gizmoType, ImGuizmo::WORLD, *t.m);
+		ImGuizmo::Manipulate(cview.f, cproj.f, (ImGuizmo::OPERATION)gizmoType, ImGuizmo::LOCAL, *t.m);
 		
 		/*
 		S R  T
@@ -224,9 +224,10 @@ void EditorUI::OnUpdate(float deltaTime)
 		*/
 
 		if (ImGuizmo::IsUsing()) {
+			float translation[3] = { 0.0f, 0.0f, 0.0f }, rotation[3] = { 0.0f, 0.0f, 0.0f }, scale[3] = { 0.0f, 0.0f, 0.0f };
 
 			ImGuizmo::DecomposeMatrixToComponents(*t.m, translation, rotation, scale);
-
+			
 			tc.mPosition = vec3f(translation[0], translation[1], translation[2]);
 			tc.mRotation = vec3f(rotation[0], rotation[1], rotation[2]);
 			tc.mScale	 = vec3f(scale[0], scale[1], scale[2]);
