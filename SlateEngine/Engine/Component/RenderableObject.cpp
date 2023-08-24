@@ -60,8 +60,8 @@ void RenderableObject::SetTexture(DXTexture* texture)
 
 void RenderableObject::OnUpdate(float deltaTime)
 {
-    ObjectConstantBufferObject.world = connectedEntity->GetComponent<Transform>().GetGlobal();
-    ObjectConstantBufferObject.worldInverseTranspose = mat4x4::transposed(connectedEntity->GetComponent<Transform>().GetGlobal().inverted());
+    ObjectConstantBufferObject.world = mat4x4::transposed(connectedEntity->GetComponent<Transform>().GetGlobal());
+    ObjectConstantBufferObject.worldInverseTranspose = mat4x4::transposed(connectedEntity->GetComponent<Transform>().GetGlobal());
     //connectedEntity->GetComponent<Transform>().Update();
 
     m_objectConstantBuffer->Map(sizeof(ObjectConstantBuffer), &ObjectConstantBufferObject);

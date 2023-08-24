@@ -123,8 +123,12 @@ void Game::OnUpdateScene(float deltaTime)
     FrameBufferConstantObject.proj = m_camera->GetProjectionMatrix();
     UpdateGlobalConstantBuffers();
 
-    py += 10.f * deltaTime, tx += 10.f * deltaTime;
-    testEntity->GetComponent<RenderableObject>().GetTransform().SetRotation({py,tx,0});
+    if (gameState == (GameState::PLAYING)) {
+
+        py += 10.f * deltaTime, tx += 10.f * deltaTime;
+        testEntity->GetComponent<RenderableObject>().GetTransform().SetRotation({ py,tx,0 });
+
+    }
 
     entityManager->OnUpdate(deltaTime,gameState);
 

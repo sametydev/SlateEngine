@@ -38,8 +38,6 @@ Entity* EntityManager::GetEntityFromRaw(entt::entity e)
 
 void EntityManager::OnUpdate(float dt,int GameState)
 {
-	if (GameState != 1) return;
-
 	auto transforms = entityRegistar.view<Transform>();
 	for (auto entity : transforms)
 	{
