@@ -173,65 +173,68 @@ void EditorUI::OnUpdate(float deltaTime)
 		ImGui::PopStyleColor(1);
 
 		ImGui::Image(m_viewportSRV.Get(), ImGui::GetContentRegionAvail());
-	}
 
-	if (ImGui::IsKeyPressed(ImGuiKey_T))
-	{
-		gizmoType = ImGuizmo::OPERATION::TRANSLATE;
-	}
+		if (ImGui::IsKeyPressed(ImGuiKey_T))
+		{
+			gizmoType = ImGuizmo::OPERATION::TRANSLATE;
+		}
 
-	if (ImGui::IsKeyPressed(ImGuiKey_R))
-	{
-		gizmoType = ImGuizmo::OPERATION::ROTATE;
-	}
+		if (ImGui::IsKeyPressed(ImGuiKey_R))
+		{
+			gizmoType = ImGuizmo::OPERATION::ROTATE;
+		}
 
-	if (ImGui::IsKeyPressed(ImGuiKey_S))
-	{
-		gizmoType = ImGuizmo::OPERATION::SCALE;
-	}
+		if (ImGui::IsKeyPressed(ImGuiKey_S))
+		{
+			gizmoType = ImGuizmo::OPERATION::SCALE;
+		}
 
 
-	if (sceneWindow->selectedEntity && gizmoType != -1)
-	{
-		ImGuizmo::SetOrthographic(false);
-		ImGuizmo::SetDrawlist();
-
-		float w = (float)ImGui::GetWindowWidth();
-		float h = (float)ImGui::GetWindowHeight();
-
-		ImGuizmo::SetRect(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y, w, h);
-
-		const mat4x4& cproj = mat4x4::transposed(game->m_camera->GetProjectionMatrix());
-		const mat4x4& cview = mat4x4::transposed(game->m_camera->GetViewMatrix());
-
-		Transform& tc = sceneWindow->selectedEntity->GetComponent<Transform>();
-
-		mat4x4 t = mat4x4::transposed(tc.GetGlobal());
-
-		float translation[3]	= { tc.mPosition.x, tc.mPosition.y, tc.mPosition.z };
-		float rotation[3]		= { tc.mRotation.x, tc.mRotation.y, tc.mRotation.z };
-		float scale[3]			= { tc.mScale.x, tc.mScale.y, tc.mScale.z };
-
-		ImGuizmo::RecomposeMatrixFromComponents(translation, rotation, scale, *t.m);
-		ImGuizmo::Manipulate(cview.f, cproj.f, (ImGuizmo::OPERATION)gizmoType, ImGuizmo::LOCAL, *t.m);
-		
-		/*
-		S R  T
-		4 8  12
-		5 9  13
-		6 10 14
-		*/
-
-		if (ImGuizmo::IsUsing()) {
-			float translation[3] = { 0.0f, 0.0f, 0.0f }, rotation[3] = { 0.0f, 0.0f, 0.0f }, scale[3] = { 0.0f, 0.0f, 0.0f };
-
-			ImGuizmo::DecomposeMatrixToComponents(*t.m, translation, rotation, scale);
+		if (sceneWindow->selectedEntity && gizmoType != -1)
+		{
+			ImGuizmo::SetOrthographic(false);
+			ImGuizmo::SetDrawlist();
 			
-			tc.mPosition	= vec3f(translation[0], translation[1], translation[2]);
-			tc.mRotation	= vec3f(rotation[0], rotation[1], rotation[2]);
-			tc.mScale		= vec3f(scale[0], scale[1], scale[2]);
+			float w = ImGui::GetWindowWidth();
+			//adding 50.f to height because in this calculation its calc all viewport window, not viewport texture, for temporary i need this like solution
+			float h = ImGui::GetWindowHeight() + 50.f;
+
+			ImGuizmo::SetRect(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y, w, h);
+
+			const mat4x4& cproj = mat4x4::transposed(game->m_camera->GetProjectionMatrix());
+			const mat4x4& cview = mat4x4::transposed(game->m_camera->GetViewMatrix());
+
+			Transform& tc = sceneWindow->selectedEntity->GetComponent<Transform>();
+
+			mat4x4 t = mat4x4::transposed(tc.GetGlobal());
+
+			float translation[3] = { tc.mPosition.x, tc.mPosition.y, tc.mPosition.z };
+			float rotation[3] = { tc.mRotation.x, tc.mRotation.y, tc.mRotation.z };
+			float scale[3] = { tc.mScale.x, tc.mScale.y, tc.mScale.z };
+
+			ImGuizmo::RecomposeMatrixFromComponents(translation, rotation, scale, *t.m);
+			ImGuizmo::Manipulate(cview.f, cproj.f, (ImGuizmo::OPERATION)gizmoType, ImGuizmo::LOCAL, *t.m);
+
+			/*
+			S R  T
+			4 8  12
+			5 9  13
+			6 10 14
+			*/
+
+			if (ImGuizmo::IsUsing()) {
+				float translation[3] = { 0.0f, 0.0f, 0.0f }, rotation[3] = { 0.0f, 0.0f, 0.0f }, scale[3] = { 0.0f, 0.0f, 0.0f };
+
+				ImGuizmo::DecomposeMatrixToComponents(*t.m, translation, rotation, scale);
+
+				tc.mPosition = vec3f(translation[0], translation[1], translation[2]);
+				tc.mRotation = vec3f(rotation[0], rotation[1], rotation[2]);
+				tc.mScale = vec3f(scale[0], scale[1], scale[2]);
+			}
 		}
 	}
+
+	
 	ImGui::End();
 
     for (auto w : windows)
