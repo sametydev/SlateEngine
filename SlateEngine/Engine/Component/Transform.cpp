@@ -72,9 +72,9 @@ void Transform::OnUpdate(float deltaTime)
 	mat4x4 T = mat4x4::translated(mPosition);
 	//mat4x4 R = mat4x4::RotationYawPitchRoll(mRotation.x,mRotation.y,mRotation.z);
 
-	mat4x4 rx = mat4x4::RotationAxis(vec3f(1,0,0), mRotation.x);
-	mat4x4 ry = mat4x4::RotationAxis(vec3f(0, 1, 0), mRotation.y);
-	mat4x4 rz = mat4x4::RotationAxis(vec3f(0, 0, 1), mRotation.z);
+	mat4x4 rx = mat4x4::rotateX(mRotation.x);
+	mat4x4 ry = mat4x4::rotateY(mRotation.y);
+	mat4x4 rz = mat4x4::rotateZ(mRotation.z);
 
 	mat4x4 R = rx * ry * rz;
 

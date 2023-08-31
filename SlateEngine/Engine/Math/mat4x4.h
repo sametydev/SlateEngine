@@ -313,37 +313,79 @@ inline mat4x4 mat4x4::translated(const vec3f& t) {
 }
 
 //ROTATE Functions;
+//inline mat4x4 mat4x4::rotateX(float angle) {
+//	float theta = angle * RADIANS;
+//	mat4x4 mat = {
+//	1.f,0.f,0.f,0.f,
+//	0.f,cos(theta),-sin(theta),0.f,
+//	0.f,sin(theta),cos(theta),0.f,
+//	0.f,0.f,0.f,1.f
+//	};
+//
+//	return mat;
+//}
+//inline mat4x4 mat4x4::rotateY(float angle) {
+//	float theta = angle * RADIANS;
+//	mat4x4 mat = {
+//	cos(theta),0.f,sin(theta),0.f,
+//	0.f,1.f,0.f,0.f,
+//	-sin(theta),0.f,cos(theta),0.f,
+//	0.f,0.f,0.f,1.f
+//	};
+//
+//	return mat;
+//}
+//inline mat4x4 mat4x4::rotateZ(float angle) {
+//	float theta = angle * RADIANS;
+//	float sinx = sin(theta);
+//	float cosx = cos(theta);
+//	mat4x4 mat = {
+//	cosx,-sinx,0.f,0.f,
+//	sinx,cosx,0.f,0.f,
+//	0.f,0.f,1.f,0.f,
+//	0.f,0.f,0.f,1.f
+//	};
+//
+//	return mat;
+//}
+// 
 inline mat4x4 mat4x4::rotateX(float angle) {
-	float theta = angle * RADIANS;
-	mat4x4 mat = {
-	1.f,0.f,0.f,0.f,
-	0.f,cos(theta),-sin(theta),0.f,
-	0.f,sin(theta),cos(theta),0.f,
-	0.f,0.f,0.f,1.f
-	};
+float theta = angle * RADIANS;
+float sinx = sin(theta);
+float cosx = cos(theta);
+mat4x4 mat = {
+	1.f,  0.f,  0.f, 0.f,
+	0.f, cosx, -sinx, 0.f,
+	0.f, sinx,  cosx, 0.f,
+	0.f,  0.f,  0.f, 1.f
+};
 
-	return mat;
+return mat;
 }
+
 inline mat4x4 mat4x4::rotateY(float angle) {
 	float theta = angle * RADIANS;
+	float siny = sin(theta);
+	float cosy = cos(theta);
 	mat4x4 mat = {
-	cos(theta),0.f,sin(theta),0.f,
-	0.f,1.f,0.f,0.f,
-	-sin(theta),0.f,cos(theta),0.f,
-	0.f,0.f,0.f,1.f
+		cosy, 0.f, siny, 0.f,
+		0.f, 1.f,  0.f, 0.f,
+	   -siny, 0.f, cosy, 0.f,
+		0.f, 0.f,  0.f, 1.f
 	};
 
 	return mat;
 }
+
 inline mat4x4 mat4x4::rotateZ(float angle) {
 	float theta = angle * RADIANS;
-	float sinx = sin(theta);
-	float cosx = cos(theta);
+	float sinz = sin(theta);
+	float cosz = cos(theta);
 	mat4x4 mat = {
-	cosx,-sinx,0.f,0.f,
-	sinx,cosx,0.f,0.f,
-	0.f,0.f,1.f,0.f,
-	0.f,0.f,0.f,1.f
+		cosz, -sinz, 0.f, 0.f,
+		sinz,  cosz, 0.f, 0.f,
+		0.f,   0.f, 1.f, 0.f,
+		0.f,   0.f, 0.f, 1.f
 	};
 
 	return mat;
