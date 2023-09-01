@@ -30,6 +30,8 @@ public:
 
 	void ResizeViewport(int w, int h);
 
+	void DrawViewportMenu();
+
 private:
 	friend class Game;
 	friend class DXApplication;

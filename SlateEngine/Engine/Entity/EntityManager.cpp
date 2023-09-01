@@ -1,5 +1,5 @@
 #include <SlateEngine/Engine/Entity/EntityManager.h>
-#include <SlateEngine/Engine/Component/RenderableObject.h>
+#include <SlateEngine/Engine/Component/RenderableGeometry.h>
 
 EntityManager* EntityManager::Instance = nullptr;
 
@@ -38,25 +38,27 @@ Entity* EntityManager::GetEntityFromRaw(entt::entity e)
 
 void EntityManager::OnUpdate(float dt,int GameState)
 {
+
 	auto transforms = entityRegistar.view<Transform>();
 	for (auto entity : transforms)
 	{
 		transforms.get<Transform>(entity).OnUpdate(dt);
 	}
 
-	auto renderableObjects = entityRegistar.view<RenderableObject>();
-	for (auto entity : renderableObjects)
+	auto RenderableGeometrys = entityRegistar.view<RenderableGeometry>();
+	for (auto entity : RenderableGeometrys)
 	{
-		renderableObjects.get<RenderableObject>(entity).OnUpdate(dt);
+		RenderableGeometrys.get<RenderableGeometry>(entity).OnUpdate(dt);
 	}
 
 }
 
 void EntityManager::OnRender()
 {
-	auto renderableObjects = entityRegistar.view<RenderableObject>();
-	for (auto entity : renderableObjects)
+	auto RenderableGeometrys = entityRegistar.view<RenderableGeometry>();
+	
+	for (auto entity : RenderableGeometrys)
 	{
-		renderableObjects.get<RenderableObject>(entity).OnRender();
+		RenderableGeometrys.get<RenderableGeometry>(entity).OnRender();
 	}
 }

@@ -137,7 +137,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Engine\Editor\Windows\AssetsBrowser.cpp" />
-    <ClCompile Include="Engine\Component\RenderableObject.cpp" />
+    <ClCompile Include="Engine\Component\RenderableGeometry.cpp" />
     <ClCompile Include="Engine\Component\Camera.cpp" />
     <ClCompile Include="Engine\Component\Transform.cpp" />
     <ClCompile Include="Engine\Graphics\Texture\DXTexture.cpp" />
@@ -183,7 +183,7 @@
     <ClInclude Include="Engine\Editor\Windows\AssetsBrowser.h" />
     <ClInclude Include="Engine\Component\Component.h" />
     <ClInclude Include="Engine\Component\Components.h" />
-    <ClInclude Include="Engine\Component\RenderableObject.h" />
+    <ClInclude Include="Engine\Component\RenderableGeometry.h" />
     <ClInclude Include="Engine\Component\Camera.h" />
     <ClInclude Include="Engine\Component\Transform.h" />
     <ClInclude Include="Engine\Graphics\Texture\DXTexture.h" />

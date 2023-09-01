@@ -149,28 +149,7 @@ void EditorUI::OnUpdate(float deltaTime)
 	}
 
 	if (ImGui::Begin("Editor")) {
-		if (ImGui::Button("PLAY")) { game->gameState = (GameState)1; }
-		ImGui::SameLine();
-		if (ImGui::Button("PAUSE")) { game->gameState = (GameState)2; }
-		ImGui::SameLine();
-		if (ImGui::Button("STOP")) { game->gameState = (GameState)0; }
-
-		ImGui::SameLine();		
-
-		ImGui::SameLine();
-		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.8f, 0.1f, 0.15f, 1.0f });
-		if (ImGui::Button(" T ")) { gizmoType = ImGuizmo::OPERATION::TRANSLATE; }
-		ImGui::PopStyleColor(1);
-
-		ImGui::SameLine();
-		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0, 0.71f, 0.0f, 1.0f });
-		if (ImGui::Button(" R ")) { gizmoType = ImGuizmo::OPERATION::ROTATE; }
-		ImGui::PopStyleColor(1);
-
-		ImGui::SameLine();
-		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0, 0.0f, 1.0f, 1.0f });
-		if (ImGui::Button(" S ")) { gizmoType = ImGuizmo::OPERATION::SCALE; }
-		ImGui::PopStyleColor(1);
+		DrawViewportMenu();
 
 		ImGui::Image(m_viewportSRV.Get(), ImGui::GetContentRegionAvail());
 
@@ -229,7 +208,7 @@ void EditorUI::OnUpdate(float deltaTime)
 
 				tc.mPosition = vec3f(translation[0], translation[1], translation[2]);
 				tc.mRotation = vec3f(rotation[0], rotation[1], rotation[2]);
-				tc.mScale = vec3f(scale[0], scale[1], scale[2]);
+				tc.mScale	 = vec3f(scale[0], scale[1], scale[2]);
 			}
 		}
 	}
@@ -315,6 +294,32 @@ void EditorUI::ResizeViewport(int w, int h)
 	DXInstance->GetDXDevice()->CreateShaderResourceView(m_viewportTexture.Get(), nullptr, &m_viewportSRV);
 
 	DXInstance->GetDXContext()->OMSetRenderTargets(1, m_viewportRTV.GetAddressOf(), DXInstance->GetDepthStencilView().Get());
+}
+
+void EditorUI::DrawViewportMenu()
+{
+	if (ImGui::Button("PLAY")) { game->gameState = (GameState)1; }
+	ImGui::SameLine();
+	if (ImGui::Button("PAUSE")) { game->gameState = (GameState)2; }
+	ImGui::SameLine();
+	if (ImGui::Button("STOP")) { game->gameState = (GameState)0; }
+
+	ImGui::SameLine();
+
+	ImGui::SameLine();
+	ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.8f, 0.1f, 0.15f, 1.0f });
+	if (ImGui::Button(" T ")) { gizmoType = ImGuizmo::OPERATION::TRANSLATE; }
+	ImGui::PopStyleColor(1);
+
+	ImGui::SameLine();
+	ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0, 0.71f, 0.0f, 1.0f });
+	if (ImGui::Button(" R ")) { gizmoType = ImGuizmo::OPERATION::ROTATE; }
+	ImGui::PopStyleColor(1);
+
+	ImGui::SameLine();
+	ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0, 0.0f, 1.0f, 1.0f });
+	if (ImGui::Button(" S ")) { gizmoType = ImGuizmo::OPERATION::SCALE; }
+	ImGui::PopStyleColor(1);
 }
 
 void EditorUI::InitTheme()

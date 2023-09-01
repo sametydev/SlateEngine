@@ -10,7 +10,7 @@
 #include <SlateEngine/Engine/Graphics/Buffer/DXConstantBuffer.h>
 #include <SlateEngine/Engine/Graphics/BuiltInMesh.h>
 #include <SlateEngine/Engine/Graphics/Texture/DXTexture.h>
-#include <SlateEngine/Engine/Component/RenderableObject.h>
+#include <SlateEngine/Engine/Component/RenderableGeometry.h>
 #include <SlateEngine/Engine/Component/Camera.h>
 #include <SlateEngine/Engine/Entity/Entity.h>
 #include <SlateEngine/Engine/Entity/EntityManager.h>
@@ -63,6 +63,8 @@ public:
 
     DXTexture* m_crateTexture = nullptr;
     Entity* testEntity;
+    Entity* testEntity2;
+
     Camera* m_camera{};
 private:
     DXConstantBuffer* m_frameConstantBuffer = nullptr;

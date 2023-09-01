@@ -16,7 +16,7 @@ public:
 
 	void DrawTransform(const char* label,vec3f& val);
 
-	void DrawRenderableObjectComponent(Entity* entity);
+	void DrawRenderableGeometryComponent(Entity* entity);
 private:
 	const char* windowName;
 

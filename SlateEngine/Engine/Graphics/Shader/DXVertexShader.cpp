@@ -30,6 +30,11 @@ void DXVertexShader::CreateInputLayout(const D3D11_INPUT_ELEMENT_DESC* elements,
 	Game::Instance->GetDXContext()->IASetInputLayout(m_inputLayout.Get());
 }
 
+void DXVertexShader::UpdateInputLayout()
+{
+	Game::Instance->GetDXContext()->IASetInputLayout(m_inputLayout.Get());
+}
+
 void DXVertexShader::SetConstantBuffer(UINT slot,UINT numOfBuffers,ID3D11Buffer* const* buffer)
 {
 	Game::Instance->GetDXContext()->VSSetConstantBuffers(0, 1, buffer);

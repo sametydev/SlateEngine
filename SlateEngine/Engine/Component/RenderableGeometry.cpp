@@ -1,22 +1,24 @@
-#include <SlateEngine/Engine/Component/RenderableObject.h>
+#include <SlateEngine/Engine/Component/RenderableGeometry.h>
 
-RenderableObject::RenderableObject()
+RenderableGeometry::RenderableGeometry()
 {
 
 }
 
-RenderableObject::~RenderableObject()
+RenderableGeometry::~RenderableGeometry()
 {
 }
-void RenderableObject::OnInternalInit()
+void RenderableGeometry::OnInternalInit()
 {
-    connectedEntity->GetComponent<Transform>().SetPosition({ 0,0,0 });
 
     //Create our Vertex Buffer
     m_vertexBuffer = new DXVertexBuffer();
 
     //Create our Index Buffer
     m_indexBuffer = new DXIndexBuffer();
+
+    SetBuffer(BuiltInMesh::CreateBox<VertexPNT>());
+
 
     m_objectConstantBuffer = new DXConstantBuffer();
 
@@ -46,29 +48,35 @@ void RenderableObject::OnInternalInit()
     vertexShader3D->Bind();
     pixelShader3D->Bind();
 
-    SetBuffer(BuiltInMesh::CreateBox<VertexPNT>());
 
     //Calling Update once
     OnUpdate(0);
 }
 
-void RenderableObject::SetTexture(DXTexture* texture)
+void RenderableGeometry::SetTexture(DXTexture* texture)
 {
     texture->Bind(0);
 }
 
 
-void RenderableObject::OnUpdate(float deltaTime)
+void RenderableGeometry::OnUpdate(float deltaTime)
 {
     ObjectConstantBufferObject.world = connectedEntity->GetComponent<Transform>().GetGlobal();
     ObjectConstantBufferObject.worldInverseTranspose = connectedEntity->GetComponent<Transform>().GetGlobal();
-    //connectedEntity->GetComponent<Transform>().Update();
 
     m_objectConstantBuffer->Map(sizeof(ObjectConstantBuffer), &ObjectConstantBufferObject);
     m_objectConstantBuffer->UnMap();
 }
 
-void RenderableObject::OnRender()
+void RenderableGeometry::OnRender()
 {
+    m_vertexBuffer->BindPipeline(0);
+    m_indexBuffer->BindPipeline(0);
+    vertexShader3D->Bind();
+    vertexShader3D->UpdateInputLayout();
+    pixelShader3D->Bind();
+    m_objectConstantBuffer->BindVS(0);
+    m_objectConstantBuffer->BindPS(0);
+
     DXApplication::Instance->GetDXContext().Get()->DrawIndexed(m_indices, 0, 0);
 }

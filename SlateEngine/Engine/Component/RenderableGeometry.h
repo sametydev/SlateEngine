@@ -15,10 +15,10 @@
 #include <SlateEngine/Engine/Entity/Entity.h>
 #include <SlateEngine/Engine/Component/Component.h>
 
-struct RenderableObject : public Component {
+struct RenderableGeometry : public Component {
 public:
-    RenderableObject();
-	~RenderableObject();
+    RenderableGeometry();
+	~RenderableGeometry();
 
     void OnInternalInit() override;
 
@@ -35,7 +35,7 @@ private:
     DXVertexBuffer* m_vertexBuffer = nullptr;
     DXIndexBuffer* m_indexBuffer = nullptr;
 
-    ObjectConstantBuffer   ObjectConstantBufferObject;
+    ObjectConstantBuffer   ObjectConstantBufferObject{};
     DXConstantBuffer* m_objectConstantBuffer = nullptr;
 
     DXVertexShader* vertexShader3D = nullptr;
@@ -46,7 +46,7 @@ private:
 };
 
 template<class VertexType, class IndexType>
-inline void RenderableObject::SetBuffer(const MeshData<VertexType, IndexType>& meshData)
+inline void RenderableGeometry::SetBuffer(const MeshData<VertexType, IndexType>& meshData)
 {
     //Reset old buffers
     m_vertexBuffer->Reset();

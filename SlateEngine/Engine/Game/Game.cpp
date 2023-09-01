@@ -53,13 +53,17 @@ bool Game::OnInit()
     testEntity = new Entity();
 
     entityManager->RegisterEntity(testEntity,"Test Object");
-    testEntity->AddComponent<RenderableObject>();
-
-    RenderableObject& r = testEntity->GetComponent<RenderableObject>();
+    testEntity->AddComponent<RenderableGeometry>();
+    testEntity->GetComponent<Transform>().SetPosition({0.f,2.f,0.f});
+    RenderableGeometry& r = testEntity->GetComponent<RenderableGeometry>();
     r.SetTexture(m_crateTexture);
 
-    Entity* entttt = new Entity();
-    entityManager->RegisterEntity(entttt, "Test Empty Entity");
+    testEntity2 = new Entity();
+    entityManager->RegisterEntity(testEntity2, "Test Empty Entity");
+    testEntity2->AddComponent<RenderableGeometry>();
+
+    RenderableGeometry& r2 = testEntity2->GetComponent<RenderableGeometry>();
+    r2.SetTexture(m_crateTexture);
 
     //Creating Constant Buffers;
     m_frameConstantBuffer = new DXConstantBuffer();
@@ -95,7 +99,6 @@ bool Game::OnInit()
 
     m_d3dContext->PSSetSamplers(0, 1, samplerState.GetAddressOf());
     
-
     return true;
 }
 
@@ -126,9 +129,11 @@ void Game::OnUpdateScene(float deltaTime)
     if (gameState == (GameState::PLAYING)) {
 
         py += 10.f * deltaTime, tx += 10.f * deltaTime;
-        testEntity->GetComponent<RenderableObject>().GetTransform().SetRotation({ py,tx,0 });
+        testEntity->GetComponent<RenderableGeometry>().GetTransform().SetRotation({ py,tx,0 });
 
     }
+
+
 
     entityManager->OnUpdate(deltaTime,gameState);
 
@@ -142,7 +147,6 @@ void Game::OnRenderScene()
     BeginClear();
 
     entityManager->OnRender();
-    
     PostClear();
 
     HR(m_swapChain->Present(0, 0));

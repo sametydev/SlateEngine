@@ -13,6 +13,12 @@ public:
 	void AddComponent();
 
 	template<typename T>
+	void RemoveComponent();
+
+	template<typename T>
+	bool HasComponent();
+
+	template<typename T>
 	T& GetComponent();
 
 
@@ -26,6 +32,18 @@ template<typename T>
 inline void Entity::AddComponent()
 {
 	entityRegistar.emplace<T>(rawEntity).SetEntity(this);
+}
+
+template<typename T>
+inline void Entity::RemoveComponent()
+{
+	entityRegistar.erase<T>(rawEntity);
+}
+
+template<typename T>
+inline bool Entity::HasComponent()
+{
+	return entityRegistar.any_of<T>(rawEntity);
 }
 
 template<typename T>

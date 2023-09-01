@@ -49,8 +49,8 @@ void InspectorWindow::OnDraw(Entity* entity)
 			ImGui::PopStyleColor(3);
 			ImGui::Dummy(ImVec2(0.0f, 4.0f));
 
-			if (entityRegistar.any_of<RenderableObject>(entity->rawEntity)) {
-				DrawRenderableObjectComponent(entity);
+			if (entity->HasComponent<RenderableGeometry>()) {
+				DrawRenderableGeometryComponent(entity);
 			}
 
 			ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.1f, 0.25f, 0.8f, 1.0f });
@@ -60,8 +60,9 @@ void InspectorWindow::OnDraw(Entity* entity)
 			ImGui::PopStyleColor(1);
 			if (ImGui::BeginPopup("AddComponent"))
 			{
-				if (ImGui::MenuItem("Test"))
+				if (ImGui::MenuItem("Renderable Component"))
 				{
+					if (!entity->HasComponent<RenderableGeometry>()) { entity->AddComponent<RenderableGeometry>(); }
 
 					ImGui::CloseCurrentPopup();
 				}
@@ -122,9 +123,9 @@ void InspectorWindow::DrawTransform(const char* label, vec3f& val)
 	ImGui::PopID();
 }
 
-void InspectorWindow::DrawRenderableObjectComponent(Entity* entity)
+void InspectorWindow::DrawRenderableGeometryComponent(Entity* entity)
 {
-	RenderableObject& r = entityRegistar.get<RenderableObject>(entity->rawEntity);
+	RenderableGeometry& r = entityRegistar.get<RenderableGeometry>(entity->rawEntity);
 
 	static int curr_mesh_item = 0;
 	const char* mesh_strs[] = {
@@ -133,7 +134,7 @@ void InspectorWindow::DrawRenderableObjectComponent(Entity* entity)
 		"Cylinder"
 	};
 
-	if (ImGui::TreeNode("Renderable Object"))
+	if (ImGui::TreeNode("Renderable Geometry"))
 	{
 		ImGui::Dummy(ImVec2(0.0f, 4.0f));
 		ImGui::Text("Select Built-In Geometry");
@@ -148,6 +149,9 @@ void InspectorWindow::DrawRenderableObjectComponent(Entity* entity)
 			}
 
 			r.SetBuffer(meshData);
+		}
+		if (ImGui::Button("Remove <RenderableGeometry> Component")) {
+			entity->RemoveComponent<RenderableGeometry>();
 		}
 		ImGui::Dummy(ImVec2(0.0f, 4.0f));
 		ImGui::TreePop();

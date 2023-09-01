@@ -13,6 +13,6 @@ public:
 
 	inline void SetEntity(Entity* entity) {
 		connectedEntity = entity;
-		OnInternalInit();
+		if (entity != nullptr) OnInternalInit();
 	}
 };

@@ -11,6 +11,7 @@ DXConstantBuffer::~DXConstantBuffer()
 
 void DXConstantBuffer::Reset()
 {
+    m_buffer.Reset();
 }
 
 void DXConstantBuffer::BindPS(UINT slot)

@@ -68,9 +68,9 @@ void D2DContext::OnRender()
         auto view = r2registar.view<C2DText>();
         for (auto entity : view)
         {
-            auto renderableObject = view.get<C2DText>(entity);
+            auto RenderableGeometry = view.get<C2DText>(entity);
 
-            renderableObject.OnRender();
+            RenderableGeometry.OnRender();
         }
 
         HR(m_d2dRenderTarget->EndDraw());
