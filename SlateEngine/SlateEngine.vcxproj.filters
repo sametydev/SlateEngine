@@ -286,7 +286,7 @@
     <None Include="Shaders\Misc\RTT_VS.hlsl" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="Textures\Crate.dds" />
+    <Image Include="TestProject\Textures\Crate.dds" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Shaders\TexturedLit\Lit3DVS.hlsl" />

@@ -33,7 +33,7 @@ struct mat4x4 {
 	static mat4x4 scaled(const vec3f& v);
 
 	static mat4x4 translated(const vec3f& t);
-
+	mat4x4 InverseTranspose();
 	//ROTATE Functions;
 	static mat4x4 rotateX(float angle);
 	static mat4x4 rotateY(float angle);
@@ -100,6 +100,53 @@ inline mat4x4 mat4x4::operator*(const mat4x4& rhs) {
 		}
 	}
 	return mat;
+}
+
+inline mat4x4 mat4x4::InverseTranspose() {
+	mat4x4 result;
+
+	// Calculate the inverse of the transpose of the upper-left 3x3 matrix
+	float invTranspose[3][3];
+
+	for (int i = 0; i < 3; i++) {
+		for (int j = 0; j < 3; j++) {
+			invTranspose[i][j] = m[j][i];
+		}
+	}
+
+	// Calculate the determinant of the upper-left 3x3 matrix
+	float det = m[0][0] * (m[1][1] * m[2][2] - m[1][2] * m[2][1]) -
+		m[0][1] * (m[1][0] * m[2][2] - m[1][2] * m[2][0]) +
+		m[0][2] * (m[1][0] * m[2][1] - m[1][1] * m[2][0]);
+
+	// Check if the determinant is close to zero (singular matrix)
+	if (fabs(det) < 1e-6) {
+		return result; // Return an identity matrix if the determinant is near zero.
+	}
+
+	float invDet = 1.0f / det;
+
+	// Calculate the inverse of the transpose
+	for (int i = 0; i < 3; i++) {
+		for (int j = 0; j < 3; j++) {
+			invTranspose[i][j] *= invDet;
+		}
+	}
+
+	// Assign the transposed inverse to the upper-left 3x3 of the result
+	for (int i = 0; i < 3; i++) {
+		for (int j = 0; j < 3; j++) {
+			result.m[i][j] = invTranspose[i][j];
+		}
+	}
+
+	// Copy the translation component
+	result.m[3][0] = 0.0f;
+	result.m[3][1] = 0.0f;
+	result.m[3][2] = 0.0f;
+	result.m[3][3] = 1.0f;
+
+	return result;
 }
 
 inline mat4x4 mat4x4::inverted()

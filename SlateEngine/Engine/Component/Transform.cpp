@@ -9,10 +9,6 @@ Transform::Transform()
 	mScale = vec3f(1.0f);
 }
 
-Transform::~Transform()
-{
-}
-
 void Transform::OnInternalInit()
 {
 }

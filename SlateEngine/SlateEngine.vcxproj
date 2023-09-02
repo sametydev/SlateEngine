@@ -258,7 +258,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="Textures\Crate.dds" />
+    <Image Include="TestProject\Textures\Crate.dds" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

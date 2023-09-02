@@ -17,8 +17,8 @@
 
 struct RenderableGeometry : public Component {
 public:
-    RenderableGeometry();
-	~RenderableGeometry();
+    RenderableGeometry() = default;
+    ~RenderableGeometry() {};
 
     void OnInternalInit() override;
 

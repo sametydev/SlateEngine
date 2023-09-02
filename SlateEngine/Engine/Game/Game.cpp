@@ -48,7 +48,7 @@ bool Game::OnInit()
     HR(m_d3dDevice->CreateSamplerState(&sampDesc, samplerState.GetAddressOf()));
 
     m_crateTexture = new DXTexture();
-    m_crateTexture->Load(L"Textures\\Crate.dds");
+    m_crateTexture->Load(L"TestProject\\Textures\\Crate.dds");
 
     testEntity = new Entity();
 

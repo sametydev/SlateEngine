@@ -5,7 +5,7 @@ class Transform : public Component
 {
 public:
 	Transform();
-	~Transform();
+	~Transform() {};
 
 
 	void OnInternalInit() override;

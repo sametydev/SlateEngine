@@ -1,13 +1,5 @@
 #include <SlateEngine/Engine/Component/RenderableGeometry.h>
 
-RenderableGeometry::RenderableGeometry()
-{
-
-}
-
-RenderableGeometry::~RenderableGeometry()
-{
-}
 void RenderableGeometry::OnInternalInit()
 {
 
@@ -25,7 +17,7 @@ void RenderableGeometry::OnInternalInit()
     cbData.world                 = mat4x4();
     cbData.worldInverseTranspose = mat4x4();
 
-    cbData.material.ambient      = vec4f(0.5f, 0.5f, 0.5f, 1.0f);
+    cbData.material.ambient      = vec4f(1.0f, 1.0f, 1.0f, 1.0f);
     cbData.material.diffuse      = vec4f(1.0f, 1.0f, 1.0f, 1.0f);
     cbData.material.specular     = vec4f(0.1f, 0.1f, 0.1f, 5.0f);
 
@@ -62,7 +54,7 @@ void RenderableGeometry::SetTexture(DXTexture* texture)
 void RenderableGeometry::OnUpdate(float deltaTime)
 {
     cbData.world                 = connectedEntity->GetComponent<Transform>().GetGlobal();
-    cbData.worldInverseTranspose = connectedEntity->GetComponent<Transform>().GetGlobal();
+    cbData.worldInverseTranspose = connectedEntity->GetComponent<Transform>().GetGlobal().InverseTranspose();
 
     m_objectConstantBuffer->Map(sizeof(ObjectConstantBuffer), &cbData);
     m_objectConstantBuffer->UnMap();
