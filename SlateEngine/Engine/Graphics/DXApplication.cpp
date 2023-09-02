@@ -384,8 +384,8 @@ bool DXApplication::InitializeGraphics()
 
 
 
-    ComPtr<IDXGIDevice> dxgiDevice = nullptr;
-    ComPtr<IDXGIAdapter> dxgiAdapter = nullptr;
+    ComPtr<IDXGIDevice> dxgiDevice     = nullptr;
+    ComPtr<IDXGIAdapter> dxgiAdapter   = nullptr;
     ComPtr<IDXGIFactory1> dxgiFactory1 = nullptr;
     ComPtr<IDXGIFactory2> dxgiFactory2 = nullptr;
 
@@ -394,37 +394,37 @@ bool DXApplication::InitializeGraphics()
     HR(dxgiAdapter->GetParent(__uuidof(IDXGIFactory1), reinterpret_cast<void**>(dxgiFactory1.GetAddressOf())));
 
     // Check supports of DX 11.1
-    hr = dxgiFactory1->QueryInterface(IID_PPV_ARGS(&dxgiFactory2));
+    HR(dxgiFactory1->QueryInterface(IID_PPV_ARGS(&dxgiFactory2)));
 
-    HR(m_d3dDevice.As(&m_d3dDevice1));
-    HR(m_d3dContext.As(&m_d3dContext1));
+    HR(m_d3dDevice->QueryInterface(IID_PPV_ARGS(& m_d3dDevice1)));
+    HR(m_d3dContext->QueryInterface(IID_PPV_ARGS(& m_d3dContext1)));
 
     DXGI_SWAP_CHAIN_DESC1 sd{};
-    sd.Width = m_clientW;
-    sd.Height = m_clientH;
-    sd.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+    sd.Width                           = m_clientW;
+    sd.Height                          = m_clientH;
+    sd.Format                          = DXGI_FORMAT_R8G8B8A8_UNORM;
 
     if (bEnableMsaa)
     {
-        sd.SampleDesc.Count = 4;
-        sd.SampleDesc.Quality = mMsaaQuality - 1;
+        sd.SampleDesc.Count            = 4;
+        sd.SampleDesc.Quality          = mMsaaQuality - 1;
     }
     else
     {
-        sd.SampleDesc.Count = 1;
-        sd.SampleDesc.Quality = 0;
+        sd.SampleDesc.Count            = 1;
+        sd.SampleDesc.Quality          = 0;
     }
-    sd.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
-    sd.BufferCount = 1;
-    sd.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
-    sd.Flags = 0;
+    sd.BufferUsage                     = DXGI_USAGE_RENDER_TARGET_OUTPUT;
+    sd.BufferCount                     = 1;
+    sd.SwapEffect                      = DXGI_SWAP_EFFECT_DISCARD;
+    sd.Flags                           = 0;
 
     DXGI_SWAP_CHAIN_FULLSCREEN_DESC fd{};
-    fd.RefreshRate.Numerator = MAX_FPS;
-    fd.RefreshRate.Denominator = 1;
-    fd.Scaling = DXGI_MODE_SCALING_UNSPECIFIED;
-    fd.ScanlineOrdering = DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED;
-    fd.Windowed = TRUE;
+    fd.RefreshRate.Numerator           = MAX_FPS;
+    fd.RefreshRate.Denominator         = 1;
+    fd.Scaling                         = DXGI_MODE_SCALING_UNSPECIFIED;
+    fd.ScanlineOrdering                = DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED;
+    fd.Windowed                        = TRUE;
 
     HR(dxgiFactory2->CreateSwapChainForHwnd(m_d3dDevice.Get(), hWindow, &sd, &fd, nullptr, m_swapChain1.GetAddressOf()));
     HR(m_swapChain1->QueryInterface(IID_PPV_ARGS(&m_swapChain)));

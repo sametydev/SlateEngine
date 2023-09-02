@@ -6,8 +6,8 @@ extern entt::registry entityRegistar;
 class Entity
 {
 public:
-	Entity();
-	~Entity();
+	Entity() = default;
+	~Entity() = delete;
 
 	template<typename T>
 	void AddComponent();

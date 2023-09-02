@@ -1,5 +1,5 @@
 #pragma once
-#include <SlateEngine/Engine/DXConfig.h>
+#include <SlateEngine/Engine/Graphics/Shader/DXShader.h>
 
 struct MaterialData
 {

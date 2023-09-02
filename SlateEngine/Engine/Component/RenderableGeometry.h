@@ -29,19 +29,23 @@ public:
     void OnRender() override;
 
     Transform& GetTransform() { return connectedEntity->GetComponent<Transform>(); };
-    ObjectConstantBuffer& GetObjectCb() { return ObjectConstantBufferObject; };
+    ObjectConstantBuffer& GetObjectCb() { return cbData; };
+    MaterialComponent& GetMaterial() { return m_material; };
 
 private:
-    DXVertexBuffer* m_vertexBuffer = nullptr;
-    DXIndexBuffer* m_indexBuffer = nullptr;
+    MaterialComponent m_material{};
 
-    ObjectConstantBuffer   ObjectConstantBufferObject{};
+    DXVertexBuffer* m_vertexBuffer           = nullptr;
+    DXIndexBuffer* m_indexBuffer             = nullptr;
+
+    ObjectConstantBuffer   cbData{};
+
     DXConstantBuffer* m_objectConstantBuffer = nullptr;
 
-    DXVertexShader* vertexShader3D = nullptr;
-    DXPixelShader* pixelShader3D = nullptr;
+    DXVertexShader* m_vertexShader           = nullptr;
+    DXPixelShader* m_pixelShader             = nullptr;
 
-    UINT m_indices = 0;
+    UINT m_indices                           = 0;
 
 };
 
@@ -54,19 +58,19 @@ inline void RenderableGeometry::SetBuffer(const MeshData<VertexType, IndexType>&
 
     //Creating Vertex Buffer
     VertexBufferDesc vbd{};
-    vbd.cbSize = (UINT)meshData.vVertex.size() * sizeof(VertexPNT);
+    vbd.cbSize   = (UINT)meshData.vVertex.size() * sizeof(VertexPNT);
     vbd.cbStride = sizeof(VertexPNT);
-    vbd.pData = meshData.vVertex.data();
+    vbd.pData    = meshData.vVertex.data();
     m_vertexBuffer->Create(vbd);
     m_vertexBuffer->BindPipeline(0);
 
     //Storing indices count
-    m_indices = (UINT)meshData.vIndices.size();
+    m_indices    = (UINT)meshData.vIndices.size();
 
     //Creating Index Buffer
     IndexBufferDesc ibd{};
-    ibd.cbSize = m_indices * sizeof(DWORD);
-    ibd.pData = meshData.vIndices.data();
+    ibd.cbSize   = m_indices * sizeof(DWORD);
+    ibd.pData    = meshData.vIndices.data();
     m_indexBuffer->Create(ibd);
     m_indexBuffer->BindPipeline(0);
 }

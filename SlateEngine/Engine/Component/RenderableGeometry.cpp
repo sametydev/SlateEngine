@@ -12,41 +12,41 @@ void RenderableGeometry::OnInternalInit()
 {
 
     //Create our Vertex Buffer
-    m_vertexBuffer = new DXVertexBuffer();
+    m_vertexBuffer               = new DXVertexBuffer();
 
     //Create our Index Buffer
-    m_indexBuffer = new DXIndexBuffer();
+    m_indexBuffer                = new DXIndexBuffer();
 
     SetBuffer(BuiltInMesh::CreateBox<VertexPNT>());
 
 
-    m_objectConstantBuffer = new DXConstantBuffer();
+    m_objectConstantBuffer       = new DXConstantBuffer();
 
-    ObjectConstantBufferObject.world = mat4x4();
-    ObjectConstantBufferObject.worldInverseTranspose = mat4x4();
+    cbData.world                 = mat4x4();
+    cbData.worldInverseTranspose = mat4x4();
 
-    ObjectConstantBufferObject.material.ambient = vec4f(0.5f, 0.5f, 0.5f, 1.0f);
-    ObjectConstantBufferObject.material.diffuse = vec4f(1.0f, 1.0f, 1.0f, 1.0f);
-    ObjectConstantBufferObject.material.specular = vec4f(0.1f, 0.1f, 0.1f, 5.0f);
+    cbData.material.ambient      = vec4f(0.5f, 0.5f, 0.5f, 1.0f);
+    cbData.material.diffuse      = vec4f(1.0f, 1.0f, 1.0f, 1.0f);
+    cbData.material.specular     = vec4f(0.1f, 0.1f, 0.1f, 5.0f);
 
     //Create Vertex Shader 3D
-    vertexShader3D = new DXVertexShader();
-    vertexShader3D->Compile(L"Shaders\\TexturedLit\\Lit3DVS.cso", L"Shaders\\TexturedLit\\Lit3DVS.hlsl", "main");
-    vertexShader3D->CreateInputLayout(VertexPNT::inputLayout, ARRAYSIZE(VertexPNT::inputLayout));
+    m_vertexShader               = new DXVertexShader();
+    m_vertexShader->Compile(L"Shaders\\TexturedLit\\Lit3DVS.cso", L"Shaders\\TexturedLit\\Lit3DVS.hlsl", "main");
+    m_vertexShader->CreateInputLayout(VertexPNT::inputLayout, ARRAYSIZE(VertexPNT::inputLayout));
 
     //Create Pixel Shader 3D
-    pixelShader3D = new DXPixelShader();
-    pixelShader3D->Compile(L"Shaders\\TexturedLit\\Lit3DPS.cso", L"Shaders\\TexturedLit\\Lit3DPS.hlsl", "main");
+    m_pixelShader                = new DXPixelShader();
+    m_pixelShader->Compile(L"Shaders\\TexturedLit\\Lit3DPS.cso", L"Shaders\\TexturedLit\\Lit3DPS.hlsl", "main");
 
     ConstantBufferDesc cbd{};
-    cbd.cbSize = sizeof(ObjectConstantBuffer);
+    cbd.cbSize                   = sizeof(ObjectConstantBuffer);
     m_objectConstantBuffer->Create(cbd);
 
     m_objectConstantBuffer->BindVS(0);
     m_objectConstantBuffer->BindPS(0);
 
-    vertexShader3D->Bind();
-    pixelShader3D->Bind();
+    m_vertexShader->Bind();
+    m_pixelShader->Bind();
 
 
     //Calling Update once
@@ -61,10 +61,10 @@ void RenderableGeometry::SetTexture(DXTexture* texture)
 
 void RenderableGeometry::OnUpdate(float deltaTime)
 {
-    ObjectConstantBufferObject.world = connectedEntity->GetComponent<Transform>().GetGlobal();
-    ObjectConstantBufferObject.worldInverseTranspose = connectedEntity->GetComponent<Transform>().GetGlobal();
+    cbData.world                 = connectedEntity->GetComponent<Transform>().GetGlobal();
+    cbData.worldInverseTranspose = connectedEntity->GetComponent<Transform>().GetGlobal();
 
-    m_objectConstantBuffer->Map(sizeof(ObjectConstantBuffer), &ObjectConstantBufferObject);
+    m_objectConstantBuffer->Map(sizeof(ObjectConstantBuffer), &cbData);
     m_objectConstantBuffer->UnMap();
 }
 
@@ -72,9 +72,9 @@ void RenderableGeometry::OnRender()
 {
     m_vertexBuffer->BindPipeline(0);
     m_indexBuffer->BindPipeline(0);
-    vertexShader3D->Bind();
-    vertexShader3D->UpdateInputLayout();
-    pixelShader3D->Bind();
+    m_vertexShader->Bind();
+    m_vertexShader->UpdateInputLayout();
+    m_pixelShader->Bind();
     m_objectConstantBuffer->BindVS(0);
     m_objectConstantBuffer->BindPS(0);
 
