@@ -25,7 +25,7 @@ struct ObjectConstantBuffer
 {
     mat4x4 world;
     mat4x4 worldInverseTranspose;
-    Material material;
+    MaterialData material;
 };
 
 struct FrameConstantBuffer
