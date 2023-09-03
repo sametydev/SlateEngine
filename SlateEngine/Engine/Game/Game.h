@@ -53,7 +53,7 @@ public:
     float py;
     float tx;
 
-    bool renderWireframe = false;
+    bool renderWireframe = 0;
     //--
 
     static float clear[4];
@@ -68,13 +68,12 @@ public:
     Entity* testEntity2;
 
     Camera* m_camera{};
+
+
 private:
     DXConstantBuffer* m_frameConstantBuffer = nullptr;
     DXConstantBuffer* m_lightConstantBuffer = nullptr;
 
     EntityManager* entityManager;
-
-    ComPtr<ID3D11SamplerState> samplerState;				    
-    ComPtr<ID3D11RasterizerState> m_wireFrameRasterizer = nullptr;
 
 };

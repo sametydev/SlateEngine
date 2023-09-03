@@ -26,6 +26,7 @@ public:
     void SetBuffer(const MeshData<VertexType, IndexType>& meshData);
     void SetTexture(DXTexture* texture);
     void OnUpdate(float deltaTime) override;
+    void SetCullMode(RasterizerState state,bool* ignoreState = 0);
     void OnRender() override;
 
     Transform& GetTransform() { return connectedEntity->GetComponent<Transform>(); };
@@ -49,6 +50,8 @@ private:
 
     DXTexture* attachedTexture = nullptr;
 
+    int cullMode = 0;
+    bool* ignoreState;
 };
 
 template<class VertexType, class IndexType>

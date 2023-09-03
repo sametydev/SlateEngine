@@ -225,6 +225,7 @@ void EditorUI::OnUpdate(float deltaTime)
 
 	if (ImGui::Begin("Render")) {
 		ImGui::ColorEdit3("Clear Color", game->clear);
+
 		ImGui::Checkbox("WireFrame Mode", &game->renderWireframe);
 
 		_bstr_t gxd(DXApplication::Instance->adapterDesc.Description);

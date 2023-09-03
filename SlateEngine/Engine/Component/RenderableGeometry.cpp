@@ -40,7 +40,7 @@ void RenderableGeometry::OnInternalInit()
     m_vertexShader->Bind();
     m_pixelShader->Bind();
 
-
+    SetCullMode((RasterizerState)0);
     //Calling Update once
     OnUpdate(0);
 }
@@ -61,6 +61,12 @@ void RenderableGeometry::OnUpdate(float deltaTime)
     m_objectConstantBuffer->UnMap();
 }
 
+void RenderableGeometry::SetCullMode(RasterizerState state, bool* ignoreState)
+{
+    cullMode = state;
+    this->ignoreState = ignoreState;
+}
+
 void RenderableGeometry::OnRender()
 {
     m_vertexBuffer->BindPipeline(0);
@@ -71,6 +77,8 @@ void RenderableGeometry::OnRender()
     attachedTexture->Bind();
     m_objectConstantBuffer->BindVS(0);
     m_objectConstantBuffer->BindPS(0);
+
+    if(*ignoreState == false)DXRasterizerState::Instance->SetRasterizerState((RasterizerState)cullMode);
 
     DXApplication::Instance->GetDXContext().Get()->DrawIndexed(m_indices, 0, 0);
 }

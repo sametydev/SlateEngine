@@ -109,14 +109,13 @@ int DXApplication::OnRun()
 
 bool DXApplication::OnInit()
 {
-    m_d2dContext = new D2DContext();
     if (!InitializeWindow())
         return false;
 
-    if (!m_d2dContext->CreateDevices())
-    {
-        return false;
-    }
+    //if (!m_d2dContext->CreateDevices())
+    //{
+    //    return false;
+    //}
 
     if (!InitializeGraphics())
         return false;
@@ -432,6 +431,9 @@ bool DXApplication::InitializeGraphics()
     dxgiFactory1->MakeWindowAssociation(hWindow, DXGI_MWA_NO_ALT_ENTER | DXGI_MWA_NO_WINDOW_CHANGES);
     dxgiAdapter->GetDesc(&adapterDesc);
     OnResize();
+
+    rasterizerState = new DXRasterizerState();
+    rasterizerState->Create();
 
     return true;
 }

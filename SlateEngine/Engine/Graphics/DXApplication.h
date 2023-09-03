@@ -2,13 +2,16 @@
 #include <SlateEngine/Engine/DXConfig.h>
 #include <SlateEngine/Engine/Core/Timer.h>
 #include <SlateEngine/Engine/Graphics/2D/D2DContext.h>
+#include <SlateEngine/Engine/Graphics/DXRasterizerState.h>
 
 #include <imgui.h>
 #include <imgui_impl_dx11.h>
 #include <imgui_impl_win32.h>
 
 
-
+#define gDXContext DXApplication::Instance->GetDXContext()
+#define gDXDevice DXApplication::Instance->GetDXDevice()
+#define gDXApp DXApplication::Instance
 
 class DXApplication
 {
@@ -43,6 +46,8 @@ public:
     inline ComPtr<ID3D11DepthStencilView>& GetDepthStencilView() {
         return m_depthStencilView;
     }
+    inline DXRasterizerState& GetRasterizerState() { return *rasterizerState; };
+
     static DXApplication* Instance;
 
 
@@ -80,6 +85,7 @@ protected:
     ComPtr<ID3D11RenderTargetView> m_renderTargetView;
     ComPtr<ID3D11DepthStencilView> m_depthStencilView;
 
+    DXRasterizerState* rasterizerState = nullptr;
 
     D3D11_VIEWPORT m_screenVp;                     
 

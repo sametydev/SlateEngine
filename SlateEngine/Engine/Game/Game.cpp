@@ -36,17 +36,6 @@ bool Game::OnInit()
     entityManager = new EntityManager();
 
 
-    D3D11_SAMPLER_DESC sampDesc{};
-    sampDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
-    sampDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
-    sampDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
-    sampDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
-    sampDesc.ComparisonFunc = D3D11_COMPARISON_NEVER;
-    sampDesc.MinLOD = 0;
-    sampDesc.MaxLOD = D3D11_FLOAT32_MAX;
-    sampDesc.MaxAnisotropy = D3D11_MAX_MAXANISOTROPY;
-    HR(m_d3dDevice->CreateSamplerState(&sampDesc, samplerState.GetAddressOf()));
-
     m_crateTexture = new DXTexture();
     m_crateTexture->Load(L"TestProject\\Textures\\Crate.dds",TextureLoaderType::DDS);
     m_grassTexture = new DXTexture();
@@ -59,6 +48,7 @@ bool Game::OnInit()
     testEntity->GetComponent<Transform>().SetPosition({0.f,2.f,0.f});
 
     RenderableGeometry& r = testEntity->GetComponent<RenderableGeometry>();
+    r.SetCullMode(CULL_BACK,&renderWireframe);
     r.SetTexture(m_crateTexture);
 
     testEntity2 = new Entity();
@@ -67,6 +57,7 @@ bool Game::OnInit()
     testEntity2->AddComponent<RenderableGeometry>();
 
     RenderableGeometry& r2 = testEntity2->GetComponent<RenderableGeometry>();
+    r2.SetCullMode(CULL_BACK, &renderWireframe);
     r2.SetTexture(m_grassTexture);
 
     //Creating Constant Buffers;
@@ -85,13 +76,6 @@ bool Game::OnInit()
     m_lightConstantBuffer->UnMap();
 
 
-    D3D11_RASTERIZER_DESC rasterizerDesc{};
-    rasterizerDesc.FillMode = D3D11_FILL_WIREFRAME;
-    rasterizerDesc.CullMode = D3D11_CULL_NONE;
-    rasterizerDesc.FrontCounterClockwise = false;
-    rasterizerDesc.DepthClipEnable = true;
-    HR(m_d3dDevice->CreateRasterizerState(&rasterizerDesc, m_wireFrameRasterizer.GetAddressOf()));
-
 
     m_d3dContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
@@ -101,7 +85,7 @@ bool Game::OnInit()
     m_frameConstantBuffer->BindPS(1);
     m_lightConstantBuffer->BindPS(2);
 
-    m_d3dContext->PSSetSamplers(0, 1, samplerState.GetAddressOf());
+    //m_d3dContext->PSSetSamplers(0, 1, DXRasterizerState::Instance->SSWrap.GetAddressOf());
 
     return true;
 }
@@ -137,11 +121,10 @@ void Game::OnUpdateScene(float deltaTime)
 
     }
 
+    if (renderWireframe)GetRasterizerState().SetRasterizerState(RasterizerState::CULL_WIREFRAME);
 
 
     entityManager->OnUpdate(deltaTime,gameState);
-
-    m_d3dContext->RSSetState(renderWireframe ? m_wireFrameRasterizer.Get() : nullptr);
 }
 
 float Game::clear[4] = {0.3f, 0.3f, 0.3f, 1.0f};
@@ -151,6 +134,8 @@ void Game::OnRenderScene()
     BeginClear();
 
     entityManager->OnRender();
+
+
     PostClear();
 
     HR(m_swapChain->Present(0, 0));

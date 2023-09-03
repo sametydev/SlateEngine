@@ -35,46 +35,67 @@ void InspectorWindow::OnDraw(Entity* entity)
 
 			Transform& t = entity->GetComponent<Transform>();
 			EntityName& e = entity->GetComponent<EntityName>();
-			char* bufpass = _strdup(e.name);
 
+			char* bufpass = _strdup(e.name);
 			if (ImGui::InputText("Name", bufpass, 64)) {
 				e.name = bufpass && !bufpass[0] ? "Entity" : bufpass;
 			}
 
+			/*
+			=============================
+			Draw Transform Rotation Scale
+			=============================
+			*/
 			DrawTransform("Position", t.mPosition);
 			DrawTransform("Rotation", t.mRotation);
 			DrawTransform("Scale", t.mScale);
 
-			ImGui::Dummy(ImVec2(0.0f, 30.0f));
-			ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.1f, 0.25f, 0.8f, 1.0f });
-			ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ 0.1f, 0.25f, 0.8f, 1.0f });
-			ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 0.1f, 0.25f, 0.8f, 1.0f });
-			float lineHeight = GImGui->Font->FontSize + GImGui->Style.FramePadding.y * 70.f;
-			ImVec2 buttonSize = { lineHeight + 3.0f, 25 };
-			ImGui::Button("Components", buttonSize);
-			ImGui::PopStyleColor(3);
-			ImGui::Dummy(ImVec2(0.0f, 4.0f));
+			/*
+			======================
+			Draw Components Button
+			======================
+			*/
+			{
+				ImGui::Dummy(ImVec2(0.0f, 30.0f));
+				ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.1f, 0.25f, 0.8f, 1.0f });
+				ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ 0.1f, 0.25f, 0.8f, 1.0f });
+				ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 0.1f, 0.25f, 0.8f, 1.0f });
+				float lineHeight = GImGui->Font->FontSize + GImGui->Style.FramePadding.y * 70.f;
+				ImVec2 buttonSize = { lineHeight + 3.0f, 25 };
+				ImGui::Button("Components", buttonSize);
+				ImGui::PopStyleColor(3);
+				ImGui::Dummy(ImVec2(0.0f, 4.0f));
+			}
+
 
 			if (entity->HasComponent<RenderableGeometry>()) {
 				DrawRenderableGeometryComponent(entity);
 			}
 
-			ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.1f, 0.25f, 0.8f, 1.0f });
-			if (ImGui::Button("Add Component")) {
-				ImGui::OpenPopup("AddComponent");
-			}
-			ImGui::PopStyleColor(1);
 
-			if (ImGui::BeginPopup("AddComponent"))
+			/*
+			==============
+			Add Component
+			==============
+			*/
 			{
-				if (ImGui::MenuItem("Renderable Component"))
-				{
-					if (!entity->HasComponent<RenderableGeometry>()) { entity->AddComponent<RenderableGeometry>(); }
-
-					ImGui::CloseCurrentPopup();
+				ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.1f, 0.25f, 0.8f, 1.0f });
+				if (ImGui::Button("Add Component")) {
+					ImGui::OpenPopup("AddComponent");
 				}
+				ImGui::PopStyleColor(1);
 
-			ImGui::EndPopup();
+				if (ImGui::BeginPopup("AddComponent"))
+				{
+					if (ImGui::MenuItem("Renderable Component"))
+					{
+						if (!entity->HasComponent<RenderableGeometry>()) { entity->AddComponent<RenderableGeometry>(); }
+
+						ImGui::CloseCurrentPopup();
+					}
+
+					ImGui::EndPopup();
+				}
 			}
 
 		}
