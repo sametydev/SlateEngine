@@ -38,6 +38,7 @@ void SceneHierarchy::OnDraw()
 				ImGui::TreePop();
 
 			}
+
 			if (ImGui::IsItemClicked())
 			{
 				selectedEntity = name.entityClass;

@@ -48,22 +48,26 @@ bool Game::OnInit()
     HR(m_d3dDevice->CreateSamplerState(&sampDesc, samplerState.GetAddressOf()));
 
     m_crateTexture = new DXTexture();
-    m_crateTexture->Load(L"TestProject\\Textures\\Crate.dds");
+    m_crateTexture->Load(L"TestProject\\Textures\\Crate.dds",TextureLoaderType::DDS);
+    m_grassTexture = new DXTexture();
+    m_grassTexture->Load(L"TestProject\\Textures\\Grass.jpg", TextureLoaderType::WIC);
 
     testEntity = new Entity();
 
-    entityManager->RegisterEntity(testEntity,"Test Object");
+    entityManager->RegisterEntity(testEntity,"Test Entity 1");
     testEntity->AddComponent<RenderableGeometry>();
     testEntity->GetComponent<Transform>().SetPosition({0.f,2.f,0.f});
+
     RenderableGeometry& r = testEntity->GetComponent<RenderableGeometry>();
     r.SetTexture(m_crateTexture);
 
     testEntity2 = new Entity();
-    entityManager->RegisterEntity(testEntity2, "Test Empty Entity");
+
+    entityManager->RegisterEntity(testEntity2, "Test Entity 2");
     testEntity2->AddComponent<RenderableGeometry>();
 
     RenderableGeometry& r2 = testEntity2->GetComponent<RenderableGeometry>();
-    r2.SetTexture(m_crateTexture);
+    r2.SetTexture(m_grassTexture);
 
     //Creating Constant Buffers;
     m_frameConstantBuffer = new DXConstantBuffer();
@@ -98,7 +102,7 @@ bool Game::OnInit()
     m_lightConstantBuffer->BindPS(2);
 
     m_d3dContext->PSSetSamplers(0, 1, samplerState.GetAddressOf());
-    
+
     return true;
 }
 
@@ -122,8 +126,8 @@ void Game::OnUpdateScene(float deltaTime)
 #pragma endregion
 
     FrameBufferConstantObject.eyePos = m_camera->GetPos();
-    FrameBufferConstantObject.view = m_camera->GetViewMatrix();
-    FrameBufferConstantObject.proj = m_camera->GetProjectionMatrix();
+    FrameBufferConstantObject.view   = m_camera->GetViewMatrix();
+    FrameBufferConstantObject.proj   = m_camera->GetProjectionMatrix();
     UpdateGlobalConstantBuffers();
 
     if (gameState == (GameState::PLAYING)) {

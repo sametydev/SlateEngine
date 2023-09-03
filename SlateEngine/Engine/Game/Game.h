@@ -62,6 +62,8 @@ public:
     LightConstantBuffer  LightConstantObject;
 
     DXTexture* m_crateTexture = nullptr;
+    DXTexture* m_grassTexture = nullptr;
+
     Entity* testEntity;
     Entity* testEntity2;
 

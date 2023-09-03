@@ -1,12 +1,18 @@
 #pragma once
 #include <SlateEngine/Engine/DXConfig.h>
+
+enum TextureLoaderType {
+	DDS = 0,
+	WIC
+};
+
 class DXTexture
 {
 public:
 	DXTexture();
 	~DXTexture();
 
-	void Load(const wchar_t* filename);
+	void Load(const wchar_t* filename, TextureLoaderType type);
 	void Bind(UINT slot = 0);
 	void UnBind();
 

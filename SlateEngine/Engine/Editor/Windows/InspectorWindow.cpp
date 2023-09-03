@@ -34,6 +34,12 @@ void InspectorWindow::OnDraw(Entity* entity)
 		if (entity != nullptr) {
 
 			Transform& t = entity->GetComponent<Transform>();
+			EntityName& e = entity->GetComponent<EntityName>();
+			char* bufpass = _strdup(e.name);
+
+			if (ImGui::InputText("Name", bufpass, 64)) {
+				e.name = bufpass && !bufpass[0] ? "Entity" : bufpass;
+			}
 
 			DrawTransform("Position", t.mPosition);
 			DrawTransform("Rotation", t.mRotation);
@@ -58,6 +64,7 @@ void InspectorWindow::OnDraw(Entity* entity)
 				ImGui::OpenPopup("AddComponent");
 			}
 			ImGui::PopStyleColor(1);
+
 			if (ImGui::BeginPopup("AddComponent"))
 			{
 				if (ImGui::MenuItem("Renderable Component"))

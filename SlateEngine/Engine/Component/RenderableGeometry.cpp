@@ -48,6 +48,7 @@ void RenderableGeometry::OnInternalInit()
 void RenderableGeometry::SetTexture(DXTexture* texture)
 {
     texture->Bind(0);
+    attachedTexture = texture;
 }
 
 
@@ -67,6 +68,7 @@ void RenderableGeometry::OnRender()
     m_vertexShader->Bind();
     m_vertexShader->UpdateInputLayout();
     m_pixelShader->Bind();
+    attachedTexture->Bind();
     m_objectConstantBuffer->BindVS(0);
     m_objectConstantBuffer->BindPS(0);
 

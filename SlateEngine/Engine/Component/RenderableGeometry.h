@@ -47,6 +47,8 @@ private:
 
     UINT m_indices                           = 0;
 
+    DXTexture* attachedTexture = nullptr;
+
 };
 
 template<class VertexType, class IndexType>
