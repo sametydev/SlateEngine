@@ -10,6 +10,7 @@ vec2f InputSystem::delta;
 
 UINT InputSystem::HookMsg(const MSG* msg)
 {
+
     switch (msg->message)
     {
     case WM_LBUTTONDOWN: {
@@ -44,6 +45,7 @@ UINT InputSystem::HookMsg(const MSG* msg)
 }
 
 void InputSystem::Update(HWND hwnd) {
+
     POINT p{};
     GetCursorPos(&p);
     if (hwnd) {

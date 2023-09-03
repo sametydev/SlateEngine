@@ -34,7 +34,7 @@ public:
 	vec4f normalized() const;
 	vec4f negative() const;
 	inline float dot(const vec4f& v);
-	inline vec4f cross(const vec4f& v);
+	inline vec4f cross(const vec4f& v1, const vec4f& v2);
 
 	/*----------------- STATICS -----------------------*/
 	static float dot(const vec4f& v1, const vec4f& v2);
@@ -194,11 +194,9 @@ inline bool operator<(const vec4f& r, const vec4f& l)
 	return (r.length2() < l.length2());
 }
 
-//FUNC
-
 inline float vec4f::length2() const
 {
-	return x * x + y * y + z * z;
+	return x * x + y * y + z * z + w * w;
 }
 
 inline float vec4f::length() const
@@ -225,22 +223,24 @@ inline vec4f vec4f::negative() const
 
 inline float vec4f::dot(const vec4f& v)
 {
-	return x * v.x + y * v.y + z * v.z;
+	return x * v.x + y * v.y + z * v.z + w * v.w;
 }
-inline vec4f vec4f::cross(const vec4f& v)
+
+inline vec4f vec4f::cross(const vec4f& v1, const vec4f& v2)
 {
-	return vec4f(
-		y * v.z - z * v.y,
-		z * v.x - x * v.z,
-		x * v.y - y * v.x,
-		w);
+	float x = v1.y * v2.z - v1.z * v2.y + v1.w * v2.y - v1.y * v2.w;
+	float y = v1.z * v2.x - v1.x * v2.z + v1.w * v2.z - v1.z * v2.w;
+	float z = v1.x * v2.y - v1.y * v2.x + v1.w * v2.x - v1.x * v2.w;
+	float w = v1.x * v2.w - v1.w * v2.x + v1.y * v2.w - v1.w * v2.y;
+
+	return vec4f(x, y, z, w);
 }
 
 //STATICS
 
 inline float vec4f::dot(const vec4f& v1, const vec4f& v2)
 {
-	return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z;
+	return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z + v1.w * v2.w;
 }
 
 inline float vec4f::fabsdot(const vec4f& v1, const vec4f& v2)
@@ -248,13 +248,6 @@ inline float vec4f::fabsdot(const vec4f& v1, const vec4f& v2)
 	return fabs(vec4f::dot(v1, v2));
 }
 
-inline vec4f vec4f::cross(const vec4f& v1, const vec4f& v2)
-{
-	return vec4f(
-		v1.y * v2.z - v1.z * v2.y,
-		v1.z * v2.x - v1.x * v2.z,
-		v1.x * v2.y - v1.y * v2.x,				v1.w);
-}
 
 inline vec4f vec4f::reflect(const vec4f& dir, const vec4f& n)
 {

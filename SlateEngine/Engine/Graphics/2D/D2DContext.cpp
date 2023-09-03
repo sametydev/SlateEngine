@@ -6,10 +6,6 @@ D2DContext* D2DContext::Instance = nullptr;
 
 D2DContext::D2DContext()
 {
-	if (Instance == nullptr)
-	{
-		Instance = this;
-	}
 }
 
 D2DContext::~D2DContext()

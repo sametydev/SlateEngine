@@ -1,7 +1,6 @@
 ﻿#include <SlateEngine/Engine/Graphics/DXApplication.h>
 #include <SlateEngine/Engine/Core/EngineConfig.h>
 #include <SlateEngine/Engine/Editor/EditorUI.h>
-#include <SlateEngine/Engine/Graphics/2D/D2DContext.h>
 #include <sstream>
 #include <SlateEngine/Engine/Editor/Windows/LogWindow.h>
 #include <SlateEngine/Engine/Input/InputSystem.h>
@@ -112,11 +111,6 @@ bool DXApplication::OnInit()
     if (!InitializeWindow())
         return false;
 
-    //if (!m_d2dContext->CreateDevices())
-    //{
-    //    return false;
-    //}
-
     if (!InitializeGraphics())
         return false;
 
@@ -128,16 +122,6 @@ bool DXApplication::OnInit()
 
 void DXApplication::OnResize()
 {
-    assert(m_d3dContext);
-    assert(m_d3dDevice);
-    assert(m_swapChain);
-
-    if (m_d3dDevice1 != nullptr)
-    {
-        assert(m_d3dContext1);
-        assert(m_d3dDevice1);
-        assert(m_swapChain1);
-    }
 
     m_renderTargetView.Reset();
     m_depthStencilView.Reset();
@@ -417,6 +401,8 @@ bool DXApplication::InitializeGraphics()
     sd.BufferCount                     = 1;
     sd.SwapEffect                      = DXGI_SWAP_EFFECT_DISCARD;
     sd.Flags                           = 0;
+    sd.Scaling                         = DXGI_SCALING_STRETCH;
+    sd.AlphaMode                       = DXGI_ALPHA_MODE_UNSPECIFIED;
 
     DXGI_SWAP_CHAIN_FULLSCREEN_DESC fd{};
     fd.RefreshRate.Numerator           = MAX_FPS;
