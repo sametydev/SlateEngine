@@ -365,8 +365,6 @@ bool DXApplication::InitializeGraphics()
     assert(mMsaaQuality > 0);
 
 
-
-
     ComPtr<IDXGIDevice> dxgiDevice     = nullptr;
     ComPtr<IDXGIAdapter> dxgiAdapter   = nullptr;
     ComPtr<IDXGIFactory1> dxgiFactory1 = nullptr;

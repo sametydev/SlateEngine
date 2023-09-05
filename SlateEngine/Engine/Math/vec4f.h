@@ -39,7 +39,6 @@ public:
 	/*----------------- STATICS -----------------------*/
 	static float dot(const vec4f& v1, const vec4f& v2);
 	static float fabsdot(const vec4f& v1, const vec4f& v2);
-	static vec4f cross(const vec4f& v1, const vec4f& v2);
 	static vec4f reflect(const vec4f& dir, const vec4f& n);
 	static vec4f min(const vec4f& v1, const vec4f& v2);
 	static vec4f max(const vec4f& v1, const vec4f& v2);

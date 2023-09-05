@@ -156,6 +156,7 @@
     <ClCompile Include="Engine\Entity\EntityManager.cpp" />
     <ClCompile Include="Engine\Entity\Entity.cpp" />
     <ClCompile Include="Engine\Input\InputSystem.cpp" />
+    <ClCompile Include="LibarySources\ConvertUTF.c" />
     <ClCompile Include="LibarySources\DDSTextureLoader11.cpp" />
     <ClCompile Include="LibarySources\GraphEditor.cpp" />
     <ClCompile Include="LibarySources\ImCurveEdit.cpp" />
@@ -178,6 +179,7 @@
     <ClCompile Include="Engine\Core\Timer.cpp" />
     <ClCompile Include="Engine\Editor\Windows\UIRenderablesWindow.cpp" />
     <ClCompile Include="Engine\Editor\Windows\SceneHierarchy.cpp" />
+    <ClCompile Include="ShaderInformation.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Editor\Windows\AssetsBrowser.h" />
@@ -225,6 +227,7 @@
     <ClInclude Include="Engine\Editor\Windows\SceneHierarchy.h" />
     <ClInclude Include="Engine\Editor\Windows\LightingSettingsWindow.h" />
     <ClInclude Include="Engine\Input\InputSystem.h" />
+    <ClInclude Include="ShaderInformation.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\LightsHeader.hlsli" />

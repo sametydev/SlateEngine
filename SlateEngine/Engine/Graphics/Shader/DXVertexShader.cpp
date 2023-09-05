@@ -19,7 +19,6 @@ void DXVertexShader::Compile(const WCHAR* csoName, const WCHAR* hlslName, LPCSTR
 {
 	HR(CreateShaderFromFile(csoName, hlslName, entryName, "vs_5_0", m_blob.ReleaseAndGetAddressOf()));
 	HR(Game::Instance->GetDXDevice()->CreateVertexShader(m_blob->GetBufferPointer(), m_blob->GetBufferSize(), nullptr, m_vertexShader.GetAddressOf()));
-
 }
 
 void DXVertexShader::CreateInputLayout(const D3D11_INPUT_ELEMENT_DESC* elements,UINT nElements)
