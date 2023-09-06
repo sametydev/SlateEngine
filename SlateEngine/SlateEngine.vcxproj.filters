@@ -141,9 +141,6 @@
     <ClCompile Include="LibarySources\ImGuizmo.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ShaderInformation.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="LibarySources\ConvertUTF.c">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -284,7 +281,10 @@
     <ClInclude Include="Engine\Editor\Windows\AssetsBrowser.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ShaderInformation.h">
+    <ClInclude Include="Engine\Graphics\Shader\ShaderInformation.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Graphics\Shader\ShaderCache.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -1,4 +1,5 @@
 #include <SlateEngine/Engine/Component/RenderableGeometry.h>
+#include <SlateEngine/Engine/Graphics/Shader/ShaderCache.h>
 
 void RenderableGeometry::OnInternalInit()
 {
@@ -22,13 +23,21 @@ void RenderableGeometry::OnInternalInit()
     cbData.material.specular     = vec4f(0.1f, 0.1f, 0.1f, 5.0f);
 
     //Create Vertex Shader 3D
-    m_vertexShader               = new DXVertexShader();
-    m_vertexShader->Compile(L"Shaders\\TexturedLit\\Lit3DVS.cso", L"Shaders\\TexturedLit\\Lit3DVS.hlsl", "main");
+    ShaderInformation vertexShaderInfo{};
+    vertexShaderInfo.csoName = "Shaders\\TexturedLit\\Lit3DVS.cso";
+    vertexShaderInfo.hlslFile = "Shaders\\TexturedLit\\Lit3DVS.hlsl";
+    vertexShaderInfo.entryPoint = "main";
+
+    m_vertexShader               = ShaderCache::CreateVertexShader(vertexShaderInfo);
     m_vertexShader->CreateInputLayout(VertexPNT::inputLayout, ARRAYSIZE(VertexPNT::inputLayout));
 
+    ShaderInformation pixelShaderInfo{};
+    pixelShaderInfo.csoName = "Shaders\\TexturedLit\\Lit3DPS.cso";
+    pixelShaderInfo.hlslFile = "Shaders\\TexturedLit\\Lit3DPS.hlsl";
+    pixelShaderInfo.entryPoint = "main";
+
     //Create Pixel Shader 3D
-    m_pixelShader                = new DXPixelShader();
-    m_pixelShader->Compile(L"Shaders\\TexturedLit\\Lit3DPS.cso", L"Shaders\\TexturedLit\\Lit3DPS.hlsl", "main");
+    m_pixelShader                = ShaderCache::CreatePixelShader(pixelShaderInfo);
 
     ConstantBufferDesc cbd{};
     cbd.cbSize                   = sizeof(ObjectConstantBuffer);

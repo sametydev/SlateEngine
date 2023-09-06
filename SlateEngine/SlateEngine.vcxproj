@@ -179,7 +179,6 @@
     <ClCompile Include="Engine\Core\Timer.cpp" />
     <ClCompile Include="Engine\Editor\Windows\UIRenderablesWindow.cpp" />
     <ClCompile Include="Engine\Editor\Windows\SceneHierarchy.cpp" />
-    <ClCompile Include="ShaderInformation.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Editor\Windows\AssetsBrowser.h" />
@@ -188,6 +187,7 @@
     <ClInclude Include="Engine\Component\RenderableGeometry.h" />
     <ClInclude Include="Engine\Component\Camera.h" />
     <ClInclude Include="Engine\Component\Transform.h" />
+    <ClInclude Include="Engine\Graphics\Shader\ShaderCache.h" />
     <ClInclude Include="Engine\Graphics\Texture\DXTexture.h" />
     <ClInclude Include="Engine\Graphics\2D\Components\C2DText.h" />
     <ClInclude Include="Engine\Graphics\2D\D2DContext.h" />
@@ -227,7 +227,7 @@
     <ClInclude Include="Engine\Editor\Windows\SceneHierarchy.h" />
     <ClInclude Include="Engine\Editor\Windows\LightingSettingsWindow.h" />
     <ClInclude Include="Engine\Input\InputSystem.h" />
-    <ClInclude Include="ShaderInformation.h" />
+    <ClInclude Include="Engine\Graphics\Shader\ShaderInformation.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\LightsHeader.hlsli" />
