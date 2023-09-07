@@ -48,9 +48,6 @@
     <ClCompile Include="LibarySources\imgui_widgets.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Editor\EditorUI.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\Graphics\DXRasterizerState.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -72,12 +69,6 @@
     <ClCompile Include="Engine\Graphics\Buffer\DXConstantBuffer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Editor\Windows\LogWindow.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Editor\Windows\InspectorWindow.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\Graphics\2D\D2DContext.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -85,9 +76,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="LibarySources\imgui_stdlib.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Editor\Windows\UIRenderablesWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="LibarySources\DDSTextureLoader11.cpp">
@@ -114,16 +102,7 @@
     <ClCompile Include="Engine\Entity\Entity.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Editor\Windows\SceneHierarchy.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Editor\Windows\LightingSettingsWindow.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\Input\InputSystem.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Editor\Windows\AssetsBrowser.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="LibarySources\GraphEditor.cpp">
@@ -142,6 +121,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="LibarySources\ConvertUTF.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Editor\EditorSystem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -165,9 +147,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Graphics\Buffer\DXBuffer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Editor\EditorUI.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Core\Singleton.h">
@@ -209,22 +188,10 @@
     <ClInclude Include="Engine\Graphics\Buffer\DXConstantBuffer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Editor\Windows\IWindow.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Editor\Windows\LogWindow.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Editor\Windows\InspectorWindow.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\Graphics\2D\D2DContext.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Graphics\2D\Components\C2DText.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Editor\Windows\UIRenderablesWindow.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Graphics\Texture\DXTexture.h">
@@ -266,25 +233,19 @@
     <ClInclude Include="Engine\Entity\Entity.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Editor\Windows\SceneHierarchy.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Editor\Windows\LightingSettingsWindow.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\Input\InputSystem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Component\Component.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Editor\Windows\AssetsBrowser.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\Graphics\Shader\ShaderInformation.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Graphics\Shader\ShaderCache.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Editor\EditorSystem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

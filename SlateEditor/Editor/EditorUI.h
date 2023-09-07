@@ -3,38 +3,42 @@
 #include <SlateEngine/Engine/Game/Game.h>
 #include <SlateEngine/Engine/DXConfig.h>
 #include <SlateEngine/Engine/Graphics/DXApplication.h>
-#include <SlateEngine/Engine/Editor/Windows/IWindow.h>
-#include <SlateEngine/Engine/Editor/Windows/SceneHierarchy.h>
-#include <SlateEngine/Engine/Editor/Windows/InspectorWindow.h>
+#include <SlateEditor/Editor/Windows/IWindow.h>
+#include <SlateEditor/Editor/Windows/SceneHierarchy.h>
+#include <SlateEditor/Editor/Windows/InspectorWindow.h>
+#include <SlateEngine/Engine/Editor/EditorSystem.h>
 #include <imgui.h>
 #include <imgui_impl_dx11.h>
 #include <imgui_impl_win32.h>
 
 #include <set>
 
-class EditorUI : public Singleton<EditorUI>
+class EditorUI : public EditorSystem
 {
 public:
 	EditorUI();
 	~EditorUI();
 
-	void OnInit();
+	void OnInit() override;
 
-	void NewFrame();
-	void OnRender();
+	void NewFrame() override;
+	void OnRender() override;
 
 	//Update first render later
-	void OnUpdate(float deltaTime);
+	void OnUpdate(float deltaTime) override;
 
-	void ClearViewport(float rgba[4]);
+	void ClearViewport(float rgba[4]) override;
 
-	void ResizeViewport(int w, int h);
+	void ResizeViewport(int w, int h) override;
 
 	void DrawViewportMenu();
+
+	static EditorUI* Instance;
 
 private:
 	friend class Game;
 	friend class DXApplication;
+
 	void InitTheme();
 
 	Game* game = nullptr;

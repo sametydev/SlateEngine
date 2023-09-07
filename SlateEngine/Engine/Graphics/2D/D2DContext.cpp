@@ -1,6 +1,5 @@
 #include <SlateEngine/Engine/Graphics/2D/D2DContext.h>
 #include <SlateEngine/Engine/Game/Game.h>
-#include <SlateEngine/Engine/Editor/Windows/LogWindow.h>
 
 D2DContext* D2DContext::Instance = nullptr;
 

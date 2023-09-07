@@ -1,7 +1,5 @@
 ﻿#include <SlateEngine/Engine/Game/Game.h>
-#include <SlateEngine/Engine/Editor/Windows/LogWindow.h>
 #include <SlateEngine/Engine/Input/InputSystem.h>
-#include <SlateEngine/Engine/Editor/EditorUI.h>
 #include <ImGuizmo.h>
 Game* Game::Instance = nullptr;
 
@@ -23,10 +21,10 @@ bool Game::OnInit()
 {
     if (!DXApplication::OnInit()) { return 0; }
 
-    if(!IS_COOKED)EditorUI::instance()->ResizeViewport(m_clientW, m_clientH);
+    if(!IS_COOKED)editorSystem->ResizeViewport(m_clientW, m_clientH);
 
-    LogWindow::Instance->AddLog("[Info] DirectX 11 Initialized!\n");
-    LogWindow::Instance->AddLog("[Info] Game OnInit\n");
+    //LogWindow::Instance->AddLog("[Info] DirectX 11 Initialized!\n");
+    //LogWindow::Instance->AddLog("[Info] Game OnInit\n");
 
 
     m_camera = new Camera(65.f, GetAspectRatio(), 0.01f, 1000.0f);
@@ -93,7 +91,7 @@ bool Game::OnInit()
 void Game::OnResize()
 {
     DXApplication::OnResize();
-    EditorUI::instance()->ResizeViewport(m_clientW, m_clientH);
+    if(editorSystem)editorSystem->ResizeViewport(m_clientW, m_clientH);
 
     if (m_camera != nullptr)
     {
@@ -106,7 +104,7 @@ void Game::OnUpdateScene(float deltaTime)
 {
     m_camera->Update(deltaTime);
 #pragma region EDITOR_STUFF
-    if (!IS_COOKED) { EditorUI::instance()->OnUpdate(deltaTime);}
+    if (!IS_COOKED) { editorSystem->OnUpdate(deltaTime);}
 #pragma endregion
 
     FrameBufferConstantObject.eyePos = m_camera->GetPos();
@@ -159,7 +157,7 @@ void Game::BeginClear()
     }
     else
     {
-        EditorUI::instance()->ClearViewport(clear);
+        editorSystem->ClearViewport(clear);
     }
 }
 
@@ -167,6 +165,6 @@ void Game::PostClear()
 {
     if (!IS_COOKED) {
         ClearRenderTarget(clear);
-        EditorUI::instance()->OnRender();
+        editorSystem->OnRender();
     }
 }

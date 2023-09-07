@@ -1,8 +1,6 @@
 ﻿#include <SlateEngine/Engine/Graphics/DXApplication.h>
 #include <SlateEngine/Engine/Core/EngineConfig.h>
-#include <SlateEngine/Engine/Editor/EditorUI.h>
 #include <sstream>
-#include <SlateEngine/Engine/Editor/Windows/LogWindow.h>
 #include <SlateEngine/Engine/Input/InputSystem.h>
 #pragma warning(disable: 6031)
 
@@ -90,8 +88,9 @@ int DXApplication::OnRun()
             InputSystem::Update(hWindow);
             if (!bPaused)
             {
-                EditorUI::instance()->NewFrame();
-
+                if (!IS_COOKED) {
+                    editorSystem->NewFrame();
+                }
                 //Render Scene
                 OnUpdateScene(mTimer.deltaTime());
                 OnRenderScene();
@@ -115,7 +114,7 @@ bool DXApplication::OnInit()
         return false;
 
     if (!IS_COOKED) {
-        EditorUI::instance()->OnInit();
+        editorSystem->OnInit();
     }
     return true;
 }

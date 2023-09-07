@@ -1,5 +1,5 @@
 #pragma once
-#include <SlateEngine/Engine/Editor/Windows/IWindow.h>
+#include <SlateEditor/Editor/Windows/IWindow.h>
 
 class AssetsBrowser : public IWindow
 {

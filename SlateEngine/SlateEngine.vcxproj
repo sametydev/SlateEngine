@@ -41,7 +41,7 @@
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
@@ -118,6 +118,9 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>d3d11.lib;D3DCompiler.lib;dxgi.lib;dxguid.lib;;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <FxCompile>
+      <ShaderModel>5.0</ShaderModel>
+    </FxCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -136,7 +139,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Engine\Editor\Windows\AssetsBrowser.cpp" />
+    <ClCompile Include="Engine\Editor\EditorSystem.cpp" />
     <ClCompile Include="Engine\Component\RenderableGeometry.cpp" />
     <ClCompile Include="Engine\Component\Camera.cpp" />
     <ClCompile Include="Engine\Component\Transform.cpp" />
@@ -149,7 +152,6 @@
     <ClCompile Include="Engine\Graphics\Shader\DXPixelShader.cpp" />
     <ClCompile Include="Engine\Graphics\Shader\DXVertexShader.cpp" />
     <ClCompile Include="Engine\Graphics\DXRasterizerState.cpp" />
-    <ClCompile Include="Engine\Editor\EditorUI.cpp" />
     <ClCompile Include="Engine\Graphics\DXApplication.cpp" />
     <ClCompile Include="Engine\Game\Game.cpp" />
     <ClCompile Include="Engine\Graphics\Vertex.cpp" />
@@ -170,18 +172,13 @@
     <ClCompile Include="LibarySources\imgui_stdlib.cpp" />
     <ClCompile Include="LibarySources\imgui_tables.cpp" />
     <ClCompile Include="LibarySources\imgui_widgets.cpp" />
-    <ClCompile Include="Engine\Editor\Windows\LogWindow.cpp" />
-    <ClCompile Include="Engine\Editor\Windows\InspectorWindow.cpp" />
     <ClCompile Include="LibarySources\ImSequencer.cpp" />
     <ClCompile Include="LibarySources\WICTextureLoader11.cpp" />
-    <ClCompile Include="Engine\Editor\Windows\LightingSettingsWindow.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Engine\Core\Timer.cpp" />
-    <ClCompile Include="Engine\Editor\Windows\UIRenderablesWindow.cpp" />
-    <ClCompile Include="Engine\Editor\Windows\SceneHierarchy.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Engine\Editor\Windows\AssetsBrowser.h" />
+    <ClInclude Include="Engine\Editor\EditorSystem.h" />
     <ClInclude Include="Engine\Component\Component.h" />
     <ClInclude Include="Engine\Component\Components.h" />
     <ClInclude Include="Engine\Component\RenderableGeometry.h" />
@@ -191,7 +188,6 @@
     <ClInclude Include="Engine\Graphics\Texture\DXTexture.h" />
     <ClInclude Include="Engine\Graphics\2D\Components\C2DText.h" />
     <ClInclude Include="Engine\Graphics\2D\D2DContext.h" />
-    <ClInclude Include="Engine\Editor\Windows\IWindow.h" />
     <ClInclude Include="Engine\Graphics\Buffer\DXConstantBuffer.h" />
     <ClInclude Include="Engine\Graphics\Buffer\DXIndexBuffer.h" />
     <ClInclude Include="Engine\Graphics\Buffer\DXVertexBuffer.h" />
@@ -201,7 +197,6 @@
     <ClInclude Include="Engine\Component\Light\DirectionalLight.h" />
     <ClInclude Include="Engine\Graphics\DXRasterizerState.h" />
     <ClInclude Include="Engine\Core\Singleton.h" />
-    <ClInclude Include="Engine\Editor\EditorUI.h" />
     <ClInclude Include="Engine\Graphics\Buffer\DXBuffer.h" />
     <ClInclude Include="Engine\Graphics\BuiltInMesh.h" />
     <ClInclude Include="Engine\Graphics\DXApplication.h" />
@@ -213,9 +208,6 @@
     <ClInclude Include="Engine\Component\Light\PointLight.h" />
     <ClInclude Include="Engine\Component\Light\SpotLight.h" />
     <ClInclude Include="Engine\Graphics\Vertex.h" />
-    <ClInclude Include="Engine\Editor\Windows\LogWindow.h" />
-    <ClInclude Include="Engine\Editor\Windows\InspectorWindow.h" />
-    <ClInclude Include="Engine\Editor\Windows\UIRenderablesWindow.h" />
     <ClInclude Include="Engine\Math\LineerMath.h" />
     <ClInclude Include="Engine\Math\mat4x4.h" />
     <ClInclude Include="Engine\Math\rect.h" />
@@ -224,8 +216,6 @@
     <ClInclude Include="Engine\Math\vec4f.h" />
     <ClInclude Include="Engine\Entity\EntityManager.h" />
     <ClInclude Include="Engine\Entity\Entity.h" />
-    <ClInclude Include="Engine\Editor\Windows\SceneHierarchy.h" />
-    <ClInclude Include="Engine\Editor\Windows\LightingSettingsWindow.h" />
     <ClInclude Include="Engine\Input\InputSystem.h" />
     <ClInclude Include="Engine\Graphics\Shader\ShaderInformation.h" />
   </ItemGroup>

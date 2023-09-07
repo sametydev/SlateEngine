@@ -8,6 +8,7 @@
 #include <imgui_impl_dx11.h>
 #include <imgui_impl_win32.h>
 
+#include <SlateEngine/Engine/Editor/EditorSystem.h>
 
 #define gDXContext DXApplication::Instance->GetDXContext()
 #define gDXDevice DXApplication::Instance->GetDXDevice()
@@ -57,6 +58,10 @@ public:
 
     DXGI_ADAPTER_DESC adapterDesc{};
 
+    void SetEditorSystem(EditorSystem* editor) {
+        editorSystem = editor;
+    }
+
 protected:
     bool InitializeWindow();      
     bool InitializeGraphics();   
@@ -93,6 +98,8 @@ protected:
     int m_clientW;                          
     int m_clientH;
 
+
+    EditorSystem* editorSystem = nullptr;
 private:
     D2DContext* m_d2dContext;
 };

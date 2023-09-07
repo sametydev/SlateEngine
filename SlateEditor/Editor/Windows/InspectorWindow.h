@@ -1,5 +1,5 @@
 #pragma once
-#include <SlateEngine/Engine/Editor/Windows/IWindow.h>
+#include <SlateEditor/Editor/Windows/IWindow.h>
 #include <SlateEngine/Engine/Game/Game.h>
 #include <SlateEngine/Engine/Entity/EntityManager.h>
 

@@ -6,45 +6,43 @@ void RenderableGeometry::OnInternalInit()
 
     //Create our Vertex Buffer
     m_vertexBuffer               = new DXVertexBuffer();
-
     //Create our Index Buffer
     m_indexBuffer                = new DXIndexBuffer();
 
     SetBuffer(BuiltInMesh::CreateBox<VertexPNT>());
 
-
     m_objectConstantBuffer       = new DXConstantBuffer();
 
     cbData.world                 = mat4x4();
     cbData.worldInverseTranspose = mat4x4();
-
     cbData.material.ambient      = vec4f(1.0f, 1.0f, 1.0f, 1.0f);
     cbData.material.diffuse      = vec4f(1.0f, 1.0f, 1.0f, 1.0f);
     cbData.material.specular     = vec4f(0.1f, 0.1f, 0.1f, 5.0f);
 
     //Create Vertex Shader 3D
     ShaderInformation vertexShaderInfo{};
-    vertexShaderInfo.csoName = "Shaders\\TexturedLit\\Lit3DVS.cso";
-    vertexShaderInfo.hlslFile = "Shaders\\TexturedLit\\Lit3DVS.hlsl";
+    vertexShaderInfo.csoName    = "Shaders\\TexturedLit\\Lit3DVS.cso";
+    vertexShaderInfo.hlslFile   = "Shaders\\TexturedLit\\Lit3DVS.hlsl";
     vertexShaderInfo.entryPoint = "main";
 
     m_vertexShader               = ShaderCache::CreateVertexShader(vertexShaderInfo);
     m_vertexShader->CreateInputLayout(VertexPNT::inputLayout, ARRAYSIZE(VertexPNT::inputLayout));
 
     ShaderInformation pixelShaderInfo{};
-    pixelShaderInfo.csoName = "Shaders\\TexturedLit\\Lit3DPS.cso";
-    pixelShaderInfo.hlslFile = "Shaders\\TexturedLit\\Lit3DPS.hlsl";
+    pixelShaderInfo.csoName    = "Shaders\\TexturedLit\\Lit3DPS.cso";
+    pixelShaderInfo.hlslFile   = "Shaders\\TexturedLit\\Lit3DPS.hlsl";
     pixelShaderInfo.entryPoint = "main";
 
     //Create Pixel Shader 3D
     m_pixelShader                = ShaderCache::CreatePixelShader(pixelShaderInfo);
 
+
     ConstantBufferDesc cbd{};
     cbd.cbSize                   = sizeof(ObjectConstantBuffer);
     m_objectConstantBuffer->Create(cbd);
-
     m_objectConstantBuffer->BindVS(0);
     m_objectConstantBuffer->BindPS(0);
+
 
     m_vertexShader->Bind();
     m_pixelShader->Bind();

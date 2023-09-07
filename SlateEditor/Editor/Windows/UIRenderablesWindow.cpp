@@ -1,4 +1,4 @@
-#include <SlateEngine/Engine/Editor/Windows/UIRenderablesWindow.h>
+#include <SlateEditor/Editor/Windows/UIRenderablesWindow.h>
 
 UIRenderablesWindow::UIRenderablesWindow()
 {

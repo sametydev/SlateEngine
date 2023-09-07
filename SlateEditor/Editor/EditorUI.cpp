@@ -1,14 +1,21 @@
-#include <SlateEngine/Engine/Editor/EditorUI.h>
-#include <SlateEngine/Engine/Editor/Windows/LogWindow.h>
-#include <SlateEngine/Engine/Editor/Windows/AssetsBrowser.h>
-#include <SlateEngine/Engine/Editor/Windows/UIRenderablesWindow.h>
-#include <SlateEngine/Engine/Editor/Windows/LightingSettingsWindow.h>
+#include <SlateEditor/Editor/EditorUI.h>
+#include <SlateEditor/Editor/Windows/LogWindow.h>
+#include <SlateEditor/Editor/Windows/AssetsBrowser.h>
+#include <SlateEditor/Editor/Windows/UIRenderablesWindow.h>
+#include <SlateEditor/Editor/Windows/LightingSettingsWindow.h>
 #include <entt.hpp>
 #include <ImGuizmo.h>
 #include <comdef.h>
 #include <SlateEngine/Engine/Input/InputSystem.h>
+
+EditorUI* EditorUI::Instance = nullptr;
+
 EditorUI::EditorUI()
 {
+	if (!Instance)
+	{
+		Instance = this;
+	}
 }
 
 EditorUI::~EditorUI()

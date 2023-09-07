@@ -1,7 +1,7 @@
-#include <SlateEngine/Engine/Editor/Windows/InspectorWindow.h>
+#include <SlateEditor/Editor/Windows/InspectorWindow.h>
 #include <SlateEngine/Engine/DXConfig.h>
 #include <SlateEngine/Engine/Graphics/DXApplication.h>
-#include <SlateEngine/Engine/Editor/Windows/LogWindow.h>
+#include <SlateEditor/Editor/Windows/LogWindow.h>
 #include <SlateEngine/Engine/Graphics/2D/Components/C2DText.h>
 #include <SlateEngine/Engine/Graphics/BuiltInMesh.h>
 

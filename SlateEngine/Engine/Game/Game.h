@@ -15,6 +15,7 @@
 #include <SlateEngine/Engine/Entity/Entity.h>
 #include <SlateEngine/Engine/Entity/EntityManager.h>
 
+
 enum GameState {
     NONE = 0,
     PLAYING,
@@ -68,7 +69,6 @@ public:
     Entity* testEntity2;
 
     Camera* m_camera{};
-
 
 private:
     DXConstantBuffer* m_frameConstantBuffer = nullptr;
