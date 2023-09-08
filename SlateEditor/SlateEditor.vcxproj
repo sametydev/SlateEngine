@@ -71,7 +71,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>C:\Users\Samet\source\repos\TestEngine\inc;C:\Users\Samet\source\repos\TestEngine\SlateEngine;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)\inc;$(SolutionDir)\SlateEngine;$(IncludePath)</IncludePath>
     <LibraryPath>C:\Users\Samet\source\repos\TestEngine\lib;C:\Users\Samet\source\repos\TestEngine\bin;$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)\bin</OutDir>
   </PropertyGroup>
@@ -109,7 +109,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Users\Samet\source\repos\TestEngine\inc;C:\Users\Samet\source\repos\TestEngine;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\inc;$(SolutionDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
