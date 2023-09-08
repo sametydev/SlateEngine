@@ -1,8 +1,4 @@
 #include <SlateEditor/Editor/EditorUI.h>
-#include <SlateEditor/Editor/Windows/LogWindow.h>
-#include <SlateEditor/Editor/Windows/AssetsBrowser.h>
-#include <SlateEditor/Editor/Windows/UIRenderablesWindow.h>
-#include <SlateEditor/Editor/Windows/LightingSettingsWindow.h>
 #include <entt.hpp>
 #include <ImGuizmo.h>
 #include <comdef.h>
@@ -48,11 +44,11 @@ void EditorUI::OnInit()
 
 	game = Game::Instance;
 
-    LogWindow* logWindow = new LogWindow();
+    logWindow = new LogWindow();
     inspectorWindow = new InspectorWindow();
 	sceneWindow = new SceneHierarchy();
-    LightingSettingsWindow* light = new LightingSettingsWindow();
-	AssetsBrowser* assetBrowser = new AssetsBrowser();
+    light = new LightingSettingsWindow();
+	assetBrowser = new AssetsBrowser();
 
 
     windows.emplace(logWindow);
@@ -127,6 +123,17 @@ void EditorUI::OnUpdate(float deltaTime)
 			ImGui::EndMenu();
 		}
 
+		if (ImGui::BeginMenu("Plugins"))
+		{
+			ImGui::MenuItem("Test", NULL);
+			ImGui::EndMenu();
+		}
+
+		if (ImGui::BeginMenu("Settings"))
+		{
+			ImGui::MenuItem("Test", NULL);
+			ImGui::EndMenu();
+		}
 	}
 	ImGui::EndMenuBar();
 	ImGui::End();

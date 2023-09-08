@@ -7,6 +7,9 @@
 #include <SlateEditor/Editor/Windows/SceneHierarchy.h>
 #include <SlateEditor/Editor/Windows/InspectorWindow.h>
 #include <SlateEngine/Engine/Editor/EditorSystem.h>
+#include <SlateEditor/Editor/Windows/AssetsBrowser.h>
+#include <SlateEditor/Editor/Windows/LogWindow.h>
+#include <SlateEditor/Editor/Windows/LightingSettingsWindow.h>
 #include <imgui.h>
 #include <imgui_impl_dx11.h>
 #include <imgui_impl_win32.h>
@@ -46,8 +49,12 @@ private:
 	ImGuiIO* io = nullptr;
 
 	std::set<IWindow*> windows;
+
 	InspectorWindow* inspectorWindow = nullptr;
-	SceneHierarchy* sceneWindow = nullptr;
+	SceneHierarchy* sceneWindow      = nullptr;
+	LogWindow* logWindow             = nullptr;
+	LightingSettingsWindow* light    = nullptr;
+	AssetsBrowser* assetBrowser      = nullptr;
 
 	ComPtr<ID3D11Texture2D> m_viewportTexture;
 	ComPtr<ID3D11RenderTargetView> m_viewportRTV;
