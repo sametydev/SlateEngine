@@ -161,26 +161,29 @@ void EditorUI::OnUpdate(float deltaTime)
 			game->m_camera->mPos -= game->m_camera->mRight * movementSpeed * deltaTime;
 		}
 	}
+	else
+	{
+		if (ImGui::IsKeyPressed(ImGuiKey_T))
+		{
+			gizmoType = 7;
+		}
+
+		if (ImGui::IsKeyPressed(ImGuiKey_R))
+		{
+			gizmoType = 120;
+		}
+
+		if (ImGui::IsKeyPressed(ImGuiKey_S))
+		{
+			gizmoType = 896;
+		}
+	}
 
 	if (ImGui::Begin("Editor")) {
 		DrawViewportMenu();
 
 		ImGui::Image(m_viewportSRV.Get(), ImGui::GetContentRegionAvail());
 
-		if (ImGui::IsKeyPressed(ImGuiKey_T))
-		{
-			gizmoType = ImGuizmo::OPERATION::TRANSLATE;
-		}
-
-		if (ImGui::IsKeyPressed(ImGuiKey_R))
-		{
-			gizmoType = ImGuizmo::OPERATION::ROTATE;
-		}
-
-		if (ImGui::IsKeyPressed(ImGuiKey_S))
-		{
-			gizmoType = ImGuizmo::OPERATION::SCALE;
-		}
 
 
 		if (sceneWindow->selectedEntity && gizmoType != -1)
