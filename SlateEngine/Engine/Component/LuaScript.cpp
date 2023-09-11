@@ -2,23 +2,28 @@
 
 #include <LuaLibrary.h>
 #include <LuaBridge/LuaBridge.h>
+#include <SlateEngine/Engine/Input/InputSystem.h>
 
 void LuaScript::OnInternalInit()
 {
     lua_State* L = luaL_newstate();
     luaL_openlibs(L);
 
-    new TestMessageInstancer();
-    TestMessageInstancer* gameInstance = TestMessageInstancer::Instance;
-
     luabridge::getGlobalNamespace(L)
-        .beginClass<TestMessageInstancer>("MessageInstance")
-        .addFunction("TestMessage", &TestMessageInstancer::TestMessage)
+        .beginClass<vec2f>("vec2f")
+        .addProperty("x", &vec2f::x)
+        .addProperty("y", &vec2f::y)
+        .endClass()
+
+        .beginClass<InputSystem>("InputSystem")
+        .addStaticProperty("pos", &InputSystem::pos, false)
         .endClass();
 
-    luabridge::push(L, &gameInstance);
-    lua_setglobal(L, "message");
-    luaL_dostring(L, "print(message:TestMessage())");
+    //luabridge::push(L, &gameInstance);
+    //lua_setglobal(L, "message");
+
+
+    luaL_dostring(L, "print(message:TestMessage(InputSystem.pos.x))");
 
     lua_close(L);
 }
@@ -28,18 +33,5 @@ void LuaScript::OnUpdate(float deltaTime)
 }
 
 void LuaScript::OnRender()
-{
-}
-
-TestMessageInstancer* TestMessageInstancer::Instance = nullptr;
-
-TestMessageInstancer::TestMessageInstancer()
-{
-    if (Instance == nullptr) {
-        Instance = this;
-    }
-}
-
-TestMessageInstancer::~TestMessageInstancer()
 {
 }
