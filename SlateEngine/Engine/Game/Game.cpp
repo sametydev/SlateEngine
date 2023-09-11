@@ -1,5 +1,7 @@
 ﻿#include <SlateEngine/Engine/Game/Game.h>
 #include <SlateEngine/Engine/Input/InputSystem.h>
+#include <SlateEngine/Engine/Component/LuaScript.h>
+
 #include <ImGuizmo.h>
 Game* Game::Instance = nullptr;
 
@@ -43,6 +45,8 @@ bool Game::OnInit()
 
     entityManager->RegisterEntity(testEntity,"Test Entity 1");
     testEntity->AddComponent<RenderableGeometry>();
+    testEntity->AddComponent<LuaScript>();
+
     testEntity->GetComponent<Transform>().SetPosition({0.f,2.f,0.f});
 
     RenderableGeometry& r = testEntity->GetComponent<RenderableGeometry>();

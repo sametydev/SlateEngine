@@ -126,6 +126,9 @@
     <ClCompile Include="Engine\Editor\EditorSystem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Component\LuaScript.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\DXConfig.h">
@@ -248,8 +251,17 @@
     <ClInclude Include="Engine\Editor\EditorSystem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\Component\LuaScript.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="TestProject\Textures\Crate.dds" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Shaders\LightsHeader.hlsli" />
+    <None Include="Shaders\Misc\RTT_PS.hlsl" />
+    <None Include="Shaders\Misc\RTT_VS.hlsl" />
+    <None Include="Shaders\TexturedLit\Lit.hlsli" />
   </ItemGroup>
 </Project>
