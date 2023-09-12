@@ -14,7 +14,7 @@
 #include <SlateEngine/Engine/Component/Camera.h>
 #include <SlateEngine/Engine/Entity/Entity.h>
 #include <SlateEngine/Engine/Entity/EntityManager.h>
-
+#include <SlateEngine/Engine/FileSystem/FileSystem.h>
 
 enum GameState {
     NONE = 0,
@@ -75,5 +75,5 @@ private:
     DXConstantBuffer* m_lightConstantBuffer = nullptr;
 
     EntityManager* entityManager;
-
+    FileSystem* fileSystem;
 };

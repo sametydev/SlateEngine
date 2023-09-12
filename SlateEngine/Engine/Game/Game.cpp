@@ -28,16 +28,17 @@ bool Game::OnInit()
     //LogWindow::Instance->AddLog("[Info] DirectX 11 Initialized!\n");
     //LogWindow::Instance->AddLog("[Info] Game OnInit\n");
 
-
+    fileSystem = new FileSystem();
     m_camera = new Camera(65.f, GetAspectRatio(), 0.01f, 1000.0f);
     m_camera->SetPosition(vec3f(0,0,-10));
 
-
+    fileSystem->Init();
     entityManager = new EntityManager();
 
 
     m_crateTexture = new DXTexture();
     m_crateTexture->Load(L"TestProject\\Textures\\Crate.dds",TextureLoaderType::DDS);
+
     m_grassTexture = new DXTexture();
     m_grassTexture->Load(L"TestProject\\Textures\\Grass.jpg", TextureLoaderType::WIC);
 

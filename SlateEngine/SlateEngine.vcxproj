@@ -158,6 +158,7 @@
     <ClCompile Include="Engine\Entity\EntityManager.cpp" />
     <ClCompile Include="Engine\Entity\Entity.cpp" />
     <ClCompile Include="Engine\Input\InputSystem.cpp" />
+    <ClCompile Include="Engine\FileSystem\FileSystem.cpp" />
     <ClCompile Include="LibarySources\ConvertUTF.c" />
     <ClCompile Include="LibarySources\DDSTextureLoader11.cpp" />
     <ClCompile Include="LibarySources\GraphEditor.cpp" />
@@ -220,6 +221,7 @@
     <ClInclude Include="Engine\Input\InputSystem.h" />
     <ClInclude Include="Engine\Graphics\Shader\ShaderInformation.h" />
     <ClInclude Include="Engine\Component\LuaScript.h" />
+    <ClInclude Include="Engine\FileSystem\FileSystem.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\LightsHeader.hlsli" />
