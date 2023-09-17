@@ -1,8 +1,7 @@
 ﻿#include <SlateEngine/Engine/Game/Game.h>
 #include <SlateEngine/Engine/Input/InputSystem.h>
-#include <SlateEngine/Engine/Component/LuaScript.h>
-
 #include <ImGuizmo.h>
+
 Game* Game::Instance = nullptr;
 
 Game::Game(HINSTANCE hInstance, const std::wstring& windowName, int initWidth, int initHeight)
@@ -25,14 +24,13 @@ bool Game::OnInit()
 
     if(!IS_COOKED)editorSystem->ResizeViewport(m_clientW, m_clientH);
 
-    //LogWindow::Instance->AddLog("[Info] DirectX 11 Initialized!\n");
-    //LogWindow::Instance->AddLog("[Info] Game OnInit\n");
-
     fileSystem = new FileSystem();
+    fileSystem->Init();
+
     m_camera = new Camera(65.f, GetAspectRatio(), 0.01f, 1000.0f);
     m_camera->SetPosition(vec3f(0,0,-10));
 
-    fileSystem->Init();
+
     entityManager = new EntityManager();
 
 

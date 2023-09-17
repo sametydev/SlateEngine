@@ -20,7 +20,7 @@ void DXPixelShader::Compile(const WCHAR* csoName, const WCHAR* hlslName, LPCSTR 
 	HR(Game::Instance->GetDXDevice()->CreatePixelShader(m_blob->GetBufferPointer(), m_blob->GetBufferSize(), nullptr, m_pixelShader.GetAddressOf()));
 }
 
-void DXPixelShader::SetConstantBuffer(UINT slot, UINT numOfBuffers, ID3D11Buffer* const* buffer)
+void DXPixelShader::SetConstantBuffer(uint32_t slot, uint32_t numOfBuffers, ID3D11Buffer* const* buffer)
 {
 	Game::Instance->GetDXContext()->PSSetConstantBuffers(slot, numOfBuffers, buffer);
 }

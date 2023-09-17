@@ -1,5 +1,5 @@
 #pragma once
-#include <SlateEngine/Engine/Graphics/Shader/DXShader.h>
+#include <SlateEngine/Engine/Graphics/Shader/IShader.h>
 
 struct MaterialData
 {
@@ -13,7 +13,7 @@ struct MaterialComponent {
 public:
     MaterialComponent() = default;
 
-    inline void SetShader(DXShader* shader) {
+    inline void SetShader(IShader* shader) {
         currentShader = shader;
     }
     inline void BindPipeline() {
@@ -25,6 +25,6 @@ public:
 
 private:
     MaterialData matData;
-    DXShader* currentShader = nullptr;
+    IShader* currentShader = nullptr;
 };
 

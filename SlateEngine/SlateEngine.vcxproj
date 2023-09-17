@@ -195,7 +195,7 @@
     <ClInclude Include="Engine\Graphics\Buffer\DXVertexBuffer.h" />
     <ClInclude Include="Engine\Graphics\Shader\DXPixelShader.h" />
     <ClInclude Include="Engine\Graphics\Shader\DXVertexShader.h" />
-    <ClInclude Include="Engine\Graphics\Shader\DXShader.h" />
+    <ClInclude Include="Engine\Graphics\Shader\IShader.h" />
     <ClInclude Include="Engine\Component\Light\DirectionalLight.h" />
     <ClInclude Include="Engine\Graphics\DXRasterizerState.h" />
     <ClInclude Include="Engine\Core\Singleton.h" />
@@ -222,6 +222,7 @@
     <ClInclude Include="Engine\Graphics\Shader\ShaderInformation.h" />
     <ClInclude Include="Engine\Component\LuaScript.h" />
     <ClInclude Include="Engine\FileSystem\FileSystem.h" />
+    <ClInclude Include="Engine\Utils.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\LightsHeader.hlsli" />

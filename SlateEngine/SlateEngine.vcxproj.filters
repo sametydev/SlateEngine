@@ -176,7 +176,7 @@
     <ClInclude Include="Engine\Component\Light\DirectionalLight.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Graphics\Shader\DXShader.h">
+    <ClInclude Include="Engine\Graphics\Shader\IShader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Graphics\Shader\DXVertexShader.h">
@@ -258,6 +258,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Engine\FileSystem\FileSystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Utils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

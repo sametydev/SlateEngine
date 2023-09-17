@@ -1,5 +1,5 @@
 #pragma once
-#include <SlateEngine/Engine/Graphics/Shader/DXShader.h>
+#include <SlateEngine/Engine/Graphics/Shader/IShader.h>
 #include <SlateEngine/Engine/Graphics/Shader/DXVertexShader.h>
 #include <SlateEngine/Engine/Graphics/Shader/DXPixelShader.h>
 #include <SlateEngine/Engine/Graphics/Shader/ShaderInformation.h>

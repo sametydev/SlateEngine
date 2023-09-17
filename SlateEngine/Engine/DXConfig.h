@@ -14,16 +14,11 @@
 #include <dxgi1_3.h>
 #define _XM_NO_INTRINSICS_
 
-#include <stdio.h>
-#include <iostream>
-#include <vector>
-#include <string>
-#include <string_view>
-#include <algorithm>
-
+#include <SlateEngine/Engine/Utils.h>
 #include <SlateEngine/Engine/Core/EngineConfig.h>
 #include <SlateEngine/Engine/Math/LineerMath.h>
 #include <DirectXMath.h>
+
 
 using namespace DirectX;
 
@@ -172,21 +167,4 @@ inline HRESULT CreateShaderFromFile(
         }
     }
     return hr;
-}
-
-inline static wchar_t* charToWChar(const char* text)
-{
-    const size_t size = strlen(text) + 1;
-    wchar_t* wText = new wchar_t[size];
-    size_t outsize;
-    mbstowcs_s(&outsize, wText, size, text, size - 1);
-    return wText;
-}
-
-inline void convertWStringToCharPtr(_In_ std::wstring input, _Out_ char* outputString)
-{
-    size_t outputSize = input.length() + 1;
-    outputString = new char[outputSize];
-    size_t charsConverted = 0;
-    wcstombs_s(&charsConverted, outputString, outputSize, input.c_str(), input.length());
 }

@@ -19,24 +19,39 @@ void FileSystem::Init()
     for (std::filesystem::recursive_directory_iterator i("TestProject"), end; i != end; ++i) {
         if (!std::filesystem::is_directory(i->path())) {
 
-            if (i->path().extension() == ".lua") {
-                ProcessScriptFile(i->path());
-            }
-
-            else if (i->path().extension() == ".png" ||
-                i->path().extension() == ".jpg"  ||
-                i->path().extension() == ".jpeg" ||
-                i->path().extension() == ".bmp"  ||
-                i->path().extension() == ".tiff")
+            switch (GetFileTypeFromExt(i->path().extension()))
             {
-                ProcessTextureFileWIC(i->path());
-            }
-
-            else if (i->path().extension() == ".dds") {
-                ProcessTextureFileDDS(i->path());
+                case FILE_TYPE::LUA:
+                    ProcessScriptFile(i->path());
+                    break;
+                case FILE_TYPE::TEXTURE_WIC:
+                    ProcessTextureFileWIC(i->path());
+                    break;
+                case FILE_TYPE::TEXTURE_DDS:
+                    ProcessTextureFileDDS(i->path());
+                    break;
             }
         }
     }
+}
+
+FILE_TYPE FileSystem::GetFileTypeFromExt(std::filesystem::path ext)
+{
+    if (ext == ".lua") {
+        return FILE_TYPE::LUA;
+    }
+    else if (ext == ".png" ||
+        ext == ".jpg" ||
+        ext == ".jpeg" ||
+        ext == ".bmp" ||
+        ext == ".tiff")
+    {
+        return FILE_TYPE::TEXTURE_WIC;
+    }
+    else if (ext == ".dds") {
+        return FILE_TYPE::TEXTURE_DDS;
+    }
+    return FILE_TYPE::MISC;
 }
 
 void FileSystem::ProcessScriptFile(std::filesystem::path _p)

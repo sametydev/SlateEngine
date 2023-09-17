@@ -15,6 +15,7 @@
 #include <SlateEngine/Engine/Entity/Entity.h>
 #include <SlateEngine/Engine/Entity/EntityManager.h>
 #include <SlateEngine/Engine/FileSystem/FileSystem.h>
+#include <SlateEngine/Engine/Component/LuaScript.h>
 
 enum GameState {
     NONE = 0,
