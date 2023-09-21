@@ -12,7 +12,7 @@ class DXRasterizerState
 {
 public:
 	DXRasterizerState();
-	~DXRasterizerState();
+	~DXRasterizerState() {};
 
 	void Create();
 

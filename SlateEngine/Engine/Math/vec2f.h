@@ -22,14 +22,7 @@ struct vec2f
 	float x, y;
 
 	static float dot(const vec2f& v1, const vec2f& v2);
-
-	friend std::ostream& operator<< (std::ostream& o, const vec2f& v);
-
 };
-
-inline std::ostream& operator<< (std::ostream& o, const vec2f& v) {
-	return o << "vec2( " << v.x << ", " << v.y <<")";
-}
 
 inline vec2f& vec2f::operator+=(const vec2f& v)
 {

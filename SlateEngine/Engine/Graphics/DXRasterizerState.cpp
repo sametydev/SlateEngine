@@ -6,10 +6,6 @@ DXRasterizerState::DXRasterizerState()
 {
 }
 
-DXRasterizerState::~DXRasterizerState()
-{
-}
-
 void DXRasterizerState::Create()
 {
 	if (Instance == nullptr)
@@ -20,7 +16,8 @@ void DXRasterizerState::Create()
 	CreateRSState();
 	CreateSamplerState();
 	CreateBlendState();
-	CreateDepthStencilState();
+	//CreateDepthStencilState();
+
 	bStateCreated = true;
 }
 
@@ -102,22 +99,22 @@ void DXRasterizerState::CreateBlendState()
 {
 	//Transparent
 	D3D11_BLEND_DESC bd{};
-	bd.AlphaToCoverageEnable = false;
-	bd.RenderTarget[0].BlendEnable = true;
-	bd.RenderTarget[0].SrcBlend = D3D11_BLEND_SRC_ALPHA;
-	bd.RenderTarget[0].DestBlend = D3D11_BLEND_INV_SRC_ALPHA;
-	bd.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
-	bd.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ONE;
-	bd.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ZERO;
-	bd.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
+	bd.AlphaToCoverageEnable                 = false;
+	bd.RenderTarget[0].BlendEnable           = true;
+	bd.RenderTarget[0].SrcBlend              = D3D11_BLEND_SRC_ALPHA;
+	bd.RenderTarget[0].DestBlend             = D3D11_BLEND_INV_SRC_ALPHA;
+	bd.RenderTarget[0].BlendOp               = D3D11_BLEND_OP_ADD;
+	bd.RenderTarget[0].SrcBlendAlpha         = D3D11_BLEND_ONE;
+	bd.RenderTarget[0].DestBlendAlpha        = D3D11_BLEND_ZERO;
+	bd.RenderTarget[0].BlendOpAlpha          = D3D11_BLEND_OP_ADD;
 	bd.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
 
 	HR(gDXDevice->CreateBlendState(&bd, BSTransparent.GetAddressOf()));
 
-	bd.RenderTarget[0].SrcBlend = D3D11_BLEND_ZERO;
-	bd.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ONE;
-	bd.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ZERO;
-	bd.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ONE;
+	bd.RenderTarget[0].SrcBlend              = D3D11_BLEND_ZERO;
+	bd.RenderTarget[0].DestBlendAlpha        = D3D11_BLEND_ONE;
+	bd.RenderTarget[0].SrcBlendAlpha         = D3D11_BLEND_ZERO;
+	bd.RenderTarget[0].DestBlendAlpha        = D3D11_BLEND_ONE;
 
 	HR(gDXDevice->CreateBlendState(&bd, BSBlend.GetAddressOf()));
 
@@ -136,25 +133,25 @@ void DXRasterizerState::CreateDepthStencilState()
 {
 	D3D11_DEPTH_STENCIL_DESC desc{};
 	// Set up the description of the stencil state.
-	desc.DepthEnable = true;
-	desc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
-	desc.DepthFunc = D3D11_COMPARISON_LESS;
+	desc.DepthEnable                  = true;
+	desc.DepthWriteMask               = D3D11_DEPTH_WRITE_MASK_ALL;
+	desc.DepthFunc                    = D3D11_COMPARISON_LESS;
 
-	desc.StencilEnable = true;
-	desc.StencilReadMask = 0xFF;
-	desc.StencilWriteMask = 0xFF;
+	desc.StencilEnable                = true;
+	desc.StencilReadMask              = 0xFF;
+	desc.StencilWriteMask             = 0xFF;
 
 	//desctions if pixel is front-facing.
-	desc.FrontFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+	desc.FrontFace.StencilFailOp      = D3D11_STENCIL_OP_KEEP;
 	desc.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_INCR;
-	desc.FrontFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
-	desc.FrontFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
+	desc.FrontFace.StencilPassOp      = D3D11_STENCIL_OP_KEEP;
+	desc.FrontFace.StencilFunc        = D3D11_COMPARISON_ALWAYS;
 
 	//desctions if pixel is back-facing.
-	desc.BackFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
-	desc.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_DECR;
-	desc.BackFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
-	desc.BackFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
+	desc.BackFace.StencilFailOp       = D3D11_STENCIL_OP_KEEP;
+	desc.BackFace.StencilDepthFailOp  = D3D11_STENCIL_OP_DECR;
+	desc.BackFace.StencilPassOp       = D3D11_STENCIL_OP_KEEP;
+	desc.BackFace.StencilFunc         = D3D11_COMPARISON_ALWAYS;
 
 	// Create the depth stencil state.
 	HR(gDXDevice->CreateDepthStencilState(&desc, DSState.GetAddressOf()));

@@ -1,20 +1,22 @@
 #include <SlateEngine/Engine/Component/RenderableGeometry.h>
 #include <SlateEngine/Engine/Graphics/Shader/ShaderCache.h>
 
+
 void RenderableGeometry::OnInternalInit()
 {
 
     //Create our Vertex Buffer
-    m_vertexBuffer               = new DXVertexBuffer();
+    m_vertexBuffer = std::make_unique<DXVertexBuffer>();
     //Create our Index Buffer
-    m_indexBuffer                = new DXIndexBuffer();
+    m_indexBuffer                = std::make_unique<DXIndexBuffer>();
 
     SetBuffer(BuiltInMesh::CreateBox<VertexPNT>());
 
-    m_objectConstantBuffer       = new DXConstantBuffer();
+    m_objectConstantBuffer       = std::make_unique<DXConstantBuffer>();
 
     cbData.world                 = mat4x4();
     cbData.worldInverseTranspose = mat4x4();
+    m_material = new MaterialComponent();
     cbData.material.ambient      = vec4f(1.0f, 1.0f, 1.0f, 1.0f);
     cbData.material.diffuse      = vec4f(1.0f, 1.0f, 1.0f, 1.0f);
     cbData.material.specular     = vec4f(0.1f, 0.1f, 0.1f, 5.0f);
@@ -54,8 +56,11 @@ void RenderableGeometry::OnInternalInit()
 
 void RenderableGeometry::SetTexture(DXTexture* texture)
 {
-    texture->Bind(0);
-    attachedTexture = texture;
+    if (texture != nullptr) {
+        texture->Bind(0);
+        attachedTexture = texture;
+    }
+                        
 }
 
 
@@ -85,7 +90,11 @@ void RenderableGeometry::OnRender()
     m_objectConstantBuffer->BindVS(0);
     m_objectConstantBuffer->BindPS(0);
 
-    if(*ignoreState == false)DXRasterizerState::Instance->SetRasterizerState((RasterizerState)cullMode);
+    if (ignoreState != nullptr) {
+        if (*ignoreState == false)DXRasterizerState::Instance->SetRasterizerState((RasterizerState)cullMode);
+    }
 
-    DXApplication::Instance->GetDXContext().Get()->DrawIndexed(m_indices, 0, 0);
+    DXApplication::Instance->GetDXContext().Get()->DrawIndexed(m_indices, 0u, 0u);
+
+    attachedTexture->UnBind();
 }

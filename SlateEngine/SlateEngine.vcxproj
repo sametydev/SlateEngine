@@ -112,6 +112,7 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <LanguageStandard_C>Default</LanguageStandard_C>
+      <Optimization>Disabled</Optimization>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -159,6 +160,7 @@
     <ClCompile Include="Engine\Entity\Entity.cpp" />
     <ClCompile Include="Engine\Input\InputSystem.cpp" />
     <ClCompile Include="Engine\FileSystem\FileSystem.cpp" />
+    <ClCompile Include="Engine\Input\Gamepad.cpp" />
     <ClCompile Include="LibarySources\ConvertUTF.c" />
     <ClCompile Include="LibarySources\DDSTextureLoader11.cpp" />
     <ClCompile Include="LibarySources\GraphEditor.cpp" />
@@ -178,6 +180,7 @@
     <ClCompile Include="Engine\Component\LuaScript.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Engine\Core\Timer.cpp" />
+    <ClCompile Include="Engine\Graphics\Texture\RenderTTexture.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Editor\EditorSystem.h" />
@@ -223,6 +226,8 @@
     <ClInclude Include="Engine\Component\LuaScript.h" />
     <ClInclude Include="Engine\FileSystem\FileSystem.h" />
     <ClInclude Include="Engine\Utils.h" />
+    <ClInclude Include="Engine\Graphics\Texture\RenderTTexture.h" />
+    <ClInclude Include="Engine\Input\Gamepad.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\LightsHeader.hlsli" />

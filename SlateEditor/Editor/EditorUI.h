@@ -1,8 +1,5 @@
 #pragma once
-#include <SlateEngine/Engine/Core/Singleton.h>
 #include <SlateEngine/Engine/Game/Game.h>
-#include <SlateEngine/Engine/DXConfig.h>
-#include <SlateEngine/Engine/Graphics/DXApplication.h>
 #include <SlateEditor/Editor/Windows/IWindow.h>
 #include <SlateEditor/Editor/Windows/SceneHierarchy.h>
 #include <SlateEditor/Editor/Windows/InspectorWindow.h>
@@ -13,8 +10,9 @@
 #include <imgui.h>
 #include <imgui_impl_dx11.h>
 #include <imgui_impl_win32.h>
-
+#include <SlateEngine/Engine/Graphics/Texture/RenderTTexture.h>
 #include <set>
+#include <SlateEngine/Engine/Input/Gamepad.h>
 
 class EditorUI : public EditorSystem
 {
@@ -56,11 +54,9 @@ private:
 	LightingSettingsWindow* light    = nullptr;
 	AssetsBrowser* assetBrowser      = nullptr;
 
-	ComPtr<ID3D11Texture2D> m_viewportTexture;
-	ComPtr<ID3D11RenderTargetView> m_viewportRTV;
-	ComPtr<ID3D11ShaderResourceView> m_viewportSRV;
+	std::unique_ptr<RenderTTexture> rtt;
 
 	int gizmoType = 7;
 
-	int viewportW, viewportH;
+	std::unique_ptr<Gamepad> gamepad;
 };

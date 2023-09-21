@@ -1,7 +1,7 @@
 #include <SlateEngine/Engine/Graphics/Buffer/DXVertexBuffer.h>
 #include <SlateEngine/Engine/Game/Game.h>
 
-DXVertexBuffer::DXVertexBuffer()
+DXVertexBuffer::DXVertexBuffer() : mStride(0)
 {
 }
 

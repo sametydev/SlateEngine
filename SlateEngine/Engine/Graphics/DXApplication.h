@@ -90,9 +90,9 @@ protected:
     ComPtr<ID3D11RenderTargetView> m_renderTargetView;
     ComPtr<ID3D11DepthStencilView> m_depthStencilView;
 
-    DXRasterizerState* rasterizerState = nullptr;
+    std::unique_ptr<DXRasterizerState> rasterizerState;
 
-    D3D11_VIEWPORT m_screenVp;                     
+    D3D11_VIEWPORT m_screenVp{};
 
     std::wstring sWindowCaption;              
     int m_clientW;                          
@@ -100,6 +100,4 @@ protected:
 
 
     EditorSystem* editorSystem = nullptr;
-private:
-    D2DContext* m_d2dContext;
 };

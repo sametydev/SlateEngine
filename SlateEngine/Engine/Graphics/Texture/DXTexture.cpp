@@ -15,6 +15,7 @@ DXTexture::~DXTexture()
 
 void DXTexture::Load(const wchar_t* filename, TextureLoaderType type)
 {
+    _NULL_CHECK
     if (type == 0)
     {
         CreateDDSTextureFromFile(DXApplication::Instance->GetDXDevice().Get(), filename, nullptr, mSRV.GetAddressOf());
@@ -44,12 +45,14 @@ void DXTexture::Load(const wchar_t* filename, TextureLoaderType type)
 
 void DXTexture::Bind(UINT slot)
 {
-	this->slot = slot;
-	DXApplication::Instance->GetDXContext().Get()->PSSetShaderResources(slot, 1, mSRV.GetAddressOf());
+    _NULL_CHECK
+    m_slot = slot;
+	DXApplication::Instance->GetDXContext().Get()->PSSetShaderResources(m_slot, 1, mSRV.GetAddressOf());
 }
 
 void DXTexture::UnBind()
 {
+    _NULL_CHECK
 	ID3D11ShaderResourceView* clearView = nullptr;
-	DXApplication::Instance->GetDXContext().Get()->PSSetShaderResources(slot, 1, &clearView);
+	DXApplication::Instance->GetDXContext().Get()->PSSetShaderResources(m_slot, 1, &clearView);
 }

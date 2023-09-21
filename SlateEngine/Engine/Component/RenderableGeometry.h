@@ -31,17 +31,17 @@ public:
 
     Transform& GetTransform() { return connectedEntity->GetComponent<Transform>(); };
     ObjectConstantBuffer& GetObjectCb() { return cbData; };
-    MaterialComponent& GetMaterial() { return m_material; };
+    MaterialComponent& GetMaterial() { return *m_material; };
 
 private:
-    MaterialComponent m_material{};
+    MaterialComponent* m_material;
 
-    DXVertexBuffer* m_vertexBuffer           = nullptr;
-    DXIndexBuffer* m_indexBuffer             = nullptr;
+    std::unique_ptr<DXVertexBuffer> m_vertexBuffer;
+    std::unique_ptr<DXIndexBuffer> m_indexBuffer;
 
     ObjectConstantBuffer   cbData{};
 
-    DXConstantBuffer* m_objectConstantBuffer = nullptr;
+    std::unique_ptr <DXConstantBuffer> m_objectConstantBuffer;
 
     DXVertexShader* m_vertexShader           = nullptr;
     DXPixelShader* m_pixelShader             = nullptr;

@@ -141,7 +141,6 @@
     <ClCompile Include="Editor\Windows\LightingSettingsWindow.cpp" />
     <ClCompile Include="Editor\Windows\LogWindow.cpp" />
     <ClCompile Include="Editor\Windows\SceneHierarchy.cpp" />
-    <ClCompile Include="Editor\Windows\UIRenderablesWindow.cpp" />
     <ClCompile Include="Main.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -152,7 +151,6 @@
     <ClInclude Include="Editor\Windows\LightingSettingsWindow.h" />
     <ClInclude Include="Editor\Windows\LogWindow.h" />
     <ClInclude Include="Editor\Windows\SceneHierarchy.h" />
-    <ClInclude Include="Editor\Windows\UIRenderablesWindow.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

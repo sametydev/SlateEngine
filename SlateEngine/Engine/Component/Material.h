@@ -1,6 +1,6 @@
 #pragma once
 #include <SlateEngine/Engine/Graphics/Shader/IShader.h>
-
+#include <vector>
 struct MaterialData
 {
     vec4f ambient;
@@ -13,11 +13,11 @@ struct MaterialComponent {
 public:
     MaterialComponent() = default;
 
-    inline void SetShader(IShader* shader) {
-        currentShader = shader;
+    inline void AddShader(IShader* shader) {
+        shaders.push_back(shader);
     }
     inline void BindPipeline() {
-        currentShader->Bind();
+
     }
     inline MaterialData& GetMaterialData() {
         return matData;
@@ -25,6 +25,8 @@ public:
 
 private:
     MaterialData matData;
-    IShader* currentShader = nullptr;
+protected:
+    std::vector<IShader*> shaders;
+
 };
 

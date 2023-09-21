@@ -171,9 +171,9 @@ void InspectorWindow::DrawRenderableGeometryComponent(Entity* entity)
 			MeshData<VertexPNT> meshData;
 			switch (curr_mesh_item)
 			{
-			case 0: meshData = BuiltInMesh::CreateBox<VertexPNT>(); break;
-			case 1: meshData = BuiltInMesh::CreateSphere<VertexPNT>(); break;
-			case 2: meshData = BuiltInMesh::CreateCylinder<VertexPNT>(); break;
+				case 0: meshData = BuiltInMesh::CreateBox<VertexPNT>(); break;
+				case 1: meshData = BuiltInMesh::CreateSphere<VertexPNT>(); break;
+				case 2: meshData = BuiltInMesh::CreateCylinder<VertexPNT>(); break;
 			}
 
 			r.SetBuffer(meshData);

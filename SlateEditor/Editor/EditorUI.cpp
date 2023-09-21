@@ -4,6 +4,8 @@
 #include <comdef.h>
 #include <SlateEngine/Engine/Input/InputSystem.h>
 
+
+
 EditorUI* EditorUI::Instance = nullptr;
 
 EditorUI::EditorUI()
@@ -16,7 +18,6 @@ EditorUI::EditorUI()
 
 EditorUI::~EditorUI()
 {
-	if (IS_COOKED) return;
     ImGui_ImplDX11_Shutdown();
     ImGui_ImplWin32_Shutdown();
     ImGui::DestroyContext();
@@ -26,15 +27,18 @@ EditorUI::~EditorUI()
 
 void EditorUI::OnInit()
 {
-	if (IS_COOKED) return;
-    //Initialize IMGUI for Test
+
+	gamepad = std::make_unique<Gamepad>(1);
+	gamepad->Update();
     ImGui::CreateContext();
     io = &ImGui::GetIO(); (void)io;
     io->ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
     io->ConfigFlags |= ImGuiConfigFlags_DockingEnable;
+	io->ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
     io->ConfigWindowsMoveFromTitleBarOnly = true;
-
+	
     ImGui::StyleColorsDark();
+	rtt = std::make_unique<RenderTTexture>();
 
     ImGui_ImplWin32_Init(DXApplication::Instance->MainWnd());
     ImGui_ImplDX11_Init(DXApplication::Instance->GetDXDevice().Get(), DXApplication::Instance->GetDXContext().Get());
@@ -62,12 +66,12 @@ void EditorUI::OnInit()
     }
 
 	inspectorWindow->OnInit();
-
+	
 }
 
 void EditorUI::NewFrame()
 {
-	if (IS_COOKED) return;
+
     ImGui_ImplDX11_NewFrame();
     ImGui_ImplWin32_NewFrame();
     ImGui::NewFrame();
@@ -79,9 +83,19 @@ void EditorUI::NewFrame()
 
 void EditorUI::OnUpdate(float deltaTime)
 {
-	if (IS_COOKED) return;
     static bool dockspaceOpen = true;
 
+	if (gamepad->IsConnected()) {
+		if (gamepad->IsButtonPressed(SLATE_GAMEPAD_A)) {
+			MessageBoxA(0, "Gamepad A Button Pressed", 0, 0);
+		}
+		if (gamepad->IsButtonPressed(SLATE_GAMEPAD_B)) {
+			gamepad->Vibrate(25000);
+		}
+		if (gamepad->IsButtonPressed(SLATE_GAMEPAD_Y)) {
+			gamepad->ResetVibration();
+		}
+	}
 
 	ImGuiWindowFlags window_flags = ImGuiWindowFlags_MenuBar;
 
@@ -182,8 +196,13 @@ void EditorUI::OnUpdate(float deltaTime)
 	if (ImGui::Begin("Editor")) {
 		DrawViewportMenu();
 
-		ImGui::Image(m_viewportSRV.Get(), ImGui::GetContentRegionAvail());
-
+		ImGui::Image(&rtt->GetShaderResourceView(), ImGui::GetContentRegionAvail());
+		//ImVec2 ws = ImGui::GetContentRegionAvail();
+		//ImGui::GetWindowDrawList()->AddImage(
+		//	m_viewportSRV.Get(),
+		//	ImVec2(ImGui::GetCursorScreenPos()),
+		//	ImVec2(ImGui::GetCursorScreenPos().x + ws.x,
+		//		ImGui::GetCursorScreenPos().y + ws.y));
 
 
 		if (sceneWindow->selectedEntity && gizmoType != -1)
@@ -199,17 +218,16 @@ void EditorUI::OnUpdate(float deltaTime)
 
 			const mat4x4& cproj = mat4x4::transposed(game->m_camera->GetProjectionMatrix());
 			const mat4x4& cview = mat4x4::transposed(game->m_camera->GetViewMatrix());
-
 			Transform& tc = sceneWindow->selectedEntity->GetComponent<Transform>();
 
-			mat4x4 t = mat4x4::transposed(tc.GetGlobal());
 
-			float translation[3] = { tc.mPosition.x, tc.mPosition.y, tc.mPosition.z };
-			float rotation[3] = { tc.mRotation.x, tc.mRotation.y, tc.mRotation.z };
-			float scale[3] = { tc.mScale.x, tc.mScale.y, tc.mScale.z };
+			float translation[3]	= { tc.mPosition.x, tc.mPosition.y, tc.mPosition.z };
+			float rotation[3]		= { tc.mRotation.x, tc.mRotation.y, tc.mRotation.z };
+			float scale[3]			= { tc.mScale.x, tc.mScale.y, tc.mScale.z };
 
-			ImGuizmo::RecomposeMatrixFromComponents(translation, rotation, scale, *t.m);
-			ImGuizmo::Manipulate(cview.f, cproj.f, (ImGuizmo::OPERATION)gizmoType, ImGuizmo::LOCAL, *t.m);
+			mat4x4 t;
+			ImGuizmo::RecomposeMatrixFromComponents(translation, rotation, scale, t.f);
+			ImGuizmo::Manipulate(cview.f, cproj.f, (ImGuizmo::OPERATION)gizmoType, ImGuizmo::WORLD,t.f);
 
 			/*
 			S R  T
@@ -221,10 +239,10 @@ void EditorUI::OnUpdate(float deltaTime)
 			if (ImGuizmo::IsUsing()) {
 				float translation[3] = { 0.0f, 0.0f, 0.0f }, rotation[3] = { 0.0f, 0.0f, 0.0f }, scale[3] = { 0.0f, 0.0f, 0.0f };
 
-				ImGuizmo::DecomposeMatrixToComponents(*t.m, translation, rotation, scale);
-
+				ImGuizmo::DecomposeMatrixToComponents(t.f, translation, rotation, scale);
+				
 				tc.mPosition = vec3f(translation[0], translation[1], translation[2]);
-				tc.mRotation = vec3f(rotation[0], rotation[1], rotation[2]);
+				tc.mRotation = vec3f(rotation[0],rotation[1],rotation[2]);
 				tc.mScale	 = vec3f(scale[0], scale[1], scale[2]);
 			}
 		}
@@ -252,66 +270,19 @@ void EditorUI::OnUpdate(float deltaTime)
 		ImGui::Text(gcardDesc);
 
 	}ImGui::End();
-
 }
 
 void EditorUI::ClearViewport(float rgba[4])
 {
-	DXInstance->GetDXContext()->OMSetRenderTargets(1, m_viewportRTV.GetAddressOf(), DXInstance->GetDepthStencilView().Get());
-	DXInstance->GetDXContext()->ClearRenderTargetView(m_viewportRTV.Get(), rgba);
-	DXInstance->GetDXContext()->ClearDepthStencilView(DXInstance->GetDepthStencilView().Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
+	rtt->SetAsRendererTarget();
+	rtt->ClearRenderTarget(rgba);
 }
 
 void EditorUI::ResizeViewport(int w, int h)
 {
-	viewportW = w;
-	viewportH = h;
-	m_viewportTexture.Reset();
-	m_viewportRTV.Reset();
-	m_viewportSRV.Reset();
+	if (rtt == nullptr)return;
 
-	D3D11_TEXTURE2D_DESC textureDesc{};
-	textureDesc.Width = w;
-	textureDesc.Height = h;
-	textureDesc.MipLevels = 1;
-	textureDesc.ArraySize = 1;
-	textureDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
-	textureDesc.SampleDesc.Count = 4;
-	textureDesc.SampleDesc.Quality = DXInstance->mMsaaQuality - 1;
-	textureDesc.Usage = D3D11_USAGE_DEFAULT;
-	textureDesc.BindFlags = D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE;
-	textureDesc.CPUAccessFlags = 0;
-	textureDesc.MiscFlags = 0;
-
-	if (DXInstance->bEnableMsaa)
-	{
-		textureDesc.SampleDesc.Count = 4;
-		textureDesc.SampleDesc.Quality = DXInstance->mMsaaQuality - 1;
-	}
-	else
-	{
-		textureDesc.SampleDesc.Count = 1;
-		textureDesc.SampleDesc.Quality = 0;
-	}
-
-	DXInstance->GetDXDevice()->CreateTexture2D(&textureDesc, NULL, &m_viewportTexture);
-
-	D3D11_RENDER_TARGET_VIEW_DESC renderTargetViewDesc{};
-	renderTargetViewDesc.Format = textureDesc.Format;
-	renderTargetViewDesc.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2DMSARRAY;
-	renderTargetViewDesc.Texture2D.MipSlice = 0;
-
-	DXInstance->GetDXDevice()->CreateRenderTargetView(m_viewportTexture.Get(), nullptr, &m_viewportRTV);
-
-	D3D11_SHADER_RESOURCE_VIEW_DESC shaderResourceViewDesc{};
-	shaderResourceViewDesc.Format = textureDesc.Format;
-	shaderResourceViewDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2DMSARRAY;
-	shaderResourceViewDesc.Texture2D.MostDetailedMip = 0;
-	shaderResourceViewDesc.Texture2D.MipLevels = 1;
-
-	DXInstance->GetDXDevice()->CreateShaderResourceView(m_viewportTexture.Get(), nullptr, &m_viewportSRV);
-
-	DXInstance->GetDXContext()->OMSetRenderTargets(1, m_viewportRTV.GetAddressOf(), DXInstance->GetDepthStencilView().Get());
+	rtt->Resize(w, h);
 }
 
 void EditorUI::DrawViewportMenu()
@@ -342,7 +313,6 @@ void EditorUI::DrawViewportMenu()
 
 void EditorUI::InitTheme()
 {
-	if (IS_COOKED) return;
 	ImGuiStyle* style = &ImGui::GetStyle();
 	style->WindowPadding = ImVec2(15, 15);
 	style->WindowRounding = 5.0f;
@@ -394,7 +364,8 @@ void EditorUI::InitTheme()
 
 void EditorUI::OnRender()
 {
-	if (IS_COOKED) return;
+
     ImGui::Render();
+	ImGui::UpdatePlatformWindows();
     ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
 }

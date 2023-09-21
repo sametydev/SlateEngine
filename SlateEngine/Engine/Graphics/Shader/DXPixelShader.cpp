@@ -11,6 +11,7 @@ DXPixelShader::~DXPixelShader()
 
 void DXPixelShader::Bind()
 {
+	_NULL_CHECK
 	Game::Instance->GetDXContext()->PSSetShader(m_pixelShader.Get(), nullptr, 0);
 }
 

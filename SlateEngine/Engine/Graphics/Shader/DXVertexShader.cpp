@@ -12,6 +12,7 @@ DXVertexShader::~DXVertexShader()
 
 void DXVertexShader::Bind()
 {
+	_NULL_CHECK
 	Game::Instance->GetDXContext()->VSSetShader(m_vertexShader.Get(), nullptr, 0);
 }
 

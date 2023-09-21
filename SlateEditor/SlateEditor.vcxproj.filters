@@ -33,9 +33,6 @@
     <ClCompile Include="Editor\Windows\SceneHierarchy.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Editor\Windows\UIRenderablesWindow.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Editor\EditorUI.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -57,9 +54,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Editor\Windows\SceneHierarchy.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Editor\Windows\UIRenderablesWindow.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Editor\EditorUI.h">

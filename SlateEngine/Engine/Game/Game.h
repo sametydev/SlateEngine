@@ -17,12 +17,6 @@
 #include <SlateEngine/Engine/FileSystem/FileSystem.h>
 #include <SlateEngine/Engine/Component/LuaScript.h>
 
-enum GameState {
-    NONE = 0,
-    PLAYING,
-    PAUSED
-};
-
 class Game : public DXApplication
 {
 public:
@@ -64,7 +58,7 @@ public:
     LightConstantBuffer  LightConstantObject;
 
     DXTexture* m_crateTexture = nullptr;
-    DXTexture* m_grassTexture = nullptr;
+    std::unique_ptr<DXTexture> m_grassTexture = nullptr;
 
     Entity* testEntity;
     Entity* testEntity2;

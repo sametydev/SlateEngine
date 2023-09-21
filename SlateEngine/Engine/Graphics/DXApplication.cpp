@@ -40,7 +40,6 @@ DXApplication::DXApplication(HINSTANCE hInstance, const std::wstring& windowName
     m_renderTargetView(nullptr),
     m_depthStencilView(nullptr)
 {
-    ZeroMemory(&m_screenVp, sizeof(D3D11_VIEWPORT));
 
     if (!Instance)
     {
@@ -415,7 +414,7 @@ bool DXApplication::InitializeGraphics()
     dxgiAdapter->GetDesc(&adapterDesc);
     OnResize();
 
-    rasterizerState = new DXRasterizerState();
+    rasterizerState = std::make_unique<DXRasterizerState>();
     rasterizerState->Create();
 
     return true;

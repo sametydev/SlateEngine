@@ -37,7 +37,7 @@ bool Game::OnInit()
     m_crateTexture = new DXTexture();
     m_crateTexture->Load(L"TestProject\\Textures\\Crate.dds",TextureLoaderType::DDS);
 
-    m_grassTexture = new DXTexture();
+    m_grassTexture = std::make_unique<DXTexture>();
     m_grassTexture->Load(L"TestProject\\Textures\\Grass.jpg", TextureLoaderType::WIC);
 
     testEntity = new Entity();
@@ -59,7 +59,7 @@ bool Game::OnInit()
 
     RenderableGeometry& r2 = testEntity2->GetComponent<RenderableGeometry>();
     r2.SetCullMode(CULL_BACK, &renderWireframe);
-    r2.SetTexture(m_grassTexture);
+    r2.SetTexture(m_grassTexture.get());
 
     //Creating Constant Buffers;
     m_frameConstantBuffer = new DXConstantBuffer();
@@ -135,7 +135,6 @@ void Game::OnRenderScene()
     BeginClear();
 
     entityManager->OnRender();
-
 
     PostClear();
 

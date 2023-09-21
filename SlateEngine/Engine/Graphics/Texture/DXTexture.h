@@ -22,6 +22,6 @@ public:
 	UINT Height;
 
 private:
-	UINT slot;
+	UINT m_slot;
 	ComPtr<ID3D11ShaderResourceView> mSRV;
 };

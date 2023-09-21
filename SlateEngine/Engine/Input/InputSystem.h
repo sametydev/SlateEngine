@@ -1,6 +1,8 @@
 #pragma once
 #include <SlateEngine/Engine/DXConfig.h>
 #include <SlateEngine/Engine/Math/vec2f.h>
+#include <SlateEngine/Engine/Input/Gamepad.h>
+
 struct tagMSG;
 typedef tagMSG MSG;
 

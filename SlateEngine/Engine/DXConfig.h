@@ -7,6 +7,7 @@
 #ifdef _DEBUG
 #pragma comment(lib,"dxguid.lib")
 #endif
+#pragma comment(lib,"Xinput.lib")
 
 #include <wrl/client.h>
 #include <d3d11_1.h>

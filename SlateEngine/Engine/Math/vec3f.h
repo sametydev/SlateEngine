@@ -13,6 +13,7 @@ public:
 	vec3f() : x(0.0), y(0.0), z(0.0) {}
 	vec3f(const vec3f& v) : x(v.x), y(v.y), z(v.z) {}
 	vec3f(float x, float y, float z) : x(x), y(y), z(z) {}
+	vec3f(float* v) : x(v[0]),y(v[1]),z(v[2]) {}
 	explicit vec3f(float f) : x(f), y(f), z(f) {}
 
 	float& operator[](unsigned int i);
@@ -220,6 +221,8 @@ inline float vec3f::dot(const vec3f& v)
 {
 	return x * v.x + y * v.y + z * v.z;
 }
+
+
 inline vec3f vec3f::cross(const vec3f& v)
 {
 	return vec3f(

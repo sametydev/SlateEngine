@@ -41,8 +41,6 @@ struct Material
     float4 reflect;
 };
 
-
-
 void ComputeDirectionalLight(Material mat, DirectionalLight L,
     float3 normal, float3 toEye,
     out float4 ambient,
