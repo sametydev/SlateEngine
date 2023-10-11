@@ -77,27 +77,6 @@ constexpr int SLATE_GAMEPAD_Y              = 0x8000;
 
 #define _NULL_CHECK     if (this == nullptr) {return;};
 
-template<class T>
-struct AlignedType
-{
-    static void* operator new(unsigned __int64 llSize)
-    {
-        const size_t llAlignedSize = __alignof(T);
-        static_assert(llAlignedSize > __alignof(T), "Problem on size aligment! use __declspec(align) on your data.");
-
-        void* p = _aligned_malloc(llSize, llAlignedSize);
-
-        if (!p)
-            throw std::bad_alloc();
-
-        return p;
-    }
-
-    static void operator delete(void* ptr)
-    {
-        _aligned_free(ptr);
-    }
-};
 
 inline static wchar_t* charToWChar(const char* text)
 {
