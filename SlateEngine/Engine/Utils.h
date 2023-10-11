@@ -37,13 +37,27 @@ template <class T> struct UnderlyingType {
     typedef typename ENUM_TO_INT<sizeof(T)>::type type;
 };
 
-inline constexpr RenderTextureCreateFlags operator | (RenderTextureCreateFlags a, RenderTextureCreateFlags b) noexcept { return RenderTextureCreateFlags(((UnderlyingType<RenderTextureCreateFlags>::type)a) | ((UnderlyingType<RenderTextureCreateFlags>::type)b)); } \
-inline RenderTextureCreateFlags& operator |= (RenderTextureCreateFlags& a, RenderTextureCreateFlags b) noexcept { return (RenderTextureCreateFlags&)(((UnderlyingType<RenderTextureCreateFlags>::type&)a) |= ((UnderlyingType<RenderTextureCreateFlags>::type)b)); } \
-inline constexpr RenderTextureCreateFlags operator & (RenderTextureCreateFlags a, RenderTextureCreateFlags b) noexcept { return RenderTextureCreateFlags(((UnderlyingType<RenderTextureCreateFlags>::type)a) & ((UnderlyingType<RenderTextureCreateFlags>::type)b)); } \
-inline RenderTextureCreateFlags& operator &= (RenderTextureCreateFlags& a, RenderTextureCreateFlags b) noexcept { return (RenderTextureCreateFlags&)(((UnderlyingType<RenderTextureCreateFlags>::type&)a) &= ((UnderlyingType<RenderTextureCreateFlags>::type)b)); } \
-inline constexpr RenderTextureCreateFlags operator ~ (RenderTextureCreateFlags a) noexcept { return RenderTextureCreateFlags(~((UnderlyingType<RenderTextureCreateFlags>::type)a)); } \
-inline constexpr RenderTextureCreateFlags operator ^ (RenderTextureCreateFlags a, RenderTextureCreateFlags b) noexcept { return RenderTextureCreateFlags(((UnderlyingType<RenderTextureCreateFlags>::type)a) ^ ((UnderlyingType<RenderTextureCreateFlags>::type)b)); } \
-inline RenderTextureCreateFlags& operator ^= (RenderTextureCreateFlags& a, RenderTextureCreateFlags b) noexcept { return (RenderTextureCreateFlags&)(((UnderlyingType<RenderTextureCreateFlags>::type&)a) ^= ((UnderlyingType<RenderTextureCreateFlags>::type)b)); }
+inline constexpr RenderTextureCreateFlags operator | (RenderTextureCreateFlags a, RenderTextureCreateFlags b) noexcept {
+    return RenderTextureCreateFlags(((UnderlyingType < RenderTextureCreateFlags > ::type) a) | ((UnderlyingType < RenderTextureCreateFlags > ::type) b));
+}
+inline RenderTextureCreateFlags& operator |= (RenderTextureCreateFlags& a, RenderTextureCreateFlags b) noexcept {
+    return (RenderTextureCreateFlags&)(((UnderlyingType < RenderTextureCreateFlags > ::type&) a) |= ((UnderlyingType < RenderTextureCreateFlags > ::type) b));
+}
+inline constexpr RenderTextureCreateFlags operator & (RenderTextureCreateFlags a, RenderTextureCreateFlags b) noexcept {
+    return RenderTextureCreateFlags(((UnderlyingType < RenderTextureCreateFlags > ::type) a) & ((UnderlyingType < RenderTextureCreateFlags > ::type) b));
+}
+inline RenderTextureCreateFlags& operator &= (RenderTextureCreateFlags& a, RenderTextureCreateFlags b) noexcept {
+    return (RenderTextureCreateFlags&)(((UnderlyingType < RenderTextureCreateFlags > ::type&) a) &= ((UnderlyingType < RenderTextureCreateFlags > ::type) b));
+}
+inline constexpr RenderTextureCreateFlags operator~(RenderTextureCreateFlags a) noexcept {
+    return RenderTextureCreateFlags(~((UnderlyingType < RenderTextureCreateFlags > ::type) a));
+}
+inline constexpr RenderTextureCreateFlags operator ^ (RenderTextureCreateFlags a, RenderTextureCreateFlags b) noexcept {
+    return RenderTextureCreateFlags(((UnderlyingType < RenderTextureCreateFlags > ::type) a) ^ ((UnderlyingType < RenderTextureCreateFlags > ::type) b));
+}
+inline RenderTextureCreateFlags& operator ^= (RenderTextureCreateFlags& a, RenderTextureCreateFlags b) noexcept {
+    return (RenderTextureCreateFlags&)(((UnderlyingType < RenderTextureCreateFlags > ::type&) a) ^= ((UnderlyingType < RenderTextureCreateFlags > ::type) b));
+}
 
 
 constexpr int SLATE_GAMEPAD_DPAD_UP        = 0x0001;
@@ -62,6 +76,28 @@ constexpr int SLATE_GAMEPAD_X              = 0x4000;
 constexpr int SLATE_GAMEPAD_Y              = 0x8000;
 
 #define _NULL_CHECK     if (this == nullptr) {return;};
+
+template<class T>
+struct AlignedType
+{
+    static void* operator new(unsigned __int64 llSize)
+    {
+        const size_t llAlignedSize = __alignof(T);
+        static_assert(llAlignedSize > __alignof(T), "Problem on size aligment! use __declspec(align) on your data.");
+
+        void* p = _aligned_malloc(llSize, llAlignedSize);
+
+        if (!p)
+            throw std::bad_alloc();
+
+        return p;
+    }
+
+    static void operator delete(void* ptr)
+    {
+        _aligned_free(ptr);
+    }
+};
 
 inline static wchar_t* charToWChar(const char* text)
 {

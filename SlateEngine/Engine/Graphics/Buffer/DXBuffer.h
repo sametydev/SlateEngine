@@ -40,10 +40,17 @@ struct LightConstantBuffer
     DirectionalLight dirLight[1];
     PointLight pointLight[1];
     SpotLight spotLight[1];
+
     int numDirLight = 0;
     int numPointLight = 1;
     int numSpotLight = 0;
     float dummy;
+};
+
+enum BUFFER_ID {
+    OBJECT_CONSTANT_BUFFER_ID = 0,
+    FRAME_CONSTANT_BUFFER_ID = 1,
+    LIGHT_CONSTANT_BUFFER_ID = 2
 };
 
 class DXBuffer {

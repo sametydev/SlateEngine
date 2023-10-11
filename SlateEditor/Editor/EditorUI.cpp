@@ -66,7 +66,7 @@ void EditorUI::OnInit()
     }
 
 	inspectorWindow->OnInit();
-	
+	logWindow->AddLog("[Renderer] - DX11(DirectX 11_1) Renderer OnInit");
 }
 
 void EditorUI::NewFrame()

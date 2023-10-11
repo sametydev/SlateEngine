@@ -44,6 +44,7 @@ struct mat4x4 {
 	static mat4x4 LookAt(const vec3f& pos, const vec3f& center, const vec3f& worldUp);
 	static mat4x4 RotationYawPitchRoll(float yaw, float pitch, float roll);
 	static mat4x4 RotationAxis(const vec3f& v, float angle);
+	static mat4x4 MatrixShadow(const vec3f& lightDir, const vec3f& planeNormal);
 
 	union {
 		float f[16];
@@ -70,7 +71,21 @@ inline mat4x4::mat4x4(
 	m[2][0] = m20; m[2][1] = m21; m[2][2] = m22; m[2][3] = m23;
 	m[3][0] = m30; m[3][1] = m31; m[3][2] = m32; m[3][3] = m33;
 }
+inline mat4x4 mat4x4::MatrixShadow(const vec3f& lightDir, const vec3f& planeNormal)
+{
+	mat4x4 shadowMatrix;
 
+	// Calculate dot product of plane normal and light direction
+	float dotProduct = vec3f::dot(planeNormal, lightDir);
+
+	// Calculate shadow matrix
+	shadowMatrix[0][0] = dotProduct + 1.0f;
+	shadowMatrix[1][1] = dotProduct + 1.0f;
+	shadowMatrix[2][2] = dotProduct + 1.0f;
+	shadowMatrix[3][3] = dotProduct;
+
+	return shadowMatrix;
+}
 inline mat4x4 mat4x4::operator*(const mat4x4& rhs) {
 	mat4x4 mat;
 	//00 01 02 03          //00 01 02 03

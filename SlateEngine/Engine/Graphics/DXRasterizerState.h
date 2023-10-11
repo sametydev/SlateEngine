@@ -11,36 +11,31 @@ enum RasterizerState {
 class DXRasterizerState
 {
 public:
-	DXRasterizerState();
-	~DXRasterizerState() {};
+    static void Initialize(ID3D11Device* device,ID3D11DeviceContext* context,bool msaaEnabled);
+    static void SetRasterizerState(RasterizerState state, ID3D11DeviceContext* device);
 
-	void Create();
+public:	           
+    static ComPtr<ID3D11RasterizerState> RSNoCull;   
 
-	void SetRasterizerState(RasterizerState state);
+    static ComPtr<ID3D11SamplerState> SSLinearWrap;
+    static ComPtr<ID3D11SamplerState> SSAnisotropicWrap;		       
 
-	bool bStateCreated = false;
+    static ComPtr<ID3D11BlendState> BSNoColorWrite;		               
+    static ComPtr<ID3D11BlendState> BSTransparent;		               
+    static ComPtr<ID3D11BlendState> BSAlphaToCoverage;	               
+    static ComPtr<ID3D11BlendState> BSAdditive;			               
 
-	static DXRasterizerState* Instance;
-private:
-	//State
-	ComPtr<ID3D11RasterizerState> RSCullBack = nullptr;
-	ComPtr<ID3D11RasterizerState> RSCullFront = nullptr;
-	ComPtr<ID3D11RasterizerState> RSCullFrontAndBack = nullptr;
-	ComPtr<ID3D11RasterizerState> RSWireFrame = nullptr;
 
-	//Sampler
-	ComPtr<ID3D11SamplerState> SSWrap = nullptr;
-	ComPtr<ID3D11SamplerState> SSClamp = nullptr;
+    static ComPtr<ID3D11DepthStencilState> DSSWriteStencil;
+    static ComPtr<ID3D11DepthStencilState> DSSDrawWithStencil;
 
-	ComPtr<ID3D11BlendState> BSTransparent = nullptr;
-	ComPtr<ID3D11BlendState> BSBlendDisable = nullptr;
-	ComPtr<ID3D11BlendState> BSBlend = nullptr;
+    //State
+    static ComPtr<ID3D11RasterizerState> RSCullBack;
+    static ComPtr<ID3D11RasterizerState> RSCullFront;
+    static ComPtr<ID3D11RasterizerState> RSWireFrame;
 
-	ComPtr<ID3D11DepthStencilState> DSState = nullptr;
-
-	void CreateRSState();
-	void CreateSamplerState();
-	void CreateBlendState();
-	void CreateDepthStencilState();
+    //Sampler
+    static ComPtr<ID3D11SamplerState> SSWrap;
+    static ComPtr<ID3D11SamplerState> SSClamp;
 };
 

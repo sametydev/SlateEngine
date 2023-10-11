@@ -22,35 +22,38 @@ bool Game::OnInit()
 {
     if (!DXApplication::OnInit()) { return 0; }
 
-    if(!IS_COOKED)editorSystem->ResizeViewport(m_clientW, m_clientH);
+    DXRasterizerState::Initialize(GetDXDevice().Get(),GetDXContext().Get(),bEnableMsaa);
+
+    if (!IS_COOKED)editorSystem->ResizeViewport(m_clientW, m_clientH);
+
 
     fileSystem = new FileSystem();
     fileSystem->Init();
 
     m_camera = new Camera(65.f, GetAspectRatio(), 0.01f, 1000.0f);
-    m_camera->SetPosition(vec3f(0,0,-10));
-
+    m_camera->SetPosition(vec3f(0, 0, -10));
 
     entityManager = new EntityManager();
 
 
     m_crateTexture = new DXTexture();
-    m_crateTexture->Load(L"TestProject\\Textures\\Crate.dds",TextureLoaderType::DDS);
+    m_crateTexture->Load(L"TestProject\\Textures\\Crate.dds", TextureLoaderType::DDS);
 
     m_grassTexture = std::make_unique<DXTexture>();
     m_grassTexture->Load(L"TestProject\\Textures\\Grass.jpg", TextureLoaderType::WIC);
 
     testEntity = new Entity();
 
-    entityManager->RegisterEntity(testEntity,"Test Entity 1");
+    entityManager->RegisterEntity(testEntity, "Test Entity 1");
     testEntity->AddComponent<RenderableGeometry>();
     testEntity->AddComponent<LuaScript>();
 
-    testEntity->GetComponent<Transform>().SetPosition({0.f,2.f,0.f});
+    testEntity->GetComponent<Transform>().SetPosition({ 0.f,2.f,0.f });
 
     RenderableGeometry& r = testEntity->GetComponent<RenderableGeometry>();
-    r.SetCullMode(CULL_BACK,&renderWireframe);
+    r.SetCullMode(CULL_BACK, &renderWireframe);
     r.SetTexture(m_crateTexture);
+
 
     testEntity2 = new Entity();
 
@@ -60,6 +63,7 @@ bool Game::OnInit()
     RenderableGeometry& r2 = testEntity2->GetComponent<RenderableGeometry>();
     r2.SetCullMode(CULL_BACK, &renderWireframe);
     r2.SetTexture(m_grassTexture.get());
+    r2.GetTransform().SetScale({ 10.f, 0.2f, 10.f });
 
     //Creating Constant Buffers;
     m_frameConstantBuffer = new DXConstantBuffer();
@@ -113,6 +117,7 @@ void Game::OnUpdateScene(float deltaTime)
     FrameBufferConstantObject.eyePos = m_camera->GetPos();
     FrameBufferConstantObject.view   = m_camera->GetViewMatrix();
     FrameBufferConstantObject.proj   = m_camera->GetProjectionMatrix();
+
     UpdateGlobalConstantBuffers();
 
     if (gameState == (GameState::PLAYING)) {
@@ -122,8 +127,7 @@ void Game::OnUpdateScene(float deltaTime)
 
     }
 
-    if (renderWireframe)GetRasterizerState().SetRasterizerState(RasterizerState::CULL_WIREFRAME);
-
+    if (renderWireframe)DXRasterizerState::SetRasterizerState(RasterizerState::CULL_WIREFRAME,GetDXContext().Get());
 
     entityManager->OnUpdate(deltaTime,gameState);
 }

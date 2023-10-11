@@ -38,7 +38,7 @@ private:
 
     std::unique_ptr<DXVertexBuffer> m_vertexBuffer;
     std::unique_ptr<DXIndexBuffer> m_indexBuffer;
-
+    
     ObjectConstantBuffer   cbData{};
 
     std::unique_ptr <DXConstantBuffer> m_objectConstantBuffer;
@@ -52,6 +52,8 @@ private:
 
     int cullMode = 0;
     bool* ignoreState;
+
+    bool shadowState = false;
 };
 
 template<class VertexType, class IndexType>

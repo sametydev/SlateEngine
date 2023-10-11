@@ -21,12 +21,11 @@ cbuffer LightConstantBuffer : register(b2)
     DirectionalLight m_dirLight[1];
     PointLight m_pointLight[1];
     SpotLight m_spotLight[1];
+
     int NumOfDirLight;
     int NumOfPointLight;
     int NumOfSpotLight;
 }
-
-
 
 struct VertexPNT
 {
@@ -46,5 +45,11 @@ struct VertexPhwNT
     float4 posHom : SV_POSITION;
     float3 posWorld : POSITION;   
     float3 normal : NORMAL;  
+    float2 tex : TEXCOORD;
+};
+
+struct VertexPHT
+{
+    float4 posH : SV_POSITION;
     float2 tex : TEXCOORD;
 };

@@ -414,8 +414,5 @@ bool DXApplication::InitializeGraphics()
     dxgiAdapter->GetDesc(&adapterDesc);
     OnResize();
 
-    rasterizerState = std::make_unique<DXRasterizerState>();
-    rasterizerState->Create();
-
     return true;
 }

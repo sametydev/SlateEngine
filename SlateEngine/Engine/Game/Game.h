@@ -17,6 +17,8 @@
 #include <SlateEngine/Engine/FileSystem/FileSystem.h>
 #include <SlateEngine/Engine/Component/LuaScript.h>
 
+#include <SlateEngine/Engine/Graphics/Shader/RenderPassManager.h>
+
 class Game : public DXApplication
 {
 public:

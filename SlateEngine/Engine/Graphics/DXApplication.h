@@ -47,7 +47,6 @@ public:
     inline ComPtr<ID3D11DepthStencilView>& GetDepthStencilView() {
         return m_depthStencilView;
     }
-    inline DXRasterizerState& GetRasterizerState() { return *rasterizerState; };
 
     static DXApplication* Instance;
 
@@ -89,8 +88,6 @@ protected:
     ComPtr<ID3D11Texture2D> m_depthStencilBuffer;
     ComPtr<ID3D11RenderTargetView> m_renderTargetView;
     ComPtr<ID3D11DepthStencilView> m_depthStencilView;
-
-    std::unique_ptr<DXRasterizerState> rasterizerState;
 
     D3D11_VIEWPORT m_screenVp{};
 

@@ -144,6 +144,7 @@
     <ClCompile Include="Engine\Component\RenderableGeometry.cpp" />
     <ClCompile Include="Engine\Component\Camera.cpp" />
     <ClCompile Include="Engine\Component\Transform.cpp" />
+    <ClCompile Include="Engine\Graphics\Shader\RenderPassManager.cpp" />
     <ClCompile Include="Engine\Graphics\Texture\DXTexture.cpp" />
     <ClCompile Include="Engine\Graphics\2D\Components\C2DText.cpp" />
     <ClCompile Include="Engine\Graphics\2D\D2DContext.cpp" />
@@ -189,6 +190,7 @@
     <ClInclude Include="Engine\Component\RenderableGeometry.h" />
     <ClInclude Include="Engine\Component\Camera.h" />
     <ClInclude Include="Engine\Component\Transform.h" />
+    <ClInclude Include="Engine\Graphics\Shader\RenderPassManager.h" />
     <ClInclude Include="Engine\Graphics\Shader\ShaderCache.h" />
     <ClInclude Include="Engine\Graphics\Texture\DXTexture.h" />
     <ClInclude Include="Engine\Graphics\2D\Components\C2DText.h" />
@@ -228,6 +230,7 @@
     <ClInclude Include="Engine\Utils.h" />
     <ClInclude Include="Engine\Graphics\Texture\RenderTTexture.h" />
     <ClInclude Include="Engine\Input\Gamepad.h" />
+    <ClInclude Include="Engine\Graphics\Shader\IRenderPass.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\LightsHeader.hlsli" />
