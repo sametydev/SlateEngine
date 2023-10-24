@@ -10,5 +10,6 @@ class IRenderPass
 public:
     IRenderPass() = default;
     virtual ~IRenderPass() = default;
-    virtual void Apply() = 0;
+    virtual void Bind(unsigned int offset = 0) = 0;
+    virtual void UpdateConstantBuffer(unsigned int size,void* pData) = 0;
 };
