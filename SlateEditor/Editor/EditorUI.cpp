@@ -194,9 +194,9 @@ void EditorUI::OnUpdate(float deltaTime)
 	}
 
 	if (ImGui::Begin("Editor")) {
-		DrawViewportMenu();
-
-		ImGui::Image(&rtt->GetShaderResourceView(), ImGui::GetContentRegionAvail());
+		//DrawViewportMenu();
+		//ImGui::SetItemAllowOverlap();
+		ImGui::Image(&rtt->GetShaderResourceView(), ImGui::GetWindowContentRegionMax());
 		//ImVec2 ws = ImGui::GetContentRegionAvail();
 		//ImGui::GetWindowDrawList()->AddImage(
 		//	m_viewportSRV.Get(),

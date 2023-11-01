@@ -1,5 +1,6 @@
 #pragma once
 #include <SlateEngine/Engine/Graphics/Shader/IShader.h>
+#include <SlateEngine/Engine/Graphics/Texture/DXTexture.h>
 #include <vector>
 struct MaterialData
 {
@@ -14,8 +15,13 @@ public:
     MaterialComponent() = default;
 
     inline void AddShader(IShader* shader) {
-        shaders.push_back(shader);
+        shaders.emplace_back(shader);
     }
+
+    inline void AddTexture(DXTexture* tex) {
+        textures.emplace_back(tex);
+    }
+
     inline void BindPipeline() {
 
     }
@@ -23,10 +29,14 @@ public:
         return matData;
     }
 
+    void OnRender();
+    void OnUpdate();
+
 private:
     MaterialData matData;
 protected:
     std::vector<IShader*> shaders;
+    std::vector<DXTexture*> textures;
 
 };
 

@@ -8,13 +8,15 @@ public:
 	~DXConstantBuffer();
 
 	void Reset() override;
-	void BindPS(UINT slot = 0);
-	void BindVS(UINT slot = 0);
-	void BindPipeline(UINT offset) override;
+	void BindPS(unsigned int slot = 0);
+	void BindVS(unsigned int slot = 0);
+	void BindPipeline(unsigned int offset) override;
 	void Create(const ConstantBufferDesc& desc);
 
-	void Map(UINT cbSize,const void* dstData);
+	void Map(unsigned int cbSize,const void* dstData);
 	void UnMap();
+
+	void MapAndUnMap(unsigned int cbSize, const void* dstData);
 private:
 	ComPtr<ID3D11Buffer> m_buffer;
 };

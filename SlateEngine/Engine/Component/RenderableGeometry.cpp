@@ -5,14 +5,9 @@
 void RenderableGeometry::OnInternalInit()
 {
 
-    //Create our Vertex Buffer
-    m_vertexBuffer = std::make_unique<DXVertexBuffer>();
-    //Create our Index Buffer
-    m_indexBuffer = std::make_unique<DXIndexBuffer>();
-
     SetBuffer(BuiltInMesh::CreateBox<VertexPNT>());
 
-    m_objectConstantBuffer = std::make_unique<DXConstantBuffer>();
+    m_constantBuffer = std::make_unique<DXConstantBuffer>();
 
     cbData.world = mat4x4();
     cbData.worldInverseTranspose = mat4x4();
@@ -38,16 +33,19 @@ void RenderableGeometry::OnInternalInit()
     //Create Pixel Shader 3D
     m_pixelShader = ShaderCache::CreatePixelShader(pixelShaderInfo);
 
-
     ConstantBufferDesc cbd{};
     cbd.cbSize = sizeof(ObjectConstantBuffer);
-    m_objectConstantBuffer->Create(cbd);
-    m_objectConstantBuffer->BindVS(0);
-    m_objectConstantBuffer->BindPS(0);
+    m_constantBuffer->Create(cbd);
+    m_constantBuffer->BindVS(0);
+    m_constantBuffer->BindPS(0);
 
 
     m_vertexShader->Bind();
     m_pixelShader->Bind();
+
+    buffers.emplace_back(m_vertexBuffer);
+    buffers.emplace_back(m_indexBuffer);
+    buffers.emplace_back(m_constantBuffer.get());
 
     SetCullMode((RasterizerState)0);
     //Calling Update once
@@ -69,8 +67,7 @@ void RenderableGeometry::OnUpdate(float deltaTime)
     cbData.world = connectedEntity->GetComponent<Transform>().GetGlobal();
     cbData.worldInverseTranspose = connectedEntity->GetComponent<Transform>().GetGlobal().InverseTranspose();
 
-    m_objectConstantBuffer->Map(sizeof(ObjectConstantBuffer), &cbData);
-    m_objectConstantBuffer->UnMap();
+    m_constantBuffer->MapAndUnMap(sizeof(ObjectConstantBuffer), &cbData);
 }
 
 void RenderableGeometry::SetCullMode(RasterizerState state, bool* ignoreState)
@@ -81,14 +78,16 @@ void RenderableGeometry::SetCullMode(RasterizerState state, bool* ignoreState)
 
 void RenderableGeometry::OnRender()
 {
-    m_vertexBuffer->BindPipeline(0);
-    m_indexBuffer->BindPipeline(0);
+    for (size_t i = 0; i < buffers.size(); i++)
+    {
+        buffers[i]->BindPipeline(0);
+    }
+
     m_vertexShader->Bind();
     m_vertexShader->UpdateInputLayout();
     m_pixelShader->Bind();
+
     attachedTexture->Bind();
-    m_objectConstantBuffer->BindVS(0);
-    m_objectConstantBuffer->BindPS(0);
 
     if (ignoreState != nullptr) {
         if (*ignoreState == false)DXRasterizerState::SetRasterizerState((RasterizerState)cullMode,DXApplication::Instance->GetDXContext().Get());

@@ -27,6 +27,8 @@ void DXConstantBuffer::BindVS(UINT slot)
 
 void DXConstantBuffer::BindPipeline(UINT offset)
 {
+    BindVS(0);
+    BindPS(0);
 }
 
 void DXConstantBuffer::Create(const ConstantBufferDesc& desc)
@@ -54,4 +56,10 @@ void DXConstantBuffer::Map(UINT cbSize,const void* dstData)
 void DXConstantBuffer::UnMap()
 {
     Game::Instance->GetDXContext()->Unmap(m_buffer.Get(), 0);
+}
+
+void DXConstantBuffer::MapAndUnMap(unsigned int cbSize, const void* dstData)
+{
+    Map(cbSize, dstData);
+    UnMap();
 }

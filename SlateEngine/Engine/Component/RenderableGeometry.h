@@ -4,7 +4,7 @@
 #include <SlateEngine/Engine/Graphics/Buffer/DXBuffer.h>
 #include <SlateEngine/Engine/Graphics/Shader/DXVertexShader.h>
 #include <SlateEngine/Engine/Graphics/Shader/DXPixelShader.h>
-#include <SlateEngine/Engine/Graphics/Buffer/DXVertexBuffer.h>
+#include <SlateEngine/Engine/Graphics/Buffer/BufferCache.h>
 #include <SlateEngine/Engine/Graphics/Buffer/DXIndexBuffer.h>
 #include <SlateEngine/Engine/Graphics/Buffer/DXConstantBuffer.h>
 #include <SlateEngine/Engine/Graphics/BuiltInMesh.h>
@@ -36,12 +36,13 @@ public:
 private:
     MaterialComponent* m_material;
 
-    std::unique_ptr<DXVertexBuffer> m_vertexBuffer;
-    std::unique_ptr<DXIndexBuffer> m_indexBuffer;
+    DXVertexBuffer* m_vertexBuffer;
+    DXIndexBuffer* m_indexBuffer;
     
     ObjectConstantBuffer   cbData{};
+    std::unique_ptr <DXConstantBuffer> m_constantBuffer;
 
-    std::unique_ptr <DXConstantBuffer> m_objectConstantBuffer;
+    std::vector<DXBuffer*> buffers;
 
     DXVertexShader* m_vertexShader           = nullptr;
     DXPixelShader* m_pixelShader             = nullptr;
@@ -60,15 +61,15 @@ template<class VertexType, class IndexType>
 inline void RenderableGeometry::SetBuffer(const MeshData<VertexType, IndexType>& meshData)
 {
     //Reset old buffers
-    m_vertexBuffer->Reset();
-    m_indexBuffer->Reset();
+    if(m_vertexBuffer)m_vertexBuffer->Reset();
+    if(m_indexBuffer)m_indexBuffer->Reset();
 
     //Creating Vertex Buffer
     VertexBufferDesc vbd{};
     vbd.cbSize   = (UINT)meshData.vVertex.size() * sizeof(VertexPNT);
     vbd.cbStride = sizeof(VertexPNT);
     vbd.pData    = meshData.vVertex.data();
-    m_vertexBuffer->Create(vbd);
+    m_vertexBuffer = BufferCache::CreateVertexBuffer(vbd);
     m_vertexBuffer->BindPipeline(0);
 
     //Storing indices count
@@ -78,6 +79,6 @@ inline void RenderableGeometry::SetBuffer(const MeshData<VertexType, IndexType>&
     IndexBufferDesc ibd{};
     ibd.cbSize   = m_indices * sizeof(DWORD);
     ibd.pData    = meshData.vIndices.data();
-    m_indexBuffer->Create(ibd);
+    m_indexBuffer = BufferCache::CreateIndexBuffer(ibd);
     m_indexBuffer->BindPipeline(0);
 }
