@@ -26,6 +26,8 @@ public:
 	void ProcessTextureFileDDS(std::filesystem::path _p);
 
 
+	void ProcessMetaFileForTextures(std::filesystem::path _p);
+
+
 	static FileSystem* Instance;
 };
-
