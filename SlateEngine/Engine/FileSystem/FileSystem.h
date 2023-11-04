@@ -2,13 +2,15 @@
 
 #include <iostream>
 #include <filesystem>
+#include <unordered_map>
 
 enum FILE_TYPE {
 	MISC,
 	SHADER,
 	TEXTURE_WIC,
 	TEXTURE_DDS,
-	LUA
+	LUA,
+	SMETA
 };
 
 class FileSystem
@@ -56,7 +58,27 @@ private:
 	void ProcessScriptFile(std::filesystem::path _p);
 	void ProcessTextureFileWIC(std::filesystem::path _p);
 	void ProcessTextureFileDDS(std::filesystem::path _p);
-	void ProcessMetaFileForTextures(std::filesystem::path _p);
+	void ProcessMetaFile(std::filesystem::path _p);
 
+	inline std::string GetExtFromP(std::filesystem::path _p)
+	{
+		if (_p.extension() == ".lua") {
+			return "LUA";
+		}
+		else if (_p.extension() == ".png" ||
+			_p.extension() == ".jpg" ||
+			_p.extension() == ".jpeg" ||
+			_p.extension() == ".bmp" ||
+			_p.extension() == ".tiff")
+		{
+			return "TEXTURE";
+		}
+		else if (_p.extension() == ".dds") {
+			return "TEXTURE";
+		}
+		return "MISC";
+	}
 
+	//first is uuid, second is meta file path
+	std::unordered_map<std::string, std::string> metaMap;
 };

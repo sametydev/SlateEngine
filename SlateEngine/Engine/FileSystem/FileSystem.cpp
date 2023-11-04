@@ -71,24 +71,23 @@ void FileSystem::ProcessScriptFile(std::filesystem::path _p)
 
 void FileSystem::ProcessTextureFileWIC(std::filesystem::path _p)
 {
-    ProcessMetaFileForTextures(_p);
+    ProcessMetaFile(_p);
 }
 
 void FileSystem::ProcessTextureFileDDS(std::filesystem::path _p)
 {
-    ProcessMetaFileForTextures(_p);
+    ProcessMetaFile(_p);
 }
 
-void FileSystem::ProcessMetaFileForTextures(std::filesystem::path _p)
+void FileSystem::ProcessMetaFile(std::filesystem::path _p)
 {
-    std::string metaFile = _p.replace_extension().string() + ".smeta";
-
+    std::filesystem::path xp = _p;
+    std::string metaFile = xp.replace_extension().string() + ".smeta";
+    CSimpleIniA ini;
+    ini.SetUnicode();
     if (!std::filesystem::exists(metaFile))
     {
         std::ofstream newMetaFile(metaFile);
-        
-        CSimpleIniA ini;
-        ini.SetUnicode();
 
         UUID uuid;
         (void)UuidCreate(&uuid);
@@ -102,9 +101,8 @@ void FileSystem::ProcessMetaFileForTextures(std::filesystem::path _p)
             type = TYPE_OF_ASSET (Ex: TEXTURE)
             path = PATH_OF_FILE
         */
-
         ini.SetValue("Asset", "uuid", str);
-        ini.SetValue("Asset", "type", "TEXTURE");
+        ini.SetValue("Asset", "type", GetExtFromP(_p).c_str());
         ini.SetValue("Asset", "path", _p.string().c_str());
 
         std::string data;
@@ -115,6 +113,10 @@ void FileSystem::ProcessMetaFileForTextures(std::filesystem::path _p)
 
         RpcStringFreeA((RPC_CSTR*)&str);
     }
+
+    ini.LoadFile(metaFile.c_str());
+    
+    metaMap.emplace(ini.GetValue("Asset", "uuid"), metaFile);
 }
 
 void FileSystem::OnFileAdded(std::filesystem::path _p)
@@ -151,6 +153,7 @@ void FileSystem::OnFileRenamedNew(std::filesystem::path newName)
 
 void FileSystem::ImportFile(std::filesystem::path _p)
 {
+    
     switch (GetFileTypeFromExt(_p.extension()))
     {
         case FILE_TYPE::LUA:
