@@ -65,25 +65,6 @@ void FileSystem::InitFWatcher()
     );
 }
 
-FILE_TYPE FileSystem::GetFileTypeFromExt(std::filesystem::path ext)
-{
-    if (ext == ".lua") {
-        return FILE_TYPE::LUA;
-    }
-    else if (ext == ".png" ||
-        ext == ".jpg" ||
-        ext == ".jpeg" ||
-        ext == ".bmp" ||
-        ext == ".tiff")
-    {
-        return FILE_TYPE::TEXTURE_WIC;
-    }
-    else if (ext == ".dds") {
-        return FILE_TYPE::TEXTURE_DDS;
-    }
-    return FILE_TYPE::MISC;
-}
-
 void FileSystem::ProcessScriptFile(std::filesystem::path _p)
 {
 }
@@ -116,10 +97,10 @@ void FileSystem::ProcessMetaFileForTextures(std::filesystem::path _p)
         
         /*
         SMeta (SlateEngine Meta File) Example;
-        [Asset]
-        uuid = UUID_PARAM
-        type = TYPE_OF_ASSET (Ex: TEXTURE)
-        path = PATH_OF_FILE
+            [Asset]
+            uuid = UUID_PARAM
+            type = TYPE_OF_ASSET (Ex: TEXTURE)
+            path = PATH_OF_FILE
         */
 
         ini.SetValue("Asset", "uuid", str);

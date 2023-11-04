@@ -19,17 +19,24 @@ public:
 
 	void Init();
 
-	void InitFWatcher();
-
-	FILE_TYPE GetFileTypeFromExt(std::filesystem::path ext);
-
-	void ProcessScriptFile(std::filesystem::path _p);
-	void ProcessTextureFileWIC(std::filesystem::path _p);
-	void ProcessTextureFileDDS(std::filesystem::path _p);
-
-
-	void ProcessMetaFileForTextures(std::filesystem::path _p);
-
+	inline FILE_TYPE GetFileTypeFromExt(std::filesystem::path ext)
+	{
+		if (ext == ".lua") {
+			return FILE_TYPE::LUA;
+		}
+		else if (ext == ".png" ||
+			ext == ".jpg" ||
+			ext == ".jpeg" ||
+			ext == ".bmp" ||
+			ext == ".tiff")
+		{
+			return FILE_TYPE::TEXTURE_WIC;
+		}
+		else if (ext == ".dds") {
+			return FILE_TYPE::TEXTURE_DDS;
+		}
+		return FILE_TYPE::MISC;
+	}
 
 	//Callbacks;
 	void OnFileAdded(std::filesystem::path _p);
@@ -38,9 +45,18 @@ public:
 	void OnFileRenamedOld(std::filesystem::path oldName);
 	void OnFileRenamedNew(std::filesystem::path newName);
 
-	void ImportFile(std::filesystem::path _p);
 	static FileSystem* Instance;
 
 private:
 	std::filesystem::path lastRemovedFile;
+
+private:
+	void InitFWatcher();
+	void ImportFile(std::filesystem::path _p);
+	void ProcessScriptFile(std::filesystem::path _p);
+	void ProcessTextureFileWIC(std::filesystem::path _p);
+	void ProcessTextureFileDDS(std::filesystem::path _p);
+	void ProcessMetaFileForTextures(std::filesystem::path _p);
+
+
 };
