@@ -10,3 +10,5 @@ constexpr bool IS_COOKED     = false;
 constexpr int MAX_FPS        = 60;
 
 constexpr bool VSYNC_ENABLED = true;
+
+constexpr const char* META_FILE_EXT = ".smeta";

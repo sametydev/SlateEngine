@@ -6,7 +6,7 @@
 #include <inc/SimpleIni.h>
 #include <inc/FileWatcher.hpp>
 #pragma comment(lib, "rpcrt4.lib")
-
+#include <SlateEngine/Engine/Core/EngineConfig.h>
 
 FileSystem* FileSystem::Instance = nullptr;
 
@@ -82,9 +82,11 @@ void FileSystem::ProcessTextureFileDDS(std::filesystem::path _p)
 void FileSystem::ProcessMetaFile(std::filesystem::path _p)
 {
     std::filesystem::path xp = _p;
-    std::string metaFile = xp.replace_extension().string() + ".smeta";
+    std::string metaFile = xp.replace_extension().string() + META_FILE_EXT;
+
     CSimpleIniA ini;
     ini.SetUnicode();
+
     if (!std::filesystem::exists(metaFile))
     {
         std::ofstream newMetaFile(metaFile);
@@ -105,8 +107,15 @@ void FileSystem::ProcessMetaFile(std::filesystem::path _p)
         ini.SetValue("Asset", "type", GetExtFromP(_p).c_str());
         ini.SetValue("Asset", "path", _p.string().c_str());
 
+        switch (GetFileTypeFromExt(_p.extension()))
+        {
+            case FILE_TYPE::TEXTURE_DDS:
+                break;
+        }
+
         std::string data;
         ini.Save(data);
+
         newMetaFile << data;
 
         newMetaFile.close();
@@ -116,7 +125,13 @@ void FileSystem::ProcessMetaFile(std::filesystem::path _p)
 
     ini.LoadFile(metaFile.c_str());
     
-    metaMap.emplace(ini.GetValue("Asset", "uuid"), metaFile);
+    SMetaData smd;
+    smd.ftype = GetFileTypeFromExt(_p.extension());
+    smd.path = metaFile;
+    smd.uuid = ini.GetValue("Asset", "uuid");
+    metaMap.emplace(smd.uuid, smd);
+
+    ;
 }
 
 void FileSystem::OnFileAdded(std::filesystem::path _p)

@@ -13,6 +13,12 @@ enum FILE_TYPE {
 	SMETA
 };
 
+struct SMetaData {
+	std::string uuid;
+	std::string path;
+	FILE_TYPE ftype;
+};
+
 class FileSystem
 {
 public:
@@ -80,5 +86,5 @@ private:
 	}
 
 	//first is uuid, second is meta file path
-	std::unordered_map<std::string, std::string> metaMap;
+	std::unordered_map<std::string, SMetaData> metaMap;
 };
