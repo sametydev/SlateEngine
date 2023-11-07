@@ -10,6 +10,8 @@ enum FILE_TYPE {
 	TEXTURE_WIC,
 	TEXTURE_DDS,
 	LUA,
+	MESH,
+	AUDIO,
 	SMETA
 };
 
@@ -59,6 +61,7 @@ private:
 	std::filesystem::path lastRemovedFile;
 
 private:
+	friend class AssetServer;
 	void InitFWatcher();
 	void ImportFile(std::filesystem::path _p);
 	void ProcessScriptFile(std::filesystem::path _p);
