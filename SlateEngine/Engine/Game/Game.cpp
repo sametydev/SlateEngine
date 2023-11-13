@@ -37,10 +37,10 @@ bool Game::OnInit()
 
 
     m_crateTexture = new DXTexture();
-    m_crateTexture->Load(L"TestProject\\Textures\\Crate.dds", TextureLoaderType::DDS);
+    m_crateTexture->Load(L"TestProject\\Assets\\Textures\\Crate.dds", TextureLoaderType::DDS);
 
     m_grassTexture = std::make_unique<DXTexture>();
-    m_grassTexture->Load(L"TestProject\\Textures\\Grass.jpg", TextureLoaderType::WIC);
+    m_grassTexture->Load(L"TestProject\\Assets\\Textures\\Grass.jpg", TextureLoaderType::WIC);
 
     testEntity = new Entity();
 

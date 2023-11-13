@@ -55,7 +55,27 @@ public:
 	void OnFileRenamedOld(std::filesystem::path oldName);
 	void OnFileRenamedNew(std::filesystem::path newName);
 
+	std::string GetUUIDFromFPath(std::filesystem::path _p);
+	SMetaData GetSMetaDataFromFPath(std::filesystem::path _p);
+
 	static FileSystem* Instance;
+
+
+	inline static const char* FTypeToString(FILE_TYPE v)
+	{
+		switch (v)
+		{
+			case MISC:   return "MISC";
+			case SHADER:   return "SHADER";
+			case TEXTURE_WIC: return "WIC Texture";
+			case TEXTURE_DDS: return "DDS Texture";
+			case LUA: return "LUA";
+			case MESH: return "MESH";
+			case AUDIO: return "AUDIO";
+			case SMETA: return "SlateMeta File";
+			default:      return "[Unknown File Type]";
+		}
+	}
 
 private:
 	std::filesystem::path lastRemovedFile;
@@ -87,6 +107,7 @@ private:
 		}
 		return "MISC";
 	}
+
 
 	//first is uuid, second is meta file path
 	std::unordered_map<std::string, SMetaData> metaMap;

@@ -24,6 +24,7 @@ public:
 
     template<class VertexType, class IndexType>
     void SetBuffer(const MeshData<VertexType, IndexType>& meshData);
+
     void SetTexture(DXTexture* texture);
     void OnUpdate(float deltaTime) override;
     void SetCullMode(RasterizerState state,bool* ignoreState = 0);
@@ -33,6 +34,7 @@ public:
     ObjectConstantBuffer& GetObjectCb() { return cbData; };
     MaterialComponent& GetMaterial() { return *m_material; };
 
+    const bool bStaticBuffer = false;
 private:
     MaterialComponent* m_material;
 
@@ -53,8 +55,6 @@ private:
 
     int cullMode = 0;
     bool* ignoreState;
-
-    bool bDynamicBuffer = true;
 };
 
 template<class VertexType, class IndexType>
@@ -70,7 +70,7 @@ inline void RenderableGeometry::SetBuffer(const MeshData<VertexType, IndexType>&
     vbd.cbStride = sizeof(VertexPNT);
     vbd.pData    = meshData.vVertex.data();
 
-    if (bDynamicBuffer) {
+    if (!bStaticBuffer) {
         if (m_vertexBuffer == nullptr)m_vertexBuffer = new DXVertexBuffer();
         m_vertexBuffer->Create(vbd);
     }
@@ -87,7 +87,7 @@ inline void RenderableGeometry::SetBuffer(const MeshData<VertexType, IndexType>&
     IndexBufferDesc ibd{};
     ibd.cbSize   = m_indices * sizeof(DWORD);
     ibd.pData    = meshData.vIndices.data();
-    if (bDynamicBuffer) {
+    if (!bStaticBuffer) {
         if(m_indexBuffer == nullptr)m_indexBuffer = new DXIndexBuffer();
         m_indexBuffer->Create(ibd);
     }

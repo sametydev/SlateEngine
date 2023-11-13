@@ -65,6 +65,32 @@ void FileSystem::InitFWatcher()
     );
 }
 
+std::string FileSystem::GetUUIDFromFPath(std::filesystem::path _p)
+{
+    for (auto& i : metaMap)
+    {
+        if (i.second.path == _p)
+        {
+            return i.first;
+        }
+    }
+    return "";
+}
+
+SMetaData FileSystem::GetSMetaDataFromFPath(std::filesystem::path _p)
+{
+    std::string xp = _p.string() + ".smeta";
+    for (auto& i : metaMap)
+    {
+        if (i.second.path == xp)
+        {
+            return i.second;
+        }
+    }
+
+    return SMetaData();
+}
+
 void FileSystem::ProcessScriptFile(std::filesystem::path _p)
 {
 }
@@ -82,7 +108,7 @@ void FileSystem::ProcessTextureFileDDS(std::filesystem::path _p)
 void FileSystem::ProcessMetaFile(std::filesystem::path _p)
 {
     std::filesystem::path xp = _p;
-    std::string metaFile = xp.replace_extension().string() + META_FILE_EXT;
+    std::string metaFile = xp.string() + META_FILE_EXT;
 
     CSimpleIniA ini;
     ini.SetUnicode();
