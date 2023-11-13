@@ -54,7 +54,7 @@ private:
     int cullMode = 0;
     bool* ignoreState;
 
-    bool shadowState = false;
+    bool bDynamicBuffer = true;
 };
 
 template<class VertexType, class IndexType>
@@ -69,7 +69,15 @@ inline void RenderableGeometry::SetBuffer(const MeshData<VertexType, IndexType>&
     vbd.cbSize   = (UINT)meshData.vVertex.size() * sizeof(VertexPNT);
     vbd.cbStride = sizeof(VertexPNT);
     vbd.pData    = meshData.vVertex.data();
-    m_vertexBuffer = BufferCache::CreateVertexBuffer(vbd);
+
+    if (bDynamicBuffer) {
+        if (m_vertexBuffer == nullptr)m_vertexBuffer = new DXVertexBuffer();
+        m_vertexBuffer->Create(vbd);
+    }
+    else
+    {
+        m_vertexBuffer = BufferCache::CreateVertexBuffer(vbd);
+    }
     m_vertexBuffer->BindPipeline(0);
 
     //Storing indices count
@@ -79,6 +87,12 @@ inline void RenderableGeometry::SetBuffer(const MeshData<VertexType, IndexType>&
     IndexBufferDesc ibd{};
     ibd.cbSize   = m_indices * sizeof(DWORD);
     ibd.pData    = meshData.vIndices.data();
-    m_indexBuffer = BufferCache::CreateIndexBuffer(ibd);
+    if (bDynamicBuffer) {
+        if(m_indexBuffer == nullptr)m_indexBuffer = new DXIndexBuffer();
+        m_indexBuffer->Create(ibd);
+    }
+    else {
+        m_indexBuffer = BufferCache::CreateIndexBuffer(ibd);
+    }
     m_indexBuffer->BindPipeline(0);
 }

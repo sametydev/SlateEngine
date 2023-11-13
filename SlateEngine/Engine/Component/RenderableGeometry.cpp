@@ -9,6 +9,7 @@ void RenderableGeometry::OnInternalInit()
 
     m_constantBuffer = std::make_unique<DXConstantBuffer>();
 
+
     cbData.world = mat4x4();
     cbData.worldInverseTranspose = mat4x4();
     m_material = new MaterialComponent();

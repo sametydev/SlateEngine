@@ -140,6 +140,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Engine\Core\AssetServer.cpp" />
     <ClCompile Include="Engine\Component\Material.cpp" />
     <ClCompile Include="Engine\Editor\EditorSystem.cpp" />
     <ClCompile Include="Engine\Component\RenderableGeometry.cpp" />
@@ -186,6 +187,7 @@
     <ClCompile Include="Engine\Graphics\Texture\RenderTTexture.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Engine\Core\AssetServer.h" />
     <ClInclude Include="Engine\Editor\EditorSystem.h" />
     <ClInclude Include="Engine\Component\Component.h" />
     <ClInclude Include="Engine\Component\Components.h" />
