@@ -12,7 +12,7 @@ public:
 	DXTexture();
 	~DXTexture();
 
-	void Load(const wchar_t* filename, TextureLoaderType type);
+	void Load(const char* filename, TextureLoaderType type);
 	void Bind(UINT slot = 0);
 	void UnBind();
 

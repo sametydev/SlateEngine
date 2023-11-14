@@ -19,7 +19,7 @@ int WINAPI WinMain(
     new EditorUI();
 
     game.SetEditorSystem(EditorUI::Instance);
-
+    game.SetWorkingDirectory("TestProject\\");
     if (!game.OnInit())
         return 0;
 

@@ -194,7 +194,7 @@ void EditorUI::OnUpdate(float deltaTime)
 	}
 
 	if (ImGui::Begin("Editor")) {
-		//DrawViewportMenu();
+		DrawViewportMenu();
 		//ImGui::SetItemAllowOverlap();
 
 		ImGui::Image(&rtt->GetShaderResourceView(), ImGui::GetContentRegionAvail());

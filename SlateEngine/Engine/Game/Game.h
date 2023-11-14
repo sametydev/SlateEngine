@@ -29,7 +29,6 @@ public:
     void OnResize();
     void OnUpdateScene(float deltaTime);
 
-
     void SetMesh(const MeshData<VertexPNT>& meshData);
 
     //Todo, Scene*
@@ -66,6 +65,7 @@ public:
     Entity* testEntity2;
 
     Camera* m_camera{};
+
 
 private:
     DXConstantBuffer* m_frameConstantBuffer = nullptr;

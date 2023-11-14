@@ -61,6 +61,11 @@ public:
         editorSystem = editor;
     }
 
+    inline const char* GetWorkingDir() { return this->workingDirectory; };
+
+    inline void SetWorkingDirectory(const char* dir) {
+        workingDirectory = dir;
+    }
 protected:
     bool InitializeWindow();      
     bool InitializeGraphics();   
@@ -97,4 +102,6 @@ protected:
 
 
     EditorSystem* editorSystem = nullptr;
+
+    const char* workingDirectory = "";
 };

@@ -6,6 +6,7 @@
 #include <string_view>
 #include <algorithm>
 #include <memory>
+#include <Windows.h>
 
 #pragma warning( disable : 4018 )
 #pragma warning( disable : 4267 )
@@ -26,6 +27,19 @@ enum class RenderTextureCreateFlags
     Linear = 4,
     RenderTarget = 8
 };
+
+class PathMaker {
+public:
+    inline static std::string Make(std::string p1, std::string p2) {
+        return p1 + p2;
+    }
+    inline static std::wstring MakeW(std::string p1, std::string p2) {
+        std::string str = (p1 + p2);
+        return std::wstring(str.begin(),str.end());
+    }
+};
+
+
 
 template <size_t S> struct ENUM_TO_INT;
 template <> struct ENUM_TO_INT<1> { typedef char  type; };

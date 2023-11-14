@@ -56,7 +56,7 @@ public:
 	void OnFileRenamedNew(std::filesystem::path newName);
 
 	std::string GetUUIDFromFPath(std::filesystem::path _p);
-	SMetaData GetSMetaDataFromFPath(std::filesystem::path _p);
+	SMetaData& GetSMetaDataFromFPath(std::filesystem::path _p);
 
 	static FileSystem* Instance;
 
@@ -111,4 +111,6 @@ private:
 
 	//first is uuid, second is meta file path
 	std::unordered_map<std::string, SMetaData> metaMap;
+
+	SMetaData* errorMetaData;
 };

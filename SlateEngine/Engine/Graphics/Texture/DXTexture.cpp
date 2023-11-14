@@ -13,16 +13,16 @@ DXTexture::~DXTexture()
 {
 }
 
-void DXTexture::Load(const wchar_t* filename, TextureLoaderType type)
+void DXTexture::Load(const char* filename, TextureLoaderType type)
 {
     _NULL_CHECK
     if (type == 0)
     {
-        CreateDDSTextureFromFile(DXApplication::Instance->GetDXDevice().Get(), filename, nullptr, mSRV.GetAddressOf());
+        CreateDDSTextureFromFile(DXApplication::Instance->GetDXDevice().Get(), PathMaker::MakeW(gDXApp->GetWorkingDir(),filename).c_str(), nullptr, mSRV.GetAddressOf());
     }
     else
     {
-        CreateWICTextureFromFile(DXApplication::Instance->GetDXDevice().Get(), filename, nullptr, mSRV.GetAddressOf());
+        CreateWICTextureFromFile(DXApplication::Instance->GetDXDevice().Get(), PathMaker::MakeW(gDXApp->GetWorkingDir(), filename).c_str(), nullptr, mSRV.GetAddressOf());
     }
 
     ID3D11Resource* res = nullptr;

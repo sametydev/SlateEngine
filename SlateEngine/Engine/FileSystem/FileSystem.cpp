@@ -24,6 +24,10 @@ FileSystem::~FileSystem()
 
 void FileSystem::Init()
 {
+    errorMetaData = new SMetaData();
+    errorMetaData->uuid = "ERROR";
+    errorMetaData->path = "ERROR";
+
     InitFWatcher();
 
     for (std::filesystem::recursive_directory_iterator i("TestProject"), end; i != end; ++i) {
@@ -77,7 +81,7 @@ std::string FileSystem::GetUUIDFromFPath(std::filesystem::path _p)
     return "";
 }
 
-SMetaData FileSystem::GetSMetaDataFromFPath(std::filesystem::path _p)
+SMetaData& FileSystem::GetSMetaDataFromFPath(std::filesystem::path _p)
 {
     std::string xp = _p.string() + ".smeta";
     for (auto& i : metaMap)
@@ -88,7 +92,7 @@ SMetaData FileSystem::GetSMetaDataFromFPath(std::filesystem::path _p)
         }
     }
 
-    return SMetaData();
+    return *errorMetaData;
 }
 
 void FileSystem::ProcessScriptFile(std::filesystem::path _p)
