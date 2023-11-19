@@ -6,6 +6,7 @@
 #include <string_view>
 #include <algorithm>
 #include <memory>
+#include <variant>
 #include <Windows.h>
 
 #pragma warning( disable : 4018 )
@@ -39,7 +40,11 @@ public:
     }
 };
 
-
+//inline size_t StrToSZT(std::string_view str)
+//{
+//    static std::hash<std::string_view> hash;
+//    return hash(str);
+//}
 
 template <size_t S> struct ENUM_TO_INT;
 template <> struct ENUM_TO_INT<1> { typedef char  type; };

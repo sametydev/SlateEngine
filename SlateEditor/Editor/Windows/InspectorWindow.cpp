@@ -190,10 +190,20 @@ void InspectorWindow::DrawRenderableGeometryComponent(Entity* entity)
 	if (ImGui::TreeNode("Material"))
 	{
 		ImGui::PushID(3);
-		ObjectConstantBuffer& objCb = r.GetObjectCb();
-		ImGui::ColorEdit3("Ambient", &objCb.material.ambient.x);
-		ImGui::ColorEdit3("Diffuse", &objCb.material.diffuse.x);
-		ImGui::ColorEdit3("Specular", &objCb.material.specular.x);
+		MaterialComponent& objMat = r.GetMaterial();
+
+		for (auto& p : objMat.GetPropMap()) {
+			switch (objMat.GetType(p.first))
+			{
+				case SVEC4:
+					ImGui::ColorEdit3(p.first.data(), &std::get<vec4f>(p.second).x);
+					break;
+				case SVEC3:
+					ImGui::ColorEdit3(p.first.data(), &std::get<vec3f>(p.second).x);
+					break;
+			}
+		}
+
 		ImGui::PopID();
 		ImGui::TreePop();
 	}

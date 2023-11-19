@@ -16,7 +16,7 @@ public:
 	void SetPosition(const vec3f& pos);
 	vec3f& GetPos() { return mPos; }
 
-	mat4x4 GetViewMatrix();
+	mat4x4& GetViewMatrix();
 	mat4x4& GetProjectionMatrix();
 
 	float mFov = 45.f;
@@ -31,6 +31,7 @@ public:
 	mat4x4 mProj;
 
 	mat4x4 mLocal;
+	mat4x4 mLocalInv;
 
 	vec3f mRight;
 	vec3f mUp;

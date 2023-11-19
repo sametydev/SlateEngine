@@ -133,7 +133,9 @@ void EditorUI::OnUpdate(float deltaTime)
 
 		if (ImGui::BeginMenu("Scene"))
 		{
-			ImGui::MenuItem("Test", NULL);
+			if (ImGui::MenuItem("Add Empty Entity", NULL)) {
+				EntityManager::Instance->RegisterEntity(new Entity());
+			}
 			ImGui::EndMenu();
 		}
 
@@ -288,6 +290,7 @@ void EditorUI::ResizeViewport(int w, int h)
 
 void EditorUI::DrawViewportMenu()
 {
+	ImGui::Begin("Tool");
 	if (ImGui::Button("PLAY")) { game->gameState = (GameState)1; }
 	ImGui::SameLine();
 	if (ImGui::Button("PAUSE")) { game->gameState = (GameState)2; }
@@ -310,6 +313,7 @@ void EditorUI::DrawViewportMenu()
 	ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0, 0.0f, 1.0f, 1.0f });
 	if (ImGui::Button(" S ")) { gizmoType = ImGuizmo::OPERATION::SCALE; }
 	ImGui::PopStyleColor(1);
+	ImGui::End();
 }
 
 void EditorUI::InitTheme()

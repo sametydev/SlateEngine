@@ -1,5 +1,4 @@
 #pragma once
-#pragma once
 #include <SlateEngine/Engine/Graphics/Vertex.h>
 #include <SlateEngine/Engine/Graphics/Buffer/DXBuffer.h>
 #include <SlateEngine/Engine/Graphics/Shader/DXVertexShader.h>
@@ -26,8 +25,9 @@ public:
     void SetBuffer(const MeshData<VertexType, IndexType>& meshData);
 
     void SetTexture(DXTexture* texture);
+    void SetCullMode(RasterizerState state, bool* ignoreState = 0);
+
     void OnUpdate(float deltaTime) override;
-    void SetCullMode(RasterizerState state,bool* ignoreState = 0);
     void OnRender() override;
 
     Transform& GetTransform() { return connectedEntity->GetComponent<Transform>(); };

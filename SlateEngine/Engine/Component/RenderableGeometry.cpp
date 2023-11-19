@@ -12,10 +12,17 @@ void RenderableGeometry::OnInternalInit()
 
     cbData.world = mat4x4();
     cbData.worldInverseTranspose = mat4x4();
-    m_material = new MaterialComponent();
-    cbData.material.ambient = vec4f(1.0f, 1.0f, 1.0f, 1.0f);
-    cbData.material.diffuse = vec4f(1.0f, 1.0f, 1.0f, 1.0f);
-    cbData.material.specular = vec4f(0.1f, 0.1f, 0.1f, 5.0f);
+    
+    if (!connectedEntity->HasComponent<MaterialComponent>())
+    {
+        connectedEntity->AddComponent<MaterialComponent>();
+    }
+    
+    m_material = &connectedEntity->GetComponent<MaterialComponent>();
+
+    m_material->Set("$Ambient", vec4f(1.0f, 1.0f, 1.0f, 1.0f));
+    m_material->Set("$Diffuse", vec4f(1.0f, 1.0f, 1.0f, 1.0f));
+    m_material->Set("$Specular", vec4f(0.1f, 0.1f, 0.1f, 5.0f));
 
     //Create Vertex Shader 3D
     ShaderInformation vertexShaderInfo{};
@@ -25,6 +32,8 @@ void RenderableGeometry::OnInternalInit()
 
     m_vertexShader = ShaderCache::CreateVertexShader(vertexShaderInfo);
     m_vertexShader->CreateInputLayout(VertexPNT::inputLayout, ARRAYSIZE(VertexPNT::inputLayout));
+
+
 
     ShaderInformation pixelShaderInfo{};
     pixelShaderInfo.csoName = "Shaders\\TexturedLit\\Lit3DPS.cso";
@@ -39,7 +48,6 @@ void RenderableGeometry::OnInternalInit()
     m_constantBuffer->Create(cbd);
     m_constantBuffer->BindVS(0);
     m_constantBuffer->BindPS(0);
-
 
     m_vertexShader->Bind();
     m_pixelShader->Bind();
@@ -59,7 +67,6 @@ void RenderableGeometry::SetTexture(DXTexture* texture)
         texture->Bind(0);
         attachedTexture = texture;
     }
-
 }
 
 
@@ -67,6 +74,10 @@ void RenderableGeometry::OnUpdate(float deltaTime)
 {
     cbData.world = connectedEntity->GetComponent<Transform>().GetGlobal();
     cbData.worldInverseTranspose = connectedEntity->GetComponent<Transform>().GetGlobal().InverseTranspose();
+
+    cbData.material.ambient  = m_material->Get<vec4f>("$Ambient");
+    cbData.material.diffuse  = m_material->Get<vec4f>("$Diffuse");
+    cbData.material.specular = m_material->Get<vec4f>("$Specular");
 
     m_constantBuffer->MapAndUnMap(sizeof(ObjectConstantBuffer), &cbData);
 }

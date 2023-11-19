@@ -51,9 +51,10 @@ void Camera::SetPosition(const vec3f& pos)
 
 
 
-mat4x4 Camera::GetViewMatrix()
+mat4x4& Camera::GetViewMatrix()
 {
-	return mLocal.inverted();
+	mLocalInv = mLocal.inverted();
+	return mLocalInv;
 }
 
 mat4x4& Camera::GetProjectionMatrix()

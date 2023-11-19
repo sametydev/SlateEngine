@@ -36,7 +36,6 @@ void SceneHierarchy::OnDraw()
 			if (ImGui::TreeNodeEx(name.name, flags))
 			{
 				ImGui::TreePop();
-
 			}
 
 			if (ImGui::IsItemClicked())
