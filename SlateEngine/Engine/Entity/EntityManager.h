@@ -12,7 +12,7 @@ public:
 
 	Entity* GetEntityFromRaw(entt::entity e);
 
-	void OnUpdate(float dt, int GameState);
+	void OnUpdate(float dt, int gameState);
 	void OnRender();
 
 	entt::registry& GetRegistar() { return entityRegistar; };

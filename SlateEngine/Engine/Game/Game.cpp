@@ -35,62 +35,54 @@ bool Game::OnInit()
 
     entityManager = new EntityManager();
 
+    //Temporary Game Scope
+    {
+        m_crateTexture = new DXTexture();
+        m_crateTexture->Load("Assets\\Textures\\Crate.dds", TextureLoaderType::DDS);
 
-    m_crateTexture = new DXTexture();
-    m_crateTexture->Load("Assets\\Textures\\Crate.dds", TextureLoaderType::DDS);
+        m_grassTexture = std::make_unique<DXTexture>();
+        m_grassTexture->Load("Assets\\Textures\\Grass.jpg", TextureLoaderType::WIC);
 
-    m_grassTexture = std::make_unique<DXTexture>();
-    m_grassTexture->Load("Assets\\Textures\\Grass.jpg", TextureLoaderType::WIC);
+        testEntity = new Entity();
 
-    testEntity = new Entity();
+        entityManager->RegisterEntity(testEntity, "Test Entity 1");
+        testEntity->AddComponent<RenderableGeometry>();
+        testEntity->AddComponent<LuaScript>();
+        testEntity->GetComponent<LuaScript>().LoadScript("Assets\\Scripts\\Test.lua");
 
-    entityManager->RegisterEntity(testEntity, "Test Entity 1");
-    testEntity->AddComponent<RenderableGeometry>();
-    testEntity->AddComponent<LuaScript>();
+        testEntity->GetComponent<Transform>().SetPosition({ 0.f,2.f,0.f });
 
-    testEntity->GetComponent<Transform>().SetPosition({ 0.f,2.f,0.f });
-
-    RenderableGeometry& r = testEntity->GetComponent<RenderableGeometry>();
-    r.SetCullMode(CULL_BACK, &renderWireframe);
-    r.SetTexture(m_crateTexture);
+        RenderableGeometry& r = testEntity->GetComponent<RenderableGeometry>();
+        r.SetCullMode(CULL_BACK, &renderWireframe);
+        r.SetTexture(m_crateTexture);
 
 
-    testEntity2 = new Entity();
+        testEntity2 = new Entity();
 
-    entityManager->RegisterEntity(testEntity2, "Test Entity 2");
-    testEntity2->AddComponent<RenderableGeometry>();
+        entityManager->RegisterEntity(testEntity2, "Test Entity 2");
+        testEntity2->AddComponent<RenderableGeometry>();
 
-    RenderableGeometry& r2 = testEntity2->GetComponent<RenderableGeometry>();
-    r2.SetCullMode(CULL_BACK, &renderWireframe);
-    r2.SetTexture(m_grassTexture.get());
-    r2.GetTransform().SetScale({ 10.f, 0.2f, 10.f });
+        RenderableGeometry& r2 = testEntity2->GetComponent<RenderableGeometry>();
+        r2.SetCullMode(CULL_BACK, &renderWireframe);
+        r2.SetTexture(m_grassTexture.get());
+        r2.GetTransform().SetScale({ 10.f, 0.2f, 10.f });
+    }
 
     //Creating Constant Buffers;
     m_frameConstantBuffer = new DXConstantBuffer();
     m_lightConstantBuffer = new DXConstantBuffer();
 
     ConstantBufferDesc cbd{};
-
     cbd.cbSize = sizeof(FrameConstantBuffer);
     m_frameConstantBuffer->Create(cbd);
 
     cbd.cbSize = sizeof(LightConstantBuffer);
     m_lightConstantBuffer->Create(cbd);
 
-    m_lightConstantBuffer->Map(sizeof(LightConstantBuffer), &LightConstantObject);
-    m_lightConstantBuffer->UnMap();
-
-
-
-    m_d3dContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-
-
     m_frameConstantBuffer->BindVS(1);
 
     m_frameConstantBuffer->BindPS(1);
     m_lightConstantBuffer->BindPS(2);
-
-    //m_d3dContext->PSSetSamplers(0, 1, DXRasterizerState::Instance->SSWrap.GetAddressOf());
 
     return true;
 }
@@ -98,6 +90,7 @@ bool Game::OnInit()
 void Game::OnResize()
 {
     DXApplication::OnResize();
+
     if(editorSystem)editorSystem->ResizeViewport(m_clientW, m_clientH);
 
     if (m_camera != nullptr)
@@ -120,19 +113,12 @@ void Game::OnUpdateScene(float deltaTime)
 
     UpdateGlobalConstantBuffers();
 
-    if (gameState == (GameState::PLAYING)) {
-
-        py += 10.f * deltaTime, tx += 10.f * deltaTime;
-        testEntity->GetComponent<RenderableGeometry>().GetTransform().SetRotation({ py,tx,0 });
-
-    }
-
     if (renderWireframe)DXRasterizerState::SetRasterizerState(RasterizerState::CULL_WIREFRAME,GetDXContext().Get());
 
     entityManager->OnUpdate(deltaTime,gameState);
 }
 
-float Game::clear[4] = {0.3f, 0.3f, 0.3f, 1.0f};
+float Game::clear[4] = {0.2f, 0.2f, 0.2f, 1.0f};
 
 void Game::OnRenderScene()
 {
@@ -158,13 +144,7 @@ void Game::UpdateGlobalConstantBuffers()
 
 void Game::BeginClear()
 {
-    if (IS_COOKED) {
-        ClearRenderTarget(clear);
-    }
-    else
-    {
-        editorSystem->ClearViewport(clear);
-    }
+    IS_COOKED ? ClearRenderTarget(clear) : editorSystem->ClearViewport(clear);
 }
 
 void Game::PostClear()

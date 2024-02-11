@@ -6,8 +6,10 @@ public:
 
 	virtual ~Component() {};
 	virtual void OnInternalInit() = 0;
+	virtual void OnInit() = 0;
 	virtual void OnUpdate(float deltaTime) = 0;
 	virtual void OnRender() = 0;
+	virtual void OnShutdown() = 0;
 
 	Entity* connectedEntity = nullptr;
 

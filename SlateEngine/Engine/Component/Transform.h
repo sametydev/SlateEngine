@@ -12,6 +12,7 @@ public:
 
 	void SetPosition(const vec3f& position);
 	void SetRotation(const vec3f& rotation);
+
 	void SetScale(const vec3f& scale);
 
 	mat4x4& GetGlobal();
@@ -24,11 +25,12 @@ public:
 
 	void OnUpdate(float deltaTime) override;
 	void OnRender() override;
+	void OnInit() override;
+	void OnShutdown() override;
 
 	vec3f mPosition;
 	vec3f mRotation;
 	vec3f mScale;
-
 private:
 	bool hasParent = false;
 	bool mIsAutoUpdate = false;
@@ -39,6 +41,6 @@ private:
 	union {
 		struct { vec3f mAxis[3]; };
 		struct { vec3f mRight, mUp, mForward; };
-
 	};
+
 };

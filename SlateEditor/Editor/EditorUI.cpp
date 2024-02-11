@@ -13,6 +13,9 @@ EditorUI::EditorUI()
 	if (!Instance)
 	{
 		Instance = this;
+
+		logWindow = new LogWindow();
+		windows.emplace(logWindow);
 	}
 }
 
@@ -48,14 +51,13 @@ void EditorUI::OnInit()
 
 	game = Game::Instance;
 
-    logWindow = new LogWindow();
+
     inspectorWindow = new InspectorWindow();
 	sceneWindow = new SceneHierarchy();
     light = new LightingSettingsWindow();
 	assetBrowser = new AssetsBrowser();
 
 
-    windows.emplace(logWindow);
     windows.emplace(sceneWindow);
     windows.emplace(light);
 	windows.emplace(assetBrowser);
@@ -219,8 +221,8 @@ void EditorUI::OnUpdate(float deltaTime)
 
 			ImGuizmo::SetRect(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y, w, h);
 
-			const mat4x4& cproj = mat4x4::transposed(game->m_camera->GetProjectionMatrix());
-			const mat4x4& cview = mat4x4::transposed(game->m_camera->GetViewMatrix());
+			mat4x4 cproj = mat4x4::transposed(game->m_camera->GetProjectionMatrix());
+			mat4x4 cview = mat4x4::transposed(game->m_camera->GetViewMatrix());
 			Transform& tc = sceneWindow->selectedEntity->GetComponent<Transform>();
 
 
@@ -228,9 +230,11 @@ void EditorUI::OnUpdate(float deltaTime)
 			float rotation[3]		= { tc.mRotation.x, tc.mRotation.y, tc.mRotation.z };
 			float scale[3]			= { tc.mScale.x, tc.mScale.y, tc.mScale.z };
 
-			mat4x4 t;
-			ImGuizmo::RecomposeMatrixFromComponents(translation, rotation, scale, t.f);
-			ImGuizmo::Manipulate(cview.f, cproj.f, (ImGuizmo::OPERATION)gizmoType, ImGuizmo::WORLD,t.f);
+
+			float t2[16];
+
+			ImGuizmo::RecomposeMatrixFromComponents(translation, rotation, scale, t2);
+			ImGuizmo::Manipulate(cview, cproj, (ImGuizmo::OPERATION)gizmoType, ImGuizmo::WORLD,t2);
 
 			/*
 			S R  T
@@ -242,7 +246,7 @@ void EditorUI::OnUpdate(float deltaTime)
 			if (ImGuizmo::IsUsing()) {
 				float translation[3] = { 0.0f, 0.0f, 0.0f }, rotation[3] = { 0.0f, 0.0f, 0.0f }, scale[3] = { 0.0f, 0.0f, 0.0f };
 
-				ImGuizmo::DecomposeMatrixToComponents(t.f, translation, rotation, scale);
+				ImGuizmo::DecomposeMatrixToComponents(t2, translation, rotation, scale);
 				
 				tc.mPosition = vec3f(translation[0], translation[1], translation[2]);
 				tc.mRotation = vec3f(rotation[0],rotation[1],rotation[2]);

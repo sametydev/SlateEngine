@@ -30,6 +30,9 @@ public:
     void OnUpdate(float deltaTime) override;
     void OnRender() override;
 
+    void OnInit() override;
+    void OnShutdown() override;
+
     Transform& GetTransform() { return connectedEntity->GetComponent<Transform>(); };
     ObjectConstantBuffer& GetObjectCb() { return cbData; };
     MaterialComponent& GetMaterial() { return *m_material; };

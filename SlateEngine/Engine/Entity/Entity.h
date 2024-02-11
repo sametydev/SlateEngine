@@ -54,7 +54,7 @@ inline T& Entity::GetComponent()
 
 struct EntityName {
 public:
-	EntityName(const char* n,Entity* e) : name(n), entityClass(e) {};
+	EntityName(const char* n, Entity* e) : name(n), entityClass(e) {};
 	const char* name;
 	Entity* entityClass = nullptr;
 };

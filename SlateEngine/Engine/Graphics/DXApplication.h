@@ -8,6 +8,8 @@
 #include <imgui_impl_dx11.h>
 #include <imgui_impl_win32.h>
 
+#include <SlateEngine/Engine/Core/ILogger.h>
+
 #include <SlateEngine/Engine/Editor/EditorSystem.h>
 
 #define gDXContext DXApplication::Instance->GetDXContext()
@@ -61,6 +63,12 @@ public:
         editorSystem = editor;
     }
 
+    void SetLogger(ILogger* logger) {
+        logSystem = logger;
+    }
+
+    ILogger* GetLogger() { return logSystem; }
+
     inline const char* GetWorkingDir() { return this->workingDirectory; };
 
     inline void SetWorkingDirectory(const char* dir) {
@@ -102,6 +110,6 @@ protected:
 
 
     EditorSystem* editorSystem = nullptr;
-
+    ILogger* logSystem = nullptr;
     const char* workingDirectory = "";
 };

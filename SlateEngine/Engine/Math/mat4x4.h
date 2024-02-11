@@ -25,6 +25,7 @@ struct mat4x4 {
 	float* operator[](unsigned int i);
 	const float* operator[](unsigned int i) const;
 
+
 	mat4x4 inverted();
 
 	static mat4x4 transposed(const mat4x4& m);
@@ -49,6 +50,10 @@ struct mat4x4 {
 	union {
 		float f[16];
 		float m[4][4];
+	};
+
+	operator float* () {
+		return f;
 	};
 
 };

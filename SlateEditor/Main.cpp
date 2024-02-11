@@ -20,6 +20,8 @@ int WINAPI WinMain(
 
     game.SetEditorSystem(EditorUI::Instance);
     game.SetWorkingDirectory("TestProject\\");
+    game.SetLogger(LogWindow::Instance);
+
     if (!game.OnInit())
         return 0;
 

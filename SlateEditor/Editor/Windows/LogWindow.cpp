@@ -60,13 +60,12 @@ void LogWindow::OnDraw()
     ImGui::End();
 }
 
-void LogWindow::AddLog(const char* fmt, ...)
+void LogWindow::AddLog(const char* fmt)
 {
     int old_size = m_buffer.size();
-    va_list args;
-    va_start(args, fmt);
-    m_buffer.appendfv(fmt, args);
-    va_end(args);
+    m_buffer.append(fmt);
+    m_buffer.append("\n");
+
     for (int new_size = m_buffer.size(); old_size < new_size; old_size++)
         if (m_buffer[old_size] == '\n')
             m_lineOffset.push_back(old_size);

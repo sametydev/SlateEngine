@@ -61,6 +61,14 @@ void Transform::OnRender()
 {
 }
 
+void Transform::OnInit()
+{
+}
+
+void Transform::OnShutdown()
+{
+}
+
 void Transform::OnUpdate(float deltaTime)
 {
 

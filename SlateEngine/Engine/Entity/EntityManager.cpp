@@ -1,6 +1,6 @@
 #include <SlateEngine/Engine/Entity/EntityManager.h>
 #include <SlateEngine/Engine/Component/RenderableGeometry.h>
-
+#include <SlateEngine/Engine/Component/LuaScript.h>
 EntityManager* EntityManager::Instance = nullptr;
 
 EntityManager::EntityManager()
@@ -36,14 +36,24 @@ Entity* EntityManager::GetEntityFromRaw(entt::entity e)
 	return en.entityClass;
 }
 
-void EntityManager::OnUpdate(float dt,int GameState)
+void EntityManager::OnUpdate(float dt,int gameState)
 {
 
 	auto transforms = entityRegistar.view<Transform>();
-	for (auto entity : transforms)
+	for (auto entity : entityRegistar.view<Transform>())
 	{
 		transforms.get<Transform>(entity).OnUpdate(dt);
 	}
+
+	if (gameState == GameState::PLAYING)
+	{
+		auto scripts = entityRegistar.view<LuaScript>();
+		for (auto entity : entityRegistar.view<LuaScript>())
+		{
+			scripts.get<LuaScript>(entity).OnUpdate(dt);
+		}
+	}
+
 
 	auto RenderableGeometrys = entityRegistar.view<RenderableGeometry>();
 	for (auto entity : RenderableGeometrys)

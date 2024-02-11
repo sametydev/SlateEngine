@@ -42,13 +42,11 @@ public:
     inline int GetClientW() { return m_clientW; }
     inline int GetClientH() { return m_clientH; }
 
+
     GameState gameState = GameState::NONE;
+    void SetGameState(GameState gs);
 
     static Game* Instance;
-
-    //Temporary variables
-    float py;
-    float tx;
 
     bool renderWireframe = 0;
     //--

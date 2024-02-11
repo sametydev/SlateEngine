@@ -109,3 +109,11 @@ void RenderableGeometry::OnRender()
 
     attachedTexture->UnBind();
 }
+
+void RenderableGeometry::OnInit()
+{
+}
+
+void RenderableGeometry::OnShutdown()
+{
+}

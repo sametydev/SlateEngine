@@ -299,6 +299,9 @@
     <ClInclude Include="Engine\Core\AssetServer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\Core\ILogger.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="TestProject\Textures\Crate.dds" />

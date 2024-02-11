@@ -1,8 +1,8 @@
 #pragma once
 #include <SlateEditor/Editor/Windows/IWindow.h>
-
+#include <SlateEngine/Engine/Core/ILogger.h>
 class LogWindow :
-    public IWindow
+    public IWindow,public ILogger
 {
 public:
 	LogWindow();
@@ -10,7 +10,7 @@ public:
 
 	void OnInit() override;
 	void OnDraw() override;
-	void AddLog(const char* fmt,...);
+	void AddLog(const char* fmt) override;
 	void ClearLogs();
 
 	static LogWindow* Instance;

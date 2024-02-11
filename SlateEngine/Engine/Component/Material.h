@@ -145,7 +145,8 @@ public:
 
     void OnRender() override;
     void OnUpdate(float deltaTime) override;
-
+    void OnInit() override;
+    void OnShutdown() override;
 
 private:
     MaterialProperty TryGetMProp(std::string_view name)
