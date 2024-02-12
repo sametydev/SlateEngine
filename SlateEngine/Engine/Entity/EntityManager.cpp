@@ -40,25 +40,22 @@ void EntityManager::OnUpdate(float dt,int gameState)
 {
 
 	auto transforms = entityRegistar.view<Transform>();
-	for (auto entity : entityRegistar.view<Transform>())
+	auto renderableGeometrys = entityRegistar.view<RenderableGeometry>();
+
+	for (auto entity : transforms, renderableGeometrys)
 	{
 		transforms.get<Transform>(entity).OnUpdate(dt);
+		renderableGeometrys.get<RenderableGeometry>(entity).OnUpdate(dt);
+
 	}
 
 	if (gameState == GameState::PLAYING)
 	{
 		auto scripts = entityRegistar.view<LuaScript>();
-		for (auto entity : entityRegistar.view<LuaScript>())
+		for (auto entity : scripts)
 		{
 			scripts.get<LuaScript>(entity).OnUpdate(dt);
 		}
-	}
-
-
-	auto RenderableGeometrys = entityRegistar.view<RenderableGeometry>();
-	for (auto entity : RenderableGeometrys)
-	{
-		RenderableGeometrys.get<RenderableGeometry>(entity).OnUpdate(dt);
 	}
 
 }
@@ -70,5 +67,36 @@ void EntityManager::OnRender()
 	for (auto entity : RenderableGeometrys)
 	{
 		RenderableGeometrys.get<RenderableGeometry>(entity).OnRender();
+	}
+}
+
+void EntityManager::SendSignalToComponents(ECSignalCommand cmd)
+{
+	auto transforms = entityRegistar.view<Transform>();
+
+	auto renderableGeometrys = entityRegistar.view<RenderableGeometry>();
+
+	auto scripts = entityRegistar.view<LuaScript>();
+
+	switch (cmd)
+	{
+	case ON_INIT:
+
+			for (auto entity : transforms,renderableGeometrys,scripts)
+			{
+				transforms.get<Transform>(entity).OnInit();
+				scripts.get<LuaScript>(entity).OnInit();
+				renderableGeometrys.get<RenderableGeometry>(entity).OnInit();
+			}
+
+		break;
+	case ON_DESTROY:
+		break;
+	case ON_SCENE_CHANGED:
+		break;
+	case ON_EDITOR_LOAD:
+		break;
+	default:
+		break;
 	}
 }

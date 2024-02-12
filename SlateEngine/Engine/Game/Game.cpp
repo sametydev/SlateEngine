@@ -23,7 +23,7 @@ bool Game::OnInit()
     if (!DXApplication::OnInit()) { return 0; }
 
     DXRasterizerState::Initialize(GetDXDevice().Get(),GetDXContext().Get(),bEnableMsaa);
-
+    gDXContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
     if (!IS_COOKED)editorSystem->ResizeViewport(m_clientW, m_clientH);
 
 
@@ -152,5 +152,21 @@ void Game::PostClear()
     if (!IS_COOKED) {
         ClearRenderTarget(clear);
         editorSystem->OnRender();
+    }
+}
+
+void Game::SetGameState(GameState gs)
+{
+    gameState = gs;
+
+    switch (gs)
+    {
+    case NONE:
+        break;
+    case PLAYING:
+        entityManager->SendSignalToComponents(ECSignalCommand::ON_INIT);
+        break;
+    case PAUSED:
+        break;
     }
 }

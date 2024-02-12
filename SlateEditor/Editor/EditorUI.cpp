@@ -295,7 +295,7 @@ void EditorUI::ResizeViewport(int w, int h)
 void EditorUI::DrawViewportMenu()
 {
 	ImGui::Begin("Tool");
-	if (ImGui::Button("PLAY")) { game->gameState = (GameState)1; }
+	if (ImGui::Button("PLAY")) { game->SetGameState((GameState)1); }
 	ImGui::SameLine();
 	if (ImGui::Button("PAUSE")) { game->gameState = (GameState)2; }
 	ImGui::SameLine();

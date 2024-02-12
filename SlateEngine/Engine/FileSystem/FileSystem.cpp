@@ -97,6 +97,7 @@ SMetaData& FileSystem::GetSMetaDataFromFPath(std::filesystem::path _p)
 
 void FileSystem::ProcessScriptFile(std::filesystem::path _p)
 {
+    ProcessMetaFile(_p);
 }
 
 void FileSystem::ProcessTextureFileWIC(std::filesystem::path _p)

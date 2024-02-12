@@ -39,6 +39,17 @@ void AssetsBrowser::OnDraw()
 			if (!(i.path().extension() == ".smeta")) {
 				if (ImGui::Button(i.path().filename().string().c_str())) {
 					selectedFile = i.path();
+
+					if (i.path().extension() == ".lua")
+					{
+						std::string x = std::filesystem::current_path().u8string()+"\\";
+						std::string y = x+(i.path().u8string());
+
+						//gDXApp->GetLogger()->AddLog(y.c_str());
+
+						ShellExecuteA(NULL, "open", y.c_str(), NULL, NULL, SW_SHOWDEFAULT);
+
+					}
 				};
 			}
 		}

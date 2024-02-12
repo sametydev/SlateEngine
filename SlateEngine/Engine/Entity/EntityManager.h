@@ -1,6 +1,15 @@
 #pragma once
 #include <SlateEngine/Engine/Entity/Entity.h>
 
+//Entity Component Signal Command
+enum ECSignalCommand {
+	ON_INIT,
+	ON_UPDATE,
+	ON_DESTROY,
+	ON_SCENE_CHANGED,
+	ON_EDITOR_LOAD
+};
+
 class EntityManager
 {
 public:
@@ -17,7 +26,10 @@ public:
 
 	entt::registry& GetRegistar() { return entityRegistar; };
 
+	void SendSignalToComponents(ECSignalCommand cmd);
+
 	static EntityManager* Instance;
+
 };
 
 

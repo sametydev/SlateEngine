@@ -1,0 +1,4 @@
+[Asset]
+uuid = 6aa915f2-120f-4781-9f29-0282f908bf9a
+type = LUA
+path = TestProject\Assets\Scripts\Test.lua

@@ -7,16 +7,20 @@
 
 void LuaScript::OnInternalInit()
 {
-    m_luaState = luaL_newstate();
+
+    m_luaState = (luaL_newstate());
     luaL_openlibs(m_luaState);
 
     luabridge::getGlobalNamespace(m_luaState)
         .beginClass<vec2f>("vec2f")
+        .addConstructor<void(*) (void)>()
+        .addConstructor<void(*) (float, float)>()
         .addProperty("x", &vec2f::x)
         .addProperty("y", &vec2f::y)
         .endClass()
 
         .beginClass<vec3f>("vec3f")
+        .addConstructor<void(*) (void)>()
         .addConstructor<void(*) (float, float, float)>()
         .addProperty("x", &vec3f::x)
         .addProperty("y", &vec3f::y)
@@ -51,11 +55,15 @@ void LuaScript::OnInternalInit()
 
     luabridge::push(m_luaState, DXApplication::Instance->GetLogger());
     lua_setglobal(m_luaState, "Log");
+
+    updateFunc = luabridge::getGlobal(m_luaState, "OnUpdate");
+
 }
 
 void LuaScript::OnInit()
 {
-    OnInternalInit();
+    luaL_dofile(m_luaState, scriptPath.c_str());
+    updateFunc = luabridge::getGlobal(m_luaState, "OnUpdate");
 }
 
 void LuaScript::OnUpdate(float deltaTime)
@@ -77,7 +85,4 @@ void LuaScript::OnShutdown()
 void LuaScript::LoadScript(const char* path)
 {
     scriptPath  = PathMaker::Make(gDXApp->GetWorkingDir(), path);
-    luaL_dofile(m_luaState,scriptPath.c_str());
-
-    updateFunc = luabridge::getGlobal(m_luaState, "OnUpdate");
 }

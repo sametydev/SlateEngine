@@ -24,7 +24,7 @@ public:
 
 private:
 	lua_State* m_luaState = nullptr;
-	luabridge::LuaRef updateFunc = NULL;
+	luabridge::LuaRef updateFunc = nullptr;
 
 	std::string scriptPath;
 };
