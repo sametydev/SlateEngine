@@ -68,8 +68,13 @@ void InspectorWindow::OnDraw(Entity* entity)
 			}
 
 
-			if (entity->HasComponent<RenderableGeometry>()) {
+			if (entity->HasComponent<RenderableGeometry>())
+			{
 				DrawRenderableGeometryComponent(entity);
+			}
+			if (entity->HasComponent<LuaScript>())
+			{
+				DrawLuaScriptComponent(entity);
 			}
 
 
@@ -207,6 +212,51 @@ void InspectorWindow::DrawRenderableGeometryComponent(Entity* entity)
 		ImGui::PopID();
 		ImGui::TreePop();
 	}
+	ImGui::Dummy(ImVec2(0.0f, 4.0f));
+}
+
+
+void InspectorWindow::DrawLuaScriptComponent(Entity* entity)
+{
+	LuaScript& ls = entityRegistar.get<LuaScript>(entity->rawEntity);
+
+	static int currentScriptItem = 0;
+
+	scriptsTextTmp.clear();
+
+	for (auto x : FileSystem::Instance->GetMetaMap())
+	{
+		if (x.second.ftype == FILE_TYPE::LUA) {
+			std::string extractedPath = x.second.path;
+			extractedPath.replace(extractedPath.find(".smeta"), sizeof(".smeta")-1,"");
+			scriptsTextTmp.push_back(extractedPath);
+		}
+	}
+
+	scriptCChTMP.clear();
+
+	for (std::string const& str : scriptsTextTmp) {
+		scriptCChTMP.push_back(str.data());
+	}
+
+	if (ImGui::TreeNode("Script"))
+	{
+		ImGui::Dummy(ImVec2(0.0f, 4.0f));
+		
+		ImGui::Text(ls.GetScriptPath().c_str());
+		if (ImGui::Combo("Mesh", &currentScriptItem, scriptCChTMP.data(), scriptCChTMP.size())) {
+			//DXApplication::Instance->GetLogger()->AddLog(tempData[currentScriptItem]);
+			ls.SetScriptPath(scriptCChTMP[currentScriptItem]);
+		}
+
+		if (ImGui::Button("Remove <Script> Component")) {
+			entity->RemoveComponent<LuaScript>();
+		}
+		ImGui::Dummy(ImVec2(0.0f, 4.0f));
+		ImGui::TreePop();
+	}
+	ImGui::Dummy(ImVec2(0.0f, 4.0f));
+
 }
 
 

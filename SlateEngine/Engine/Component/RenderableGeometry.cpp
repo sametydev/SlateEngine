@@ -46,8 +46,8 @@ void RenderableGeometry::OnInternalInit()
     ConstantBufferDesc cbd{};
     cbd.cbSize = sizeof(ObjectConstantBuffer);
     m_constantBuffer->Create(cbd);
-    m_constantBuffer->BindVS(0);
-    m_constantBuffer->BindPS(0);
+    m_constantBuffer->BindVS(BUFFER_ID::OBJECT_CONSTANT_BUFFER_ID);
+    m_constantBuffer->BindPS(BUFFER_ID::OBJECT_CONSTANT_BUFFER_ID);
 
     m_vertexShader->Bind();
     m_pixelShader->Bind();
@@ -92,7 +92,7 @@ void RenderableGeometry::OnRender()
 {
     for (size_t i = 0; i < buffers.size(); i++)
     {
-        buffers[i]->BindPipeline(0);
+        buffers[i]->BindPipeline(BUFFER_ID::OBJECT_CONSTANT_BUFFER_ID);
     }
 
     m_vertexShader->Bind();

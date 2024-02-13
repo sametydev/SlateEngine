@@ -113,6 +113,9 @@
       <LanguageStandard>stdcpp17</LanguageStandard>
       <LanguageStandard_C>Default</LanguageStandard_C>
       <Optimization>Disabled</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile>PCH.h</PrecompiledHeaderFile>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -189,6 +192,7 @@
   <ItemGroup>
     <ClInclude Include="Engine\Core\AssetServer.h" />
     <ClInclude Include="Engine\Core\ILogger.h" />
+    <ClInclude Include="Engine\PCH.h" />
     <ClInclude Include="Engine\Editor\EditorSystem.h" />
     <ClInclude Include="Engine\Component\Component.h" />
     <ClInclude Include="Engine\Component\Components.h" />

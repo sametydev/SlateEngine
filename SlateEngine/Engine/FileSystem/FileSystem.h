@@ -60,6 +60,7 @@ public:
 
 	static FileSystem* Instance;
 
+	std::unordered_map<std::string, SMetaData>& GetMetaMap() { return metaMap; }
 
 	inline static const char* FTypeToString(FILE_TYPE v)
 	{

@@ -7,7 +7,7 @@ constexpr int MIN_WIN_WIDTH		= 600;
 constexpr bool IS_COOKED     = false;
 
 //Max FPS for VSYNC
-constexpr int MAX_FPS        = 60;
+constexpr int MAX_FPS        = 144;
 
 constexpr bool VSYNC_ENABLED = true;
 

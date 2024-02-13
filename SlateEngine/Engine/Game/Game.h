@@ -69,7 +69,7 @@ private:
     DXConstantBuffer* m_frameConstantBuffer = nullptr;
     DXConstantBuffer* m_lightConstantBuffer = nullptr;
 
-    EntityManager* entityManager;
-    FileSystem* fileSystem;
+    std::shared_ptr<EntityManager> entityManager;
+    std::shared_ptr<FileSystem> fileSystem;
 
 };

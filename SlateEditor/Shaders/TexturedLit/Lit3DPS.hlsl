@@ -39,8 +39,10 @@ float4 main(VertexPhwNT pIn) : SV_Target
         diffuse += D;
         spec += S;
     }
-    
-    float4 texColor = m_texture.Sample(m_samplerState, pIn.tex);
+    float4 texColor = float4(1.0, 1.0, 1.0, 1.0);
+
+    texColor = m_texture.Sample(m_samplerState, pIn.tex);
+
     float4 litColor = texColor * (ambient + diffuse) + spec;
     litColor.a = texColor.a * m_material.diffuse.a;
     

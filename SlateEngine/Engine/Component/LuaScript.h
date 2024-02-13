@@ -22,6 +22,9 @@ public:
 
 	void LoadScript(const char* path);
 
+	std::string GetScriptPath() { return scriptPath; };
+	void SetScriptPath(const char* val) { scriptPath = val; };
+
 private:
 	lua_State* m_luaState = nullptr;
 	luabridge::LuaRef updateFunc = nullptr;

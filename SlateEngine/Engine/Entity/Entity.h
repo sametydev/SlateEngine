@@ -31,6 +31,7 @@ private:
 template<typename T>
 inline void Entity::AddComponent()
 {
+	if (HasComponent<T>()) return;
 	entityRegistar.emplace<T>(rawEntity).SetEntity(this);
 }
 

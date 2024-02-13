@@ -17,9 +17,14 @@ public:
 	void DrawTransform(const char* label,vec3f& val);
 
 	void DrawRenderableGeometryComponent(Entity* entity);
+	void DrawLuaScriptComponent(Entity* entity);
 private:
 	const char* windowName;
 
 	Game* game = nullptr;
+
+	std::vector<std::string> scriptsTextTmp;
+	std::vector<const char*> scriptCChTMP;
+
 };
 

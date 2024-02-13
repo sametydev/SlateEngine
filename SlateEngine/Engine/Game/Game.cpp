@@ -21,19 +21,16 @@ Game::~Game()
 bool Game::OnInit()
 {
     if (!DXApplication::OnInit()) { return 0; }
-
-    DXRasterizerState::Initialize(GetDXDevice().Get(),GetDXContext().Get(),bEnableMsaa);
-    gDXContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
     if (!IS_COOKED)editorSystem->ResizeViewport(m_clientW, m_clientH);
 
 
-    fileSystem = new FileSystem();
+    fileSystem = std::make_shared<FileSystem>();
     fileSystem->Init();
 
     m_camera = new Camera(65.f, GetAspectRatio(), 0.01f, 1000.0f);
     m_camera->SetPosition(vec3f(0, 0, -10));
 
-    entityManager = new EntityManager();
+    entityManager = std::make_shared<EntityManager>();
 
     //Temporary Game Scope
     {
@@ -47,6 +44,7 @@ bool Game::OnInit()
 
         entityManager->RegisterEntity(testEntity, "Test Entity 1");
         testEntity->AddComponent<RenderableGeometry>();
+
         testEntity->AddComponent<LuaScript>();
         testEntity->GetComponent<LuaScript>().LoadScript("Assets\\Scripts\\Test.lua");
 
@@ -79,10 +77,10 @@ bool Game::OnInit()
     cbd.cbSize = sizeof(LightConstantBuffer);
     m_lightConstantBuffer->Create(cbd);
 
-    m_frameConstantBuffer->BindVS(1);
+    m_frameConstantBuffer->BindVS(BUFFER_ID::FRAME_CONSTANT_BUFFER_ID);
 
-    m_frameConstantBuffer->BindPS(1);
-    m_lightConstantBuffer->BindPS(2);
+    m_frameConstantBuffer->BindPS(BUFFER_ID::FRAME_CONSTANT_BUFFER_ID);
+    m_lightConstantBuffer->BindPS(BUFFER_ID::LIGHT_CONSTANT_BUFFER_ID);
 
     return true;
 }
@@ -157,16 +155,17 @@ void Game::PostClear()
 
 void Game::SetGameState(GameState gs)
 {
-    gameState = gs;
-
     switch (gs)
     {
     case NONE:
+        gameState = NONE;
         break;
     case PLAYING:
-        entityManager->SendSignalToComponents(ECSignalCommand::ON_INIT);
+        if(gameState!=2)entityManager->SendSignalToComponents(ECSignalCommand::ON_INIT);
         break;
     case PAUSED:
         break;
     }
+    gameState = gs;
+
 }
