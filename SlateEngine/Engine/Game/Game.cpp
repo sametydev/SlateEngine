@@ -67,8 +67,8 @@ bool Game::OnInit()
     }
 
     //Creating Constant Buffers;
-    m_frameConstantBuffer = new DXConstantBuffer();
-    m_lightConstantBuffer = new DXConstantBuffer();
+    m_frameConstantBuffer = std::make_unique<DXConstantBuffer>();
+    m_lightConstantBuffer = std::make_unique<DXConstantBuffer>();
 
     ConstantBufferDesc cbd{};
     cbd.cbSize = sizeof(FrameConstantBuffer);
@@ -125,7 +125,6 @@ void Game::OnRenderScene()
     entityManager->OnRender();
 
     PostClear();
-
     HR(m_swapChain->Present(0, 0));
 }
 
@@ -157,14 +156,14 @@ void Game::SetGameState(GameState gs)
 {
     switch (gs)
     {
-    case NONE:
-        gameState = NONE;
-        break;
-    case PLAYING:
-        if(gameState!=2)entityManager->SendSignalToComponents(ECSignalCommand::ON_INIT);
-        break;
-    case PAUSED:
-        break;
+        case NONE:
+            gameState = NONE;
+            break;
+        case PLAYING:
+            if(gameState!=2)entityManager->SendSignalToComponents(ECSignalCommand::ON_INIT);
+            break;
+        case PAUSED:
+            break;
     }
     gameState = gs;
 

@@ -35,6 +35,9 @@ public:
 
     void ClearRenderTarget(float rgba[4]);
 
+    inline int GetClientW() { return m_clientW; }
+    inline int GetClientH() { return m_clientH; }
+
     inline ComPtr<ID3D11Device>& GetDXDevice() {
         return m_d3dDevice;
     }
@@ -74,6 +77,7 @@ public:
     inline void SetWorkingDirectory(const char* dir) {
         workingDirectory = dir;
     }
+
 protected:
     bool InitializeWindow();      
     bool InitializeGraphics();   

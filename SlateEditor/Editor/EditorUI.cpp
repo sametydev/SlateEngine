@@ -297,9 +297,9 @@ void EditorUI::DrawViewportMenu()
 	ImGui::Begin("Tool");
 	if (ImGui::Button("PLAY")) { game->SetGameState((GameState)1); }
 	ImGui::SameLine();
-	if (ImGui::Button("PAUSE")) { game->gameState = (GameState)2; }
+	if (ImGui::Button("PAUSE")) { game->SetGameState((GameState)2); }
 	ImGui::SameLine();
-	if (ImGui::Button("STOP")) { game->gameState = (GameState)0; }
+	if (ImGui::Button("STOP")) { game->SetGameState((GameState)0); }
 
 	ImGui::SameLine();
 

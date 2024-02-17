@@ -29,8 +29,6 @@ public:
     void OnResize();
     void OnUpdateScene(float deltaTime);
 
-    void SetMesh(const MeshData<VertexPNT>& meshData);
-
     //Todo, Scene*
     void OnRenderScene();
 
@@ -39,35 +37,36 @@ public:
     void BeginClear();
     void PostClear();
 
-    inline int GetClientW() { return m_clientW; }
-    inline int GetClientH() { return m_clientH; }
-
-
-    GameState gameState = GameState::NONE;
+    
     void SetGameState(GameState gs);
+    GameState GetGameState() { return gameState; };
 
     static Game* Instance;
 
     bool renderWireframe = 0;
-    //--
 
     static float clear[4];
 
     FrameConstantBuffer   FrameBufferConstantObject;
-    LightConstantBuffer  LightConstantObject;
+    LightConstantBuffer   LightConstantObject;
 
+    // TEMPORARY
     DXTexture* m_crateTexture = nullptr;
     std::unique_ptr<DXTexture> m_grassTexture = nullptr;
 
     Entity* testEntity;
     Entity* testEntity2;
 
+    //--
+
     Camera* m_camera{};
 
 
 private:
-    DXConstantBuffer* m_frameConstantBuffer = nullptr;
-    DXConstantBuffer* m_lightConstantBuffer = nullptr;
+    GameState gameState = GameState::NONE;
+
+    std::unique_ptr<DXConstantBuffer> m_frameConstantBuffer = nullptr;
+    std::unique_ptr<DXConstantBuffer> m_lightConstantBuffer = nullptr;
 
     std::shared_ptr<EntityManager> entityManager;
     std::shared_ptr<FileSystem> fileSystem;

@@ -1,8 +1,8 @@
-#include "AssetServer.h"
+#include "AssetStreamer.h"
 
-AssetServer* AssetServer::Instance = nullptr;
+AssetStreamer* AssetStreamer::Instance = nullptr;
 
-AssetServer::AssetServer()
+AssetStreamer::AssetStreamer()
 {
 	if (Instance == nullptr)
 	{
@@ -10,11 +10,11 @@ AssetServer::AssetServer()
 	}
 }
 
-AssetServer::~AssetServer()
+AssetStreamer::~AssetStreamer()
 {
 }
 
-DemoAsset* AssetServer::RequestAsset(const char* assetPath)
+DemoAsset* AssetStreamer::RequestAsset(const char* assetPath)
 {
 	for (auto& it : FileSystem::Instance->metaMap)
 	{
@@ -42,6 +42,6 @@ DemoAsset* AssetServer::RequestAsset(const char* assetPath)
     return nullptr;
 }
 
-void AssetServer::ResetPool()
+void AssetStreamer::ResetPool()
 {
 }

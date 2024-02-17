@@ -17,7 +17,7 @@ class FileSystem;
 class Entity;
 class EntitySystem;
 class Timer;
-class AssetServer;
+class AssetStreamer;
 class Transform;
 struct RenderableGeometry;
 struct LuaScript;

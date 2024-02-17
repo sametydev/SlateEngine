@@ -3,12 +3,12 @@
 
 struct DemoAsset{};
 
-class AssetServer
+class AssetStreamer
 {
 	//There's must only f-one AssetServer! Its very critical for AssetStreaming
 public:
-	AssetServer();
-	~AssetServer();
+	AssetStreamer();
+	~AssetStreamer();
 
 
 	DemoAsset* RequestAsset(const char* assetPath);
@@ -16,7 +16,7 @@ public:
 	void ResetPool();
 
 
-	static AssetServer* Instance;
+	static AssetStreamer* Instance;
 
 private:
 	friend class FileSystem;

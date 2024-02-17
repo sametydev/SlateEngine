@@ -147,7 +147,7 @@
     <ClCompile Include="Engine\Graphics\Buffer\BufferCache.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Core\AssetServer.cpp">
+    <ClCompile Include="Engine\Core\AssetStreamer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -296,13 +296,16 @@
     <ClInclude Include="Engine\Graphics\Buffer\BufferCache.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Core\AssetServer.h">
+    <ClInclude Include="Engine\Core\AssetStreamer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Core\ILogger.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Engine\PCH.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Core\Asset.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

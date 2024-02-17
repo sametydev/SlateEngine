@@ -1,12 +1,13 @@
 #pragma once
 #include <SlateEngine/Engine/DXConfig.h>
+#include <SlateEngine/Engine/Core/Asset.h>
 
 enum TextureLoaderType {
 	DDS = 0,
 	WIC
 };
 
-class DXTexture
+class DXTexture : public Asset
 {
 public:
 	DXTexture();
