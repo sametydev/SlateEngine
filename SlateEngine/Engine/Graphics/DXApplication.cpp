@@ -43,6 +43,7 @@ DXApplication::DXApplication(HINSTANCE hInstance, const std::wstring& windowName
 
     if (!Instance)
     {
+        mTimer = new Timer();
         Instance = this;
     }
 }
@@ -72,7 +73,7 @@ int DXApplication::OnRun()
 {
     MSG msg = { 0 };
 
-    mTimer.OnReset();
+    mTimer->OnReset();
 
     while (msg.message != WM_QUIT)
     {
@@ -83,7 +84,7 @@ int DXApplication::OnRun()
         }
         else
         {
-            mTimer.OnTick();
+            mTimer->OnTick();
             InputSystem::Update(hWindow);
             if (!bPaused)
             {
@@ -91,7 +92,7 @@ int DXApplication::OnRun()
                     editorSystem->NewFrame();
                 }
                 //Render Scene
-                OnUpdateScene(mTimer.deltaTime());
+                OnUpdateScene(mTimer->deltaTime());
                 OnRenderScene();
             }
             else

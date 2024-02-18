@@ -90,7 +90,7 @@ protected:
     bool      bIsMaximized;      
     bool      bIsResizing; 
 
-    Timer mTimer;           
+    Timer* mTimer;           
 
     //DirectX 3D;
     ComPtr<ID3D11Device> m_d3dDevice;                   

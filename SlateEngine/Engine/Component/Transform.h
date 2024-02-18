@@ -1,7 +1,8 @@
 #pragma once
 #include <SlateEngine/Engine/Math/LineerMath.h>
 #include <SlateEngine/Engine/Component/Component.h>
-class Transform : public Component
+
+struct Transform : public Component
 {
 public:
 	Transform();

@@ -2,11 +2,15 @@
 
 Timer::Timer():bIsActive(true),m_deltaTime(0),m_elapsedSecond(0)
 {
+    if (Instance == nullptr)
+    {
+        Instance = this;
+    }
 }
 
 float Timer::deltaTime() const
 {
-    return (float)m_deltaTime;
+    return m_deltaTime;
 }
 
 void Timer::OnReset()

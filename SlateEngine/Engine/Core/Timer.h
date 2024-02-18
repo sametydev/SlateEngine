@@ -9,6 +9,8 @@ public:
 	void OnReset(); 
 	void OnTick();
 
+
+	Timer* Instance = nullptr;
 private:
 	float m_deltaTime;
 	std::chrono::system_clock::time_point m_prevTime;
