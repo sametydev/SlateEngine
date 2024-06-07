@@ -46,14 +46,13 @@ bool Game::OnInit()
         testEntity->AddComponent<RenderableGeometry>();
 
         testEntity->AddComponent<LuaScript>();
-        testEntity->GetComponent<LuaScript>().LoadScript("Assets\\Scripts\\Test.lua");
+        testEntity->GetComponent<LuaScript>().SetScriptPath(PathMaker::Make(gDXApp->GetWorkingDir(), "Assets\\Scripts\\Test.lua").c_str());
 
         testEntity->GetComponent<Transform>().SetPosition({ 0.f,2.f,0.f });
 
         RenderableGeometry& r = testEntity->GetComponent<RenderableGeometry>();
-        r.SetCullMode(CULL_BACK, &renderWireframe);
+        //r.SetCullMode(CULL_BACK, &renderWireframe);
         r.SetTexture(m_crateTexture);
-
 
         testEntity2 = new Entity();
 
@@ -61,7 +60,7 @@ bool Game::OnInit()
         testEntity2->AddComponent<RenderableGeometry>();
 
         RenderableGeometry& r2 = testEntity2->GetComponent<RenderableGeometry>();
-        r2.SetCullMode(CULL_BACK, &renderWireframe);
+        //r2.SetCullMode(CULL_BACK, &renderWireframe);
         r2.SetTexture(m_grassTexture.get());
         r2.GetTransform().SetScale({ 10.f, 0.2f, 10.f });
     }

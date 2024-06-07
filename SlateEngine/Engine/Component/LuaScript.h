@@ -20,8 +20,6 @@ public:
 	void OnInit() override;
 	void OnShutdown() override;
 
-	void LoadScript(const char* path);
-
 	std::string GetScriptPath() { return scriptPath; };
 	void SetScriptPath(const char* val) { scriptPath = val; };
 

@@ -11,7 +11,17 @@ struct MaterialData
     vec4f reflect;
 };
 
-using MaterialProperty = std::variant<int, uint32_t, float, vec2f, vec3f, vec4f, mat4x4,std::vector<float>, std::vector<vec4f>, std::vector<mat4x4>,std::string>;
+using MaterialProperty = std::variant
+<
+    int,
+    uint32_t, float, 
+    vec2f, vec3f, vec4f,
+    mat4x4,
+    std::vector<float>, 
+    std::vector<vec4f>, 
+    std::vector<mat4x4>,
+    std::string
+>;
 
 enum MaterialPropertyType {
     SINT = 0,
@@ -137,6 +147,16 @@ public:
         else{
             return MaterialPropertyType::SUNDEFINED;
         }
+    }
+
+    template<class T>
+    T* GetPointer(std::string_view name)
+    {
+        auto it = properties.find(name);
+        if (it != properties.end() && std::holds_alternative<T>(it->second)) {
+            return &std::get<T>(it->second);
+        }
+        return nullptr;
     }
 
     std::unordered_map<std::string_view, MaterialProperty>& GetPropMap() {

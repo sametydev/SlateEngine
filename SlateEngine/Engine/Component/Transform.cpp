@@ -89,8 +89,7 @@ void Transform::OnUpdate(float deltaTime)
 	{
 		mGlobal = mLocal;
 	}
-
-	if (hasParent)
+	else
 	{
 		mGlobal = this->mLocal * mParent->mGlobal;
 	}

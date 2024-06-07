@@ -308,6 +308,9 @@
     <ClInclude Include="Engine\Core\Asset.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\Core\CachedUMap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="TestProject\Textures\Crate.dds" />

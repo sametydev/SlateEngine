@@ -7,7 +7,6 @@
 
 void LuaScript::OnInternalInit()
 {
-
     m_luaState = (luaL_newstate());
     luaL_openlibs(m_luaState);
 
@@ -56,19 +55,40 @@ void LuaScript::OnInternalInit()
     luabridge::push(m_luaState, DXApplication::Instance->GetLogger());
     lua_setglobal(m_luaState, "Log");
 
+    luabridge::push(m_luaState, &InputSystem::pos);
+    lua_setglobal(m_luaState, "InputSystem_MousePos");
+
     updateFunc = luabridge::getGlobal(m_luaState, "OnUpdate");
 
 }
 
 void LuaScript::OnInit()
 {
-    luaL_dofile(m_luaState, scriptPath.c_str());
-    updateFunc = luabridge::getGlobal(m_luaState, "OnUpdate");
+    try
+    {
+        int status = luaL_loadfile(m_luaState, scriptPath.c_str()) || lua_pcall(m_luaState, 0, 0, 0);
+        updateFunc = luabridge::getGlobal(m_luaState, "OnUpdate");
+
+        if (status != LUA_OK) {
+            DXApplication::Instance->GetLogger()->AddLog("Error Found!");
+            lua_pop(m_luaState, 1); // Remove error message from stack
+        }
+
+    }
+    catch (const luabridge::LuaException& ex)
+    {
+        DXApplication::Instance->GetLogger()->AddLog(ex.what());
+    }
+
 }
 
 void LuaScript::OnUpdate(float deltaTime)
 {
     if (updateFunc) {
+        /*
+        try { updateFunc(deltaTime); }catch(const luabridge::LuaException& ex){
+            DXApplication::Instance->GetLogger()->AddLog(ex.what());
+        }*/
         updateFunc(deltaTime);
     }
 }
@@ -80,9 +100,4 @@ void LuaScript::OnRender()
 void LuaScript::OnShutdown()
 {
     lua_close(m_luaState);
-}
-
-void LuaScript::LoadScript(const char* path)
-{
-    scriptPath  = PathMaker::Make(gDXApp->GetWorkingDir(), path);
 }

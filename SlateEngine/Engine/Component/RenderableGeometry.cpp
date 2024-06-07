@@ -20,8 +20,8 @@ void RenderableGeometry::OnInternalInit()
     
     m_material = &connectedEntity->GetComponent<MaterialComponent>();
 
-    m_material->Set("$Ambient", vec4f(1.0f, 1.0f, 1.0f, 1.0f));
-    m_material->Set("$Diffuse", vec4f(1.0f, 1.0f, 1.0f, 1.0f));
+    m_material->Set("$Ambient",  vec4f(1.0f, 1.0f, 1.0f, 1.0f));
+    m_material->Set("$Diffuse",  vec4f(1.0f, 1.0f, 1.0f, 1.0f));
     m_material->Set("$Specular", vec4f(0.1f, 0.1f, 0.1f, 5.0f));
 
     //Create Vertex Shader 3D
@@ -58,6 +58,9 @@ void RenderableGeometry::OnInternalInit()
 
     SetCullMode((RasterizerState)0);
     //Calling Update once
+    mat_ambient = m_material->GetPointer<vec4f>("$Ambient");
+    mat_diff    = m_material->GetPointer<vec4f>("$Diffuse");
+    mat_spec    = m_material->GetPointer<vec4f>("$Specular");
     OnUpdate(0);
 }
 
@@ -75,9 +78,9 @@ void RenderableGeometry::OnUpdate(float deltaTime)
     cbData.world = connectedEntity->GetComponent<Transform>().GetGlobal();
     cbData.worldInverseTranspose = connectedEntity->GetComponent<Transform>().GetGlobal().InverseTranspose();
 
-    cbData.material.ambient  = m_material->Get<vec4f>("$Ambient");
-    cbData.material.diffuse  = m_material->Get<vec4f>("$Diffuse");
-    cbData.material.specular = m_material->Get<vec4f>("$Specular");
+    cbData.material.ambient = *mat_ambient;
+    cbData.material.diffuse = *mat_diff;
+    cbData.material.specular = *mat_spec;
 
     m_constantBuffer->MapAndUnMap(sizeof(ObjectConstantBuffer), &cbData);
 }

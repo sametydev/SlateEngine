@@ -58,6 +58,8 @@ private:
 
     int cullMode = 0;
     bool* ignoreState;
+
+    vec4f *mat_ambient, *mat_diff, *mat_spec;
 };
 
 template<class VertexType, class IndexType>
