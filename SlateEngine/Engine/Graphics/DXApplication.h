@@ -34,6 +34,7 @@ public:
     virtual LRESULT MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
     void ClearRenderTarget(float rgba[4]);
+    void SwapChainPresent(UINT SyncInterval = 0, UINT Flags = 0);
 
     inline int GetClientW() { return m_clientW; }
     inline int GetClientH() { return m_clientH; }

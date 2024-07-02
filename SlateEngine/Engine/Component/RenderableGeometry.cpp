@@ -91,7 +91,7 @@ void RenderableGeometry::SetCullMode(RasterizerState state, bool* ignoreState)
     this->ignoreState = ignoreState;
 }
 
-void RenderableGeometry::OnRender()
+void RenderableGeometry::OnRender(ID3D11DeviceContext* pDeviceContext)
 {
     for (size_t i = 0; i < buffers.size(); i++)
     {
@@ -108,7 +108,7 @@ void RenderableGeometry::OnRender()
         if (*ignoreState == false)DXRasterizerState::SetRasterizerState((RasterizerState)cullMode,DXApplication::Instance->GetDXContext().Get());
     }
 
-    DXApplication::Instance->GetDXContext().Get()->DrawIndexed(m_indices, 0u, 0u);
+    pDeviceContext->DrawIndexed(m_indices, 0u, 0u);
 
     attachedTexture->UnBind();
 }

@@ -161,8 +161,6 @@ void FileSystem::ProcessMetaFile(std::filesystem::path _p)
     smd.path = metaFile;
     smd.uuid = ini.GetValue("Asset", "uuid");
     metaMap.emplace(smd.uuid, smd);
-
-    ;
 }
 
 void FileSystem::OnFileAdded(std::filesystem::path _p)
@@ -172,6 +170,14 @@ void FileSystem::OnFileAdded(std::filesystem::path _p)
         {
             // Probably (?) this file is moved!
             // Actually in this method, im not sure file is %100 moved but, generally works xD
+
+            //TODO :  Implement this;
+            /*for (auto& meta : metaMap) {
+                if (meta.second.path == lastRemovedFile.string())
+                {
+
+                }
+            }*/
         }
         else
         {

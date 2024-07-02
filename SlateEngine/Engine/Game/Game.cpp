@@ -121,10 +121,10 @@ void Game::OnRenderScene()
 {
     BeginClear();
 
-    entityManager->OnRender();
+    entityManager->OnRender(GetDXContext().Get());
 
     PostClear();
-    HR(m_swapChain->Present(0, 0));
+    SwapChainPresent();
 }
 
 void Game::UpdateGlobalConstantBuffers()

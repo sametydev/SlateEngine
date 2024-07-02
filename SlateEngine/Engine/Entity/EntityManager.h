@@ -22,7 +22,7 @@ public:
 	Entity* GetEntityFromRaw(entt::entity e);
 
 	void OnUpdate(float dt, int gameState);
-	void OnRender();
+	void OnRender(ID3D11DeviceContext* pDeviceContext);
 
 	entt::registry& GetRegistar() { return entityRegistar; };
 

@@ -28,7 +28,7 @@ public:
     void SetCullMode(RasterizerState state, bool* ignoreState = 0);
 
     void OnUpdate(float deltaTime) override;
-    void OnRender() override;
+    void OnRender(ID3D11DeviceContext* pDeviceContext) override;
 
     void OnInit() override;
     void OnShutdown() override;

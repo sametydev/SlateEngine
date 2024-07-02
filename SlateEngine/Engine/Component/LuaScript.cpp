@@ -93,7 +93,7 @@ void LuaScript::OnUpdate(float deltaTime)
     }
 }
 
-void LuaScript::OnRender()
+void LuaScript::OnRender(ID3D11DeviceContext* pDeviceContext)
 {
 }
 

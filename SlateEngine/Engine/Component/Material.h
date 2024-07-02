@@ -163,7 +163,7 @@ public:
         return properties;
     }
 
-    void OnRender() override;
+    void OnRender(ID3D11DeviceContext* pDeviceContext) override;
     void OnUpdate(float deltaTime) override;
     void OnInit() override;
     void OnShutdown() override;

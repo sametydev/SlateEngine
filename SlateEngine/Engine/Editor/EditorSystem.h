@@ -1,11 +1,12 @@
 #pragma once
+#include <SlateEngine/Engine/DXConfig.h>
 class EditorSystem
 {
 public:
 	EditorSystem() {};
 	virtual ~EditorSystem() {};
 
-	virtual void OnInit() = 0;
+	virtual void OnInit(HWND wnd, ID3D11Device* pDevice, ID3D11DeviceContext* pDeviceContext) = 0;
 
 	virtual void NewFrame() = 0;
 	virtual void OnRender() = 0;

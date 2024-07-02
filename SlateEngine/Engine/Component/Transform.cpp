@@ -57,7 +57,7 @@ bool Transform::HasParent()
 }
 
 
-void Transform::OnRender()
+void Transform::OnRender(ID3D11DeviceContext* pDeviceContext)
 {
 }
 

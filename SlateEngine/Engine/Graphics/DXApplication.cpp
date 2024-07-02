@@ -117,7 +117,7 @@ bool DXApplication::OnInit()
     m_d3dContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
     if (!IS_COOKED) {
-        editorSystem->OnInit();
+        editorSystem->OnInit(hWindow, m_d3dDevice.Get(), m_d3dContext.Get());
     }
 
     return true;
@@ -268,6 +268,11 @@ void DXApplication::ClearRenderTarget(float rgba[4])
     m_d3dContext->OMSetRenderTargets(1, m_renderTargetView.GetAddressOf(), m_depthStencilView.Get());
     m_d3dContext->ClearRenderTargetView(m_renderTargetView.Get(), rgba);
     m_d3dContext->ClearDepthStencilView(m_depthStencilView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
+}
+
+void DXApplication::SwapChainPresent(UINT SyncInterval, UINT Flags)
+{
+    m_swapChain->Present(0, 0);
 }
 
 

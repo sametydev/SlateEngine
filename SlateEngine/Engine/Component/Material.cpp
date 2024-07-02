@@ -3,7 +3,7 @@
 void MaterialComponent::OnInternalInit()
 {
 }
-void MaterialComponent::OnRender()
+void MaterialComponent::OnRender(ID3D11DeviceContext* pDeviceContext)
 {
 }
 void MaterialComponent::OnUpdate(float deltaTime)

@@ -1,5 +1,6 @@
 #pragma once
 #include <entt.hpp>
+#include <SlateEngine/Engine/DXConfig.h>
 
 extern entt::registry entityRegistar;
 

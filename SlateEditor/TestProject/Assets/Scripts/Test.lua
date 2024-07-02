@@ -20,5 +20,5 @@ function OnUpdate(deltaTime)
 	v.x = v.x+100*deltaTime
 	-- and finally we are change the our rotation! yippi!
 	transform:SetRotation(v)
-	Log:Add(tostring(InputSystem_MousePos.x))
+	-- Log:Add(tostring(InputSystem_MousePos.x))
 end

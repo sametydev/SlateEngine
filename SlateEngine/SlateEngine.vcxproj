@@ -192,7 +192,6 @@
   <ItemGroup>
     <ClInclude Include="Engine\Core\Asset.h" />
     <ClInclude Include="Engine\Core\AssetStreamer.h" />
-    <ClInclude Include="Engine\Core\CachedUMap.h" />
     <ClInclude Include="Engine\Core\ILogger.h" />
     <ClInclude Include="Engine\PCH.h" />
     <ClInclude Include="Engine\Editor\EditorSystem.h" />

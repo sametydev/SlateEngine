@@ -28,7 +28,7 @@ EditorUI::~EditorUI()
 
 
 
-void EditorUI::OnInit()
+void EditorUI::OnInit(HWND wnd, ID3D11Device* pDevice, ID3D11DeviceContext* pDeviceContext)
 {
 
 	gamepad = std::make_unique<Gamepad>(1);
@@ -39,12 +39,12 @@ void EditorUI::OnInit()
 	ImGui::GetIO().ConfigFlags |= ImGuiConfigFlags_DockingEnable;
 	ImGui::GetIO().ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
 	ImGui::GetIO().ConfigWindowsMoveFromTitleBarOnly = true;
-	
+	ImGui::GetIO().WantCaptureMouse = true;
     ImGui::StyleColorsDark();
 	rtt = std::make_unique<RenderTTexture>();
 
-    ImGui_ImplWin32_Init(DXApplication::Instance->MainWnd());
-    ImGui_ImplDX11_Init(DXApplication::Instance->GetDXDevice().Get(), DXApplication::Instance->GetDXContext().Get());
+    ImGui_ImplWin32_Init(wnd);
+    ImGui_ImplDX11_Init(pDevice, pDeviceContext);
     
 
     InitTheme();
@@ -82,6 +82,49 @@ void EditorUI::NewFrame()
 }
 
 #define DXInstance DXApplication::Instance
+
+constexpr float movementSpeed = 4.2f;
+constexpr float mouseSpeed = 0.1333f;
+
+void EditorUI::HandleInput(float deltaTime) {
+	if (ImGui::IsKeyDown(ImGuiKey_MouseRight)) {
+
+		vec2f delta = InputSystem::delta;
+
+		game->m_camera->mRot.y += delta.x * mouseSpeed;
+		game->m_camera->mRot.x += delta.y * mouseSpeed;
+
+		if (ImGui::IsKeyDown(ImGuiKey_W)) {
+			game->m_camera->mPos += game->m_camera->mForward * movementSpeed * deltaTime;
+		}
+		if (ImGui::IsKeyDown(ImGuiKey_S)) {
+			game->m_camera->mPos -= game->m_camera->mForward * movementSpeed * deltaTime;
+		}
+		if (ImGui::IsKeyDown(ImGuiKey_D)) {
+			game->m_camera->mPos += game->m_camera->mRight * movementSpeed * deltaTime;
+		}
+		if (ImGui::IsKeyDown(ImGuiKey_A)) {
+			game->m_camera->mPos -= game->m_camera->mRight * movementSpeed * deltaTime;
+		}
+	}
+	else
+	{
+		if (ImGui::IsKeyPressed(ImGuiKey_T))
+		{
+			gizmoType = 7;
+		}
+
+		if (ImGui::IsKeyPressed(ImGuiKey_R))
+		{
+			gizmoType = 120;
+		}
+
+		if (ImGui::IsKeyPressed(ImGuiKey_S))
+		{
+			gizmoType = 896;
+		}
+	}
+}
 
 void EditorUI::OnUpdate(float deltaTime)
 {
@@ -155,53 +198,18 @@ void EditorUI::OnUpdate(float deltaTime)
 	}
 	ImGui::EndMenuBar();
 	ImGui::End();
-
-	constexpr float movementSpeed = 4.2f;
-	constexpr float mouseSpeed = 0.1333f;
-
-	if (ImGui::IsKeyDown(ImGuiKey_MouseRight)) {
-
-		vec2f delta = InputSystem::delta;
-
-		game->m_camera->mRot.y += delta.x * mouseSpeed;
-		game->m_camera->mRot.x += delta.y * mouseSpeed;
-
-		if (ImGui::IsKeyDown(ImGuiKey_W)) {
-			game->m_camera->mPos += game->m_camera->mForward * movementSpeed * deltaTime;
-		}
-		if (ImGui::IsKeyDown(ImGuiKey_S)) {
-			game->m_camera->mPos -= game->m_camera->mForward * movementSpeed * deltaTime;
-		}
-		if (ImGui::IsKeyDown(ImGuiKey_D)) {
-			game->m_camera->mPos += game->m_camera->mRight * movementSpeed * deltaTime;
-		}
-		if (ImGui::IsKeyDown(ImGuiKey_A)) {
-			game->m_camera->mPos -= game->m_camera->mRight * movementSpeed * deltaTime;
-		}
-	}
-	else
-	{
-		if (ImGui::IsKeyPressed(ImGuiKey_T))
-		{
-			gizmoType = 7;
-		}
-
-		if (ImGui::IsKeyPressed(ImGuiKey_R))
-		{
-			gizmoType = 120;
-		}
-
-		if (ImGui::IsKeyPressed(ImGuiKey_S))
-		{
-			gizmoType = 896;
-		}
-	}
+	
 
 	if (ImGui::Begin("Editor")) {
+		if (ImGui::IsWindowFocused()) {
+			HandleInput(deltaTime);
+		}
+
 		DrawViewportMenu();
 		//ImGui::SetItemAllowOverlap();
 
 		ImGui::Image(&rtt->GetShaderResourceView(), ImGui::GetContentRegionAvail());
+
 		//ImVec2 ws = ImGui::GetContentRegionAvail();
 		//ImGui::GetWindowDrawList()->AddImage(
 		//	m_viewportSRV.Get(),

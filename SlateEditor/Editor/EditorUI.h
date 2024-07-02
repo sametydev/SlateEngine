@@ -20,7 +20,7 @@ public:
 	EditorUI();
 	~EditorUI();
 
-	void OnInit() override;
+	void OnInit(HWND wnd, ID3D11Device* pDevice, ID3D11DeviceContext* pDeviceContext) override;
 
 	void NewFrame() override;
 	void OnRender() override;
@@ -31,7 +31,7 @@ public:
 	void ClearViewport(float rgba[4]) override;
 
 	void ResizeViewport(int w, int h) override;
-
+	void HandleInput(float deltaTime);
 	void DrawViewportMenu();
 
 	static EditorUI* Instance;

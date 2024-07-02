@@ -60,13 +60,13 @@ void EntityManager::OnUpdate(float dt,int gameState)
 
 }
 
-void EntityManager::OnRender()
+void EntityManager::OnRender(ID3D11DeviceContext* pDeviceContext)
 {
 	auto RenderableGeometrys = entityRegistar.view<RenderableGeometry>();
 	
 	for (auto entity : RenderableGeometrys)
 	{
-		RenderableGeometrys.get<RenderableGeometry>(entity).OnRender();
+		RenderableGeometrys.get<RenderableGeometry>(entity).OnRender(pDeviceContext);
 	}
 }
 
