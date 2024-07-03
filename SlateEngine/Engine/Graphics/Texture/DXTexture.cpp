@@ -15,14 +15,13 @@ DXTexture::~DXTexture()
 
 void DXTexture::Load(const char* filename, TextureLoaderType type)
 {
-    _NULL_CHECK
     if (type == 0)
     {
-        CreateDDSTextureFromFile(DXApplication::Instance->GetDXDevice().Get(), PathMaker::MakeW(gDXApp->GetWorkingDir(),filename).c_str(), nullptr, mSRV.GetAddressOf());
+        CreateDDSTextureFromFile(DXApplication::Instance->GetDXDevice(), PathMaker::MakeW(gDXApp->GetWorkingDir(),filename).c_str(), nullptr, mSRV.GetAddressOf());
     }
     else
     {
-        CreateWICTextureFromFile(DXApplication::Instance->GetDXDevice().Get(), PathMaker::MakeW(gDXApp->GetWorkingDir(), filename).c_str(), nullptr, mSRV.GetAddressOf());
+        CreateWICTextureFromFile(DXApplication::Instance->GetDXDevice(), PathMaker::MakeW(gDXApp->GetWorkingDir(), filename).c_str(), nullptr, mSRV.GetAddressOf());
     }
 
     ID3D11Resource* res = nullptr;
@@ -45,14 +44,12 @@ void DXTexture::Load(const char* filename, TextureLoaderType type)
 
 void DXTexture::Bind(UINT slot)
 {
-    _NULL_CHECK
     m_slot = slot;
-	DXApplication::Instance->GetDXContext().Get()->PSSetShaderResources(m_slot, 1, mSRV.GetAddressOf());
+	DXApplication::Instance->GetDXContext()->PSSetShaderResources(m_slot, 1, mSRV.GetAddressOf());
 }
 
 void DXTexture::UnBind()
 {
-    _NULL_CHECK
 	ID3D11ShaderResourceView* clearView = nullptr;
-	DXApplication::Instance->GetDXContext().Get()->PSSetShaderResources(m_slot, 1, &clearView);
+	DXApplication::Instance->GetDXContext()->PSSetShaderResources(m_slot, 1, &clearView);
 }

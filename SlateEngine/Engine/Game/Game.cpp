@@ -110,7 +110,7 @@ void Game::OnUpdateScene(float deltaTime)
 
     UpdateGlobalConstantBuffers();
 
-    if (renderWireframe)DXRasterizerState::SetRasterizerState(RasterizerState::CULL_WIREFRAME,GetDXContext().Get());
+    if (renderWireframe)DXRasterizerState::SetRasterizerState(RasterizerState::CULL_WIREFRAME,GetDXContext());
 
     entityManager->OnUpdate(deltaTime,gameState);
 }
@@ -121,7 +121,7 @@ void Game::OnRenderScene()
 {
     BeginClear();
 
-    entityManager->OnRender(GetDXContext().Get());
+    entityManager->OnRender(GetDXContext());
 
     PostClear();
     SwapChainPresent();

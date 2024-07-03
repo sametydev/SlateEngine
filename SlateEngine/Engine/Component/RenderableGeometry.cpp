@@ -102,15 +102,15 @@ void RenderableGeometry::OnRender(ID3D11DeviceContext* pDeviceContext)
     m_vertexShader->UpdateInputLayout();
     m_pixelShader->Bind();
 
-    attachedTexture->Bind();
+    if(attachedTexture)attachedTexture->Bind();
 
     if (ignoreState != nullptr) {
-        if (*ignoreState == false)DXRasterizerState::SetRasterizerState((RasterizerState)cullMode,DXApplication::Instance->GetDXContext().Get());
+        if (*ignoreState == false)DXRasterizerState::SetRasterizerState((RasterizerState)cullMode, pDeviceContext);
     }
 
     pDeviceContext->DrawIndexed(m_indices, 0u, 0u);
 
-    attachedTexture->UnBind();
+    if (attachedTexture)attachedTexture->UnBind();
 }
 
 void RenderableGeometry::OnInit()

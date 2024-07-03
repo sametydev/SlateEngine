@@ -113,7 +113,7 @@ bool DXApplication::OnInit()
     if (!InitializeGraphics())
         return false;
 
-    DXRasterizerState::Initialize(GetDXDevice().Get(), GetDXContext().Get(), bEnableMsaa);
+    DXRasterizerState::Initialize(GetDXDevice(), GetDXContext(), bEnableMsaa);
     m_d3dContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
     if (!IS_COOKED) {

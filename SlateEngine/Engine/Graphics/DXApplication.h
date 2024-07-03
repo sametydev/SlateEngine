@@ -39,19 +39,19 @@ public:
     inline int GetClientW() { return m_clientW; }
     inline int GetClientH() { return m_clientH; }
 
-    inline ComPtr<ID3D11Device>& GetDXDevice() {
-        return m_d3dDevice;
+    inline ID3D11Device* GetDXDevice() {
+        return m_d3dDevice.Get();
     }
 
-    inline ComPtr<ID3D11DeviceContext>& GetDXContext() {
-        return m_d3dContext;
+    inline ID3D11DeviceContext* GetDXContext() {
+        return m_d3dContext.Get();
     }
 
-    inline ComPtr<IDXGISwapChain>&     GetDXSwapChain() {
-        return m_swapChain;
+    inline IDXGISwapChain*     GetDXSwapChain() {
+        return m_swapChain.Get();
     }
-    inline ComPtr<ID3D11DepthStencilView>& GetDepthStencilView() {
-        return m_depthStencilView;
+    inline ID3D11DepthStencilView* GetDepthStencilView() {
+        return m_depthStencilView.Get();
     }
 
     static DXApplication* Instance;
