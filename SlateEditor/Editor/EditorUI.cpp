@@ -208,14 +208,27 @@ void EditorUI::OnUpdate(float deltaTime)
 		DrawViewportMenu();
 		//ImGui::SetItemAllowOverlap();
 
-		ImGui::Image(&rtt->GetShaderResourceView(), ImGui::GetContentRegionAvail());
+		//ImGui::Image(&rtt->GetShaderResourceView(), ImGui::GetContentRegionAvail());
+		float originalWidth = rtt->GetWidth();
+		float originalHeight = rtt->GetHeight();
 
-		//ImVec2 ws = ImGui::GetContentRegionAvail();
-		//ImGui::GetWindowDrawList()->AddImage(
-		//	m_viewportSRV.Get(),
-		//	ImVec2(ImGui::GetCursorScreenPos()),
-		//	ImVec2(ImGui::GetCursorScreenPos().x + ws.x,
-		//		ImGui::GetCursorScreenPos().y + ws.y));
+		ImVec2 availableRegion = ImGui::GetContentRegionAvail();
+		float regionWidth = availableRegion.x;
+		float regionHeight = availableRegion.y;
+
+		float aspectRatio = originalWidth / originalHeight;
+		float regionAspectRatio = regionWidth / regionHeight;
+
+		float drawWidth, drawHeight;
+		if (regionAspectRatio > aspectRatio) {
+			drawHeight = regionHeight;
+			drawWidth = drawHeight * aspectRatio;
+		}
+		else {
+			drawWidth = regionWidth;
+			drawHeight = drawWidth / aspectRatio;
+		}
+		ImGui::Image(&rtt->GetShaderResourceView(), ImVec2(drawWidth, drawHeight));
 
 
 		if (sceneWindow->selectedEntity && gizmoType != -1)
@@ -224,8 +237,7 @@ void EditorUI::OnUpdate(float deltaTime)
 			ImGuizmo::SetDrawlist();
 			
 			float w = ImGui::GetWindowWidth();
-			//adding 50.f to height because in this calculation its calc all viewport window, not viewport texture, for temporary i need this like solution
-			float h = ImGui::GetWindowHeight() + 50.f;
+			float h = ImGui::GetWindowHeight();
 
 			ImGuizmo::SetRect(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y, w, h);
 
@@ -278,11 +290,11 @@ void EditorUI::OnUpdate(float deltaTime)
 
 		ImGui::Checkbox("WireFrame Mode", &game->renderWireframe);
 
-		_bstr_t gxd(DXApplication::Instance->adapterDesc.Description);
-
-		const char* gcardDesc = gxd;
 		ImGui::Text("Graphics Device : ");
-		ImGui::Text(gcardDesc);
+		ImGui::Text(HWInfo::gpuName.c_str());
+
+		ImGui::Text("SSE Support : ");
+		ImGui::Text(HWInfo::sseSupported ? "Yes" : "False");
 
 	}ImGui::End();
 }

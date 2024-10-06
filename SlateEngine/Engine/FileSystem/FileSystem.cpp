@@ -53,7 +53,7 @@ void FileSystem::InitFWatcher()
             case filewatch::Event::removed:
                 FileSystem::Instance->OnFileRemoved(path);
 
-                FileSystem::Instance->lastRemovedFile = path;
+                FileSystem::Instance->lastRemovedFiles.push_back(path);
                 break;
             case filewatch::Event::modified:
                 FileSystem::Instance->OnFileModified(path);
@@ -166,7 +166,7 @@ void FileSystem::ProcessMetaFile(std::filesystem::path _p)
 void FileSystem::OnFileAdded(std::filesystem::path _p)
 {
     if (!std::filesystem::is_directory(_p)) {
-        if (_p.filename() == lastRemovedFile.filename())
+        if (std::count(lastRemovedFiles.begin(), lastRemovedFiles.end(), _p.filename()) > 0)
         {
             // Probably (?) this file is moved!
             // Actually in this method, im not sure file is %100 moved but, generally works xD
@@ -178,12 +178,20 @@ void FileSystem::OnFileAdded(std::filesystem::path _p)
 
                 }
             }*/
+
+
+            //Removing element in last removed files
+            auto it = std::find(lastRemovedFiles.begin(), lastRemovedFiles.end(),
+                _p.filename());
+
+            if (it != lastRemovedFiles.end()) {
+                lastRemovedFiles.erase(it);
+            }
         }
         else
         {
             ImportFile(_p);
         }
-        lastRemovedFile = "";
     }
 }
 

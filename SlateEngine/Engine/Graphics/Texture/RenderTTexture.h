@@ -28,5 +28,8 @@ public:
 	void SetAsRendererTarget();
 	void ClearRenderTarget(const float* bgColor);
 	ID3D11ShaderResourceView& GetShaderResourceView() { return *textureSRV.Get(); }
+	int GetWidth() { return width; };
+	int GetHeight() { return height; };
+
 };
 

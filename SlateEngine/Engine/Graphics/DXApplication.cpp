@@ -422,6 +422,12 @@ bool DXApplication::InitializeGraphics()
 
     dxgiFactory1->MakeWindowAssociation(hWindow, DXGI_MWA_NO_ALT_ENTER | DXGI_MWA_NO_WINDOW_CHANGES);
     dxgiAdapter->GetDesc(&adapterDesc);
+
+    _bstr_t __desc_w(adapterDesc.Description);
+    const char *__desc_cc = __desc_w;
+    
+    HWInfo::initialize(__desc_cc);
+
     OnResize();
 
     return true;

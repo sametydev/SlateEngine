@@ -12,6 +12,9 @@
 
 #include <SlateEngine/Engine/Editor/EditorSystem.h>
 
+#include <comdef.h>
+#include <cstdio>
+
 #define gDXContext DXApplication::Instance->GetDXContext()
 #define gDXDevice DXApplication::Instance->GetDXDevice()
 #define gDXApp DXApplication::Instance

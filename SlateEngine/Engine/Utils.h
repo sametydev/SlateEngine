@@ -14,6 +14,8 @@
 
 #define RETURN_IF_COOKED if (IS_COOKED) {return;};
 
+#include "Core/HWInfo.h"
+
 enum GameState {
     NONE = 0,
     PLAYING,

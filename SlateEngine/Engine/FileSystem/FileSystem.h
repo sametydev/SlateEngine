@@ -79,7 +79,8 @@ public:
 	}
 
 private:
-	std::filesystem::path lastRemovedFile;
+	std::vector
+	<std::filesystem::path> lastRemovedFiles;
 
 private:
 	friend class AssetStreamer;
