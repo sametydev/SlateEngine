@@ -52,7 +52,7 @@ bool Game::OnInit()
 
         RenderableGeometry& r = testEntity->GetComponent<RenderableGeometry>();
         //r.SetCullMode(CULL_BACK, &renderWireframe);
-        r.SetTexture(m_crateTexture);
+        r.GetMaterial().AddTexture(m_crateTexture);
 
         testEntity2 = new Entity();
 
@@ -61,7 +61,7 @@ bool Game::OnInit()
 
         RenderableGeometry& r2 = testEntity2->GetComponent<RenderableGeometry>();
         //r2.SetCullMode(CULL_BACK, &renderWireframe);
-        r2.SetTexture(m_grassTexture.get());
+        r2.GetMaterial().AddTexture(m_grassTexture.get());
         r2.GetTransform().SetScale({ 10.f, 0.2f, 10.f });
     }
 

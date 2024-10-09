@@ -149,6 +149,7 @@
   <ItemGroup>
     <ClCompile Include="Engine\Core\AssetStreamer.cpp" />
     <ClCompile Include="Engine\Component\Material.cpp" />
+    <ClCompile Include="Engine\Core\HWInfo.cpp" />
     <ClCompile Include="Engine\Editor\EditorSystem.cpp" />
     <ClCompile Include="Engine\Component\RenderableGeometry.cpp" />
     <ClCompile Include="Engine\Component\Camera.cpp" />
@@ -172,7 +173,6 @@
     <ClCompile Include="Engine\Input\InputSystem.cpp" />
     <ClCompile Include="Engine\FileSystem\FileSystem.cpp" />
     <ClCompile Include="Engine\Input\Gamepad.cpp" />
-    <ClCompile Include="Engine\Core\HWInfo.cpp" />
     <ClCompile Include="LibarySources\ConvertUTF.c" />
     <ClCompile Include="LibarySources\DDSTextureLoader11.cpp" />
     <ClCompile Include="LibarySources\GraphEditor.cpp" />

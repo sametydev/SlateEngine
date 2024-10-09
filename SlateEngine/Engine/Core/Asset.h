@@ -4,6 +4,7 @@
 class Asset {
 public:
 	Asset() = default;
+	virtual ~Asset() {};
 
 	SMetaData& GetMetaData() { return assetMetaData; };
 private:

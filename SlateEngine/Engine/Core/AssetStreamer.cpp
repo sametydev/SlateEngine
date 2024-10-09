@@ -14,7 +14,7 @@ AssetStreamer::~AssetStreamer()
 {
 }
 
-DemoAsset* AssetStreamer::RequestAsset(const char* assetPath)
+Asset* AssetStreamer::RequestAsset(const char* assetPath)
 {
 	for (auto& it : FileSystem::Instance->metaMap)
 	{
@@ -40,6 +40,12 @@ DemoAsset* AssetStreamer::RequestAsset(const char* assetPath)
 		}
 	}
     return nullptr;
+}
+
+Asset* AssetStreamer::RequestAssetByUUID(const char* uuid)
+{
+	auto it = assetPool.find(uuid);
+	return it != assetPool.end() ? it->second : nullptr;
 }
 
 void AssetStreamer::ResetPool()

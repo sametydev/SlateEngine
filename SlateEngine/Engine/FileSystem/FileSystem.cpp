@@ -138,12 +138,6 @@ void FileSystem::ProcessMetaFile(std::filesystem::path _p)
         ini.SetValue("Asset", "type", GetExtFromP(_p).c_str());
         ini.SetValue("Asset", "path", _p.string().c_str());
 
-        switch (GetFileTypeFromExt(_p.extension()))
-        {
-            case FILE_TYPE::TEXTURE_DDS:
-                break;
-        }
-
         std::string data;
         ini.Save(data);
 

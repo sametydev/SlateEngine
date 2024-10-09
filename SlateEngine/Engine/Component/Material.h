@@ -2,6 +2,8 @@
 #include <SlateEngine/Engine/Graphics/Shader/IShader.h>
 #include <SlateEngine/Engine/Graphics/Texture/DXTexture.h>
 #include <SlateEngine/Engine/Component/Component.h>
+#include <SlateEngine/Engine/Graphics/Shader/DXPixelShader.h>
+#include <SlateEngine/Engine/Graphics/Shader/DXVertexShader.h>
 #include <vector>
 struct MaterialData
 {
@@ -46,15 +48,22 @@ public:
     void OnInternalInit() override;
     inline void AddShader(IShader* shader) {
         shaders.emplace_back(shader);
+        /*
+        if (auto* vertexShader = dynamic_cast<DXVertexShader*>(shader)) {
+            vertexShaders.emplace_back(shader);
+        }
+        else if (auto* pixelShader = dynamic_cast<DXPixelShader*>(shader)) {
+            pixelShaders.emplace_back(shader);
+        }
+        else {
+            DXTraceW(__FILEW__, (DWORD)__LINE__, 0, L"Not Implemented or Unsupported Shader Type", true);
+        }
+        */
     }
 
-    inline void AddTexture(DXTexture* tex) {
-        textures.emplace_back(tex);
-    }
+    void AddTexture(DXTexture* tex);
 
-    inline void BindPipeline() {
-
-    }
+    void BindPipeline();
 
     template<class T>
     void Set(std::string_view name, const T& value)
@@ -168,6 +177,8 @@ public:
     void OnInit() override;
     void OnShutdown() override;
 
+    void LateRender();
+
 private:
     MaterialProperty TryGetMProp(std::string_view name)
     {
@@ -181,6 +192,8 @@ private:
     MaterialData matData;
 protected:
     std::vector<IShader*> shaders;
+    //std::vector<DXVertexShader*> vertexShaders;
+    //std::vector<DXPixelShader*> pixelShaders;
     std::vector<DXTexture*> textures;
 
     std::unordered_map<std::string_view, MaterialProperty> properties;

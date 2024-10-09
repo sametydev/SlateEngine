@@ -1,7 +1,6 @@
 #pragma once
 #include <SlateEngine/Engine/FileSystem/FileSystem.h>
-
-struct DemoAsset{};
+#include <SlateEngine/Engine/Core/Asset.h>
 
 class AssetStreamer
 {
@@ -11,8 +10,26 @@ public:
 	~AssetStreamer();
 
 
-	DemoAsset* RequestAsset(const char* assetPath);
-	
+	void AddAssetToPool(std::string uuid, Asset* asset) {
+		assetPool[uuid] = asset;
+	};
+
+	Asset* RequestAsset(const char* assetPath);
+	Asset* RequestAssetByUUID(const char* uuid);
+
+	template <typename T>
+	T* RequestAssetByUUID(const char* uuid) {
+		auto it = assetPool.find(uuid);
+		Asset* asset = it != assetPool.end() ? it->second : nullptr;
+
+		if (asset == nullptr) {
+			return nullptr;
+		}
+
+		T* typedAsset = dynamic_cast<T*>(asset);
+		return typedAsset;
+	}
+
 	void ResetPool();
 
 
@@ -20,6 +37,10 @@ public:
 
 private:
 	friend class FileSystem;
+	friend class Asset;
 	bool bDynamicAssetLoading = true;
+
+	std::unordered_map<std::string, Asset*> assetPool;
+
 };
 

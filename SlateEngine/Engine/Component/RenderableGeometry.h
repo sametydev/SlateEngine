@@ -24,7 +24,6 @@ public:
     template<class VertexType, class IndexType>
     void SetBuffer(const MeshData<VertexType, IndexType>& meshData);
 
-    void SetTexture(DXTexture* texture);
     void SetCullMode(RasterizerState state, bool* ignoreState = 0);
 
     void OnUpdate(float deltaTime) override;
@@ -53,8 +52,6 @@ private:
     DXPixelShader* m_pixelShader             = nullptr;
 
     UINT m_indices                           = 0;
-
-    DXTexture* attachedTexture = nullptr;
 
     int cullMode = 0;
     bool* ignoreState;

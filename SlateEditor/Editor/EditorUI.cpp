@@ -291,7 +291,7 @@ void EditorUI::OnUpdate(float deltaTime)
 		ImGui::Checkbox("WireFrame Mode", &game->renderWireframe);
 
 		ImGui::Text("Graphics Device : ");
-		ImGui::Text(HWInfo::gpuName.c_str());
+		ImGui::Text(HWInfo::gpuName_cstr);
 
 		ImGui::Text("SSE Support : ");
 		ImGui::Text(HWInfo::sseSupported ? "Yes" : "False");

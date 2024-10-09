@@ -4,7 +4,6 @@
 
 void RenderableGeometry::OnInternalInit()
 {
-
     SetBuffer(BuiltInMesh::CreateBox<VertexPNT>());
 
     m_constantBuffer = std::make_unique<DXConstantBuffer>();
@@ -24,6 +23,7 @@ void RenderableGeometry::OnInternalInit()
     m_material->Set("$Diffuse",  vec4f(1.0f, 1.0f, 1.0f, 1.0f));
     m_material->Set("$Specular", vec4f(0.1f, 0.1f, 0.1f, 5.0f));
 
+    //----------------------------- TEMPORARY CODE --------------------------------------------
     //Create Vertex Shader 3D
     ShaderInformation vertexShaderInfo{};
     vertexShaderInfo.csoName = "Shaders\\TexturedLit\\Lit3DVS.cso";
@@ -34,7 +34,6 @@ void RenderableGeometry::OnInternalInit()
     m_vertexShader->CreateInputLayout(VertexPNT::inputLayout, ARRAYSIZE(VertexPNT::inputLayout));
 
 
-
     ShaderInformation pixelShaderInfo{};
     pixelShaderInfo.csoName = "Shaders\\TexturedLit\\Lit3DPS.cso";
     pixelShaderInfo.hlslFile = "Shaders\\TexturedLit\\Lit3DPS.hlsl";
@@ -43,14 +42,17 @@ void RenderableGeometry::OnInternalInit()
     //Create Pixel Shader 3D
     m_pixelShader = ShaderCache::CreatePixelShader(pixelShaderInfo);
 
+    //----------------------------- TEMPORARY CODE --------------------------------------------
+
+
     ConstantBufferDesc cbd{};
     cbd.cbSize = sizeof(ObjectConstantBuffer);
     m_constantBuffer->Create(cbd);
     m_constantBuffer->BindVS(BUFFER_ID::OBJECT_CONSTANT_BUFFER_ID);
     m_constantBuffer->BindPS(BUFFER_ID::OBJECT_CONSTANT_BUFFER_ID);
 
-    m_vertexShader->Bind();
-    m_pixelShader->Bind();
+    m_material->AddShader(m_vertexShader);
+    m_material->AddShader(m_pixelShader);
 
     buffers.emplace_back(m_vertexBuffer);
     buffers.emplace_back(m_indexBuffer);
@@ -64,13 +66,6 @@ void RenderableGeometry::OnInternalInit()
     OnUpdate(0);
 }
 
-void RenderableGeometry::SetTexture(DXTexture* texture)
-{
-    if (texture != nullptr) {
-        texture->Bind(0);
-        attachedTexture = texture;
-    }
-}
 
 
 void RenderableGeometry::OnUpdate(float deltaTime)
@@ -98,19 +93,17 @@ void RenderableGeometry::OnRender(ID3D11DeviceContext* pDeviceContext)
         buffers[i]->BindPipeline(BUFFER_ID::OBJECT_CONSTANT_BUFFER_ID);
     }
 
-    m_vertexShader->Bind();
-    m_vertexShader->UpdateInputLayout();
-    m_pixelShader->Bind();
+    //m_vertexShader->Bind();
+    //m_vertexShader->UpdateInputLayout();
+    //m_pixelShader->Bind();
 
-    if(attachedTexture)attachedTexture->Bind();
+    m_material->BindPipeline();
 
     if (ignoreState != nullptr) {
         if (*ignoreState == false)DXRasterizerState::SetRasterizerState((RasterizerState)cullMode, pDeviceContext);
     }
 
     pDeviceContext->DrawIndexed(m_indices, 0u, 0u);
-
-    if (attachedTexture)attachedTexture->UnBind();
 }
 
 void RenderableGeometry::OnInit()

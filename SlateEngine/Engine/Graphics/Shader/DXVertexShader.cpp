@@ -14,6 +14,7 @@ void DXVertexShader::Bind()
 {
 	_NULL_CHECK
 	Game::Instance->GetDXContext()->VSSetShader(m_vertexShader.Get(), nullptr, 0);
+	UpdateInputLayout();
 }
 
 void DXVertexShader::Compile(const WCHAR* csoName, const WCHAR* hlslName, LPCSTR entryName)
