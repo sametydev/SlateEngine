@@ -35,7 +35,7 @@ void RenderTTexture::ClearRenderTarget(const float* colour)
 {
 	DXInstance->GetDXContext()->ClearRenderTargetView(renderTargetView.Get(), colour);
 
-	if (static_cast<RTTType>(flags) & static_cast<RTTType>(RenderTextureCreateFlags::Depth))DXInstance->GetDXContext()->ClearDepthStencilView(depthStencilView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0.0f);
+	if (static_cast<RTTType>(flags) & static_cast<RTTType>(RenderTextureCreateFlags::Depth))DXInstance->GetDXContext()->ClearDepthStencilView(depthStencilView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 }
 
 

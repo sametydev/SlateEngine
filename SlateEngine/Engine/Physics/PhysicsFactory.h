@@ -17,7 +17,8 @@ public:
 	physx::PxFoundation* GetPXFoundation() { return mFoundation; };
 
 private:
-	void InitializeDebugger(physx::PxFoundation* foundation);
+	physx::PxPvd* InitializeDebugger(physx::PxFoundation* foundation);
+
 
 	physx::PxDefaultAllocator		mDefaultAllocatorCallback;
 	physx::PxDefaultErrorCallback	mDefaultErrorCallback;

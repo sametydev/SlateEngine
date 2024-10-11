@@ -16,7 +16,7 @@ void PhysicsFactory::Init()
 	mFoundation = PxCreateFoundation(PX_PHYSICS_VERSION, mDefaultAllocatorCallback, mDefaultErrorCallback);
 	__CHECK(mFoundation, "PxCreateFoundation failed!");
 
-	InitializeDebugger(mFoundation);
+	mPvd = InitializeDebugger(mFoundation);
 
 	//abs(100 * -9.81f) == gravity * 1s
 	mToleranceScale.speed = 981;
@@ -35,16 +35,13 @@ void PhysicsFactory::Update(float dt)
 {
 }
 
-void PhysicsFactory::InitializeDebugger(physx::PxFoundation* foundation)
+physx::PxPvd* PhysicsFactory::InitializeDebugger(physx::PxFoundation* foundation)
 {
-	if (mPvd) {
-		MessageBox(0, L"Debugger Already Initialized!", L"Error", MB_ICONEXCLAMATION);
-		return;
-	}
-
-	mPvd = PxCreatePvd(*foundation);
+	physx::PxPvd* _pvd = nullptr;
+	_pvd = PxCreatePvd(*foundation);
 	physx::PxPvdTransport* transport = physx::PxDefaultPvdSocketTransportCreate(PHYSX_VD_DEFAULT_HOST,
 		PHYSX_VD_DEFAULT_PORT, 10);
 
-	mPvd->connect(*transport, physx::PxPvdInstrumentationFlag::eALL);
+	_pvd->connect(*transport, physx::PxPvdInstrumentationFlag::eALL);
+	return _pvd;
 }
