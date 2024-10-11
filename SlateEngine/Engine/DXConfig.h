@@ -48,9 +48,21 @@ std::cout << "\033[1;31m**************************\n" <<"Error on this file : \n
         }														\
     }
 #endif
+#ifndef __CHECK
+#define __CHECK(x,msg)												\
+    {															\
+        if(!x)											\
+        {														\
+            DXTraceW(__FILEW__, (DWORD)__LINE__, 0x80004005, L#msg, true);\
+        }														\
+    }
+#endif
 #else
 #ifndef HR
 #define HR(x) (x)
+#endif
+#ifndef __CHECK
+#define __CHECK(x,msg) (x,msg)
 #endif 
 #endif
 

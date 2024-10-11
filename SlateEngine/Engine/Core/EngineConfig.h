@@ -12,3 +12,8 @@ constexpr int MAX_FPS        = 144;
 constexpr bool VSYNC_ENABLED = true;
 
 constexpr const char* META_FILE_EXT = ".smeta";
+
+constexpr int PHYSX_VD_DEFAULT_PORT = 5425;
+constexpr const char* PHYSX_VD_DEFAULT_HOST = "127.0.0.1";
+
+constexpr const int GRAVITY_SCALE = -9.81f;

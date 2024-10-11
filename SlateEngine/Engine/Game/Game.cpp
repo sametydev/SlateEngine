@@ -1,6 +1,7 @@
 ﻿#include <SlateEngine/Engine/Game/Game.h>
 #include <SlateEngine/Engine/Input/InputSystem.h>
 #include <ImGuizmo.h>
+#include <SlateEngine/Engine/Physics/PhysicsFactory.h>
 
 Game* Game::Instance = nullptr;
 
@@ -31,6 +32,8 @@ bool Game::OnInit()
     m_camera->SetPosition(vec3f(0, 0, -10));
 
     entityManager = std::make_shared<EntityManager>();
+    PhysicsFactory* pfactory = new PhysicsFactory();
+    pfactory->Init();
 
     //Temporary Game Scope
     {
