@@ -76,14 +76,13 @@ void EntityManager::SendSignalToComponents(ECSignalCommand cmd)
 
 	auto renderableGeometrys = entityRegistar.view<RenderableGeometry>();
 	auto materials = entityRegistar.view<MaterialComponent>();
-
 	auto scripts = entityRegistar.view<LuaScript>();
 
 	switch (cmd)
 	{
 	case ON_INIT:
 
-			for (auto entity : transforms,renderableGeometrys,scripts, materials)
+			for (auto entity : transforms,renderableGeometrys,scripts)
 			{
 				transforms.get<Transform>(entity).OnInit();
 				scripts.get<LuaScript>(entity).OnInit();

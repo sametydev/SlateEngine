@@ -44,7 +44,6 @@ void MaterialComponent::OnUpdate(float deltaTime)
 
 void MaterialComponent::OnInit()
 {
-
 }
 
 void MaterialComponent::OnShutdown()

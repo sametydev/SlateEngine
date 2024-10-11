@@ -81,8 +81,6 @@ void EditorUI::NewFrame()
 
 }
 
-#define DXInstance DXApplication::Instance
-
 constexpr float movementSpeed = 4.2f;
 constexpr float mouseSpeed = 0.1333f;
 
@@ -207,8 +205,11 @@ void EditorUI::OnUpdate(float deltaTime)
 
 		DrawViewportMenu();
 		//ImGui::SetItemAllowOverlap();
-
-		//ImGui::Image(&rtt->GetShaderResourceView(), ImGui::GetContentRegionAvail());
+		/*
+		ImVec2 win_region = ImGui::GetContentRegionAvail();
+		rtt->Resize(win_region.x,win_region.y);
+		ImGui::Image(&rtt->GetShaderResourceView(), ImGui::GetContentRegionAvail());
+		*/
 		float originalWidth = rtt->GetWidth();
 		float originalHeight = rtt->GetHeight();
 
@@ -290,11 +291,9 @@ void EditorUI::OnUpdate(float deltaTime)
 
 		ImGui::Checkbox("WireFrame Mode", &game->renderWireframe);
 
-		ImGui::Text("Graphics Device : ");
-		ImGui::Text(HWInfo::gpuName_cstr);
+		ImGui::Text("Graphics Device : %s", HWInfo::gpuName_cstr);
 
-		ImGui::Text("SSE Support : ");
-		ImGui::Text(HWInfo::sseSupported ? "Yes" : "False");
+		ImGui::Text("SSE Support : %s", HWInfo::sseSupported ? "Yes" : "False");
 
 	}ImGui::End();
 }
@@ -431,7 +430,6 @@ void EditorUI::InitTheme()
 
 void EditorUI::OnRender()
 {
-
     ImGui::Render();
 	ImGui::UpdatePlatformWindows();
     ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
