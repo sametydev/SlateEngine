@@ -4,7 +4,7 @@ constexpr int MIN_WIN_HEIGHT	= 800;
 constexpr int MIN_WIN_WIDTH		= 600;
 
 //Its for releasing game, Excluding debug features etc.
-constexpr bool IS_COOKED     = false;
+constexpr bool IS_COOKED     = true;
 
 //Max FPS for VSYNC
 constexpr int MAX_FPS        = 144;
