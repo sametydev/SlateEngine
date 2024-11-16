@@ -24,8 +24,6 @@ public:
     template<class VertexType, class IndexType>
     void SetBuffer(const MeshData<VertexType, IndexType>& meshData);
 
-    void SetCullMode(RasterizerState state, bool* ignoreState = 0);
-
     void OnUpdate(float deltaTime) override;
     void OnRender(ID3D11DeviceContext* pDeviceContext) override;
 
@@ -40,23 +38,19 @@ public:
 private:
     MaterialComponent* m_material;
 
-    DXVertexBuffer* m_vertexBuffer;
-    DXIndexBuffer* m_indexBuffer;
+    std::unique_ptr<DXVertexBuffer> m_vertexBuffer;
+    std::unique_ptr<DXIndexBuffer> m_indexBuffer;
     
     ObjectConstantBuffer   cbData{};
-    std::unique_ptr <DXConstantBuffer> m_constantBuffer;
+    std::unique_ptr<DXConstantBuffer> m_constantBuffer;
 
     std::vector<DXBuffer*> buffers;
 
-    DXVertexShader* m_vertexShader           = nullptr;
-    DXPixelShader* m_pixelShader             = nullptr;
-
     UINT m_indices                           = 0;
 
-    int cullMode = 0;
-    bool* ignoreState;
-
     vec4f *mat_ambient, *mat_diff, *mat_spec;
+
+    Transform* mTransform = nullptr;
 };
 
 template<class VertexType, class IndexType>
@@ -71,15 +65,8 @@ inline void RenderableGeometry::SetBuffer(const MeshData<VertexType, IndexType>&
     vbd.cbSize   = (UINT)meshData.vVertex.size() * sizeof(VertexPNT);
     vbd.cbStride = sizeof(VertexPNT);
     vbd.pData    = meshData.vVertex.data();
-
-    if (!bStaticBuffer) {
-        if (m_vertexBuffer == nullptr)m_vertexBuffer = new DXVertexBuffer();
-        m_vertexBuffer->Create(vbd);
-    }
-    else
-    {
-        m_vertexBuffer = BufferCache::CreateVertexBuffer(vbd);
-    }
+    if (m_vertexBuffer == nullptr)m_vertexBuffer = std::make_unique<DXVertexBuffer>();
+    m_vertexBuffer->Create(vbd);
     m_vertexBuffer->BindPipeline(0);
 
     //Storing indices count
@@ -89,12 +76,7 @@ inline void RenderableGeometry::SetBuffer(const MeshData<VertexType, IndexType>&
     IndexBufferDesc ibd{};
     ibd.cbSize   = m_indices * sizeof(DWORD);
     ibd.pData    = meshData.vIndices.data();
-    if (!bStaticBuffer) {
-        if(m_indexBuffer == nullptr)m_indexBuffer = new DXIndexBuffer();
-        m_indexBuffer->Create(ibd);
-    }
-    else {
-        m_indexBuffer = BufferCache::CreateIndexBuffer(ibd);
-    }
+    if(m_indexBuffer == nullptr)m_indexBuffer = std::make_unique<DXIndexBuffer>();
+    m_indexBuffer->Create(ibd);
     m_indexBuffer->BindPipeline(0);
 }

@@ -22,14 +22,17 @@ Game::~Game()
 bool Game::OnInit()
 {
     if (!DXApplication::OnInit()) { return 0; }
-    if (!IS_COOKED)editorSystem->ResizeViewport(m_clientW, m_clientH);
+    m_camera = new Camera(65.f, GetAspectRatio(), 0.01f, 1000.0f);
+    m_camera->SetPosition(vec3f(0, 0, -10));
+
+    if (!IS_COOKED) {
+        editorSystem->OnInit(hWindow, m_d3dDevice.Get(), m_d3dContext.Get());
+        editorSystem->ResizeViewport(m_clientW, m_clientH);
+    }
 
 
     fileSystem = std::make_shared<FileSystem>();
     fileSystem->Init();
-
-    m_camera = new Camera(65.f, GetAspectRatio(), 0.01f, 1000.0f);
-    m_camera->SetPosition(vec3f(0, 0, -10));
 
     entityManager = std::make_shared<EntityManager>();
     PhysicsFactory* pfactory = new PhysicsFactory();
@@ -118,7 +121,7 @@ void Game::OnUpdateScene(float deltaTime)
     entityManager->OnUpdate(deltaTime,gameState);
 }
 
-float Game::clear[4] = {0.2f, 0.2f, 0.2f, 1.0f};
+float Game::clear[4] = {0.05f, 0.05f, 0.05f, 1.0f};
 
 void Game::OnRenderScene()
 {

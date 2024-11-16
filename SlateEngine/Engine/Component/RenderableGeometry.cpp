@@ -4,10 +4,10 @@
 
 void RenderableGeometry::OnInternalInit()
 {
+    mTransform = connectedEntity->GetComponentAsPointer<Transform>();
     SetBuffer(BuiltInMesh::CreateBox<VertexPNT>());
 
     m_constantBuffer = std::make_unique<DXConstantBuffer>();
-
 
     cbData.world = mat4x4();
     cbData.worldInverseTranspose = mat4x4();
@@ -23,42 +23,19 @@ void RenderableGeometry::OnInternalInit()
     m_material->Set("$Diffuse",  vec4f(1.0f, 1.0f, 1.0f, 1.0f));
     m_material->Set("$Specular", vec4f(0.1f, 0.1f, 0.1f, 5.0f));
 
-    //----------------------------- TEMPORARY CODE --------------------------------------------
-    //Create Vertex Shader 3D
-    ShaderInformation vertexShaderInfo{};
-    vertexShaderInfo.csoName = "Shaders\\TexturedLit\\Lit3DVS.cso";
-    vertexShaderInfo.hlslFile = "Shaders\\TexturedLit\\Lit3DVS.hlsl";
-    vertexShaderInfo.entryPoint = "main";
-
-    m_vertexShader = ShaderCache::CreateVertexShader(vertexShaderInfo);
-    m_vertexShader->CreateInputLayout(VertexPNT::inputLayout, ARRAYSIZE(VertexPNT::inputLayout));
-
-
-    ShaderInformation pixelShaderInfo{};
-    pixelShaderInfo.csoName = "Shaders\\TexturedLit\\Lit3DPS.cso";
-    pixelShaderInfo.hlslFile = "Shaders\\TexturedLit\\Lit3DPS.hlsl";
-    pixelShaderInfo.entryPoint = "main";
-
-    //Create Pixel Shader 3D
-    m_pixelShader = ShaderCache::CreatePixelShader(pixelShaderInfo);
-
-    //----------------------------- TEMPORARY CODE --------------------------------------------
-
-
     ConstantBufferDesc cbd{};
     cbd.cbSize = sizeof(ObjectConstantBuffer);
     m_constantBuffer->Create(cbd);
     m_constantBuffer->BindVS(BUFFER_ID::OBJECT_CONSTANT_BUFFER_ID);
     m_constantBuffer->BindPS(BUFFER_ID::OBJECT_CONSTANT_BUFFER_ID);
 
-    m_material->AddShader(m_vertexShader);
-    m_material->AddShader(m_pixelShader);
+    m_material->AddShader("Lit3DVS");
+    m_material->AddShader("Lit3DPS");
 
-    buffers.emplace_back(m_vertexBuffer);
-    buffers.emplace_back(m_indexBuffer);
+    buffers.emplace_back(m_vertexBuffer.get());
+    buffers.emplace_back(m_indexBuffer.get());
     buffers.emplace_back(m_constantBuffer.get());
 
-    SetCullMode((RasterizerState)0);
     //Calling Update once
     mat_ambient = m_material->GetPointer<vec4f>("$Ambient");
     mat_diff    = m_material->GetPointer<vec4f>("$Diffuse");
@@ -70,8 +47,8 @@ void RenderableGeometry::OnInternalInit()
 
 void RenderableGeometry::OnUpdate(float deltaTime)
 {
-    cbData.world = connectedEntity->GetComponent<Transform>().GetGlobal();
-    cbData.worldInverseTranspose = connectedEntity->GetComponent<Transform>().GetGlobal().InverseTranspose();
+    cbData.world = mTransform->GetGlobal();
+    cbData.worldInverseTranspose = mTransform->GetGlobal().InverseTranspose();
 
     cbData.material.ambient = *mat_ambient;
     cbData.material.diffuse = *mat_diff;
@@ -80,30 +57,15 @@ void RenderableGeometry::OnUpdate(float deltaTime)
     m_constantBuffer->MapAndUnMap(sizeof(ObjectConstantBuffer), &cbData);
 }
 
-void RenderableGeometry::SetCullMode(RasterizerState state, bool* ignoreState)
-{
-    cullMode = state;
-    this->ignoreState = ignoreState;
-}
-
 void RenderableGeometry::OnRender(ID3D11DeviceContext* pDeviceContext)
 {
-    for (size_t i = 0; i < buffers.size(); i++)
+    for (short i = 0; i < buffers.size(); i++)
     {
-        buffers[i]->BindPipeline(BUFFER_ID::OBJECT_CONSTANT_BUFFER_ID);
+        buffers[i]->BindPipeline(0);
     }
-
-    //m_vertexShader->Bind();
-    //m_vertexShader->UpdateInputLayout();
-    //m_pixelShader->Bind();
 
     m_material->BindPipeline();
-
-    if (ignoreState != nullptr) {
-        if (*ignoreState == false)DXRasterizerState::SetRasterizerState((RasterizerState)cullMode, pDeviceContext);
-    }
-
-    pDeviceContext->DrawIndexed(m_indices, 0u, 0u);
+    m_material->OnDraw(pDeviceContext, m_indices);
 }
 
 void RenderableGeometry::OnInit()

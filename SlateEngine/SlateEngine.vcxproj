@@ -105,6 +105,7 @@
     <ClCompile Include="Engine\Component\Transform.cpp" />
     <ClCompile Include="Engine\Graphics\Buffer\BufferCache.cpp" />
     <ClCompile Include="Engine\Graphics\Shader\RenderPassManager.cpp" />
+    <ClCompile Include="Engine\Graphics\Shader\ShaderCache.cpp" />
     <ClCompile Include="Engine\Graphics\Texture\DXTexture.cpp" />
     <ClCompile Include="Engine\Graphics\2D\Components\C2DText.cpp" />
     <ClCompile Include="Engine\Graphics\2D\D2DContext.cpp" />

@@ -49,13 +49,13 @@ void EditorUI::OnInit(HWND wnd, ID3D11Device* pDevice, ID3D11DeviceContext* pDev
 
     InitTheme();
 
-	game = Game::Instance;
-
+	game			= Game::Instance;
+	mainCamera		= game->m_camera;
 
     inspectorWindow = new InspectorWindow();
-	sceneWindow = new SceneHierarchy();
-    light = new LightingSettingsWindow();
-	assetBrowser = new AssetsBrowser();
+	sceneWindow		= new SceneHierarchy();
+    light			= new LightingSettingsWindow();
+	assetBrowser	= new AssetsBrowser();
 
 
     windows.emplace(sceneWindow);
@@ -69,6 +69,7 @@ void EditorUI::OnInit(HWND wnd, ID3D11Device* pDevice, ID3D11DeviceContext* pDev
 
 	inspectorWindow->OnInit();
 	logWindow->AddLog("[Renderer] - DX11(DirectX 11_1) Renderer OnInit");
+
 }
 
 void EditorUI::NewFrame()
@@ -205,11 +206,15 @@ void EditorUI::OnUpdate(float deltaTime)
 
 		DrawViewportMenu();
 		//ImGui::SetItemAllowOverlap();
-		/*
+		
 		ImVec2 win_region = ImGui::GetContentRegionAvail();
-		rtt->Resize(win_region.x,win_region.y);
-		ImGui::Image(&rtt->GetShaderResourceView(), ImGui::GetContentRegionAvail());
-		*/
+
+		mainCamera->SetAspectRatio(win_region.x / win_region.y);
+		game->FrameBufferConstantObject.proj = mainCamera->GetProjectionMatrix();
+
+		ImGui::Image(&rtt->GetShaderResourceView(), win_region);
+		
+		/*
 		float originalWidth = rtt->GetWidth();
 		float originalHeight = rtt->GetHeight();
 
@@ -230,7 +235,7 @@ void EditorUI::OnUpdate(float deltaTime)
 			drawHeight = drawWidth / aspectRatio;
 		}
 		ImGui::Image(&rtt->GetShaderResourceView(), ImVec2(drawWidth, drawHeight));
-
+		*/
 
 		if (sceneWindow->selectedEntity && gizmoType != -1)
 		{
@@ -313,7 +318,7 @@ void EditorUI::ResizeViewport(int w, int h)
 
 void EditorUI::DrawViewportMenu()
 {
-	ImGui::Begin("Tool");
+	ImGui::Begin("Tools");
 	if (ImGui::Button("PLAY")) { game->SetGameState((GameState)1); }
 	ImGui::SameLine();
 	if (ImGui::Button("PAUSE")) { game->SetGameState((GameState)2); }

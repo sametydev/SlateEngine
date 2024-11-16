@@ -7,6 +7,8 @@
 #include <inc/FileWatcher.hpp>
 #pragma comment(lib, "rpcrt4.lib")
 #include <SlateEngine/Engine/Core/EngineConfig.h>
+#include <SlateEngine/Engine/Graphics/Shader/ShaderCache.h>
+#include <SlateEngine/Engine/Graphics/Vertex.h>
 
 FileSystem* FileSystem::Instance = nullptr;
 
@@ -25,7 +27,7 @@ FileSystem::~FileSystem()
 void FileSystem::Init()
 {
     errorMetaData = new SMetaData();
-    errorMetaData->uuid = "ERROR";
+    errorMetaData->uuid = "";
     errorMetaData->path = "ERROR";
 
     InitFWatcher();
@@ -108,6 +110,28 @@ void FileSystem::ProcessTextureFileWIC(std::filesystem::path _p)
 void FileSystem::ProcessTextureFileDDS(std::filesystem::path _p)
 {
     ProcessMetaFile(_p);
+}
+
+void FileSystem::ProcessShaderFile(std::filesystem::path _p)
+{
+    CSimpleIniA ini;
+    ini.SetUnicode();
+    ini.LoadFile(_p.c_str());
+
+    ShaderInformation sinfo{};
+    sinfo.displayName = ini.GetValue("Shader", "DisplayName");
+    sinfo.csoName = ini.GetValue("Shader", "CSOName");
+    sinfo.hlslFile = ini.GetValue("Shader", "HLSLFile");
+    sinfo.entryPoint = ini.GetValue("Shader", "EntryPoint");
+
+    std::string shaderType(ini.GetValue("Shader", "ShaderType"));
+
+    if (shaderType == "Pixel") {
+        ShaderCache::CreatePixelShader(sinfo);
+    }
+    else if (shaderType == "Vertex") {
+        ShaderCache::CreateVertexShader(sinfo)->CreateInputLayout(VertexPNT::inputLayout, ARRAYSIZE(VertexPNT::inputLayout));
+    }
 }
 
 void FileSystem::ProcessMetaFile(std::filesystem::path _p)
@@ -218,6 +242,9 @@ void FileSystem::ImportFile(std::filesystem::path _p)
             break;
         case FILE_TYPE::TEXTURE_DDS:
             ProcessTextureFileDDS(_p);
+            break;
+        case FILE_TYPE::SHADER:
+            ProcessShaderFile(_p);
             break;
     }
 }

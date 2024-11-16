@@ -7,41 +7,69 @@
 class ShaderCache
 {
 public:
-	static std::unordered_map<const char*, std::shared_ptr<DXVertexShader>> vertexShaders;
-	static std::unordered_map<const char*, std::shared_ptr<DXPixelShader>> pixelShaders;
+	static std::unordered_map<std::string, std::shared_ptr<DXVertexShader>> vertexShaders;
+	static std::unordered_map<std::string, std::shared_ptr<DXPixelShader>> pixelShaders;
 
 
-	[[nodiscard]] inline static DXVertexShader* CreateVertexShader(ShaderInformation info) {
+	inline static DXVertexShader* CreateVertexShader(ShaderInformation info) {
 		std::shared_ptr<DXVertexShader> shader = nullptr;
 
-		auto found = vertexShaders.find(info.hlslFile);
+		auto found = vertexShaders.find(info.displayName);
 		if (found != vertexShaders.end()) {
 			return found->second.get();
 		}
 
 		shader = std::make_shared<DXVertexShader>();
 		shader->Compile(charToWChar(info.csoName), charToWChar(info.hlslFile), info.entryPoint);
-		vertexShaders.insert(std::make_pair(info.hlslFile, shader));
+		vertexShaders.insert(std::make_pair(info.displayName, shader));
 
 		return shader.get();
 	}
 
-	[[nodiscard]] inline static DXPixelShader* CreatePixelShader(ShaderInformation info) {
+	inline static DXPixelShader* CreatePixelShader(ShaderInformation info) {
 		std::shared_ptr<DXPixelShader> shader = nullptr;
 
-		auto found = pixelShaders.find(info.hlslFile);
+		auto found = pixelShaders.find(info.displayName);
 		if (found != pixelShaders.end()) {
 			return found->second.get();
 		}
 
 		shader = std::make_shared<DXPixelShader>();
 		shader->Compile(charToWChar(info.csoName), charToWChar(info.hlslFile), info.entryPoint);
-		pixelShaders.insert(std::make_pair(info.hlslFile, shader));
+		pixelShaders.insert(std::make_pair(info.displayName, shader));
 
 		return shader.get();
 	}
+
+	[[nodiscard]] inline static DXPixelShader* GetPixelShader(const char* name) {
+		auto found = pixelShaders.find(name);
+		if (found != pixelShaders.end()) {
+			return found->second.get();
+		}
+
+		return nullptr;
+	}
+
+	[[nodiscard]] inline static DXVertexShader* GetVertexShader(const char* name) {
+		auto found = vertexShaders.find(name);
+		if (found != vertexShaders.end()) {
+			return found->second.get();
+		}
+
+		return nullptr;
+	}
+
+	[[nodiscard]] inline static IShader* GetShader(const char* name) {
+		auto found = vertexShaders.find(name);
+		if (found != vertexShaders.end()) {
+			return found->second.get();
+		}
+
+		auto found2 = pixelShaders.find(name);
+		if (found2 != pixelShaders.end()) {
+			return found2->second.get();
+		}
+
+		return nullptr;
+	}
 };
-
-std::unordered_map<const char*, std::shared_ptr<DXVertexShader>> ShaderCache::vertexShaders;
-std::unordered_map<const char*, std::shared_ptr<DXPixelShader>> ShaderCache::pixelShaders;
-

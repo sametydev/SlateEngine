@@ -4,7 +4,9 @@
 #include <SlateEngine/Engine/Component/Component.h>
 #include <SlateEngine/Engine/Graphics/Shader/DXPixelShader.h>
 #include <SlateEngine/Engine/Graphics/Shader/DXVertexShader.h>
+#include <SlateEngine/Engine/Graphics/DXRasterizerState.h>
 #include <vector>
+#include <SlateEngine/Engine/Graphics/Shader/ShaderCache.h>
 struct MaterialData
 {
     vec4f ambient;
@@ -46,19 +48,8 @@ public:
     ~MaterialComponent() {};
 
     void OnInternalInit() override;
-    inline void AddShader(IShader* shader) {
-        shaders.emplace_back(shader);
-        /*
-        if (auto* vertexShader = dynamic_cast<DXVertexShader*>(shader)) {
-            vertexShaders.emplace_back(shader);
-        }
-        else if (auto* pixelShader = dynamic_cast<DXPixelShader*>(shader)) {
-            pixelShaders.emplace_back(shader);
-        }
-        else {
-            DXTraceW(__FILEW__, (DWORD)__LINE__, 0, L"Not Implemented or Unsupported Shader Type", true);
-        }
-        */
+    inline void AddShader(const char* shaderName) {
+        shaders.emplace_back(ShaderCache::GetShader(shaderName));
     }
 
     void AddTexture(DXTexture* tex);
@@ -173,6 +164,10 @@ public:
     }
 
     void OnRender(ID3D11DeviceContext* pDeviceContext) override;
+    void OnDraw(ID3D11DeviceContext* pDeviceContext, UINT indices);
+    void inline SetRasterizerState(RasterizerState state) {
+        rs = state;
+    };
     void OnUpdate(float deltaTime) override;
     void OnInit() override;
     void OnShutdown() override;
@@ -192,10 +187,9 @@ private:
     MaterialData matData;
 protected:
     std::vector<IShader*> shaders;
-    //std::vector<DXVertexShader*> vertexShaders;
-    //std::vector<DXPixelShader*> pixelShaders;
     std::vector<DXTexture*> textures;
 
     std::unordered_map<std::string_view, MaterialProperty> properties;
+    RasterizerState rs;
 };
 

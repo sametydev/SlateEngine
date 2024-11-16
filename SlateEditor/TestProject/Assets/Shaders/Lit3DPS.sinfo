@@ -1,0 +1,6 @@
+[Shader]
+DisplayName = Lit3DPS
+ShaderType = Pixel
+EntryPoint = main
+HLSLFile = Shaders\TexturedLit\Lit3DPS.hlsl
+CSOName= Shaders\TexturedLit\Lit3DPS.cso

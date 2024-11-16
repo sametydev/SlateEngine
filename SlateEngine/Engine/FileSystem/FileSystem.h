@@ -45,6 +45,9 @@ public:
 		else if (ext == ".dds") {
 			return FILE_TYPE::TEXTURE_DDS;
 		}
+		else if (ext == ".sinfo") {
+			return FILE_TYPE::SHADER;
+		}
 		return FILE_TYPE::MISC;
 	}
 
@@ -89,6 +92,7 @@ private:
 	void ProcessScriptFile(std::filesystem::path _p);
 	void ProcessTextureFileWIC(std::filesystem::path _p);
 	void ProcessTextureFileDDS(std::filesystem::path _p);
+	void ProcessShaderFile(std::filesystem::path _p);
 	void ProcessMetaFile(std::filesystem::path _p);
 
 	inline std::string GetExtFromP(std::filesystem::path _p)
@@ -106,6 +110,9 @@ private:
 		}
 		else if (_p.extension() == ".dds") {
 			return "TEXTURE";
+		}
+		else if (_p.extension() == ".sinfo") {
+			return "SHADER";
 		}
 		return "MISC";
 	}

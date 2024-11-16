@@ -59,4 +59,5 @@ private:
 	int gizmoType = 7;
 
 	std::unique_ptr<Gamepad> gamepad;
+	Camera* mainCamera = nullptr;
 };

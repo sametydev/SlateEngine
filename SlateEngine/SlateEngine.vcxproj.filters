@@ -156,6 +156,9 @@
     <ClCompile Include="Engine\Physics\PhysicsFactory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Graphics\Shader\ShaderCache.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\DXConfig.h">

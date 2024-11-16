@@ -11,6 +11,7 @@ public:
 	void OnInit() override;
 	void OnDraw() override;
 private:
+	void DrawTransform(const char* label, vec3f& val);
 	const char* windowName;
 	Game* game = nullptr;
 };

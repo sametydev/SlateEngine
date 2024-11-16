@@ -116,10 +116,6 @@ bool DXApplication::OnInit()
     DXRasterizerState::Initialize(GetDXDevice(), GetDXContext(), bEnableMsaa);
     m_d3dContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
-    if (!IS_COOKED) {
-        editorSystem->OnInit(hWindow, m_d3dDevice.Get(), m_d3dContext.Get());
-    }
-
     return true;
 }
 

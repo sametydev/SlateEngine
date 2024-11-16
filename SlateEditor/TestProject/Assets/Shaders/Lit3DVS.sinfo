@@ -1,0 +1,6 @@
+[Shader]
+DisplayName = Lit3DVS
+ShaderType = Vertex
+EntryPoint = main
+HLSLFile = Shaders\TexturedLit\Lit3DVS.hlsl
+CSOName= Shaders\TexturedLit\Lit3DVS.cso

@@ -22,6 +22,8 @@ public:
 	template<typename T>
 	T& GetComponent();
 
+	template<typename T>
+	T* GetComponentAsPointer();
 
 	entt::entity rawEntity;
 
@@ -52,6 +54,12 @@ template<typename T>
 inline T& Entity::GetComponent()
 {
 	return entityRegistar.get<T>(rawEntity);
+}
+template<typename T>
+inline T* Entity::GetComponentAsPointer()
+{
+	if (!HasComponent<T>()) return nullptr;
+	return &entityRegistar.get<T>(rawEntity);
 }
 
 struct EntityName {
