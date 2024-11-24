@@ -2,6 +2,7 @@
 #include <SlateEngine/Engine/Input/InputSystem.h>
 #include <ImGuizmo.h>
 #include <SlateEngine/Engine/Physics/PhysicsFactory.h>
+#include <SlateEngine/Engine/Component/Script.h>
 
 Game* Game::Instance = nullptr;
 
@@ -86,6 +87,58 @@ bool Game::OnInit()
 
     m_frameConstantBuffer->BindPS(BUFFER_ID::FRAME_CONSTANT_BUFFER_ID);
     m_lightConstantBuffer->BindPS(BUFFER_ID::LIGHT_CONSTANT_BUFFER_ID);
+
+    HMODULE hModule = LoadLibrary(L"GamePlugin.dll");
+    if (!hModule) {
+        std::cerr << "DLL yüklenemedi!" << std::endl;
+        MessageBoxA(0,"DLL yüklenemedi!",0,0);
+        return 1;
+    }
+
+    // --- TEMPORARY CODE ---- //
+    // NATIVE SCRIPTING
+    typedef void (*SetGameInstanceFunc)(Game*);
+    typedef std::vector<std::string>(*GetScriptListFunc)();
+    typedef Script* (*CreateScriptFunc)(const char*);
+
+    SetGameInstanceFunc setGameInstance = (SetGameInstanceFunc)GetProcAddress(hModule, "SetGameInstance");
+    if (setGameInstance) {
+        setGameInstance(Game::Instance);
+    }
+
+    GetScriptListFunc getScriptList = (GetScriptListFunc)GetProcAddress(hModule, "GetScriptList");
+    CreateScriptFunc createScript = (CreateScriptFunc)GetProcAddress(hModule, "CreateScript");
+
+    if (!getScriptList || !createScript) {
+        MessageBoxA(0, "Functions are missing in DLL's, Please use core functions", 0, 0);
+        FreeLibrary(hModule);
+        return 1;
+    }
+
+    std::vector<std::string> scripts = getScriptList();
+    std::cout << "Kayıtlı Script Sınıfları:" << std::endl;
+    for (const auto& scriptName : scripts) {
+        std::cout << " - " << scriptName << std::endl;
+    }
+
+    std::string scriptToCreate = "MyTestScript";
+
+    Script* script1 = createScript(scriptToCreate.c_str());
+    Script* script2 = createScript(scriptToCreate.c_str());
+
+    if (script1) {
+        script1->Execute();
+    }
+
+    if (script2) {
+        script2->Execute();
+    }
+
+    delete script1;
+    delete script2;
+
+    FreeLibrary(hModule);
+    // --- TEMPORARY CODE ---- //
 
     return true;
 }

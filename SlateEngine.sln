@@ -11,6 +11,9 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SlateEditor", "SlateEditor\
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GamePlugin", "GamePlugin\GamePlugin.vcxproj", "{7E35BE41-41A9-4D7C-BA1F-70403E6245DF}"
+	ProjectSection(ProjectDependencies) = postProject
+		{DABA3522-CA28-4EAD-831A-3A888890DEFD} = {DABA3522-CA28-4EAD-831A-3A888890DEFD}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

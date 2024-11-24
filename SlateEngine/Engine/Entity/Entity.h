@@ -14,6 +14,9 @@ public:
 	void AddComponent();
 
 	template<typename T>
+	void AddComponentForce();
+
+	template<typename T>
 	void RemoveComponent();
 
 	template<typename T>
@@ -35,6 +38,12 @@ template<typename T>
 inline void Entity::AddComponent()
 {
 	if (HasComponent<T>()) return;
+	entityRegistar.emplace<T>(rawEntity).SetEntity(this);
+}
+
+template<typename T>
+inline void Entity::AddComponentForce()
+{
 	entityRegistar.emplace<T>(rawEntity).SetEntity(this);
 }
 

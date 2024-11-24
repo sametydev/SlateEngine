@@ -146,9 +146,11 @@
     <ClCompile Include="Engine\Physics\PhysicsFactory.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Engine\Component\Script.h" />
     <ClInclude Include="Engine\Core\Asset.h" />
     <ClInclude Include="Engine\Core\AssetStreamer.h" />
     <ClInclude Include="Engine\Core\ILogger.h" />
+    <ClInclude Include="Engine\NativeScripting\ScriptRegistry.h" />
     <ClInclude Include="Engine\PCH.h" />
     <ClInclude Include="Engine\Editor\EditorSystem.h" />
     <ClInclude Include="Engine\Component\Component.h" />

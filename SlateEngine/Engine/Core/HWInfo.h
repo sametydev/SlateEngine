@@ -11,10 +11,9 @@ struct HWInfo {
 
     static void initialize(const char* _gpuName) {
         __cpuid(cpuinfo, 1);
-        //this technically causes memory leak ik but we need this parameter end of the cycle so thats ok
         gpuName = _gpuName;
-        gpuName_cstr = gpuName.c_str()
-            ;
+        //ik so bad
+        gpuName_cstr = gpuName.c_str();
         sseSupported = cpuinfo[3] & (1 << 25) || false;
     }
 };

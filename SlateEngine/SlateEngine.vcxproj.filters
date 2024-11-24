@@ -323,6 +323,12 @@
     <ClInclude Include="Engine\Physics\PhysicsFactory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\Component\Script.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\NativeScripting\ScriptRegistry.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="TestProject\Textures\Crate.dds" />
