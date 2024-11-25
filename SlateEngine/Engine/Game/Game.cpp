@@ -90,13 +90,13 @@ bool Game::OnInit()
 
     HMODULE hModule = LoadLibrary(L"GamePlugin.dll");
     if (!hModule) {
-        std::cerr << "DLL yüklenemedi!" << std::endl;
-        MessageBoxA(0,"DLL yüklenemedi!",0,0);
+        std::cerr << "Error on DLL load!" << std::endl;
+        MessageBoxA(0,"Error on DLL load!",0,0);
         return 1;
     }
 
     // --- TEMPORARY CODE ---- //
-    // NATIVE SCRIPTING
+    // NATIVE SCRIPTING CONCEPT!! NOT FINAL
     typedef void (*SetGameInstanceFunc)(Game*);
     typedef std::vector<std::string>(*GetScriptListFunc)();
     typedef Script* (*CreateScriptFunc)(const char*);
@@ -116,26 +116,26 @@ bool Game::OnInit()
     }
 
     std::vector<std::string> scripts = getScriptList();
-    std::cout << "Kayıtlı Script Sınıfları:" << std::endl;
+    std::cout << "Registered scripts:" << std::endl;
     for (const auto& scriptName : scripts) {
         std::cout << " - " << scriptName << std::endl;
     }
-
     std::string scriptToCreate = "MyTestScript";
+    //using string for checking object eol
 
     Script* script1 = createScript(scriptToCreate.c_str());
-    Script* script2 = createScript(scriptToCreate.c_str());
 
+    Entity* dummy = new Entity();
+    entityManager->RegisterEntity(dummy, "MyTestScript Entity!");
+    script1->connectedEntity = dummy;
+    
     if (script1) {
         script1->Execute();
-    }
-
-    if (script2) {
-        script2->Execute();
+        GetLogger()->AddLog(script1->connectedEntity->GetComponent<EntityName>().name);
+        script1->OnRender(GetDXContext());
     }
 
     delete script1;
-    delete script2;
 
     FreeLibrary(hModule);
     // --- TEMPORARY CODE ---- //

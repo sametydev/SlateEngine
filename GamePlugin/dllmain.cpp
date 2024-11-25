@@ -1,5 +1,6 @@
 // dllmain.cpp : Defines the entry point for the DLL application.
 #include "pch.h"
+#include "MyTestScript.h"
 
 BOOL APIENTRY DllMain( HMODULE hModule,
                        DWORD  ul_reason_for_call,
@@ -17,3 +18,11 @@ BOOL APIENTRY DllMain( HMODULE hModule,
     return TRUE;
 }
 
+namespace {
+    const bool registered = []() {
+        ScriptRegistry::Instance().Register("MyTestScript", []() -> Script* {
+            return new MyTestScript();
+        });
+        return true;
+  }();
+}
