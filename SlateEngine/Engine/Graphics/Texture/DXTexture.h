@@ -7,7 +7,7 @@ enum TextureLoaderType {
 	WIC
 };
 
-class DXTexture : public Asset
+class ENGINE_API DXTexture : public Asset
 {
 public:
 	DXTexture();

@@ -4,7 +4,7 @@
 
 
 __declspec(align(16))
-struct mat4x4 {
+struct ENGINE_API mat4x4 {
 	//static float radians = 3.14159265358979323846f / 180.f;
 	mat4x4();
 	mat4x4(float* rhs);

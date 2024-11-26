@@ -1,5 +1,4 @@
 #include "PhysicsFactory.h"
-#include <SlateEngine/Engine/Utils.h>
 #include <SlateEngine/Engine/DXConfig.h>
 
 PhysicsFactory::PhysicsFactory()

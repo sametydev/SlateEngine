@@ -57,6 +57,7 @@
       <AdditionalIncludeDirectories>$(SolutionDir)\inc;$(SolutionDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -84,6 +85,21 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Editor\EditorUI.cpp" />
+    <ClCompile Include="Editor\LibrarySources\ConvertUTF.c" />
+    <ClCompile Include="Editor\LibrarySources\DDSTextureLoader11.cpp" />
+    <ClCompile Include="Editor\LibrarySources\GraphEditor.cpp" />
+    <ClCompile Include="Editor\LibrarySources\ImCurveEdit.cpp" />
+    <ClCompile Include="Editor\LibrarySources\ImGradient.cpp" />
+    <ClCompile Include="Editor\LibrarySources\imgui.cpp" />
+    <ClCompile Include="Editor\LibrarySources\ImGuizmo.cpp" />
+    <ClCompile Include="Editor\LibrarySources\imgui_demo.cpp" />
+    <ClCompile Include="Editor\LibrarySources\imgui_draw.cpp" />
+    <ClCompile Include="Editor\LibrarySources\imgui_impl_dx11.cpp" />
+    <ClCompile Include="Editor\LibrarySources\imgui_impl_win32.cpp" />
+    <ClCompile Include="Editor\LibrarySources\imgui_stdlib.cpp" />
+    <ClCompile Include="Editor\LibrarySources\imgui_tables.cpp" />
+    <ClCompile Include="Editor\LibrarySources\imgui_widgets.cpp" />
+    <ClCompile Include="Editor\LibrarySources\ImSequencer.cpp" />
     <ClCompile Include="Editor\Windows\AssetsBrowser.cpp" />
     <ClCompile Include="Editor\Windows\InspectorWindow.cpp" />
     <ClCompile Include="Editor\Windows\LightingSettingsWindow.cpp" />

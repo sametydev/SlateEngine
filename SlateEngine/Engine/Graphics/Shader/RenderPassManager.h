@@ -1,7 +1,7 @@
 #pragma once
 #include <SlateEngine/Engine/Graphics/Shader/IRenderPass.h>
 
-class RenderPassManager {
+class ENGINE_API RenderPassManager {
 public:
 	RenderPassManager();
 	~RenderPassManager();

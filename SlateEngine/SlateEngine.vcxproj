@@ -20,7 +20,7 @@
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
@@ -59,7 +59,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;ENGINE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <LanguageStandard_C>Default</LanguageStandard_C>
@@ -72,7 +72,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>d3d11.lib;D3DCompiler.lib;dxgi.lib;dxguid.lib;;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>d3d11.lib;D3DCompiler.lib;dxgi.lib;dxguid.lib;Lua54.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <FxCompile>
       <ShaderModel>5.0</ShaderModel>
@@ -103,6 +103,7 @@
     <ClCompile Include="Engine\Component\RenderableGeometry.cpp" />
     <ClCompile Include="Engine\Component\Camera.cpp" />
     <ClCompile Include="Engine\Component\Transform.cpp" />
+    <ClCompile Include="Engine\Entity\EntityRegistrar.cpp" />
     <ClCompile Include="Engine\Graphics\Buffer\BufferCache.cpp" />
     <ClCompile Include="Engine\Graphics\Shader\RenderPassManager.cpp" />
     <ClCompile Include="Engine\Graphics\Shader\ShaderCache.cpp" />
@@ -123,21 +124,9 @@
     <ClCompile Include="Engine\Input\InputSystem.cpp" />
     <ClCompile Include="Engine\FileSystem\FileSystem.cpp" />
     <ClCompile Include="Engine\Input\Gamepad.cpp" />
+    <ClCompile Include="Engine\NativeScripting\ScriptRegistry.cpp" />
     <ClCompile Include="LibarySources\ConvertUTF.c" />
     <ClCompile Include="LibarySources\DDSTextureLoader11.cpp" />
-    <ClCompile Include="LibarySources\GraphEditor.cpp" />
-    <ClCompile Include="LibarySources\ImCurveEdit.cpp" />
-    <ClCompile Include="LibarySources\ImGradient.cpp" />
-    <ClCompile Include="LibarySources\imgui.cpp" />
-    <ClCompile Include="LibarySources\ImGuizmo.cpp" />
-    <ClCompile Include="LibarySources\imgui_demo.cpp" />
-    <ClCompile Include="LibarySources\imgui_draw.cpp" />
-    <ClCompile Include="LibarySources\imgui_impl_dx11.cpp" />
-    <ClCompile Include="LibarySources\imgui_impl_win32.cpp" />
-    <ClCompile Include="LibarySources\imgui_stdlib.cpp" />
-    <ClCompile Include="LibarySources\imgui_tables.cpp" />
-    <ClCompile Include="LibarySources\imgui_widgets.cpp" />
-    <ClCompile Include="LibarySources\ImSequencer.cpp" />
     <ClCompile Include="LibarySources\WICTextureLoader11.cpp" />
     <ClCompile Include="Engine\Component\LuaScript.cpp" />
     <ClCompile Include="Main.cpp" />
@@ -150,6 +139,7 @@
     <ClInclude Include="Engine\Core\Asset.h" />
     <ClInclude Include="Engine\Core\AssetStreamer.h" />
     <ClInclude Include="Engine\Core\ILogger.h" />
+    <ClInclude Include="Engine\Entity\EntityRegistrar.h" />
     <ClInclude Include="Engine\NativeScripting\ScriptRegistry.h" />
     <ClInclude Include="Engine\PCH.h" />
     <ClInclude Include="Engine\Editor\EditorSystem.h" />

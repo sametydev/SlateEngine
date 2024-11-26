@@ -4,8 +4,10 @@
 #include <tchar.h>
 #include <LuaLibrary.h>
 #include <LuaBridge/LuaBridge.h>
+#include <SlateEngine/Engine/Utils.h>
 
-struct LuaScript : public Component
+
+struct ENGINE_API LuaScript : public Component
 {
 public:
 	LuaScript() = default;

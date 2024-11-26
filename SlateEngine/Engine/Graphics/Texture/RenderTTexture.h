@@ -1,7 +1,7 @@
 #pragma once
 #include <SlateEngine/Engine/DXConfig.h>
 
-class RenderTTexture
+class ENGINE_API RenderTTexture
 {
 public:
 	ComPtr<ID3D11Texture2D> texture;

@@ -4,7 +4,7 @@
 class MyTestScript : public Script
 {
     void Execute() override {
-        Instances::Game->GetLogger()->AddLog("Hello from DLL - MyTestScript");
+		Game::Instance->GetLogger()->AddLog("Hello from DLL - MyTestScript");
     }
 	void OnInternalInit() override;
 

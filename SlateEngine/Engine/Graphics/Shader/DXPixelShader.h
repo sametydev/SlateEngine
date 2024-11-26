@@ -1,7 +1,7 @@
 #pragma once
 #include <SlateEngine/Engine/Graphics/Shader/IShader.h>
 
-class DXPixelShader: public IShader
+class ENGINE_API DXPixelShader: public IShader
 {
 public:
 	DXPixelShader();

@@ -3,6 +3,8 @@
 #include <iostream>
 #include <filesystem>
 #include <unordered_map>
+#include <SlateEngine/Engine/Utils.h>
+
 
 enum FILE_TYPE {
 	MISC,
@@ -21,7 +23,7 @@ struct SMetaData {
 	FILE_TYPE ftype;
 };
 
-class FileSystem
+class ENGINE_API FileSystem
 {
 public:
 	FileSystem();

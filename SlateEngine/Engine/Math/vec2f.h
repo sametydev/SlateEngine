@@ -1,7 +1,7 @@
 #pragma once
 #include <SlateEngine/Engine/Math/LineerMath.h>
 
-struct vec2f
+struct ENGINE_API vec2f
 {
 	vec2f() : x(0.0f), y(0.0f) {}
 	vec2f(float x) : x(x), y(x) {}

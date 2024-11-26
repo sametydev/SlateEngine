@@ -11,8 +11,6 @@ extern "C"
 }
 
 
-extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
-
 DXApplication* DXApplication::Instance = nullptr;
 
 LRESULT CALLBACK
@@ -177,9 +175,6 @@ void DXApplication::OnResize()
 
 LRESULT DXApplication::MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
-    if (ImGui_ImplWin32_WndProcHandler(hWindow, msg, wParam, lParam))
-        return true;
-
     switch (msg)
     {
     case WM_ACTIVATE:
@@ -255,7 +250,7 @@ LRESULT DXApplication::MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam
         ((MINMAXINFO*)lParam)->ptMinTrackSize.y = MIN_WIN_WIDTH;
         return 0;
     }
-
+    if (editorSystem) { editorSystem->MsgProc(hwnd, msg, wParam, lParam); }
     return DefWindowProc(hwnd, msg, wParam, lParam);
 }
 

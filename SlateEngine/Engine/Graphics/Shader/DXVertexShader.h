@@ -1,7 +1,7 @@
 #pragma once
 #include <SlateEngine/Engine/Graphics/Shader/IShader.h>
 
-class DXVertexShader : public IShader {
+class ENGINE_API DXVertexShader : public IShader {
 public:
 	DXVertexShader();
 	virtual ~DXVertexShader();

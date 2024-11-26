@@ -1,8 +1,10 @@
 #pragma once
 #include <physx/PxPhysics.h>
 #include <physx/PxPhysicsAPI.h>
+#include <SlateEngine/Engine/Utils.h>
 
-class PhysicsFactory
+
+class ENGINE_API PhysicsFactory
 {
 public:
 	PhysicsFactory();

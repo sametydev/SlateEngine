@@ -1,7 +1,7 @@
 #pragma once
 #include <SlateEngine/Engine/Graphics/Buffer/DXBuffer.h>
 
-class DXConstantBuffer : public DXBuffer
+class ENGINE_API DXConstantBuffer : public DXBuffer
 {
 public:
 	DXConstantBuffer();

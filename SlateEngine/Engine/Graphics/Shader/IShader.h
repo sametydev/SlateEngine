@@ -2,7 +2,8 @@
 #include <SlateEngine/Engine/DXConfig.h>
 #include <SlateEngine/Engine/Graphics/Shader/ShaderInformation.h>
 #include <unordered_map>
-class IShader
+
+class ENGINE_API IShader
 {
 public:
 	IShader(){}

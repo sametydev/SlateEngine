@@ -16,6 +16,13 @@
 
 #include "Core/HWInfo.h"
 
+#ifdef ENGINE_EXPORTS
+#define ENGINE_API __declspec(dllexport)
+#else
+#define ENGINE_API __declspec(dllimport)
+#endif
+
+
 enum GameState {
     NONE = 0,
     PLAYING,
@@ -31,7 +38,7 @@ enum class RenderTextureCreateFlags
     RenderTarget = 8
 };
 
-class PathMaker {
+class ENGINE_API PathMaker {
 public:
     inline static std::string Make(std::string p1, std::string p2) {
         return p1 + p2;

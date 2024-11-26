@@ -1,9 +1,8 @@
 ﻿#include <SlateEngine/Engine/Game/Game.h>
 #include <SlateEngine/Engine/Input/InputSystem.h>
-#include <ImGuizmo.h>
 #include <SlateEngine/Engine/Physics/PhysicsFactory.h>
 #include <SlateEngine/Engine/Component/Script.h>
-
+#include <SlateEngine/Engine/NativeScripting/ScriptRegistry.h>
 Game* Game::Instance = nullptr;
 
 Game::Game(HINSTANCE hInstance, const std::wstring& windowName, int initWidth, int initHeight)
@@ -88,6 +87,7 @@ bool Game::OnInit()
     m_frameConstantBuffer->BindPS(BUFFER_ID::FRAME_CONSTANT_BUFFER_ID);
     m_lightConstantBuffer->BindPS(BUFFER_ID::LIGHT_CONSTANT_BUFFER_ID);
 
+
     HMODULE hModule = LoadLibrary(L"GamePlugin.dll");
     if (!hModule) {
         std::cerr << "Error on DLL load!" << std::endl;
@@ -97,28 +97,23 @@ bool Game::OnInit()
 
     // --- TEMPORARY CODE ---- //
     // NATIVE SCRIPTING CONCEPT!! NOT FINAL
-    typedef void (*SetGameInstanceFunc)(Game*);
-    typedef std::vector<std::string>(*GetScriptListFunc)();
+
+    new ScriptRegistry();
     typedef Script* (*CreateScriptFunc)(const char*);
 
-    SetGameInstanceFunc setGameInstance = (SetGameInstanceFunc)GetProcAddress(hModule, "SetGameInstance");
-    if (setGameInstance) {
-        setGameInstance(Game::Instance);
-    }
-
-    GetScriptListFunc getScriptList = (GetScriptListFunc)GetProcAddress(hModule, "GetScriptList");
     CreateScriptFunc createScript = (CreateScriptFunc)GetProcAddress(hModule, "CreateScript");
 
-    if (!getScriptList || !createScript) {
+    if (!createScript) {
         MessageBoxA(0, "Functions are missing in DLL's, Please use core functions", 0, 0);
         FreeLibrary(hModule);
         return 1;
     }
 
-    std::vector<std::string> scripts = getScriptList();
+    std::vector<std::string> scripts = ScriptRegistry::Instance->GetRegisteredScripts();
     std::cout << "Registered scripts:" << std::endl;
     for (const auto& scriptName : scripts) {
         std::cout << " - " << scriptName << std::endl;
+        MessageBoxA(0, scriptName.c_str(), 0, 0);
     }
     std::string scriptToCreate = "MyTestScript";
     //using string for checking object eol
@@ -128,6 +123,12 @@ bool Game::OnInit()
     Entity* dummy = new Entity();
     entityManager->RegisterEntity(dummy, "MyTestScript Entity!");
     script1->connectedEntity = dummy;
+    if (script1->connectedEntity->HasComponent<EntityName>()) {
+        GetLogger()->AddLog("True");
+    }
+    else {
+        GetLogger()->AddLog("False");
+    }
     
     if (script1) {
         script1->Execute();

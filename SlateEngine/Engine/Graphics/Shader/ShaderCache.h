@@ -4,7 +4,7 @@
 #include <SlateEngine/Engine/Graphics/Shader/DXPixelShader.h>
 #include <SlateEngine/Engine/Graphics/Shader/ShaderInformation.h>
 
-class ShaderCache
+class ENGINE_API ShaderCache
 {
 public:
 	static std::unordered_map<std::string, std::shared_ptr<DXVertexShader>> vertexShaders;

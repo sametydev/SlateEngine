@@ -4,33 +4,17 @@
 #include <unordered_map>
 #include <string>
 
-class ScriptRegistry {
+class ENGINE_API ScriptRegistry {
 public:
-    static ScriptRegistry& Instance() {
-        static ScriptRegistry instance;
-        return instance;
-    }
+    ScriptRegistry();
+    static ScriptRegistry* Instance;
 
-    void Register(const std::string& name, ScriptFactory factory) {
-        registry[name] = factory;
-    }
+    void Register(const std::string& name, ScriptFactory factory);
 
-    Script* Create(const std::string& name) {
-        if (registry.find(name) != registry.end()) {
-            return registry[name]();
-        }
-        return nullptr;
-    }
+    Script* Create(const std::string& name);
 
-    std::vector<std::string> GetRegisteredScripts() const {
-        std::vector<std::string> names;
-        for (const auto& pair : registry) {
-            names.push_back(pair.first);
-        }
-        return names;
-    }
+    std::vector<std::string> GetRegisteredScripts() const;
 
 private:
-    ScriptRegistry() = default;
     std::unordered_map<std::string, ScriptFactory> registry;
 };

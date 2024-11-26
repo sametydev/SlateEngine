@@ -10,7 +10,7 @@ enum ECSignalCommand {
 	ON_EDITOR_LOAD
 };
 
-class EntityManager
+class ENGINE_API EntityManager
 {
 public:
 	EntityManager();
@@ -24,12 +24,11 @@ public:
 	void OnUpdate(float dt, int gameState);
 	void OnRender(ID3D11DeviceContext* pDeviceContext);
 
-	entt::registry& GetRegistar() { return entityRegistar; };
+	entt::registry& GetRegistar() { return EntityRegistrar::entityRegistar; };
 
 	void SendSignalToComponents(ECSignalCommand cmd);
 
 	static EntityManager* Instance;
-
 };
 
 

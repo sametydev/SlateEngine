@@ -1,10 +1,9 @@
 #pragma once
 #include <entt.hpp>
 #include <SlateEngine/Engine/DXConfig.h>
+#include <SlateEngine/Engine/Entity/EntityRegistrar.h>
 
-extern entt::registry entityRegistar;
-
-class Entity
+class ENGINE_API Entity
 {
 public:
 	Entity() = default;
@@ -38,37 +37,37 @@ template<typename T>
 inline void Entity::AddComponent()
 {
 	if (HasComponent<T>()) return;
-	entityRegistar.emplace<T>(rawEntity).SetEntity(this);
+	EntityRegistrar::entityRegistar.emplace<T>(rawEntity).SetEntity(this);
 }
 
 template<typename T>
 inline void Entity::AddComponentForce()
 {
-	entityRegistar.emplace<T>(rawEntity).SetEntity(this);
+	EntityRegistrar::entityRegistar.emplace<T>(rawEntity).SetEntity(this);
 }
 
 template<typename T>
 inline void Entity::RemoveComponent()
 {
-	entityRegistar.erase<T>(rawEntity);
+	EntityRegistrar::entityRegistar.erase<T>(rawEntity);
 }
 
 template<typename T>
 inline bool Entity::HasComponent()
 {
-	return entityRegistar.any_of<T>(rawEntity);
+	return EntityRegistrar::entityRegistar.any_of<T>(rawEntity);
 }
 
 template<typename T>
 inline T& Entity::GetComponent()
 {
-	return entityRegistar.get<T>(rawEntity);
+	return EntityRegistrar::entityRegistar.get<T>(rawEntity);
 }
 template<typename T>
 inline T* Entity::GetComponentAsPointer()
 {
 	if (!HasComponent<T>()) return nullptr;
-	return &entityRegistar.get<T>(rawEntity);
+	return &EntityRegistrar::entityRegistar.get<T>(rawEntity);
 }
 
 struct EntityName {

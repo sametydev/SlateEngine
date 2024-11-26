@@ -1,6 +1,6 @@
 #pragma once
 #include <SlateEngine/Engine/Entity/Entity.h>
-class Component {
+class ENGINE_API Component {
 public:
 	Component() {};
 

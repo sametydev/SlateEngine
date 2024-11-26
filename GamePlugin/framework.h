@@ -13,22 +13,7 @@
 #include <vector>
 #include <string>
 
-class Instances {
-public:
-    static Game* Game;
-};
-
-
-extern "C" __declspec(dllexport) std::vector<std::string> GetScriptList() {
-    return ScriptRegistry::Instance().GetRegisteredScripts();
-}
 
 extern "C" __declspec(dllexport) Script * CreateScript(const char* name) {
-    return ScriptRegistry::Instance().Create(name);
-}
-
-extern "C" __declspec(dllexport) void SetGameInstance(Game * instance);
-
-extern "C" __declspec(dllexport) void SetGameInstance(Game * instance) {
-    Instances::Game = instance;
+    return ScriptRegistry::Instance->Create(name);
 }

@@ -2,7 +2,7 @@
 #include <SlateEngine/Engine/FileSystem/FileSystem.h>
 #include <SlateEngine/Engine/Core/Asset.h>
 
-class AssetStreamer
+class ENGINE_API AssetStreamer
 {
 	//There's must only f-one AssetServer! Its very critical for AssetStreaming
 public:

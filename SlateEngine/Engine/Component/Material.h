@@ -42,7 +42,7 @@ enum MaterialPropertyType {
     SUNDEFINED
 };
 
-struct MaterialComponent : public Component {
+class ENGINE_API MaterialComponent : public Component {
 public:
     MaterialComponent() = default;
     ~MaterialComponent() {};

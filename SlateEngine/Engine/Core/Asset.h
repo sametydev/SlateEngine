@@ -1,7 +1,8 @@
 #pragma once
 #include <SlateEngine/Engine/FileSystem/FileSystem.h>
+#include <SlateEngine/Engine/Utils.h>
 
-class Asset {
+class ENGINE_API Asset {
 public:
 	Asset() = default;
 	virtual ~Asset() {};

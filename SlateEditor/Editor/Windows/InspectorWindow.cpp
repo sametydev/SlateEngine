@@ -4,7 +4,6 @@
 #include <SlateEditor/Editor/Windows/LogWindow.h>
 #include <SlateEngine/Engine/Graphics/2D/Components/C2DText.h>
 #include <SlateEngine/Engine/Graphics/BuiltInMesh.h>
-
 #include <imgui_internal.h>
 
 InspectorWindow::InspectorWindow()
@@ -25,7 +24,6 @@ void InspectorWindow::OnInit()
 void InspectorWindow::OnDraw()
 {
 }
-#define EntityRegistar EntityManager::Instance->GetRegistar()
 
 void InspectorWindow::OnDraw(Entity* entity)
 {
@@ -158,7 +156,7 @@ void InspectorWindow::DrawTransform(const char* label, vec3f& val)
 
 void InspectorWindow::DrawRenderableGeometryComponent(Entity* entity)
 {
-	RenderableGeometry& r = entityRegistar.get<RenderableGeometry>(entity->rawEntity);
+	RenderableGeometry& r = entity->GetComponent<RenderableGeometry>();
 
 	static int curr_mesh_item = 0;
 	const char* mesh_strs[] = {
@@ -218,7 +216,7 @@ void InspectorWindow::DrawRenderableGeometryComponent(Entity* entity)
 
 void InspectorWindow::DrawLuaScriptComponent(Entity* entity)
 {
-	LuaScript& ls = entityRegistar.get<LuaScript>(entity->rawEntity);
+	LuaScript& ls = entity->GetComponent<LuaScript>();
 
 	static int currentScriptItem = 0;
 

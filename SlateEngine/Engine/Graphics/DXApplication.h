@@ -4,10 +4,6 @@
 #include <SlateEngine/Engine/Graphics/2D/D2DContext.h>
 #include <SlateEngine/Engine/Graphics/DXRasterizerState.h>
 
-#include <imgui.h>
-#include <imgui_impl_dx11.h>
-#include <imgui_impl_win32.h>
-
 #include <SlateEngine/Engine/Core/ILogger.h>
 
 #include <SlateEngine/Engine/Editor/EditorSystem.h>
@@ -19,7 +15,7 @@
 #define gDXDevice DXApplication::Instance->GetDXDevice()
 #define gDXApp DXApplication::Instance
 
-class DXApplication
+class ENGINE_API DXApplication
 {
 public:
 

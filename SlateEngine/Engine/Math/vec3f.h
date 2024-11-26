@@ -6,7 +6,7 @@
 #include <assert.h>
 #include <ostream>
 
-class vec3f
+class ENGINE_API vec3f
 {
 public:
 	float x, y, z;

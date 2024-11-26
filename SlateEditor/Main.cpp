@@ -1,6 +1,5 @@
 #include <Windows.h>
 #include <SlateEditor/Editor/EditorUI.h>
-#include <SlateEngine/Engine/Game/Game.h>
 
 //Main Entry for Windows Subsystem
 int WINAPI WinMain(

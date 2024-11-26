@@ -14,7 +14,7 @@
 #include <SlateEngine/Engine/Entity/Entity.h>
 #include <SlateEngine/Engine/Component/Component.h>
 
-struct RenderableGeometry : public Component {
+struct ENGINE_API RenderableGeometry : public Component {
 public:
     RenderableGeometry() = default;
     ~RenderableGeometry() {};

@@ -19,7 +19,7 @@
 
 #include <SlateEngine/Engine/Graphics/Shader/RenderPassManager.h>
 
-class Game : public DXApplication
+class ENGINE_API Game : public DXApplication
 {
 public:
     Game(HINSTANCE hInstance, const std::wstring& windowName, int initWidth, int initHeight);

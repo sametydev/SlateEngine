@@ -53,7 +53,7 @@ enum BUFFER_ID {
     LIGHT_CONSTANT_BUFFER_ID = 2
 };
 
-class DXBuffer {
+class ENGINE_API DXBuffer {
 public:
     DXBuffer(){}
     virtual~DXBuffer(){}

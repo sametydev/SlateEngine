@@ -8,7 +8,7 @@ enum RasterizerState {
 	CULL_WIREFRAME
 };
 
-class DXRasterizerState
+class ENGINE_API DXRasterizerState
 {
 public:
     static void Initialize(ID3D11Device* device,ID3D11DeviceContext* context,bool msaaEnabled);

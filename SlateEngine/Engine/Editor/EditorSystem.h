@@ -1,6 +1,6 @@
 #pragma once
 #include <SlateEngine/Engine/DXConfig.h>
-class EditorSystem
+class ENGINE_API EditorSystem
 {
 public:
 	EditorSystem() {};
@@ -17,6 +17,8 @@ public:
 	virtual void ClearViewport(float rgba[4]) = 0;
 
 	virtual void ResizeViewport(int w, int h) = 0;
+
+	virtual LRESULT MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) = 0;
 
 };
 

@@ -1,5 +1,4 @@
 #include <SlateEditor/Editor/EditorUI.h>
-#include <entt.hpp>
 #include <ImGuizmo.h>
 #include <comdef.h>
 #include <SlateEngine/Engine/Input/InputSystem.h>
@@ -26,6 +25,7 @@ EditorUI::~EditorUI()
     ImGui::DestroyContext();
 }
 
+extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
 
 void EditorUI::OnInit(HWND wnd, ID3D11Device* pDevice, ID3D11DeviceContext* pDeviceContext)
@@ -69,7 +69,6 @@ void EditorUI::OnInit(HWND wnd, ID3D11Device* pDevice, ID3D11DeviceContext* pDev
 
 	inspectorWindow->OnInit();
 	logWindow->AddLog("[Renderer] - DX11(DirectX 11_1) Renderer OnInit");
-
 }
 
 void EditorUI::NewFrame()
@@ -296,9 +295,9 @@ void EditorUI::OnUpdate(float deltaTime)
 
 		ImGui::Checkbox("WireFrame Mode", &game->renderWireframe);
 
-		ImGui::Text("Graphics Device : %s", HWInfo::gpuName_cstr);
+		//ImGui::Text("Graphics Device : %s", HWInfo::gpuName_cstr);
 
-		ImGui::Text("SSE Support : %s", HWInfo::sseSupported ? "Yes" : "False");
+		//ImGui::Text("SSE Support : %s", HWInfo::sseSupported ? "Yes" : "False");
 
 	}ImGui::End();
 }
@@ -342,6 +341,12 @@ void EditorUI::DrawViewportMenu()
 	if (ImGui::Button(" S ")) { gizmoType = ImGuizmo::OPERATION::SCALE; }
 	ImGui::PopStyleColor(1);
 	ImGui::End();
+}
+
+LRESULT EditorUI::MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
+{
+	if (ImGui_ImplWin32_WndProcHandler(hwnd, msg, wParam, lParam))
+		return true;
 }
 
 void EditorUI::InitTheme()

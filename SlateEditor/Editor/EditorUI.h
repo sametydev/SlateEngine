@@ -34,6 +34,9 @@ public:
 	void HandleInput(float deltaTime);
 	void DrawViewportMenu();
 
+	LRESULT MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) override;
+
+
 	static EditorUI* Instance;
 
 private:

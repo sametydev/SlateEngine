@@ -19,7 +19,7 @@ struct MouseEvent
 };
 
 
-class InputSystem {
+class ENGINE_API InputSystem {
 public:
     InputSystem() = default;
     static UINT HookMsg(const MSG* msg);

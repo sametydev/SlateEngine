@@ -1,7 +1,8 @@
 #pragma once
 #include <chrono>
+#include <SlateEngine/Engine/Utils.h>
 
-class Timer
+class ENGINE_API Timer
 {
 public:
 	Timer();

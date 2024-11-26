@@ -5,7 +5,7 @@
 #include <Xinput.h>
 #include <SlateEngine/Engine/Math/vec2f.h>
 
-class Gamepad
+class ENGINE_API Gamepad
 {
 public:
     Gamepad(unsigned int id);

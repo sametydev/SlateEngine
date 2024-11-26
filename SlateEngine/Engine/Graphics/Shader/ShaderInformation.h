@@ -12,7 +12,7 @@ public:
 	const char* csoName;
 };
 
-class ShaderInformationLoader {
+class ENGINE_API ShaderInformationLoader {
 public:
 	static ShaderInformation LoadSInfo(const char* file) {
 		ShaderInformation sinfo{};

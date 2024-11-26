@@ -13,16 +13,15 @@ void SceneHierarchy::OnInit()
 	windowName = "Scene";
 }
 
-#define EntityRegistar EntityManager::Instance->GetRegistar()
 
 void SceneHierarchy::OnDraw()
 {
 	ImGui::Begin(windowName);
 	ImGui::Text("Scene Hierarchy:");
-
-	EntityRegistar.each([&](auto entity)
+	
+	EntityRegistrar::entityRegistar.each([&](auto entity)
 		{
-			EntityName& name = EntityRegistar.get<EntityName>(entity);
+			EntityName& name = EntityRegistrar::entityRegistar.get<EntityName>(entity);
 
 			bool isSelected = false;
 
@@ -44,6 +43,7 @@ void SceneHierarchy::OnDraw()
 			}
 
 		});
+	
 
 	ImGui::End();
 }

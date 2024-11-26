@@ -1,7 +1,8 @@
 #pragma once
 #include <SlateEngine/Engine/Math/LineerMath.h>
+#include <SlateEngine/Engine/Utils.h>
 
-class Camera
+class ENGINE_API Camera
 {
 	enum Axis {
 		Right = 0, Up, Forward

@@ -4,7 +4,7 @@
 #include <SlateEngine/Engine/Graphics/Buffer/DXIndexBuffer.h>
 #include <SlateEngine/Engine/Graphics/Buffer/DXConstantBuffer.h>
 
-class BufferCache {
+class ENGINE_API BufferCache {
 public:
 	//TODO: Dont store data twice, we are storing buffer's data twice on memory but its better than storing 100x times xD
 	//		Fixing: Implement UUID or UID system for define buffers.

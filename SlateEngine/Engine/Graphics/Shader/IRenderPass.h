@@ -5,7 +5,7 @@
 #include <SlateEngine/Engine/Graphics/Texture/DXTexture.h>
 #include <SlateEngine/Engine/Graphics/Buffer/DXConstantBuffer.h>
 
-class IRenderPass
+class ENGINE_API IRenderPass
 {
 public:
     IRenderPass() = default;

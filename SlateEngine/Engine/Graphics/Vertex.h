@@ -8,7 +8,7 @@
 //S = SIZE
 
 
-struct VertexPT
+struct ENGINE_API VertexPT
 {
     VertexPT() = default;
 
@@ -26,7 +26,7 @@ struct VertexPT
     static const D3D11_INPUT_ELEMENT_DESC inputLayout[2];
 };
 
-struct VertexPNC
+struct ENGINE_API VertexPNC
 {
     VertexPNC() = default;
 
@@ -47,7 +47,7 @@ struct VertexPNC
 };
 
 
-struct VertexPNT
+struct ENGINE_API VertexPNT
 {
     VertexPNT() = default;
 

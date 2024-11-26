@@ -4,7 +4,7 @@
 #include <functional>
 #include <SlateEngine/Engine/Component/Component.h>
 
-class Script : public Component {
+class ENGINE_API Script : public Component {
 public:
     virtual ~Script() = default;
     virtual void Execute() = 0;

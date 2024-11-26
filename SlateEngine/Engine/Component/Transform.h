@@ -2,7 +2,7 @@
 #include <SlateEngine/Engine/Math/LineerMath.h>
 #include <SlateEngine/Engine/Component/Component.h>
 
-struct Transform : public Component
+struct ENGINE_API Transform : public Component
 {
 public:
 	Transform();
