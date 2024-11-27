@@ -2,7 +2,11 @@
 #include <entt.hpp>
 #include <SlateEngine/Engine/Utils.h>
 
-static class ENGINE_API EntityRegistrar {
+extern ENGINE_API entt::registry globalRegistry;
+
+class ENGINE_API EntityRegistrar {
 public:
-	static entt::registry entityRegistar;
+    static entt::registry& GetRegistry() {
+        return globalRegistry;
+    }
 };

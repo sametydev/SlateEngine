@@ -33,46 +33,14 @@ private:
 	friend class EntityManager;
 };
 
-template<typename T>
-inline void Entity::AddComponent()
-{
-	if (HasComponent<T>()) return;
-	EntityRegistrar::entityRegistar.emplace<T>(rawEntity).SetEntity(this);
-}
-
-template<typename T>
-inline void Entity::AddComponentForce()
-{
-	EntityRegistrar::entityRegistar.emplace<T>(rawEntity).SetEntity(this);
-}
-
-template<typename T>
-inline void Entity::RemoveComponent()
-{
-	EntityRegistrar::entityRegistar.erase<T>(rawEntity);
-}
-
-template<typename T>
-inline bool Entity::HasComponent()
-{
-	return EntityRegistrar::entityRegistar.any_of<T>(rawEntity);
-}
-
-template<typename T>
-inline T& Entity::GetComponent()
-{
-	return EntityRegistrar::entityRegistar.get<T>(rawEntity);
-}
-template<typename T>
-inline T* Entity::GetComponentAsPointer()
-{
-	if (!HasComponent<T>()) return nullptr;
-	return &EntityRegistrar::entityRegistar.get<T>(rawEntity);
-}
-
 struct EntityName {
 public:
+	EntityName() = default;
 	EntityName(const char* n, Entity* e) : name(n), entityClass(e) {};
 	const char* name;
 	Entity* entityClass = nullptr;
+
+	inline void SetEntity(Entity* entity) {
+		entityClass = entity;
+	};
 };

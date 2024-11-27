@@ -8,6 +8,7 @@
 #include <SlateEditor/Editor/Windows/LogWindow.h>
 #include <SlateEditor/Editor/Windows/LightingSettingsWindow.h>
 #include <SlateEditor/Editor/Windows/NativeScriptingDebugger.h>
+#include <SlateEditor/Editor/Windows/ToolboxWindow.h>
 #include <imgui.h>
 #include <imgui_impl_dx11.h>
 #include <imgui_impl_win32.h>
@@ -33,7 +34,6 @@ public:
 
 	void ResizeViewport(int w, int h) override;
 	void HandleInput(float deltaTime);
-	void DrawViewportMenu();
 
 	LRESULT MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) override;
 
@@ -57,14 +57,16 @@ private:
 	LogWindow* logWindow             = nullptr;
 	LightingSettingsWindow* light    = nullptr;
 	AssetsBrowser* assetBrowser      = nullptr;
+	ToolboxWindow* toolboxWindow	 = nullptr;
 	NativeScriptingDebugger* nativeScriptingDebuggerWindow = nullptr;
 
 	std::unique_ptr<RenderTTexture> rtt;
-
-	int gizmoType = 7;
 
 	std::unique_ptr<Gamepad> gamepad;
 	Camera* mainCamera = nullptr;
 
 	bool nativeScriptingDebugger_Open = false;
+
+	HCURSOR cursorNormal;
+	HCURSOR cursorGrab;
 };

@@ -16,6 +16,7 @@
 #include <SlateEngine/Engine/Entity/EntityManager.h>
 #include <SlateEngine/Engine/FileSystem/FileSystem.h>
 #include <SlateEngine/Engine/Component/LuaScript.h>
+#include <SlateEngine/Engine/Component/Script.h>
 
 #include <SlateEngine/Engine/Graphics/Shader/RenderPassManager.h>
 
@@ -70,5 +71,7 @@ private:
 
     std::shared_ptr<EntityManager> entityManager;
     std::shared_ptr<FileSystem> fileSystem;
+
+    Script *script1 = nullptr;
 
 };

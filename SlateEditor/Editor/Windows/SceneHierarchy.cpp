@@ -19,9 +19,9 @@ void SceneHierarchy::OnDraw(bool* closable)
 	ImGui::Begin(windowName);
 	ImGui::Text("Scene Hierarchy:");
 	
-	EntityRegistrar::entityRegistar.each([&](auto entity)
+	EntityRegistrar::GetRegistry().each([&](auto entity)
 		{
-			EntityName& name = EntityRegistrar::entityRegistar.get<EntityName>(entity);
+			EntityName& name = EntityRegistrar::GetRegistry().get<EntityName>(entity);
 
 			bool isSelected = false;
 

@@ -17,21 +17,21 @@ EntityManager::~EntityManager()
 
 void EntityManager::RegisterEntity(Entity* entity)
 {
-	entity->rawEntity = EntityRegistrar::entityRegistar.create();
-	EntityRegistrar::entityRegistar.emplace<EntityName>(entity->rawEntity,"Entity",entity);
-	EntityRegistrar::entityRegistar.emplace<Transform>(entity->rawEntity);
+	entity->rawEntity = EntityRegistrar::GetRegistry().create();
+	EntityRegistrar::GetRegistry().emplace<EntityName>(entity->rawEntity,"Entity",entity);
+	EntityRegistrar::GetRegistry().emplace<Transform>(entity->rawEntity);
 }
 
 void EntityManager::RegisterEntity(Entity* entity, const char* name)
 {
-	entity->rawEntity = EntityRegistrar::entityRegistar.create();
-	EntityRegistrar::entityRegistar.emplace<EntityName>(entity->rawEntity, name,entity);
-	EntityRegistrar::entityRegistar.emplace<Transform>(entity->rawEntity);
+	entity->rawEntity = EntityRegistrar::GetRegistry().create();
+	EntityRegistrar::GetRegistry().emplace<EntityName>(entity->rawEntity, name,entity);
+	EntityRegistrar::GetRegistry().emplace<Transform>(entity->rawEntity);
 }
 
 Entity* EntityManager::GetEntityFromRaw(entt::entity e)
 {
-	EntityName& en = EntityRegistrar::entityRegistar.get<EntityName>(e);
+	EntityName& en = EntityRegistrar::GetRegistry().get<EntityName>(e);
 
 	return en.entityClass;
 }
@@ -39,19 +39,19 @@ Entity* EntityManager::GetEntityFromRaw(entt::entity e)
 void EntityManager::OnUpdate(float dt,int gameState)
 {
 
-	auto transforms = EntityRegistrar::entityRegistar.view<Transform>();
-	auto renderableGeometrys = EntityRegistrar::entityRegistar.view<RenderableGeometry>();
+	auto transforms = EntityRegistrar::GetRegistry().view<Transform>();
+	auto renderableGeometrys = EntityRegistrar::GetRegistry().view<RenderableGeometry>();
 
 	for (auto entity : transforms, renderableGeometrys)
 	{
 		transforms.get<Transform>(entity).OnUpdate(dt);
-		renderableGeometrys.get<RenderableGeometry>(entity).OnUpdate(dt);
-
+		RenderableGeometry* r = &renderableGeometrys.get<RenderableGeometry>(entity);
+		r->OnUpdate(dt);
 	}
 
 	if (gameState == GameState::PLAYING)
 	{
-		auto scripts = EntityRegistrar::entityRegistar.view<LuaScript>();
+		auto scripts = EntityRegistrar::GetRegistry().view<LuaScript>();
 		for (auto entity : scripts)
 		{
 			scripts.get<LuaScript>(entity).OnUpdate(dt);
@@ -62,7 +62,7 @@ void EntityManager::OnUpdate(float dt,int gameState)
 
 void EntityManager::OnRender(ID3D11DeviceContext* pDeviceContext)
 {
-	auto RenderableGeometrys = EntityRegistrar::entityRegistar.view<RenderableGeometry>();
+	auto RenderableGeometrys = EntityRegistrar::GetRegistry().view<RenderableGeometry>();
 	
 	for (auto entity : RenderableGeometrys)
 	{
@@ -72,11 +72,11 @@ void EntityManager::OnRender(ID3D11DeviceContext* pDeviceContext)
 
 void EntityManager::SendSignalToComponents(ECSignalCommand cmd)
 {
-	auto transforms = EntityRegistrar::entityRegistar.view<Transform>();
+	auto transforms = EntityRegistrar::GetRegistry().view<Transform>();
 
-	auto renderableGeometrys = EntityRegistrar::entityRegistar.view<RenderableGeometry>();
-	auto materials = EntityRegistrar::entityRegistar.view<MaterialComponent>();
-	auto scripts = EntityRegistrar::entityRegistar.view<LuaScript>();
+	auto renderableGeometrys = EntityRegistrar::GetRegistry().view<RenderableGeometry>();
+	auto materials = EntityRegistrar::GetRegistry().view<MaterialComponent>();
+	auto scripts = EntityRegistrar::GetRegistry().view<LuaScript>();
 
 	switch (cmd)
 	{

@@ -1,7 +1,6 @@
 ﻿#include <SlateEngine/Engine/Game/Game.h>
 #include <SlateEngine/Engine/Input/InputSystem.h>
 #include <SlateEngine/Engine/Physics/PhysicsFactory.h>
-#include <SlateEngine/Engine/Component/Script.h>
 #include <SlateEngine/Engine/NativeScripting/ScriptRegistry.h>
 Game* Game::Instance = nullptr;
 
@@ -103,18 +102,17 @@ bool Game::OnInit()
     std::string scriptToCreate = "MyTestScript";
     //using string for checking object eol
 
-    Script* script1 = ScriptRegistry::Instance->Create(scriptToCreate.c_str());
+    script1 = ScriptRegistry::Instance->Create(scriptToCreate.c_str());
 
     Entity* dummy = new Entity();
     entityManager->RegisterEntity(dummy, "MyTestScript Entity!");
     script1->SetEntity(dummy);
     
     if (script1) {
-        GetLogger()->AddLog(script1->GetEntity()->GetComponent<EntityName>().name);
-        script1->OnRender(GetDXContext());
+        script1->OnInit();
     }
 
-    delete script1;
+    //delete script1;
 
     FreeLibrary(hModule);
     // --- TEMPORARY CODE ---- //

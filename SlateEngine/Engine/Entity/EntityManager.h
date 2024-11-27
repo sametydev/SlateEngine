@@ -24,7 +24,7 @@ public:
 	void OnUpdate(float dt, int gameState);
 	void OnRender(ID3D11DeviceContext* pDeviceContext);
 
-	entt::registry& GetRegistar() { return EntityRegistrar::entityRegistar; };
+	entt::registry& GetRegistar() { return EntityRegistrar::GetRegistry(); };
 
 	void SendSignalToComponents(ECSignalCommand cmd);
 

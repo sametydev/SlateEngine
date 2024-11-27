@@ -49,25 +49,29 @@ void EditorUI::OnInit(HWND wnd, ID3D11Device* pDevice, ID3D11DeviceContext* pDev
 
     InitTheme();
 
-	game			= Game::Instance;
-	mainCamera		= game->m_camera;
+	cursorNormal					= LoadCursor(NULL, IDC_ARROW);
+	cursorGrab						= LoadCursor(NULL, IDC_HAND);
 
-    inspectorWindow = new InspectorWindow();
-	sceneWindow		= new SceneHierarchy();
-    light			= new LightingSettingsWindow();
-	assetBrowser	= new AssetsBrowser();
-	nativeScriptingDebuggerWindow = new NativeScriptingDebugger();
+	game							= Game::Instance;
+	mainCamera						= game->m_camera;
 
+	toolboxWindow					= new ToolboxWindow();
+    inspectorWindow					= new InspectorWindow();
+	sceneWindow						= new SceneHierarchy();
+    light							= new LightingSettingsWindow();
+	assetBrowser					= new AssetsBrowser();
+	nativeScriptingDebuggerWindow	= new NativeScriptingDebugger();
 
+	toolboxWindow->OnInit();
     windows.emplace(sceneWindow);
     windows.emplace(light);
 	windows.emplace(assetBrowser);
-
 
     for (auto w : windows)
     {
         w->OnInit();
     }
+
 	nativeScriptingDebuggerWindow->OnInit();
 	inspectorWindow->OnInit();
 	logWindow->AddLog("[Renderer] - DX11(DirectX 11_1) Renderer OnInit");
@@ -75,19 +79,18 @@ void EditorUI::OnInit(HWND wnd, ID3D11Device* pDevice, ID3D11DeviceContext* pDev
 
 void EditorUI::NewFrame()
 {
-
     ImGui_ImplDX11_NewFrame();
     ImGui_ImplWin32_NewFrame();
     ImGui::NewFrame();
 	ImGuizmo::BeginFrame();
-
 }
 
 constexpr float movementSpeed = 4.2f;
 constexpr float mouseSpeed = 0.1333f;
 
 void EditorUI::HandleInput(float deltaTime) {
-	if (ImGui::IsKeyDown(ImGuiKey_MouseRight)) {
+	if (ImGui::IsKeyDown(ImGuiKey_MouseRight) && game->GetGameState() == NONE) {
+		::SetCursor(cursorGrab);
 
 		vec2f delta = InputSystem::delta;
 
@@ -111,17 +114,17 @@ void EditorUI::HandleInput(float deltaTime) {
 	{
 		if (ImGui::IsKeyPressed(ImGuiKey_T))
 		{
-			gizmoType = 7;
+			toolboxWindow->gizmoType = 7;
 		}
 
 		if (ImGui::IsKeyPressed(ImGuiKey_R))
 		{
-			gizmoType = 120;
+			toolboxWindow->gizmoType = 120;
 		}
 
 		if (ImGui::IsKeyPressed(ImGuiKey_S))
 		{
-			gizmoType = 896;
+			toolboxWindow->gizmoType = 896;
 		}
 	}
 }
@@ -214,8 +217,7 @@ void EditorUI::OnUpdate(float deltaTime)
 			HandleInput(deltaTime);
 		}
 
-		DrawViewportMenu();
-		//ImGui::SetItemAllowOverlap();
+		toolboxWindow->OnDraw();
 		
 		ImVec2 win_region = ImGui::GetContentRegionAvail();
 
@@ -247,7 +249,7 @@ void EditorUI::OnUpdate(float deltaTime)
 		ImGui::Image(&rtt->GetShaderResourceView(), ImVec2(drawWidth, drawHeight));
 		*/
 
-		if (sceneWindow->selectedEntity && gizmoType != -1)
+		if (sceneWindow->selectedEntity && toolboxWindow->gizmoType != -1)
 		{
 			ImGuizmo::SetOrthographic(false);
 			ImGuizmo::SetDrawlist();
@@ -270,7 +272,7 @@ void EditorUI::OnUpdate(float deltaTime)
 			float t2[16];
 
 			ImGuizmo::RecomposeMatrixFromComponents(translation, rotation, scale, t2);
-			ImGuizmo::Manipulate(cview, cproj, (ImGuizmo::OPERATION)gizmoType, ImGuizmo::WORLD,t2);
+			ImGuizmo::Manipulate(cview, cproj, (ImGuizmo::OPERATION)toolboxWindow->gizmoType, ImGuizmo::WORLD,t2);
 
 			/*
 			S R  T
@@ -304,7 +306,7 @@ void EditorUI::OnUpdate(float deltaTime)
 	if (ImGui::Begin("Render")) {
 		ImGui::ColorEdit3("Clear Color", game->clear);
 
-		ImGui::Checkbox("WireFrame Mode", &game->renderWireframe);
+		//ImGui::Checkbox("WireFrame Mode", &game->renderWireframe);
 
 		//ImGui::Text("Graphics Device : %s", HWInfo::gpuName_cstr);
 
@@ -325,34 +327,6 @@ void EditorUI::ResizeViewport(int w, int h)
 	if (rtt == nullptr)return;
 
 	rtt->Resize(w, h);
-}
-
-void EditorUI::DrawViewportMenu()
-{
-	ImGui::Begin("Tools");
-	if (ImGui::Button("PLAY")) { game->SetGameState((GameState)1); }
-	ImGui::SameLine();
-	if (ImGui::Button("PAUSE")) { game->SetGameState((GameState)2); }
-	ImGui::SameLine();
-	if (ImGui::Button("STOP")) { game->SetGameState((GameState)0); }
-
-	ImGui::SameLine();
-
-	ImGui::SameLine();
-	ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.8f, 0.1f, 0.15f, 1.0f });
-	if (ImGui::Button(" T ")) { gizmoType = ImGuizmo::OPERATION::TRANSLATE; }
-	ImGui::PopStyleColor(1);
-
-	ImGui::SameLine();
-	ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0, 0.71f, 0.0f, 1.0f });
-	if (ImGui::Button(" R ")) { gizmoType = ImGuizmo::OPERATION::ROTATE; }
-	ImGui::PopStyleColor(1);
-
-	ImGui::SameLine();
-	ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0, 0.0f, 1.0f, 1.0f });
-	if (ImGui::Button(" S ")) { gizmoType = ImGuizmo::OPERATION::SCALE; }
-	ImGui::PopStyleColor(1);
-	ImGui::End();
 }
 
 LRESULT EditorUI::MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
