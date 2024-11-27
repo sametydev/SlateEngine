@@ -7,6 +7,7 @@
 #include <SlateEditor/Editor/Windows/AssetsBrowser.h>
 #include <SlateEditor/Editor/Windows/LogWindow.h>
 #include <SlateEditor/Editor/Windows/LightingSettingsWindow.h>
+#include <SlateEditor/Editor/Windows/NativeScriptingDebugger.h>
 #include <imgui.h>
 #include <imgui_impl_dx11.h>
 #include <imgui_impl_win32.h>
@@ -56,6 +57,7 @@ private:
 	LogWindow* logWindow             = nullptr;
 	LightingSettingsWindow* light    = nullptr;
 	AssetsBrowser* assetBrowser      = nullptr;
+	NativeScriptingDebugger* nativeScriptingDebuggerWindow = nullptr;
 
 	std::unique_ptr<RenderTTexture> rtt;
 
@@ -63,4 +65,6 @@ private:
 
 	std::unique_ptr<Gamepad> gamepad;
 	Camera* mainCamera = nullptr;
+
+	bool nativeScriptingDebugger_Open = false;
 };

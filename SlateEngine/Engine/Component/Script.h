@@ -7,7 +7,6 @@
 class ENGINE_API Script : public Component {
 public:
     virtual ~Script() = default;
-    virtual void Execute() = 0;
 };
 
 using ScriptFactory = std::function<Script* ()>;

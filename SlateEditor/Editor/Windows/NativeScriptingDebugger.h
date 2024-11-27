@@ -1,18 +1,16 @@
 #pragma once
 #include <SlateEditor/Editor/Windows/IWindow.h>
-#include <filesystem>
+#include <SlateEngine/Engine/NativeScripting/ScriptRegistry.h>
 
-class AssetsBrowser : public IWindow
+class NativeScriptingDebugger :
+	public IWindow
 {
 public:
-	AssetsBrowser();
-	~AssetsBrowser();
+	NativeScriptingDebugger();
+	~NativeScriptingDebugger();
 
 	void OnInit() override;
 	void OnDraw(bool* closable = nullptr) override;
 private:
 	const char* windowName;
-	std::filesystem::path currentDir;
-	std::filesystem::path selectedFile = "";
 };
-

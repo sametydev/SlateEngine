@@ -30,7 +30,7 @@ public:
     void OnInit() override;
     void OnShutdown() override;
 
-    Transform& GetTransform() { return connectedEntity->GetComponent<Transform>(); };
+    Transform& GetTransform() { return GetEntity()->GetComponent<Transform>(); };
     ObjectConstantBuffer& GetObjectCb() { return cbData; };
     MaterialComponent& GetMaterial() { return *m_material; };
 

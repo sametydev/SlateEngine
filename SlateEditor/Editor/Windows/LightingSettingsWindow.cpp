@@ -62,7 +62,7 @@ void LightingSettingsWindow::DrawTransform(const char* label, vec3f& val)
     ImGui::PopID();
 }
 
-void LightingSettingsWindow::OnDraw()
+void LightingSettingsWindow::OnDraw(bool* closable)
 {
     if (ImGui::Begin("Light"))
     {

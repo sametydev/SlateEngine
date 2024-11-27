@@ -4,7 +4,7 @@
 
 void RenderableGeometry::OnInternalInit()
 {
-    mTransform = connectedEntity->GetComponentAsPointer<Transform>();
+    mTransform = GetEntity()->GetComponentAsPointer<Transform>();
     SetBuffer(BuiltInMesh::CreateBox<VertexPNT>());
 
     m_constantBuffer = std::make_unique<DXConstantBuffer>();
@@ -12,12 +12,12 @@ void RenderableGeometry::OnInternalInit()
     cbData.world = mat4x4();
     cbData.worldInverseTranspose = mat4x4();
     
-    if (!connectedEntity->HasComponent<MaterialComponent>())
+    if (!GetEntity()->HasComponent<MaterialComponent>())
     {
-        connectedEntity->AddComponent<MaterialComponent>();
+        GetEntity()->AddComponent<MaterialComponent>();
     }
     
-    m_material = &connectedEntity->GetComponent<MaterialComponent>();
+    m_material = &GetEntity()->GetComponent<MaterialComponent>();
 
     m_material->Set("$Ambient",  vec4f(1.0f, 1.0f, 1.0f, 1.0f));
     m_material->Set("$Diffuse",  vec4f(1.0f, 1.0f, 1.0f, 1.0f));

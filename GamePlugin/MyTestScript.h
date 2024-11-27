@@ -3,9 +3,6 @@
 #include <SlateEngine/Engine/Game/Game.h>
 class MyTestScript : public Script
 {
-    void Execute() override {
-		Game::Instance->GetLogger()->AddLog("Hello from DLL - MyTestScript");
-    }
 	void OnInternalInit() override;
 
 	void OnUpdate(float deltaTime) override;

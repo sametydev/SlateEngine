@@ -81,6 +81,9 @@
     <ClCompile Include="Editor\LibrarySources\ImSequencer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Editor\Windows\NativeScriptingDebugger.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Editor\Windows\AssetsBrowser.h">
@@ -102,6 +105,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Editor\EditorUI.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Editor\Windows\NativeScriptingDebugger.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -20,7 +20,7 @@ void LogWindow::OnInit()
 }
 
 
-void LogWindow::OnDraw()
+void LogWindow::OnDraw(bool* closable)
 {
     ImGui::SetNextWindowSize(ImVec2(500, 400));
     ImGui::Begin(windowName);

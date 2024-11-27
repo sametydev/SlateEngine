@@ -21,7 +21,7 @@ void InspectorWindow::OnInit()
 }
 
 
-void InspectorWindow::OnDraw()
+void InspectorWindow::OnDraw(bool* closable)
 {
 }
 

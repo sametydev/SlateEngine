@@ -99,40 +99,18 @@ bool Game::OnInit()
     // NATIVE SCRIPTING CONCEPT!! NOT FINAL
 
     new ScriptRegistry();
-    typedef Script* (*CreateScriptFunc)(const char*);
 
-    CreateScriptFunc createScript = (CreateScriptFunc)GetProcAddress(hModule, "CreateScript");
-
-    if (!createScript) {
-        MessageBoxA(0, "Functions are missing in DLL's, Please use core functions", 0, 0);
-        FreeLibrary(hModule);
-        return 1;
-    }
-
-    std::vector<std::string> scripts = ScriptRegistry::Instance->GetRegisteredScripts();
-    std::cout << "Registered scripts:" << std::endl;
-    for (const auto& scriptName : scripts) {
-        std::cout << " - " << scriptName << std::endl;
-        MessageBoxA(0, scriptName.c_str(), 0, 0);
-    }
     std::string scriptToCreate = "MyTestScript";
     //using string for checking object eol
 
-    Script* script1 = createScript(scriptToCreate.c_str());
+    Script* script1 = ScriptRegistry::Instance->Create(scriptToCreate.c_str());
 
     Entity* dummy = new Entity();
     entityManager->RegisterEntity(dummy, "MyTestScript Entity!");
-    script1->connectedEntity = dummy;
-    if (script1->connectedEntity->HasComponent<EntityName>()) {
-        GetLogger()->AddLog("True");
-    }
-    else {
-        GetLogger()->AddLog("False");
-    }
+    script1->SetEntity(dummy);
     
     if (script1) {
-        script1->Execute();
-        GetLogger()->AddLog(script1->connectedEntity->GetComponent<EntityName>().name);
+        GetLogger()->AddLog(script1->GetEntity()->GetComponent<EntityName>().name);
         script1->OnRender(GetDXContext());
     }
 

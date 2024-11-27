@@ -10,7 +10,7 @@ public:
 	~SceneHierarchy();
 
 	void OnInit() override;
-	void OnDraw() override;
+	void OnDraw(bool* closable = nullptr) override;
 
 	Entity* selectedEntity = nullptr;
 

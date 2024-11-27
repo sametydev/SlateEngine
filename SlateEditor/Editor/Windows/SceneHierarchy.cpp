@@ -14,7 +14,7 @@ void SceneHierarchy::OnInit()
 }
 
 
-void SceneHierarchy::OnDraw()
+void SceneHierarchy::OnDraw(bool* closable)
 {
 	ImGui::Begin(windowName);
 	ImGui::Text("Scene Hierarchy:");

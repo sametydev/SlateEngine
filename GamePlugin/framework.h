@@ -12,8 +12,3 @@
 
 #include <vector>
 #include <string>
-
-
-extern "C" __declspec(dllexport) Script * CreateScript(const char* name) {
-    return ScriptRegistry::Instance->Create(name);
-}

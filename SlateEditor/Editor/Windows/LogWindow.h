@@ -9,7 +9,7 @@ public:
 	~LogWindow();
 
 	void OnInit() override;
-	void OnDraw() override;
+	void OnDraw(bool* closable = nullptr) override;
 	void AddLog(const char* fmt) override;
 	void ClearLogs();
 

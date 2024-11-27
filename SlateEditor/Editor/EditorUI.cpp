@@ -2,7 +2,7 @@
 #include <ImGuizmo.h>
 #include <comdef.h>
 #include <SlateEngine/Engine/Input/InputSystem.h>
-
+#include <SlateEngine/Engine/NativeScripting/ScriptRegistry.h>
 
 
 EditorUI* EditorUI::Instance = nullptr;
@@ -56,17 +56,19 @@ void EditorUI::OnInit(HWND wnd, ID3D11Device* pDevice, ID3D11DeviceContext* pDev
 	sceneWindow		= new SceneHierarchy();
     light			= new LightingSettingsWindow();
 	assetBrowser	= new AssetsBrowser();
+	nativeScriptingDebuggerWindow = new NativeScriptingDebugger();
 
 
     windows.emplace(sceneWindow);
     windows.emplace(light);
 	windows.emplace(assetBrowser);
 
+
     for (auto w : windows)
     {
         w->OnInit();
     }
-
+	nativeScriptingDebuggerWindow->OnInit();
 	inspectorWindow->OnInit();
 	logWindow->AddLog("[Renderer] - DX11(DirectX 11_1) Renderer OnInit");
 }
@@ -182,6 +184,15 @@ void EditorUI::OnUpdate(float deltaTime)
 			ImGui::EndMenu();
 		}
 
+		if (ImGui::BeginMenu("Tools"))
+		{
+			if(ImGui::MenuItem("Native Scripting Debugger", NULL))
+			{
+				nativeScriptingDebugger_Open = true;
+			}
+			ImGui::EndMenu();
+		}
+
 		if (ImGui::BeginMenu("Plugins"))
 		{
 			ImGui::MenuItem("Test", NULL);
@@ -289,7 +300,7 @@ void EditorUI::OnUpdate(float deltaTime)
     }
 
 	inspectorWindow->OnDraw(sceneWindow->selectedEntity);
-
+	nativeScriptingDebuggerWindow->OnDraw(&nativeScriptingDebugger_Open);
 	if (ImGui::Begin("Render")) {
 		ImGui::ColorEdit3("Clear Color", game->clear);
 
@@ -300,6 +311,7 @@ void EditorUI::OnUpdate(float deltaTime)
 		//ImGui::Text("SSE Support : %s", HWInfo::sseSupported ? "Yes" : "False");
 
 	}ImGui::End();
+
 }
 
 void EditorUI::ClearViewport(float rgba[4])

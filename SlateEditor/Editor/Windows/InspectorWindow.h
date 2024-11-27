@@ -11,7 +11,7 @@ public:
 	~InspectorWindow();
 
 	void OnInit() override;
-	void OnDraw() override;
+	void OnDraw(bool* closable = nullptr) override;
 	void OnDraw(Entity* entity);
 
 	void DrawTransform(const char* label,vec3f& val);

@@ -49,7 +49,7 @@ void LuaScript::OnInternalInit()
         .addStaticProperty("pos", &InputSystem::pos, false)
         .endClass();
 
-    luabridge::push(m_luaState, &connectedEntity);
+    luabridge::push(m_luaState, GetEntity());
     lua_setglobal(m_luaState, "connectedEntity");
 
     luabridge::push(m_luaState, DXApplication::Instance->GetLogger());

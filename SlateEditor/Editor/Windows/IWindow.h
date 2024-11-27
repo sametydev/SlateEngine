@@ -13,7 +13,7 @@ public:
 	virtual ~IWindow(){}
 
 	virtual void OnInit() = 0;
-	virtual void OnDraw() = 0;
+	virtual void OnDraw(bool* closable = nullptr) = 0;
 
 private:
 	const char* windowName;

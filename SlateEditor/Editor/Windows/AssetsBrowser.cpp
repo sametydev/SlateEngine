@@ -17,7 +17,7 @@ void AssetsBrowser::OnInit()
 }
 
 
-void AssetsBrowser::OnDraw()
+void AssetsBrowser::OnDraw(bool* closable)
 {
 	ImGui::Begin(windowName);
 	ImGui::Text("Current Path : %s", currentDir.string().c_str());

@@ -106,6 +106,7 @@
     <ClCompile Include="Editor\Windows\LogWindow.cpp" />
     <ClCompile Include="Editor\Windows\SceneHierarchy.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Editor\Windows\NativeScriptingDebugger.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Editor\EditorUI.h" />
@@ -115,6 +116,7 @@
     <ClInclude Include="Editor\Windows\LightingSettingsWindow.h" />
     <ClInclude Include="Editor\Windows\LogWindow.h" />
     <ClInclude Include="Editor\Windows\SceneHierarchy.h" />
+    <ClInclude Include="Editor\Windows\NativeScriptingDebugger.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

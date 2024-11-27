@@ -9,7 +9,7 @@ public:
 	~LightingSettingsWindow();
 
 	void OnInit() override;
-	void OnDraw() override;
+	void OnDraw(bool* closable = nullptr) override;
 private:
 	void DrawTransform(const char* label, vec3f& val);
 	const char* windowName;
