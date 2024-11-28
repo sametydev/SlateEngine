@@ -3,7 +3,7 @@
  Currently in **WIP**.\
  *It will be a project that I will advance in my free time, I'm very busy, I hope it won't be unfinished like my other engines! Hahah*
  
-![Editor with Lua and Native C++ scripting](https://github.com/sametydev/SlateEngine/blob/master/Screenshots/Editor-1-Showcase-Lua-and-Native.png?raw=true)
+![Editor with Lua and Native C++ scripting](Screenshots/Editor-1-Showcase-Lua-and-Native.png?raw=true)
 
  **To Do Features;**\
  DirectX 11.1 Renderer,\
