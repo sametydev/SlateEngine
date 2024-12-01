@@ -424,8 +424,10 @@ void EditorUI::InitTheme()
 	style.Colors[ImGuiCol_ModalWindowDimBg] = ImVec4(0.196078434586525f, 0.1764705926179886f, 0.5450980663299561f, 0.501960813999176f);
 }
 
-void EditorUI::OnRender()
+void EditorUI::OnRender(float rgba[4])
 {
+	game->ClearRenderTarget(rgba);
+
     ImGui::Render();
 	ImGui::UpdatePlatformWindows();
     ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());

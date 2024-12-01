@@ -24,10 +24,10 @@ bool Game::OnInit()
     m_camera = new Camera(65.f, GetAspectRatio(), 0.01f, 1000.0f);
     m_camera->SetPosition(vec3f(0, 0, -10));
 
-    if (!IS_COOKED) {
-        editorSystem->OnInit(hWindow, m_d3dDevice.Get(), m_d3dContext.Get());
-        editorSystem->ResizeViewport(m_clientW, m_clientH);
-    }
+
+    enginePlayer->OnInit(hWindow, m_d3dDevice.Get(), m_d3dContext.Get());
+    enginePlayer->ResizeViewport(m_clientW, m_clientH);
+    
 
 
     fileSystem = std::make_shared<FileSystem>();
@@ -114,7 +114,7 @@ bool Game::OnInit()
 
     //delete script1;
 
-    FreeLibrary(hModule);
+    //FreeLibrary(hModule);
     // --- TEMPORARY CODE ---- //
 
     return true;
@@ -124,7 +124,7 @@ void Game::OnResize()
 {
     DXApplication::OnResize();
 
-    if(editorSystem)editorSystem->ResizeViewport(m_clientW, m_clientH);
+    enginePlayer->ResizeViewport(m_clientW, m_clientH);
 
     if (m_camera != nullptr)
     {
@@ -136,9 +136,9 @@ void Game::OnResize()
 void Game::OnUpdateScene(float deltaTime)
 {
     m_camera->Update(deltaTime);
-#pragma region EDITOR_STUFF
-    if (!IS_COOKED) { editorSystem->OnUpdate(deltaTime);}
-#pragma endregion
+
+    enginePlayer->OnUpdate(deltaTime);
+
 
     FrameBufferConstantObject.eyePos = m_camera->GetPos();
     FrameBufferConstantObject.view   = m_camera->GetViewMatrix();
@@ -176,15 +176,15 @@ void Game::UpdateGlobalConstantBuffers()
 
 void Game::BeginClear()
 {
-    IS_COOKED ? ClearRenderTarget(clear) : editorSystem->ClearViewport(clear);
+    //IS_COOKED ? ClearRenderTarget(clear) : editorSystem->ClearViewport(clear);
+
+    enginePlayer->ClearViewport(clear);
+
 }
 
 void Game::PostClear()
 {
-    if (!IS_COOKED) {
-        ClearRenderTarget(clear);
-        editorSystem->OnRender();
-    }
+    enginePlayer->OnRender(clear);
 }
 
 void Game::SetGameState(GameState gs)

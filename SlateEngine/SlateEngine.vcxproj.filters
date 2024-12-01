@@ -84,7 +84,7 @@
     <ClCompile Include="LibarySources\ConvertUTF.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Editor\EditorSystem.cpp">
+    <ClCompile Include="Engine\Core\EnginePlayer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Component\LuaScript.cpp">
@@ -245,7 +245,7 @@
     <ClInclude Include="Engine\Graphics\Shader\ShaderCache.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Editor\EditorSystem.h">
+    <ClInclude Include="Engine\Core\EnginePlayer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Component\LuaScript.h">

@@ -17,7 +17,7 @@ int WINAPI WinMain(
 
     new EditorUI();
 
-    game.SetEditorSystem(EditorUI::Instance);
+    game.SetPlayer(EditorUI::Instance);
     game.SetWorkingDirectory("TestProject\\");
     game.SetLogger(LogWindow::Instance);
 

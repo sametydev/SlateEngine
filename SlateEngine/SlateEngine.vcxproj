@@ -99,7 +99,7 @@
     <ClCompile Include="Engine\Core\AssetStreamer.cpp" />
     <ClCompile Include="Engine\Component\Material.cpp" />
     <ClCompile Include="Engine\Core\HWInfo.cpp" />
-    <ClCompile Include="Engine\Editor\EditorSystem.cpp" />
+    <ClCompile Include="Engine\Core\EnginePlayer.cpp" />
     <ClCompile Include="Engine\Component\RenderableGeometry.cpp" />
     <ClCompile Include="Engine\Component\Camera.cpp" />
     <ClCompile Include="Engine\Component\Transform.cpp" />
@@ -142,7 +142,7 @@
     <ClInclude Include="Engine\Entity\EntityRegistrar.h" />
     <ClInclude Include="Engine\NativeScripting\ScriptRegistry.h" />
     <ClInclude Include="Engine\PCH.h" />
-    <ClInclude Include="Engine\Editor\EditorSystem.h" />
+    <ClInclude Include="Engine\Core\EnginePlayer.h" />
     <ClInclude Include="Engine\Component\Component.h" />
     <ClInclude Include="Engine\Component\Components.h" />
     <ClInclude Include="Engine\Component\RenderableGeometry.h" />

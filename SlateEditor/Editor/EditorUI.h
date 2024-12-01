@@ -3,7 +3,7 @@
 #include <SlateEditor/Editor/Windows/IWindow.h>
 #include <SlateEditor/Editor/Windows/SceneHierarchy.h>
 #include <SlateEditor/Editor/Windows/InspectorWindow.h>
-#include <SlateEngine/Engine/Editor/EditorSystem.h>
+#include <SlateEngine/Engine/Core/EnginePlayer.h>
 #include <SlateEditor/Editor/Windows/AssetsBrowser.h>
 #include <SlateEditor/Editor/Windows/LogWindow.h>
 #include <SlateEditor/Editor/Windows/LightingSettingsWindow.h>
@@ -16,7 +16,7 @@
 #include <set>
 #include <SlateEngine/Engine/Input/Gamepad.h>
 
-class EditorUI : public EditorSystem
+class EditorUI : public EnginePlayer
 {
 public:
 	EditorUI();
@@ -25,7 +25,7 @@ public:
 	void OnInit(HWND wnd, ID3D11Device* pDevice, ID3D11DeviceContext* pDeviceContext) override;
 
 	void NewFrame() override;
-	void OnRender() override;
+	void OnRender(float rgba[4]) override;
 
 	//Update first render later
 	void OnUpdate(float deltaTime) override;

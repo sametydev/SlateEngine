@@ -6,7 +6,7 @@
 
 #include <SlateEngine/Engine/Core/ILogger.h>
 
-#include <SlateEngine/Engine/Editor/EditorSystem.h>
+#include <SlateEngine/Engine/Core/EnginePlayer.h>
 
 #include <comdef.h>
 #include <cstdio>
@@ -62,8 +62,8 @@ public:
 
     DXGI_ADAPTER_DESC adapterDesc{};
 
-    void SetEditorSystem(EditorSystem* editor) {
-        editorSystem = editor;
+    void SetPlayer(EnginePlayer* player) {
+        enginePlayer = player;
     }
 
     void SetLogger(ILogger* logger) {
@@ -113,7 +113,7 @@ protected:
     int m_clientH;
 
 
-    EditorSystem* editorSystem = nullptr;
+    EnginePlayer* enginePlayer = nullptr;
     ILogger* logSystem = nullptr;
     const char* workingDirectory = "";
 };

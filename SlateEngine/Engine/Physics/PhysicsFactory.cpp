@@ -17,7 +17,7 @@ void PhysicsFactory::Init()
 
 	mPvd = InitializeDebugger(mFoundation);
 
-	//abs(100 * -9.81f) == gravity * 1s
+	//abs(100 * -9.81f) == gravity * 100
 	mToleranceScale.speed = 981;
 
 	mPhysics = PxCreatePhysics(PX_PHYSICS_VERSION, *mFoundation, mToleranceScale, true, mPvd);

@@ -32,7 +32,7 @@ void FileSystem::Init()
 
     InitFWatcher();
 
-    for (std::filesystem::recursive_directory_iterator i("TestProject"), end; i != end; ++i) {
+    for (std::filesystem::recursive_directory_iterator i("Projects\\TestProject"), end; i != end; ++i) {
         if (!std::filesystem::is_directory(i->path())) {
             ImportFile(i->path());
         }
@@ -44,7 +44,7 @@ void FileSystem::InitFWatcher()
 {
     
     filewatch::FileWatch<std::wstring>* watch = new filewatch::FileWatch<std::wstring>(
-        L"TestProject",
+        L"Projects\\TestProject",
         [](const std::wstring& path, const filewatch::Event change_type) {
 
             switch (change_type)

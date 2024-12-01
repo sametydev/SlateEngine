@@ -1,15 +1,15 @@
 #pragma once
 #include <SlateEngine/Engine/DXConfig.h>
-class ENGINE_API EditorSystem
+class ENGINE_API EnginePlayer
 {
 public:
-	EditorSystem() {};
-	virtual ~EditorSystem() {};
+	EnginePlayer() {};
+	virtual ~EnginePlayer() {};
 
 	virtual void OnInit(HWND wnd, ID3D11Device* pDevice, ID3D11DeviceContext* pDeviceContext) = 0;
 
 	virtual void NewFrame() = 0;
-	virtual void OnRender() = 0;
+	virtual void OnRender(float rgba[4]) = 0;
 
 	//Update first render later
 	virtual void OnUpdate(float deltaTime) = 0;
