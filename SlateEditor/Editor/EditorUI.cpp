@@ -195,6 +195,13 @@ void EditorUI::OnUpdate(float deltaTime)
 			}
 			ImGui::EndMenu();
 		}
+		
+		if (ImGui::BeginMenu("Run")) {
+			if (ImGui::MenuItem("Play Game on Runner (External)", NULL)) {
+				ShellExecuteA(NULL, "open", "bin\\SlatePlayer.exe", gDXApp->GetWorkingDir().c_str(), NULL, SW_SHOWDEFAULT);
+			}
+			ImGui::EndMenu();
+		}
 
 		if (ImGui::BeginMenu("Plugins"))
 		{

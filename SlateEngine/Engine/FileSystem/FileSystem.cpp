@@ -10,6 +10,8 @@
 #include <SlateEngine/Engine/Graphics/Shader/ShaderCache.h>
 #include <SlateEngine/Engine/Graphics/Vertex.h>
 
+#include <SlateEngine/Engine/Graphics/DXApplication.h>
+
 FileSystem* FileSystem::Instance = nullptr;
 
 FileSystem::FileSystem()
@@ -31,8 +33,7 @@ void FileSystem::Init()
     errorMetaData->path = "ERROR";
 
     InitFWatcher();
-
-    for (std::filesystem::recursive_directory_iterator i("Projects\\TestProject"), end; i != end; ++i) {
+    for (std::filesystem::recursive_directory_iterator i(gDXApp->GetWorkingDir()), end; i != end; ++i) {
         if (!std::filesystem::is_directory(i->path())) {
             ImportFile(i->path());
         }
@@ -42,9 +43,8 @@ void FileSystem::Init()
 
 void FileSystem::InitFWatcher()
 {
-    
     filewatch::FileWatch<std::wstring>* watch = new filewatch::FileWatch<std::wstring>(
-        L"Projects\\TestProject",
+        s2ws(gDXApp->GetWorkingDir()),
         [](const std::wstring& path, const filewatch::Event change_type) {
 
             switch (change_type)

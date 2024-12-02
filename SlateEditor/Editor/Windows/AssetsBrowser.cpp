@@ -1,10 +1,11 @@
 #include "AssetsBrowser.h"
 #include <SlateEngine/Engine/FileSystem/FileSystem.h>
 
-static std::filesystem::path assetPath = "TestProject\\Assets";
+static std::filesystem::path assetPath = "";
 
 AssetsBrowser::AssetsBrowser() : windowName("Asset Browser")
 {
+	assetPath = std::string(gDXApp->GetWorkingDir()) + "Assets";
 	currentDir = assetPath;
 }
 

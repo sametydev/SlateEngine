@@ -72,9 +72,9 @@ public:
 
     ILogger* GetLogger() { return logSystem; }
 
-    inline const char* GetWorkingDir() { return this->workingDirectory; };
+    inline std::string GetWorkingDir() { return this->workingDirectory; };
 
-    inline void SetWorkingDirectory(const char* dir) {
+    inline void SetWorkingDirectory(std::string dir) {
         workingDirectory = dir;
     }
 
@@ -115,5 +115,5 @@ protected:
 
     EnginePlayer* enginePlayer = nullptr;
     ILogger* logSystem = nullptr;
-    const char* workingDirectory = "";
+    std::string workingDirectory = "";
 };
