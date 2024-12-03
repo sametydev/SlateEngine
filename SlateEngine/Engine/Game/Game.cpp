@@ -17,6 +17,10 @@ Game::~Game()
 {
 }
 
+void BuildGrid() {
+
+}
+
 
 bool Game::OnInit()
 {
@@ -86,6 +90,8 @@ bool Game::OnInit()
     m_frameConstantBuffer->BindPS(BUFFER_ID::FRAME_CONSTANT_BUFFER_ID);
     m_lightConstantBuffer->BindPS(BUFFER_ID::LIGHT_CONSTANT_BUFFER_ID);
 
+    // --- TEMPORARY CODE ---- //
+    // NATIVE SCRIPTING CONCEPT!! NOT FINAL
 
     HMODULE hModule = LoadLibrary(L"GamePlugin.dll");
     if (!hModule) {
@@ -94,8 +100,7 @@ bool Game::OnInit()
         return 1;
     }
 
-    // --- TEMPORARY CODE ---- //
-    // NATIVE SCRIPTING CONCEPT!! NOT FINAL
+
 
     new ScriptRegistry();
 
@@ -116,6 +121,8 @@ bool Game::OnInit()
 
     //FreeLibrary(hModule);
     // --- TEMPORARY CODE ---- //
+
+    BuildGrid();
 
     return true;
 }
@@ -158,8 +165,8 @@ void Game::OnRenderScene()
     BeginClear();
 
     entityManager->OnRender(GetDXContext());
-
     PostClear();
+
     SwapChainPresent();
 }
 
@@ -176,10 +183,7 @@ void Game::UpdateGlobalConstantBuffers()
 
 void Game::BeginClear()
 {
-    //IS_COOKED ? ClearRenderTarget(clear) : editorSystem->ClearViewport(clear);
-
     enginePlayer->ClearViewport(clear);
-
 }
 
 void Game::PostClear()

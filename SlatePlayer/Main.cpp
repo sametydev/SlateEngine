@@ -11,14 +11,22 @@ int main(int argc, const char* argv[])
     new Logger();
 
     game.SetPlayer(Player::Instance);
+
+    game.SetLogger(Logger::Instance);
+
     std::string workingDirectory = argc > 1 ? argv[1] : "ERROR";
-    std::cout << argv[1];
+
+    if (workingDirectory == "ERROR") {
+        MessageBoxA(0, "Error", "Error", NULL);
+        assert(0 < 0, "Error");
+        return 0;
+    }
 
     game.SetWorkingDirectory(workingDirectory);
-    game.SetLogger(Logger::Instance);
 
     if (!game.OnInit())
         return 0;
+
     game.SetGameState(GameState::PLAYING);
     return game.OnRun();
 }

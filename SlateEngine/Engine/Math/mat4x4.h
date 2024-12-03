@@ -417,17 +417,18 @@ inline mat4x4 mat4x4::translated(const vec3f& t) {
 //}
 // 
 inline mat4x4 mat4x4::rotateX(float angle) {
-float theta = angle * RADIANS;
-float sinx = sin(theta);
-float cosx = cos(theta);
-mat4x4 mat = {
-	1.f,  0.f,  0.f, 0.f,
-	0.f, cosx, -sinx, 0.f,
-	0.f, sinx,  cosx, 0.f,
-	0.f,  0.f,  0.f, 1.f
-};
+	float theta = angle * RADIANS;
+	float sinx = sin(theta);
+	float cosx = cos(theta);
 
-return mat;
+	mat4x4 mat = {
+		1.f,  0.f,  0.f, 0.f,
+		0.f, cosx, -sinx, 0.f,
+		0.f, sinx,  cosx, 0.f,
+		0.f,  0.f,  0.f, 1.f
+	};
+
+	return mat;
 }
 
 inline mat4x4 mat4x4::rotateY(float angle) {
