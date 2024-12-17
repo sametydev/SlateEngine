@@ -17,6 +17,7 @@ public:
 	void UnMap();
 
 	void MapAndUnMap(unsigned int cbSize, const void* dstData);
+	void SubData(void* pData);
 private:
 	ComPtr<ID3D11Buffer> m_buffer;
 };

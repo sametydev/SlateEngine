@@ -5,6 +5,7 @@
 #undef max
 #include <assert.h>
 #include <ostream>
+#include <SlateEngine/Engine/DXConfig.h>
 
 class ENGINE_API vec4f
 {

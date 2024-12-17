@@ -53,7 +53,7 @@
     <VcpkgEnableManifest>true</VcpkgEnableManifest>
   </PropertyGroup>
   <PropertyGroup Label="Vcpkg" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <VcpkgInstalledDir>C:\Users\samet\Downloads\vcpkg\vcpkg\installed</VcpkgInstalledDir>
+    <VcpkgInstalledDir>$(VCPKG_PATH)</VcpkgInstalledDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -96,6 +96,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Engine\Graphics\DXBasicBatch.cpp" />
+    <ClCompile Include="Engine\Graphics\DXSpriteBatch.cpp" />
     <ClCompile Include="Engine\Core\AssetStreamer.cpp" />
     <ClCompile Include="Engine\Component\Material.cpp" />
     <ClCompile Include="Engine\Core\HWInfo.cpp" />
@@ -135,6 +137,8 @@
     <ClCompile Include="Engine\Physics\PhysicsFactory.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Engine\Graphics\DXBasicBatch.h" />
+    <ClInclude Include="Engine\Graphics\DXSpriteBatch.h" />
     <ClInclude Include="Engine\Component\Script.h" />
     <ClInclude Include="Engine\Core\Asset.h" />
     <ClInclude Include="Engine\Core\AssetStreamer.h" />

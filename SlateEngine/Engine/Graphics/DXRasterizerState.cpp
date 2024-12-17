@@ -9,6 +9,7 @@ ComPtr<ID3D11BlendState> DXRasterizerState::BSTransparent = nullptr;
 ComPtr<ID3D11BlendState> DXRasterizerState::BSAdditive = nullptr;
 ComPtr<ID3D11DepthStencilState> DXRasterizerState::DSSWriteStencil = nullptr;
 ComPtr<ID3D11DepthStencilState> DXRasterizerState::DSSDrawWithStencil = nullptr;
+ComPtr<ID3D11DepthStencilState> DXRasterizerState::DSState = nullptr;
 ComPtr<ID3D11RasterizerState> DXRasterizerState::RSCullBack = nullptr;
 ComPtr<ID3D11RasterizerState> DXRasterizerState::RSCullFront = nullptr;
 ComPtr<ID3D11RasterizerState> DXRasterizerState::RSWireFrame = nullptr;
@@ -135,6 +136,30 @@ void DXRasterizerState::Initialize(ID3D11Device* device,ID3D11DeviceContext* con
     dsDesc.BackFace.StencilFunc = D3D11_COMPARISON_EQUAL;
 
     HR(device->CreateDepthStencilState(&dsDesc, DSSDrawWithStencil.GetAddressOf()));
+
+    dsDesc.DepthEnable = true;
+    dsDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
+    dsDesc.DepthFunc = D3D11_COMPARISON_LESS;
+
+    dsDesc.StencilEnable = true;
+    dsDesc.StencilReadMask = 0xFF;
+    dsDesc.StencilWriteMask = 0xFF;
+
+    //desctions if pixel is front-facing.
+    dsDesc.FrontFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+    dsDesc.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_INCR;
+    dsDesc.FrontFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
+    dsDesc.FrontFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
+
+    //desctions if pixel is back-facing.
+    dsDesc.BackFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+    dsDesc.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_DECR;
+    dsDesc.BackFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
+    dsDesc.BackFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
+
+    // Create the depth stencil state.
+    HR(device->CreateDepthStencilState(&dsDesc, DSState.GetAddressOf()));
+
 
     rasterizerDesc.CullMode = D3D11_CULL_BACK;
     rasterizerDesc.FillMode = D3D11_FILL_SOLID;

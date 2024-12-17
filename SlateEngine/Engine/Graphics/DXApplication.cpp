@@ -2,6 +2,7 @@
 #include <SlateEngine/Engine/Core/EngineConfig.h>
 #include <sstream>
 #include <SlateEngine/Engine/Input/InputSystem.h>
+#include <SlateEngine/Engine/Graphics/DXSpriteBatch.h>
 #pragma warning(disable: 6031)
 
 extern "C"
@@ -42,6 +43,7 @@ DXApplication::DXApplication(HINSTANCE hInstance, const std::wstring& windowName
     if (!Instance)
     {
         mTimer = new Timer();
+        new DXSpriteBatch();
         Instance = this;
     }
 }
@@ -86,10 +88,13 @@ int DXApplication::OnRun()
             InputSystem::Update(hWindow);
             if (!bPaused)
             {
+                DXSpriteBatch::Instance->Begin();
                 enginePlayer->NewFrame();
                 //Render Scene
                 OnUpdateScene(mTimer->deltaTime());
                 OnRenderScene();
+                DXSpriteBatch::Instance->End();
+                SwapChainPresent();
             }
             else
             {

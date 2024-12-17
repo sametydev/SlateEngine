@@ -63,3 +63,8 @@ void DXConstantBuffer::MapAndUnMap(unsigned int cbSize, const void* dstData)
     Map(cbSize, dstData);
     UnMap();
 }
+
+void DXConstantBuffer::SubData(void* pData)
+{
+    gDXContext->UpdateSubresource(m_buffer.Get(), NULL, NULL, pData, NULL, NULL);
+}
