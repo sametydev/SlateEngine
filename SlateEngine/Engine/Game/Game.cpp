@@ -2,6 +2,8 @@
 #include <SlateEngine/Engine/Input/InputSystem.h>
 #include <SlateEngine/Engine/Physics/PhysicsFactory.h>
 #include <SlateEngine/Engine/NativeScripting/ScriptRegistry.h>
+#include <SlateEngine/Engine/Graphics/DXSpriteBatch.h>
+
 Game* Game::Instance = nullptr;
 
 Game::Game(HINSTANCE hInstance, const std::wstring& windowName, int initWidth, int initHeight)
@@ -32,6 +34,8 @@ bool Game::OnInit()
 
     fileSystem = std::make_shared<FileSystem>();
     fileSystem->Init();
+
+    DXSpriteBatch::Instance->Init();
 
     entityManager = std::make_shared<EntityManager>();
     PhysicsFactory* pfactory = new PhysicsFactory();
@@ -86,6 +90,7 @@ bool Game::OnInit()
     m_frameConstantBuffer->BindPS(BUFFER_ID::FRAME_CONSTANT_BUFFER_ID);
     m_lightConstantBuffer->BindPS(BUFFER_ID::LIGHT_CONSTANT_BUFFER_ID);
 
+    
 
     HMODULE hModule = LoadLibrary(L"GamePlugin.dll");
     if (!hModule) {
@@ -160,7 +165,6 @@ void Game::OnRenderScene()
     entityManager->OnRender(GetDXContext());
 
     PostClear();
-    SwapChainPresent();
 }
 
 void Game::UpdateGlobalConstantBuffers()

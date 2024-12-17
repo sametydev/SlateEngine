@@ -126,6 +126,9 @@
     <ClCompile Include="Engine\NativeScripting\ScriptRegistry.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Graphics\DXSpriteBatch.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\DXConfig.h">
@@ -297,6 +300,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Entity\EntityRegistrar.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Graphics\DXSpriteBatch.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -46,6 +46,9 @@ struct ENGINE_API mat4x4 {
 	static mat4x4 RotationYawPitchRoll(float yaw, float pitch, float roll);
 	static mat4x4 RotationAxis(const vec3f& v, float angle);
 	static mat4x4 MatrixShadow(const vec3f& lightDir, const vec3f& planeNormal);
+	static mat4x4 NDCToScreen(float widht, float height);
+
+
 
 	union {
 		float f[16];
@@ -121,7 +124,21 @@ inline mat4x4 mat4x4::operator*(const mat4x4& rhs) {
 	}
 	return mat;
 }
+inline mat4x4 mat4x4::NDCToScreen(float widht, float height)
+{
+	float screenX = 2.f / (float)widht;
+	float screenY = 2.f / (float)height;
 
+	//Calculating to NDC to Screen Space
+	mat4x4 screenMat{
+		screenX,0.f,0.f,-1.f,
+		0.f,-screenY,0.f,1.f,
+		0.f,0.f,1.f,0.f,
+		0.f,0.f,0.f,1.f
+	};
+
+	return screenMat;
+}
 inline mat4x4 mat4x4::InverseTranspose() {
 	mat4x4 result;
 

@@ -28,6 +28,7 @@ public:
 
     static ComPtr<ID3D11DepthStencilState> DSSWriteStencil;
     static ComPtr<ID3D11DepthStencilState> DSSDrawWithStencil;
+    static ComPtr<ID3D11DepthStencilState> DSState;
 
     //State
     static ComPtr<ID3D11RasterizerState> RSCullBack;
