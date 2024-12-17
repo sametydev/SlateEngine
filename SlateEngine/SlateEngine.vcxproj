@@ -96,6 +96,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Engine\Graphics\DXBasicBatch.cpp" />
     <ClCompile Include="Engine\Graphics\DXSpriteBatch.cpp" />
     <ClCompile Include="Engine\Core\AssetStreamer.cpp" />
     <ClCompile Include="Engine\Component\Material.cpp" />
@@ -136,6 +137,7 @@
     <ClCompile Include="Engine\Physics\PhysicsFactory.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Engine\Graphics\DXBasicBatch.h" />
     <ClInclude Include="Engine\Graphics\DXSpriteBatch.h" />
     <ClInclude Include="Engine\Component\Script.h" />
     <ClInclude Include="Engine\Core\Asset.h" />

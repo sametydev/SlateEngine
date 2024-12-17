@@ -163,7 +163,7 @@ void Game::OnRenderScene()
     BeginClear();
 
     entityManager->OnRender(GetDXContext());
-
+    
     PostClear();
 }
 
