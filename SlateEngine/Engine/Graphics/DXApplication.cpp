@@ -2,7 +2,7 @@
 #include <SlateEngine/Engine/Core/EngineConfig.h>
 #include <sstream>
 #include <SlateEngine/Engine/Input/InputSystem.h>
-#include <SlateEngine/Engine/Graphics/DXSpriteBatch.h>
+#include <SlateEngine/Engine/Graphics/DXBasicBatch.h>
 #pragma warning(disable: 6031)
 
 extern "C"
@@ -43,7 +43,6 @@ DXApplication::DXApplication(HINSTANCE hInstance, const std::wstring& windowName
     if (!Instance)
     {
         mTimer = new Timer();
-        new DXSpriteBatch();
         Instance = this;
     }
 }
@@ -88,12 +87,12 @@ int DXApplication::OnRun()
             InputSystem::Update(hWindow);
             if (!bPaused)
             {
-                DXSpriteBatch::Instance->Begin();
+                DXBasicBatch::Instance->Begin();
                 enginePlayer->NewFrame();
                 //Render Scene
                 OnUpdateScene(mTimer->deltaTime());
                 OnRenderScene();
-                DXSpriteBatch::Instance->End();
+                DXBasicBatch::Instance->End();
                 SwapChainPresent();
             }
             else
@@ -416,6 +415,10 @@ bool DXApplication::InitializeGraphics()
 
     dxgiFactory1->MakeWindowAssociation(hWindow, DXGI_MWA_NO_ALT_ENTER | DXGI_MWA_NO_WINDOW_CHANGES);
     dxgiAdapter->GetDesc(&adapterDesc);
+
+    new DXBasicBatch(m_d3dDevice.Get(), m_d3dContext.Get());
+    DXBasicBatch::Instance->Init();
+
 
     _bstr_t __desc_w(adapterDesc.Description);
     const char *__desc_cc = __desc_w;

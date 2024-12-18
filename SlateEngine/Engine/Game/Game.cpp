@@ -2,6 +2,7 @@
 #include <SlateEngine/Engine/Input/InputSystem.h>
 #include <SlateEngine/Engine/Physics/PhysicsFactory.h>
 #include <SlateEngine/Engine/NativeScripting/ScriptRegistry.h>
+#include <SlateEngine/Engine/Graphics/DXBasicBatch.h>
 Game* Game::Instance = nullptr;
 
 Game::Game(HINSTANCE hInstance, const std::wstring& windowName, int initWidth, int initHeight)
@@ -163,11 +164,10 @@ float Game::clear[4] = {0.05f, 0.05f, 0.05f, 1.0f};
 void Game::OnRenderScene()
 {
     BeginClear();
-
     entityManager->OnRender(GetDXContext());
+    DXBasicBatch::Instance->DrawRect(50, 50, 150, 150);
+    ClearRenderTarget(clear);
     PostClear();
-
-    SwapChainPresent();
 }
 
 void Game::UpdateGlobalConstantBuffers()

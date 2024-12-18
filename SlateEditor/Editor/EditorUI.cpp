@@ -433,8 +433,6 @@ void EditorUI::InitTheme()
 
 void EditorUI::OnRender(float rgba[4])
 {
-	game->ClearRenderTarget(rgba);
-
     ImGui::Render();
 	ImGui::UpdatePlatformWindows();
     ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
