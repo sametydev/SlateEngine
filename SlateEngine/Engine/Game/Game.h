@@ -38,6 +38,8 @@ public:
     void BeginClear();
     void PostClear();
 
+    void OnLateRender();
+    void OnLateUpdate(float deltaTime);
     
     void SetGameState(GameState gs);
     GameState GetGameState() { return gameState; };

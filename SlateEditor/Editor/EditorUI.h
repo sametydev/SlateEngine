@@ -60,8 +60,6 @@ private:
 	ToolboxWindow* toolboxWindow	 = nullptr;
 	NativeScriptingDebugger* nativeScriptingDebuggerWindow = nullptr;
 
-	std::unique_ptr<RenderTTexture> rtt;
-
 	std::unique_ptr<Gamepad> gamepad;
 	Camera* mainCamera = nullptr;
 

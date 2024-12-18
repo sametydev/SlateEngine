@@ -3,7 +3,7 @@
 #include <SlateEngine/Engine/Core/Timer.h>
 #include <SlateEngine/Engine/Graphics/2D/D2DContext.h>
 #include <SlateEngine/Engine/Graphics/DXRasterizerState.h>
-
+#include <SlateEngine/Engine/Graphics/Texture/RenderTTexture.h>
 #include <SlateEngine/Engine/Core/ILogger.h>
 
 #include <SlateEngine/Engine/Core/EnginePlayer.h>
@@ -29,7 +29,9 @@ public:
     virtual bool OnInit();                        
     virtual void OnResize();                   
     virtual void OnUpdateScene(float deltaTime) = 0;     
-    virtual void OnRenderScene()         = 0;               
+    virtual void OnRenderScene()         = 0;   
+    virtual void OnLateRender() = 0;
+    virtual void OnLateUpdate(float deltaTime) = 0;
     virtual LRESULT MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
     void ClearRenderTarget(float rgba[4]);
@@ -78,9 +80,11 @@ public:
         workingDirectory = dir;
     }
 
+    inline RenderTTexture* GetRenderTarget() { return sceneBuffer; }
+
 protected:
-    bool InitializeWindow();      
-    bool InitializeGraphics();   
+    bool InitializeWindow();
+    bool InitializeGraphics();
 
 protected:
     HINSTANCE hInstance;       
@@ -116,4 +120,7 @@ protected:
     EnginePlayer* enginePlayer = nullptr;
     ILogger* logSystem = nullptr;
     std::string workingDirectory = "";
+
+
+    RenderTTexture* sceneBuffer = nullptr;
 };

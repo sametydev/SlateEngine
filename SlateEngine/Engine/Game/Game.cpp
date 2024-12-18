@@ -145,7 +145,7 @@ void Game::OnUpdateScene(float deltaTime)
 {
     m_camera->Update(deltaTime);
 
-    enginePlayer->OnUpdate(deltaTime);
+    //enginePlayer->OnUpdate(deltaTime);
 
 
     FrameBufferConstantObject.eyePos = m_camera->GetPos();
@@ -165,9 +165,8 @@ void Game::OnRenderScene()
 {
     BeginClear();
     entityManager->OnRender(GetDXContext());
-    DXBasicBatch::Instance->DrawRect(50, 50, 150, 150);
+    //DXBasicBatch::Instance->DrawRect(50, 50, 250, 250);
     ClearRenderTarget(clear);
-    PostClear();
 }
 
 void Game::UpdateGlobalConstantBuffers()
@@ -189,6 +188,16 @@ void Game::BeginClear()
 void Game::PostClear()
 {
     enginePlayer->OnRender(clear);
+}
+
+void Game::OnLateRender()
+{
+    PostClear();
+}
+
+void Game::OnLateUpdate(float deltaTime)
+{
+    enginePlayer->OnUpdate(deltaTime);
 }
 
 void Game::SetGameState(GameState gs)

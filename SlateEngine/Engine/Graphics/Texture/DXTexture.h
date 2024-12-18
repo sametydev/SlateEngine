@@ -2,7 +2,7 @@
 #include <SlateEngine/Engine/DXConfig.h>
 #include <SlateEngine/Engine/Core/Asset.h>
 
-enum TextureLoaderType {
+enum ENGINE_API TextureLoaderType {
 	DDS = 0,
 	WIC
 };
@@ -17,12 +17,12 @@ public:
 	void Bind(UINT slot = 0);
 	void UnBind();
 
-	ComPtr<ID3D11ShaderResourceView> GetShaderResourceView() { return mSRV; }
+	inline ID3D11ShaderResourceView* GetShaderResourceView() { return mSRV.Get(); }
 
 	UINT Width;
 	UINT Height;
+	ComPtr<ID3D11ShaderResourceView> mSRV;
 
 private:
 	UINT m_slot;
-	ComPtr<ID3D11ShaderResourceView> mSRV;
 };

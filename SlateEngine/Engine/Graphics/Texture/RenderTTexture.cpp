@@ -21,6 +21,30 @@ void RenderTTexture::SetAsRendererTarget()
 	DXInstance->GetDXContext()->OMSetRenderTargets(1, renderTargetView.GetAddressOf(), depthStencilView.Get());
 }
 
+void RenderTTexture::BeginFrame()
+{
+	//========== save ============
+
+	DXInstance->GetDXContext()->OMGetRenderTargets(1, mPrevRTV.GetAddressOf(), mPrevDTV.GetAddressOf());
+
+	//========== set ============
+	DXInstance->GetDXContext()->OMSetRenderTargets(1, renderTargetView.GetAddressOf(),
+		depthStencilView.Get());
+
+	const float color[4] = { 0.f,0.f,0.f,0.f };
+	DXInstance->GetDXContext()->ClearRenderTargetView(renderTargetView.Get(), color);
+
+	if (depthStencilView) {
+		DXInstance->GetDXContext()->ClearDepthStencilView(depthStencilView.Get(), D3D11_CLEAR_DEPTH, 1.f, 0);
+	}
+}
+
+void RenderTTexture::EndFrame()
+{
+	//set back main render target
+	DXInstance->GetDXContext()->OMSetRenderTargets(1, mPrevRTV.GetAddressOf(), mPrevDTV.Get());
+}
+
 void RenderTTexture::BindTexture(unsigned int slot)
 {
 	DXInstance->GetDXContext()->PSSetShaderResources(slot, 1, textureSRV.GetAddressOf());
@@ -123,4 +147,7 @@ void RenderTTexture::Release()
 	if (renderTargetView)renderTargetView.Reset();
 	if (depthStencilView)depthStencilView.Reset();
 	if (depthStencilBuffer)depthStencilBuffer.Reset();
+	if (mPrevRTV)mPrevRTV.Reset();
+	if (mPrevDTV)mPrevDTV.Reset();
+
 }

@@ -41,7 +41,7 @@ void EditorUI::OnInit(HWND wnd, ID3D11Device* pDevice, ID3D11DeviceContext* pDev
 	ImGui::GetIO().ConfigWindowsMoveFromTitleBarOnly = true;
 	ImGui::GetIO().WantCaptureMouse = true;
     ImGui::StyleColorsDark();
-	rtt = std::make_unique<RenderTTexture>();
+	//rtt = std::make_unique<RenderTTexture>();
 
     ImGui_ImplWin32_Init(wnd);
     ImGui_ImplDX11_Init(pDevice, pDeviceContext);
@@ -231,7 +231,7 @@ void EditorUI::OnUpdate(float deltaTime)
 		mainCamera->SetAspectRatio(win_region.x / win_region.y);
 		game->FrameBufferConstantObject.proj = mainCamera->GetProjectionMatrix();
 
-		ImGui::Image(&rtt->GetShaderResourceView(), win_region);
+		ImGui::Image(&Game::Instance->GetRenderTarget()->GetShaderResourceView(), win_region);
 		
 		/*
 		float originalWidth = rtt->GetWidth();
@@ -325,15 +325,15 @@ void EditorUI::OnUpdate(float deltaTime)
 
 void EditorUI::ClearViewport(float rgba[4])
 {
-	rtt->SetAsRendererTarget();
-	rtt->ClearRenderTarget(rgba);
+	//rtt->SetAsRendererTarget();
+	//rtt->ClearRenderTarget(rgba);
 }
 
 void EditorUI::ResizeViewport(int w, int h)
 {
-	if (rtt == nullptr)return;
+	//if (rtt == nullptr)return;
 
-	rtt->Resize(w, h);
+	//rtt->Resize(w, h);
 }
 
 LRESULT EditorUI::MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)

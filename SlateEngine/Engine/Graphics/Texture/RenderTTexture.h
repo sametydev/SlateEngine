@@ -13,6 +13,9 @@ public:
 	ComPtr<ID3D11DepthStencilView> depthStencilView;
 	ComPtr<ID3D11Texture2D> depthStencilBuffer;
 
+	ComPtr<ID3D11RenderTargetView> mPrevRTV = nullptr;
+	ComPtr<ID3D11DepthStencilView> mPrevDTV = nullptr;
+
 	unsigned int sampleCount;
 	int width, height;
 	RenderTextureCreateFlags flags;
@@ -26,6 +29,8 @@ public:
 	void BindDepthTexture(unsigned int slot);
 	void Release();
 	void SetAsRendererTarget();
+	void BeginFrame();
+	void EndFrame();
 	void ClearRenderTarget(const float* bgColor);
 	ID3D11ShaderResourceView& GetShaderResourceView() { return *textureSRV.Get(); }
 	int GetWidth() { return width; };
