@@ -3,7 +3,7 @@
 #include <SlateEngine/Engine/Core/Timer.h>
 #include <SlateEngine/Engine/Graphics/2D/D2DContext.h>
 #include <SlateEngine/Engine/Graphics/DXRasterizerState.h>
-#include <SlateEngine/Engine/Graphics/Texture/RenderTTexture.h>
+#include <SlateEngine/Engine/Graphics/Buffer/DXFrameBuffer.h>
 #include <SlateEngine/Engine/Core/ILogger.h>
 
 #include <SlateEngine/Engine/Core/EnginePlayer.h>
@@ -80,7 +80,7 @@ public:
         workingDirectory = dir;
     }
 
-    inline RenderTTexture* GetRenderTarget() { return sceneBuffer; }
+    inline DXFrameBuffer* GetRenderTarget() { return sceneBuffer; }
 
 protected:
     bool InitializeWindow();
@@ -122,5 +122,5 @@ protected:
     std::string workingDirectory = "";
 
 
-    RenderTTexture* sceneBuffer = nullptr;
+    DXFrameBuffer* sceneBuffer = nullptr;
 };

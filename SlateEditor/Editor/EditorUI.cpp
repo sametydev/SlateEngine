@@ -231,7 +231,7 @@ void EditorUI::OnUpdate(float deltaTime)
 		mainCamera->SetAspectRatio(win_region.x / win_region.y);
 		game->FrameBufferConstantObject.proj = mainCamera->GetProjectionMatrix();
 
-		ImGui::Image(&Game::Instance->GetRenderTarget()->GetShaderResourceView(), win_region);
+		ImGui::Image(Game::Instance->GetRenderTarget()->mRenderPass[0]->GetShaderResourceView(), win_region);
 		
 		/*
 		float originalWidth = rtt->GetWidth();

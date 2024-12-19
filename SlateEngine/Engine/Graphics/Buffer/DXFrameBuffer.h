@@ -1,11 +1,13 @@
 #pragma once
 #include <SlateEngine/Engine/DXConfig.h>
 #include <SlateEngine/Engine/Graphics/Texture/RenderTTexture.h>
+#include <SlateEngine/Engine/Graphics/Texture/DXTexture.h>
 
 struct FrameBufferDesc {
 	UINT width;
 	UINT height;
 	bool bDepthStencil;
+	UINT nRenderPass;
 };
 
 class DXFrameBuffer
@@ -15,9 +17,6 @@ public:
 	virtual ~DXFrameBuffer();
 	void Create(const FrameBufferDesc& desc);
 
-	void Resize(float w, float h);
-	void Release();
-
 	void BeginFrame();
 	void EndFrame();
 	void Clear(float r, float g, float b, float a);
@@ -25,7 +24,7 @@ public:
 	virtual void BindRenderPass();
 	virtual void UnBindRenderPass();
 
-	ComPtr<ID3D11RenderTargetView>	mRenderTargetView = nullptr;
+	std::vector<ComPtr<ID3D11RenderTargetView>>	mRenderTargetViews;
 
 	ComPtr<ID3D11Texture2D> mDepthTexture2D = nullptr;
 	ComPtr<ID3D11DepthStencilView> mDepthStencilView = nullptr;
@@ -36,16 +35,11 @@ public:
 	UINT width;
 	UINT height;
 
-	ComPtr<ID3D11Texture2D> mRenderPass = nullptr;
-	ComPtr<ID3D11ShaderResourceView> textureSRV = nullptr;
-	ComPtr<ID3D11ShaderResourceView> depthSRV = nullptr;
+
+	std::vector<std::shared_ptr<DXTexture>>	mRenderPass;
 
 	bool bDepthStencil;
-	unsigned int sampleCount;
-	RenderTextureCreateFlags flags;
-	DXGI_FORMAT format;
 private:
 	ID3D11Device* pDevice = nullptr;
 	ID3D11DeviceContext* pContext = nullptr;
-	FrameBufferDesc desc{};
 };

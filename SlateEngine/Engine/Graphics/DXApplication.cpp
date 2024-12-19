@@ -89,10 +89,10 @@ int DXApplication::OnRun()
             {
                 //Render Scene
                 sceneBuffer->BeginFrame();
-                //DXBasicBatch::Instance->Begin();
+                //sceneBuffer->Clear(0.3f, 0.3f, 0.3f, 0.2f);
+
                 OnRenderScene();
                 OnUpdateScene(mTimer->deltaTime());
-                //DXBasicBatch::Instance->End();
                 sceneBuffer->EndFrame();
 
                 enginePlayer->NewFrame();
@@ -127,13 +127,10 @@ bool DXApplication::OnInit()
 
 void DXApplication::OnResize()
 {
-    m_d3dContext->ClearState();
-
     m_renderTargetView.Reset();
     m_depthStencilView.Reset();
     m_depthStencilBuffer.Reset();
-    //sceneBuffer->Resize(m_clientW, m_clientH);
-    sceneBuffer->Release();
+
     ComPtr<ID3D11Texture2D> backBuffer;
     HR(m_swapChain->ResizeBuffers(1, m_clientW, m_clientH, DXGI_FORMAT_R8G8B8A8_UNORM, 0));
     HR(m_swapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), reinterpret_cast<void**>(backBuffer.GetAddressOf())));
@@ -181,9 +178,6 @@ void DXApplication::OnResize()
     m_screenVp.MaxDepth = 1.0f;
 
     m_d3dContext->RSSetViewports(1, &m_screenVp);
-    //sceneBuffer->Resize(m_clientW, m_clientH);
-    sceneBuffer->Resize(m_clientW, m_clientH);
-
 }
 
 LRESULT DXApplication::MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
@@ -328,6 +322,7 @@ bool DXApplication::InitializeGraphics()
     createDeviceFlags |= D3D11_CREATE_DEVICE_DEBUG;
 #endif
 
+
     D3D_DRIVER_TYPE driverTypes[] =
     {
         D3D_DRIVER_TYPE_HARDWARE,
@@ -435,9 +430,19 @@ bool DXApplication::InitializeGraphics()
     
     HWInfo::initialize(__desc_cc);
 
-    sceneBuffer = new RenderTTexture();
-
     OnResize();
+
+    FrameBufferDesc desc{};
+    desc.bDepthStencil = true;
+    desc.height = m_clientH;
+    desc.width = m_clientW;
+    desc.nRenderPass = 1;
+    sceneBuffer = new DXFrameBuffer(m_d3dDevice.Get(), m_d3dContext.Get());
+    sceneBuffer->Create(desc);
+
+    ComPtr<ID3D11Debug> debugLayer;
+    m_d3dDevice->QueryInterface(IID_PPV_ARGS(&debugLayer));
+    debugLayer->ReportLiveDeviceObjects(D3D11_RLDO_DETAIL);
 
     return true;
 }
