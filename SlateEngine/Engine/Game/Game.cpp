@@ -166,7 +166,7 @@ void Game::OnRenderScene()
     BeginClear();
     entityManager->OnRender(GetDXContext());
     //DXBasicBatch::Instance->DrawRect(50, 50, 250, 250);
-    ClearRenderTarget(clear);
+    //ClearRenderTarget(clear);
 }
 
 void Game::UpdateGlobalConstantBuffers()

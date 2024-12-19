@@ -87,17 +87,19 @@ int DXApplication::OnRun()
             InputSystem::Update(hWindow);
             if (!bPaused)
             {
+                enginePlayer->NewFrame();
+
                 //Render Scene
                 sceneBuffer->BeginFrame();
-                //sceneBuffer->Clear(0.3f, 0.3f, 0.3f, 0.2f);
-
+                sceneBuffer->Clear(0.3f, 0.3f, 0.3f, 0.2f);
                 OnRenderScene();
-                OnUpdateScene(mTimer->deltaTime());
                 sceneBuffer->EndFrame();
 
-                enginePlayer->NewFrame();
+                OnUpdateScene(mTimer->deltaTime());
+
                 OnLateUpdate(mTimer->deltaTime());
                 OnLateRender();
+
 
                 SwapChainPresent();
             }
@@ -127,6 +129,13 @@ bool DXApplication::OnInit()
 
 void DXApplication::OnResize()
 {
+    FrameBufferDesc desc{};
+    desc.bDepthStencil = true;
+    desc.height = m_clientH;
+    desc.width = m_clientW;
+    desc.nRenderPass = 1;
+    sceneBuffer->Create(desc);
+
     m_renderTargetView.Reset();
     m_depthStencilView.Reset();
     m_depthStencilBuffer.Reset();
@@ -430,14 +439,16 @@ bool DXApplication::InitializeGraphics()
     
     HWInfo::initialize(__desc_cc);
 
+    sceneBuffer = new DXFrameBuffer(m_d3dDevice.Get(), m_d3dContext.Get());
+
     OnResize();
+
 
     FrameBufferDesc desc{};
     desc.bDepthStencil = true;
     desc.height = m_clientH;
     desc.width = m_clientW;
     desc.nRenderPass = 1;
-    sceneBuffer = new DXFrameBuffer(m_d3dDevice.Get(), m_d3dContext.Get());
     sceneBuffer->Create(desc);
 
     ComPtr<ID3D11Debug> debugLayer;

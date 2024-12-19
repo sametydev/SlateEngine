@@ -17,6 +17,13 @@ DXFrameBuffer::~DXFrameBuffer()
 
 void DXFrameBuffer::Create(const FrameBufferDesc& desc)
 {
+	if (Initialized) {
+		mRenderTargetViews.clear();
+		mDepthTexture2D.Reset();
+		mDepthStencilView.Reset();
+	}
+
+
 	width = desc.width;
 	height = desc.height;
 	bDepthStencil = desc.bDepthStencil;
@@ -93,6 +100,7 @@ void DXFrameBuffer::Create(const FrameBufferDesc& desc)
 			mTexture2D[i].Reset();
 		}
 	}
+	Initialized = true;
 }
 
 void DXFrameBuffer::Clear(float r, float g, float b, float a)
