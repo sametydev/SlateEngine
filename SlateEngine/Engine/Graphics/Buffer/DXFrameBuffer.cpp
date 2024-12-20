@@ -118,8 +118,8 @@ void DXFrameBuffer::Clear(float r, float g, float b, float a)
 void DXFrameBuffer::BeginFrame()
 {
 	//========== save ============
-
-	pContext->OMGetRenderTargets(1, mPrevRTV.GetAddressOf(), mPrevDTV.GetAddressOf());
+	//This needs be work actually but? its not
+	//pContext->OMGetRenderTargets(1, mPrevRTV.GetAddressOf(), mPrevDTV.GetAddressOf());
 
 	//========== set ============
 	pContext->OMSetRenderTargets(mRenderTargetViews.size(), mRenderTargetViews.data()->GetAddressOf(),

@@ -93,7 +93,8 @@ int DXApplication::OnRun()
                 sceneBuffer->BeginFrame();
                 sceneBuffer->Clear(0.3f, 0.3f, 0.3f, 0.2f);
                 OnRenderScene();
-                sceneBuffer->EndFrame();
+                //sceneBuffer->EndFrame();
+                m_d3dContext->OMSetRenderTargets(1, m_renderTargetView.GetAddressOf(), m_depthStencilView.Get());
 
                 OnUpdateScene(mTimer->deltaTime());
 
@@ -135,6 +136,8 @@ void DXApplication::OnResize()
     desc.width = m_clientW;
     desc.nRenderPass = 1;
     sceneBuffer->Create(desc);
+    sceneBuffer->mPrevDTV.Reset();
+    sceneBuffer->mPrevRTV.Reset();
 
     m_renderTargetView.Reset();
     m_depthStencilView.Reset();
