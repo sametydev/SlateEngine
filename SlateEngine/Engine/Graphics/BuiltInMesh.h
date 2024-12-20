@@ -380,22 +380,17 @@ namespace BuiltInMesh {
     {
         MeshData<Vertex, Index> meshData;
 
-        // Vertex ve yüz sayýsý
         UINT vertexCount = (m + 1) * (n + 1);
         UINT faceCount = m * n * 2;
 
-        // Vertex vektörünü yeniden boyutlandýr
         meshData.vVertex.resize(vertexCount);
 
-        // Grid'in yarý geniþliði ve yarý derinliði
         float halfWidth = 0.5f * width;
         float halfDepth = 0.5f * depth;
 
-        // Her bir adýmýn boyutlarý
         float dx = width / n;
         float dz = depth / m;
 
-        // Vertex pozisyonlarýný oluþtur
         for (UINT i = 0; i <= m; ++i)
         {
             float z = halfDepth - i * dz;
@@ -404,13 +399,11 @@ namespace BuiltInMesh {
                 float x = -halfWidth + j * dx;
                 UINT index = i * (n + 1) + j;
 
-                // Vertex pozisyonu ve rengi
                 meshData.vVertex[index].pos = vec3f(x, 0.0f, z);
-                meshData.vVertex[index].color = color; // Belirtilen renk
+                meshData.vVertex[index].color = color;
             }
         }
 
-        // Ýndeks vektörünü yeniden boyutlandýr
         meshData.vIndices.resize(faceCount * 3);
 
         UINT k = 0;
@@ -423,7 +416,6 @@ namespace BuiltInMesh {
                 UINT i2 = (i + 1) * (n + 1) + j;
                 UINT i3 = (i + 1) * (n + 1) + j + 1;
 
-                // Üçgenlerin vertex indeksleri
                 meshData.vIndices[k++] = i0;
                 meshData.vIndices[k++] = i2;
                 meshData.vIndices[k++] = i1;

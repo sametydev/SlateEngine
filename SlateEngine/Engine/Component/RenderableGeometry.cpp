@@ -19,10 +19,6 @@ void RenderableGeometry::OnInternalInit()
     
     m_material = &GetEntity()->GetComponent<MaterialComponent>();
 
-    m_material->Set("$Ambient",  vec4f(1.0f, 1.0f, 1.0f, 1.0f));
-    m_material->Set("$Diffuse",  vec4f(1.0f, 1.0f, 1.0f, 1.0f));
-    m_material->Set("$Specular", vec4f(0.1f, 0.1f, 0.1f, 5.0f));
-
     ConstantBufferDesc cbd{};
     cbd.cbSize = sizeof(ObjectConstantBuffer);
     m_constantBuffer->Create(cbd);

@@ -3,6 +3,9 @@
 void MaterialComponent::OnInternalInit()
 {
 	rs = (RasterizerState)0;
+	Set("$Ambient", vec4f(1.0f, 1.0f, 1.0f, 1.0f));
+	Set("$Diffuse", vec4f(1.0f, 1.0f, 1.0f, 1.0f));
+	Set("$Specular", vec4f(0.1f, 0.1f, 0.1f, 5.0f));
 }
 void MaterialComponent::AddTexture(DXTexture* tex)
 {

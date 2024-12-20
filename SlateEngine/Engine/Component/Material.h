@@ -174,6 +174,10 @@ public:
 
     void LateRender();
 
+    inline void SetTopology(D3D11_PRIMITIVE_TOPOLOGY _topology) {
+        topology = _topology;
+    }
+
 private:
     MaterialProperty TryGetMProp(std::string_view name)
     {
