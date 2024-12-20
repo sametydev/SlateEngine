@@ -53,3 +53,9 @@ struct VertexPHT
     float4 posH : SV_POSITION;
     float2 tex : TEXCOORD;
 };
+
+struct VertexPC
+{
+    float3 position : POSITION;
+    float4 color : COLOR;
+};

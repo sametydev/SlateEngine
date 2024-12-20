@@ -26,6 +26,25 @@ struct ENGINE_API VertexPT
     static const D3D11_INPUT_ELEMENT_DESC inputLayout[2];
 };
 
+struct ENGINE_API VertexPC
+{
+    VertexPC() = default;
+
+    VertexPC(const VertexPC&) = default;
+    VertexPC& operator=(const VertexPC&) = default;
+
+    VertexPC(VertexPC&&) = default;
+    VertexPC& operator=(VertexPC&&) = default;
+
+    VertexPC(const vec3f& _pos, const vec4f& _col) :
+        pos(_pos), color(_col) {
+    }
+
+    vec3f pos{};
+    vec4f color{};
+    static const D3D11_INPUT_ELEMENT_DESC inputLayout[2];
+};
+
 struct ENGINE_API VertexPNC
 {
     VertexPNC() = default;

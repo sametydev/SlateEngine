@@ -119,7 +119,7 @@ void DXFrameBuffer::BeginFrame()
 {
 	//========== save ============
 	//This needs be work actually but? its not
-	//pContext->OMGetRenderTargets(1, mPrevRTV.GetAddressOf(), mPrevDTV.GetAddressOf());
+	//pContext->OMGetRenderTargets(1, &mPrevRTV, &mPrevDTV);
 
 	//========== set ============
 	pContext->OMSetRenderTargets(mRenderTargetViews.size(), mRenderTargetViews.data()->GetAddressOf(),
@@ -134,11 +134,10 @@ void DXFrameBuffer::BeginFrame()
 	}
 }
 
-void DXFrameBuffer::EndFrame()
+void DXFrameBuffer::EndFrame(ID3D11RenderTargetView* newRenderTarget,ID3D11DepthStencilView* newDepthStencil)
 {
 	//set back main render target
-	pContext->OMSetRenderTargets(1, mPrevRTV.GetAddressOf(), mPrevDTV.Get());
-
+	pContext->OMSetRenderTargets(1, &newRenderTarget, newDepthStencil);
 }
 
 void DXFrameBuffer::BindRenderPass()

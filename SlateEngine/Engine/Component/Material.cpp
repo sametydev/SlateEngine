@@ -22,6 +22,7 @@ void MaterialComponent::OnRender(ID3D11DeviceContext* pDeviceContext)
 }
 void MaterialComponent::OnDraw(ID3D11DeviceContext* pDeviceContext, UINT indices)
 {
+	pDeviceContext->IASetPrimitiveTopology(topology);
 	DXRasterizerState::SetRasterizerState(rs, pDeviceContext);
 	pDeviceContext->DrawIndexed(indices, 0u, 0u);
 }

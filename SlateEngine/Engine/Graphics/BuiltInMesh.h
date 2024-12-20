@@ -71,6 +71,10 @@ namespace BuiltInMesh {
     MeshData<Vertex, Index> CreateCylinderNoCap(float radius = 1.0f, float height = 2.0f, UINT slices = 20, UINT stacks = 10,
         float texU = 1.0f, float texV = 1.0f, const vec4f& color = { 1.0f, 1.0f, 1.0f, 1.0f });
 
+    template<class Vertex = VertexPC, class Index = DWORD>
+    MeshData<Vertex, Index> CreateGrid(float width, float depth, UINT m, UINT n, const vec4f& color);
+
+
     template<class Vertex, class Index>
     inline MeshData<Vertex, Index> CreateBox(float width, float height, float depth, const vec4f& color)
     {
@@ -365,6 +369,68 @@ namespace BuiltInMesh {
                 meshData.vIndices[iIndex++] = i * (slices + 1) + j;
                 meshData.vIndices[iIndex++] = (i + 1) * (slices + 1) + j + 1;
                 meshData.vIndices[iIndex++] = i * (slices + 1) + j + 1;
+            }
+        }
+
+        return meshData;
+    }
+
+    template<class Vertex, class Index>
+    inline MeshData<Vertex, Index> CreateGrid(float width, float depth, UINT m, UINT n, const vec4f& color)
+    {
+        MeshData<Vertex, Index> meshData;
+
+        // Vertex ve yüz sayýsý
+        UINT vertexCount = (m + 1) * (n + 1);
+        UINT faceCount = m * n * 2;
+
+        // Vertex vektörünü yeniden boyutlandýr
+        meshData.vVertex.resize(vertexCount);
+
+        // Grid'in yarý geniþliði ve yarý derinliði
+        float halfWidth = 0.5f * width;
+        float halfDepth = 0.5f * depth;
+
+        // Her bir adýmýn boyutlarý
+        float dx = width / n;
+        float dz = depth / m;
+
+        // Vertex pozisyonlarýný oluþtur
+        for (UINT i = 0; i <= m; ++i)
+        {
+            float z = halfDepth - i * dz;
+            for (UINT j = 0; j <= n; ++j)
+            {
+                float x = -halfWidth + j * dx;
+                UINT index = i * (n + 1) + j;
+
+                // Vertex pozisyonu ve rengi
+                meshData.vVertex[index].pos = vec3f(x, 0.0f, z);
+                meshData.vVertex[index].color = color; // Belirtilen renk
+            }
+        }
+
+        // Ýndeks vektörünü yeniden boyutlandýr
+        meshData.vIndices.resize(faceCount * 3);
+
+        UINT k = 0;
+        for (UINT i = 0; i < m; ++i)
+        {
+            for (UINT j = 0; j < n; ++j)
+            {
+                UINT i0 = i * (n + 1) + j;
+                UINT i1 = i * (n + 1) + j + 1;
+                UINT i2 = (i + 1) * (n + 1) + j;
+                UINT i3 = (i + 1) * (n + 1) + j + 1;
+
+                // Üçgenlerin vertex indeksleri
+                meshData.vIndices[k++] = i0;
+                meshData.vIndices[k++] = i2;
+                meshData.vIndices[k++] = i1;
+
+                meshData.vIndices[k++] = i1;
+                meshData.vIndices[k++] = i2;
+                meshData.vIndices[k++] = i3;
             }
         }
 

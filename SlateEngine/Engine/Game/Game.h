@@ -75,5 +75,5 @@ private:
     std::shared_ptr<FileSystem> fileSystem;
 
     Script *script1 = nullptr;
-
+    HMODULE hModule = 0;
 };

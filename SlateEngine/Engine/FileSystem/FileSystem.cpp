@@ -130,7 +130,15 @@ void FileSystem::ProcessShaderFile(std::filesystem::path _p)
         ShaderCache::CreatePixelShader(sinfo);
     }
     else if (shaderType == "Vertex") {
-        ShaderCache::CreateVertexShader(sinfo)->CreateInputLayout(VertexPNT::inputLayout, ARRAYSIZE(VertexPNT::inputLayout));
+        sinfo.inputLayout = ini.GetValue("Shader", "InputLayout");
+        std::string sInputLayout = sinfo.inputLayout;
+
+        if (sInputLayout == "VertexPNT") {
+            ShaderCache::CreateVertexShader(sinfo)->CreateInputLayout(VertexPNT::inputLayout, ARRAYSIZE(VertexPNT::inputLayout));
+        }
+        else if (sInputLayout == "VertexPC") {
+            ShaderCache::CreateVertexShader(sinfo)->CreateInputLayout(VertexPC::inputLayout, ARRAYSIZE(VertexPC::inputLayout));
+        }
     }
 }
 

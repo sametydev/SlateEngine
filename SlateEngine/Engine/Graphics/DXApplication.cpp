@@ -30,7 +30,7 @@ DXApplication::DXApplication(HINSTANCE hInstance, const std::wstring& windowName
     bIsMinimized(false),
     bIsMaximized(false),
     bIsResizing(false),
-    bEnableMsaa(false),
+    bEnableMsaa(true),
     mMsaaQuality(0),
     m_d3dDevice(nullptr),
     m_d3dContext(nullptr),
@@ -93,8 +93,7 @@ int DXApplication::OnRun()
                 sceneBuffer->BeginFrame();
                 sceneBuffer->Clear(0.3f, 0.3f, 0.3f, 0.2f);
                 OnRenderScene();
-                //sceneBuffer->EndFrame();
-                m_d3dContext->OMSetRenderTargets(1, m_renderTargetView.GetAddressOf(), m_depthStencilView.Get());
+                sceneBuffer->EndFrame(m_renderTargetView.Get(), m_depthStencilView.Get());
 
                 OnUpdateScene(mTimer->deltaTime());
 
@@ -136,8 +135,6 @@ void DXApplication::OnResize()
     desc.width = m_clientW;
     desc.nRenderPass = 1;
     sceneBuffer->Create(desc);
-    sceneBuffer->mPrevDTV.Reset();
-    sceneBuffer->mPrevRTV.Reset();
 
     m_renderTargetView.Reset();
     m_depthStencilView.Reset();

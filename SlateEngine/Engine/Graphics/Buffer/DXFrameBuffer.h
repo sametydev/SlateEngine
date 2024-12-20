@@ -18,7 +18,7 @@ public:
 	void Create(const FrameBufferDesc& desc);
 
 	void BeginFrame();
-	void EndFrame();
+	void EndFrame(ID3D11RenderTargetView* newRenderTarget, ID3D11DepthStencilView* newDepthStencil);
 	void Clear(float r, float g, float b, float a);
 
 	virtual void BindRenderPass();
@@ -29,8 +29,8 @@ public:
 	ComPtr<ID3D11Texture2D> mDepthTexture2D = nullptr;
 	ComPtr<ID3D11DepthStencilView> mDepthStencilView = nullptr;
 
-	ComPtr<ID3D11RenderTargetView> mPrevRTV = nullptr;
-	ComPtr<ID3D11DepthStencilView> mPrevDTV = nullptr;
+	ID3D11RenderTargetView* mPrevRTV = nullptr;
+	ID3D11DepthStencilView* mPrevDTV = nullptr;
 
 	UINT width;
 	UINT height;

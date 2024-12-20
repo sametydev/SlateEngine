@@ -16,12 +16,9 @@ Game::Game(HINSTANCE hInstance, const std::wstring& windowName, int initWidth, i
 
 Game::~Game()
 {
+    delete script1;
+    FreeLibrary(hModule);
 }
-
-void BuildGrid() {
-
-}
-
 
 bool Game::OnInit()
 {
@@ -32,8 +29,6 @@ bool Game::OnInit()
 
     enginePlayer->OnInit(hWindow, m_d3dDevice.Get(), m_d3dContext.Get());
     enginePlayer->ResizeViewport(m_clientW, m_clientH);
-    
-
 
     fileSystem = std::make_shared<FileSystem>();
     fileSystem->Init();
@@ -43,6 +38,7 @@ bool Game::OnInit()
     pfactory->Init();
 
     //Temporary Game Scope
+    
     {
         m_crateTexture = new DXTexture();
         m_crateTexture->Load("Assets\\Textures\\Crate.dds", TextureLoaderType::DDS);
@@ -74,6 +70,7 @@ bool Game::OnInit()
         r2.GetMaterial().AddTexture(m_grassTexture.get());
         r2.GetTransform().SetScale({ 10.f, 0.2f, 10.f });
     }
+    
 
     //Creating Constant Buffers;
     m_frameConstantBuffer = std::make_unique<DXConstantBuffer>();
@@ -94,7 +91,7 @@ bool Game::OnInit()
     // --- TEMPORARY CODE ---- //
     // NATIVE SCRIPTING CONCEPT!! NOT FINAL
 
-    HMODULE hModule = LoadLibrary(L"GamePlugin.dll");
+    hModule = LoadLibrary(L"GamePlugin.dll");
     if (!hModule) {
         std::cerr << "Error on DLL load!" << std::endl;
         MessageBoxA(0,"Error on DLL load!",0,0);
@@ -118,12 +115,8 @@ bool Game::OnInit()
         script1->OnInit();
     }
 
-    //delete script1;
 
-    //FreeLibrary(hModule);
     // --- TEMPORARY CODE ---- //
-
-    BuildGrid();
 
     return true;
 }
@@ -164,9 +157,10 @@ float Game::clear[4] = {0.05f, 0.05f, 0.05f, 1.0f};
 void Game::OnRenderScene()
 {
     BeginClear();
+    //DrawGrid(GetDXContext(), gridSize);
+
     entityManager->OnRender(GetDXContext());
     //DXBasicBatch::Instance->DrawRect(50, 50, 250, 250);
-    //ClearRenderTarget(clear);
 }
 
 void Game::UpdateGlobalConstantBuffers()

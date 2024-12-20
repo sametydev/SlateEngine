@@ -191,5 +191,6 @@ protected:
 
     std::unordered_map<std::string_view, MaterialProperty> properties;
     RasterizerState rs;
+    D3D11_PRIMITIVE_TOPOLOGY topology = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
 };
 

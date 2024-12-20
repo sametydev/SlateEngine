@@ -62,8 +62,8 @@ inline void RenderableGeometry::SetBuffer(const MeshData<VertexType, IndexType>&
 
     //Creating Vertex Buffer
     VertexBufferDesc vbd{};
-    vbd.cbSize   = (UINT)meshData.vVertex.size() * sizeof(VertexPNT);
-    vbd.cbStride = sizeof(VertexPNT);
+    vbd.cbSize   = (UINT)meshData.vVertex.size() * sizeof(VertexType);
+    vbd.cbStride = sizeof(VertexType);
     vbd.pData    = meshData.vVertex.data();
     if (m_vertexBuffer == nullptr)m_vertexBuffer = std::make_unique<DXVertexBuffer>();
     m_vertexBuffer->Create(vbd);
