@@ -210,3 +210,15 @@ void Game::SetGameState(GameState gs)
     gameState = gs;
 
 }
+
+void Game::CreateGrid()
+{
+    m_gridGeometry = new RenderableGeometry();
+}
+
+void Game::RenderGrid()
+{
+    if (m_gridGeometry != 0) {
+        m_gridGeometry->OnRender(GetDXContext());
+    }
+}

@@ -66,6 +66,11 @@ public:
 
 
 private:
+    void CreateGrid();
+    void RenderGrid();
+
+    RenderableGeometry* m_gridGeometry = nullptr;
+
     GameState gameState = GameState::NONE;
 
     std::unique_ptr<DXConstantBuffer> m_frameConstantBuffer = nullptr;
