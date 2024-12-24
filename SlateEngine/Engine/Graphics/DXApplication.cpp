@@ -13,6 +13,7 @@ extern "C"
 
 
 DXApplication* DXApplication::Instance = nullptr;
+float DXApplication::clear[4] = { 0.05f, 0.05f, 0.05f, 1.0f };
 
 LRESULT CALLBACK
 MainWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
@@ -91,14 +92,20 @@ int DXApplication::OnRun()
 
                 //Render Scene
                 sceneBuffer->BeginFrame();
-                sceneBuffer->Clear(0.3f, 0.3f, 0.3f, 0.2f);
+
+                sceneBuffer->Clear(clear);
+                enginePlayer->ClearViewport(clear);
                 OnRenderScene();
+
                 sceneBuffer->EndFrame(m_renderTargetView.Get(), m_depthStencilView.Get());
 
                 OnUpdateScene(mTimer->deltaTime());
 
                 OnLateUpdate(mTimer->deltaTime());
+                enginePlayer->OnUpdate(mTimer->deltaTime());
+
                 OnLateRender();
+                enginePlayer->OnRender(clear);
 
 
                 SwapChainPresent();

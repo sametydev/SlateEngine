@@ -103,12 +103,11 @@ void DXFrameBuffer::Create(const FrameBufferDesc& desc)
 	Initialized = true;
 }
 
-void DXFrameBuffer::Clear(float r, float g, float b, float a)
+void DXFrameBuffer::Clear(float* rgba)
 {
 	//========== clear ============
-	const float color[4] = { r,g,b,a };
 	for (auto rtv : mRenderTargetViews)
-		pContext->ClearRenderTargetView(rtv.Get(), color);
+		pContext->ClearRenderTargetView(rtv.Get(), rgba);
 
 	if (mDepthStencilView) {
 		pContext->ClearDepthStencilView(mDepthStencilView.Get(), D3D11_CLEAR_DEPTH, 1.f, 0);

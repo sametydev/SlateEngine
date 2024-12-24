@@ -1,0 +1,6 @@
+[Shader]
+DisplayName = GridPS
+ShaderType = Pixel
+EntryPoint = main
+HLSLFile = Shaders\TexturedLit\GridPixel.hlsl
+CSOName= Shaders\TexturedLit\GridPixel.cso

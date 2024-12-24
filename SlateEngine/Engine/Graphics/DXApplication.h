@@ -82,6 +82,8 @@ public:
 
     inline DXFrameBuffer* GetRenderTarget() { return sceneBuffer; }
 
+    static float clear[4];
+
 protected:
     bool InitializeWindow();
     bool InitializeGraphics();

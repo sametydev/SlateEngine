@@ -23,22 +23,19 @@ Game::~Game()
 bool Game::OnInit()
 {
     if (!DXApplication::OnInit()) { return 0; }
-    m_camera = new Camera(65.f, GetAspectRatio(), 0.01f, 1000.0f);
-    m_camera->SetPosition(vec3f(0, 0, -10));
 
+    CreateCamera();
 
     enginePlayer->OnInit(hWindow, m_d3dDevice.Get(), m_d3dContext.Get());
     enginePlayer->ResizeViewport(m_clientW, m_clientH);
 
-    fileSystem = std::make_shared<FileSystem>();
-    fileSystem->Init();
+    CreateFileSystem();
 
     entityManager = std::make_shared<EntityManager>();
     PhysicsFactory* pfactory = new PhysicsFactory();
     pfactory->Init();
 
     //Temporary Game Scope
-    
     {
         m_crateTexture = new DXTexture();
         m_crateTexture->Load("Assets\\Textures\\Crate.dds", TextureLoaderType::DDS);
@@ -49,7 +46,13 @@ bool Game::OnInit()
         testEntity = new Entity();
 
         entityManager->RegisterEntity(testEntity, "Test Entity 1");
+
+        testEntity->AddComponent<MaterialComponent>();
+        testEntity->GetComponent<MaterialComponent>().AddShader("Lit3DVS");
+        testEntity->GetComponent<MaterialComponent>().AddShader("Lit3DPS");
+
         testEntity->AddComponent<RenderableGeometry>();
+
 
         testEntity->AddComponent<LuaScript>();
         testEntity->GetComponent<LuaScript>().SetScriptPath(PathMaker::Make(gDXApp->GetWorkingDir(), "Assets\\Scripts\\Test.lua").c_str());
@@ -57,12 +60,15 @@ bool Game::OnInit()
         testEntity->GetComponent<Transform>().SetPosition({ 0.f,2.f,0.f });
 
         RenderableGeometry& r = testEntity->GetComponent<RenderableGeometry>();
-        //r.SetCullMode(CULL_BACK, &renderWireframe);
         r.GetMaterial().AddTexture(m_crateTexture);
 
         testEntity2 = new Entity();
 
         entityManager->RegisterEntity(testEntity2, "Test Entity 2");
+        testEntity2->AddComponent<MaterialComponent>();
+        testEntity2->GetComponent<MaterialComponent>().AddShader("Lit3DVS");
+        testEntity2->GetComponent<MaterialComponent>().AddShader("Lit3DPS");
+
         testEntity2->AddComponent<RenderableGeometry>();
 
         RenderableGeometry& r2 = testEntity2->GetComponent<RenderableGeometry>();
@@ -71,22 +77,8 @@ bool Game::OnInit()
         r2.GetTransform().SetScale({ 10.f, 0.2f, 10.f });
     }
     
-
     //Creating Constant Buffers;
-    m_frameConstantBuffer = std::make_unique<DXConstantBuffer>();
-    m_lightConstantBuffer = std::make_unique<DXConstantBuffer>();
-
-    ConstantBufferDesc cbd{};
-    cbd.cbSize = sizeof(FrameConstantBuffer);
-    m_frameConstantBuffer->Create(cbd);
-
-    cbd.cbSize = sizeof(LightConstantBuffer);
-    m_lightConstantBuffer->Create(cbd);
-
-    m_frameConstantBuffer->BindVS(BUFFER_ID::FRAME_CONSTANT_BUFFER_ID);
-
-    m_frameConstantBuffer->BindPS(BUFFER_ID::FRAME_CONSTANT_BUFFER_ID);
-    m_lightConstantBuffer->BindPS(BUFFER_ID::LIGHT_CONSTANT_BUFFER_ID);
+    CreateGlobalConstantBuffers();
 
     // --- TEMPORARY CODE ---- //
     // NATIVE SCRIPTING CONCEPT!! NOT FINAL
@@ -118,6 +110,8 @@ bool Game::OnInit()
 
     // --- TEMPORARY CODE ---- //
 
+    CreateGrid();
+
     return true;
 }
 
@@ -140,11 +134,6 @@ void Game::OnUpdateScene(float deltaTime)
 
     //enginePlayer->OnUpdate(deltaTime);
 
-
-    FrameBufferConstantObject.eyePos = m_camera->GetPos();
-    FrameBufferConstantObject.view   = m_camera->GetViewMatrix();
-    FrameBufferConstantObject.proj   = m_camera->GetProjectionMatrix();
-
     UpdateGlobalConstantBuffers();
 
     if (renderWireframe)DXRasterizerState::SetRasterizerState(RasterizerState::CULL_WIREFRAME,GetDXContext());
@@ -152,19 +141,21 @@ void Game::OnUpdateScene(float deltaTime)
     entityManager->OnUpdate(deltaTime,gameState);
 }
 
-float Game::clear[4] = {0.05f, 0.05f, 0.05f, 1.0f};
-
 void Game::OnRenderScene()
 {
-    BeginClear();
     //DrawGrid(GetDXContext(), gridSize);
 
     entityManager->OnRender(GetDXContext());
+    RenderGrid();
     //DXBasicBatch::Instance->DrawRect(50, 50, 250, 250);
 }
 
 void Game::UpdateGlobalConstantBuffers()
 {
+    FrameBufferConstantObject.eyePos = m_camera->GetPos();
+    FrameBufferConstantObject.view = m_camera->GetViewMatrix();
+    FrameBufferConstantObject.proj = m_camera->GetProjectionMatrix();
+
     //Updating VS Cbuffer
     m_frameConstantBuffer->Map(sizeof(FrameConstantBuffer), &FrameBufferConstantObject);
     m_frameConstantBuffer->UnMap();
@@ -174,24 +165,24 @@ void Game::UpdateGlobalConstantBuffers()
     m_lightConstantBuffer->UnMap();
 }
 
-void Game::BeginClear()
+void Game::CreateCamera()
 {
-    enginePlayer->ClearViewport(clear);
+    m_camera = new Camera(65.f, GetAspectRatio(), 0.01f, 1000.0f);
+    m_camera->SetPosition(vec3f(0, 0, -10));
 }
 
-void Game::PostClear()
+void Game::CreateFileSystem()
 {
-    enginePlayer->OnRender(clear);
+    fileSystem = std::make_shared<FileSystem>();
+    fileSystem->Init();
 }
 
 void Game::OnLateRender()
 {
-    PostClear();
 }
 
 void Game::OnLateUpdate(float deltaTime)
 {
-    enginePlayer->OnUpdate(deltaTime);
 }
 
 void Game::SetGameState(GameState gs)
@@ -213,12 +204,86 @@ void Game::SetGameState(GameState gs)
 
 void Game::CreateGrid()
 {
-    m_gridGeometry = new RenderableGeometry();
+    SetGridBuffer(BuiltInMesh::CreateGrid<VertexPC>(100.0f, 100.0f, 100, 100, vec4f(0.5f, 0.5f, 0.5f, 0.5f)));
+
+    m_gridConstantBuffer = std::make_unique<DXConstantBuffer>();
+
+    gridConstantBufferData.world                    = mat4x4();
+    gridConstantBufferData.worldInverseTranspose    = mat4x4();
+
+    ConstantBufferDesc cbd{};
+    cbd.cbSize = sizeof(ObjectConstantBuffer);
+    m_gridConstantBuffer->Create(cbd);
+
+
+    m_gridVS = ShaderCache::GetVertexShader("GridVS");
+    m_gridPS = ShaderCache::GetPixelShader("GridPS");
 }
 
 void Game::RenderGrid()
 {
-    if (m_gridGeometry != 0) {
-        m_gridGeometry->OnRender(GetDXContext());
-    }
+    mat4x4 matrix;
+    matrix.SetIdentity();
+    matrix.translated({ 0.0f,0.0f,0.0f });
+
+    gridConstantBufferData.world = matrix;
+    gridConstantBufferData.worldInverseTranspose = matrix.InverseTranspose();
+
+    m_gridConstantBuffer->MapAndUnMap(sizeof(ObjectConstantBuffer), &gridConstantBufferData);
+
+    m_gridVS->Bind();
+    m_gridPS->Bind();
+
+    m_gridConstantBuffer->BindPipeline(0);
+    m_gridIndexBuffer->BindPipeline(0);
+    m_gridVertexBuffer->BindPipeline(0);
+    DXRasterizerState::SetRasterizerState(RasterizerState::CULL_WIREFRAME, GetDXContext());
+
+    GetDXContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
+    GetDXContext()->DrawIndexed(m_gridIndices, 0u, 0u);
+}
+
+void Game::SetGridBuffer(const MeshData<VertexPC, DWORD>& meshData)
+{   
+    //Reset old buffers
+    if (m_gridVertexBuffer)m_gridVertexBuffer->Reset();
+    if (m_gridIndexBuffer)m_gridIndexBuffer->Reset();
+
+    //Creating Vertex Buffer
+    VertexBufferDesc vbd{};
+    vbd.cbSize = (UINT)meshData.vVertex.size() * sizeof(VertexPC);
+    vbd.cbStride = sizeof(VertexPC);
+    vbd.pData = meshData.vVertex.data();
+    if (m_gridVertexBuffer == nullptr)m_gridVertexBuffer = std::make_unique<DXVertexBuffer>();
+    m_gridVertexBuffer->Create(vbd);
+    //m_gridVertexBuffer->BindPipeline(0);
+
+    //Storing indices count
+    m_gridIndices = (UINT)meshData.vIndices.size();
+
+    //Creating Index Buffer
+    IndexBufferDesc ibd{};
+    ibd.cbSize = m_gridIndices * sizeof(DWORD);
+    ibd.pData = meshData.vIndices.data();
+    if (m_gridIndexBuffer == nullptr)m_gridIndexBuffer = std::make_unique<DXIndexBuffer>();
+    m_gridIndexBuffer->Create(ibd);
+    //m_gridIndexBuffer->BindPipeline(0);
+}
+
+void Game::CreateGlobalConstantBuffers()
+{
+    m_frameConstantBuffer = std::make_unique<DXConstantBuffer>();
+    m_lightConstantBuffer = std::make_unique<DXConstantBuffer>();
+
+    ConstantBufferDesc cbd{};
+    cbd.cbSize = sizeof(FrameConstantBuffer);
+    m_frameConstantBuffer->Create(cbd);
+
+    cbd.cbSize = sizeof(LightConstantBuffer);
+    m_lightConstantBuffer->Create(cbd);
+
+    m_frameConstantBuffer->BindVS(BUFFER_ID::FRAME_CONSTANT_BUFFER_ID);
+
+    m_frameConstantBuffer->BindPS(BUFFER_ID::FRAME_CONSTANT_BUFFER_ID);
+    m_lightConstantBuffer->BindPS(BUFFER_ID::LIGHT_CONSTANT_BUFFER_ID);
 }

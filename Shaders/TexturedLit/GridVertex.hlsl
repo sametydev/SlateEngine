@@ -1,22 +1,18 @@
 #include "Lit.hlsli"
 
-struct PSInput
+struct VSOutput
 {
     float4 position : SV_POSITION;
+    float3 worldPos : TEXCOORD0;
     float4 color : COLOR;
 };
 
-PSInput main(VertexPC input)
+VSOutput main(VertexPC input)
 {
-    PSInput output;
-
-    float4 worldPosition = float4(input.position, 1.0f);
-    worldPosition = mul(worldPosition, World);
-
-    worldPosition = mul(worldPosition, View);
-
-    output.position = mul(worldPosition, Proj);
-
+    VSOutput output;
+    float4 worldPosition = mul(float4(input.position, 1.0f), World);
+    output.position = mul(worldPosition, mul(View, Proj));
+    output.worldPos = worldPosition.xyz;
     output.color = input.color;
     return output;
 }

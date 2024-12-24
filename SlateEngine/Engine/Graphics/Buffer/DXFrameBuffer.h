@@ -19,7 +19,7 @@ public:
 
 	void BeginFrame();
 	void EndFrame(ID3D11RenderTargetView* newRenderTarget, ID3D11DepthStencilView* newDepthStencil);
-	void Clear(float r, float g, float b, float a);
+	void Clear(float* rgba);
 
 	virtual void BindRenderPass();
 	virtual void UnBindRenderPass();

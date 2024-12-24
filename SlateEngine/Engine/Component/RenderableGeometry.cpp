@@ -22,11 +22,8 @@ void RenderableGeometry::OnInternalInit()
     ConstantBufferDesc cbd{};
     cbd.cbSize = sizeof(ObjectConstantBuffer);
     m_constantBuffer->Create(cbd);
-    m_constantBuffer->BindVS(BUFFER_ID::OBJECT_CONSTANT_BUFFER_ID);
-    m_constantBuffer->BindPS(BUFFER_ID::OBJECT_CONSTANT_BUFFER_ID);
-
-    m_material->AddShader("Lit3DVS");
-    m_material->AddShader("Lit3DPS");
+    //m_constantBuffer->BindVS(BUFFER_ID::OBJECT_CONSTANT_BUFFER_ID);
+    //m_constantBuffer->BindPS(BUFFER_ID::OBJECT_CONSTANT_BUFFER_ID);
 
     buffers.emplace_back(m_vertexBuffer.get());
     buffers.emplace_back(m_indexBuffer.get());
@@ -60,8 +57,7 @@ void RenderableGeometry::OnRender(ID3D11DeviceContext* pDeviceContext)
         buffers[i]->BindPipeline(0);
     }
 
-    m_material->BindPipeline();
-    m_material->OnDraw(pDeviceContext, m_indices);
+    m_material->SetIndices(m_indices);
 }
 
 void RenderableGeometry::OnInit()

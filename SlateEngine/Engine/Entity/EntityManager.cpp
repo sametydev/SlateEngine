@@ -63,10 +63,18 @@ void EntityManager::OnUpdate(float dt,int gameState)
 void EntityManager::OnRender(ID3D11DeviceContext* pDeviceContext)
 {
 	auto RenderableGeometrys = EntityRegistrar::GetRegistry().view<RenderableGeometry>();
-	
-	for (auto entity : RenderableGeometrys)
+	/*
+	* This implementations seems be wrong to me actually because of the maybe wrong Material order,
+	* so getting Material from Renderable object is seems be more accurate
+	* 
+	auto Materials = EntityRegistrar::GetRegistry().view<MaterialComponent>();
+	*/
+	for (auto entity : RenderableGeometrys/*, Materials */)
 	{
-		RenderableGeometrys.get<RenderableGeometry>(entity).OnRender(pDeviceContext);
+		RenderableGeometry* r = &RenderableGeometrys.get<RenderableGeometry>(entity);
+		r->OnRender(pDeviceContext);
+		r->GetMaterial().OnRender(pDeviceContext);
+		//Materials.get<MaterialComponent>(entity).OnRender(pDeviceContext);
 	}
 }
 

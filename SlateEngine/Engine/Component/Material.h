@@ -164,7 +164,6 @@ public:
     }
 
     void OnRender(ID3D11DeviceContext* pDeviceContext) override;
-    void OnDraw(ID3D11DeviceContext* pDeviceContext, UINT indices);
     void inline SetRasterizerState(RasterizerState state) {
         rs = state;
     };
@@ -177,6 +176,8 @@ public:
     inline void SetTopology(D3D11_PRIMITIVE_TOPOLOGY _topology) {
         topology = _topology;
     }
+
+    inline void SetIndices(UINT i) { indices = i; }
 
 private:
     MaterialProperty TryGetMProp(std::string_view name)
@@ -196,5 +197,7 @@ protected:
     std::unordered_map<std::string_view, MaterialProperty> properties;
     RasterizerState rs;
     D3D11_PRIMITIVE_TOPOLOGY topology = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
+
+    UINT indices = 0;
 };
 

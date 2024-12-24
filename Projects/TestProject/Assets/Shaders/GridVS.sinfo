@@ -1,0 +1,7 @@
+[Shader]
+DisplayName = GridVS
+ShaderType = Vertex
+InputLayout = VertexPC
+EntryPoint = main
+HLSLFile = Shaders\TexturedLit\GridVertex.hlsl
+CSOName= Shaders\TexturedLit\GridVertex.cso

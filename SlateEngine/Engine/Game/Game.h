@@ -33,11 +33,6 @@ public:
     //Todo, Scene*
     void OnRenderScene();
 
-    void UpdateGlobalConstantBuffers();
-
-    void BeginClear();
-    void PostClear();
-
     void OnLateRender();
     void OnLateUpdate(float deltaTime);
     
@@ -47,8 +42,6 @@ public:
     static Game* Instance;
 
     bool renderWireframe = 0;
-
-    static float clear[4];
 
     FrameConstantBuffer   FrameBufferConstantObject;
     LightConstantBuffer   LightConstantObject;
@@ -63,22 +56,46 @@ public:
     //--
 
     Camera* m_camera{};
-
-
 private:
-    void CreateGrid();
-    void RenderGrid();
+    void CreateGlobalConstantBuffers();
+    void UpdateGlobalConstantBuffers();
 
-    RenderableGeometry* m_gridGeometry = nullptr;
+    void CreateCamera();
+    void CreateFileSystem();
+
 
     GameState gameState = GameState::NONE;
 
+    //-----------------------------------------------------------------------|
+
+
+    //Global Buffers
     std::unique_ptr<DXConstantBuffer> m_frameConstantBuffer = nullptr;
     std::unique_ptr<DXConstantBuffer> m_lightConstantBuffer = nullptr;
+    //-----------------------------------------------------------------------|
 
+
+    //Managers
     std::shared_ptr<EntityManager> entityManager;
     std::shared_ptr<FileSystem> fileSystem;
+    //-----------------------------------------------------------------------|
 
+
+    //C++ Native runtime scripting
     Script *script1 = nullptr;
     HMODULE hModule = 0;
+    //-----------------------------------------------------------------------|
+
+    //Grid
+    void CreateGrid();
+    void RenderGrid();
+    void SetGridBuffer(const MeshData<VertexPC, DWORD>& meshData);
+    UINT m_gridIndices = 0;
+    std::unique_ptr<DXVertexBuffer> m_gridVertexBuffer;
+    std::unique_ptr<DXIndexBuffer> m_gridIndexBuffer;
+    DXVertexShader* m_gridVS;
+    DXPixelShader* m_gridPS;
+    std::unique_ptr<DXConstantBuffer> m_gridConstantBuffer;
+    ObjectConstantBuffer   gridConstantBufferData{};
+    //-----------------------------------------------------------------------|
 };
