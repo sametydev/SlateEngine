@@ -1,5 +1,7 @@
 #include <SlateEngine/Engine/Core/Timer.h>
 
+Timer* Timer::Instance = nullptr;
+
 Timer::Timer():bIsActive(true),m_deltaTime(0),m_elapsedSecond(0)
 {
     if (Instance == nullptr)
@@ -23,22 +25,32 @@ void Timer::OnTick()
 {
     if (!bIsActive)
     {
-        m_deltaTime = 0.0;
+        m_deltaTime = 0.0f;
         return;
     }
 
-    //deltaTime:
     m_currentTime = std::chrono::system_clock::now();
-    m_elapsedSecond = std::chrono::duration<double>();
 
-    if (m_prevTime.time_since_epoch().count())
+    if (m_prevTime.time_since_epoch().count() != 0)
     {
         m_elapsedSecond = m_currentTime - m_prevTime;
+        m_deltaTime = static_cast<float>(m_elapsedSecond.count());
+    }
+    else
+    {
+        m_deltaTime = 0.0f;
+    }
+
+    frameCount++;
+    totalTime += m_deltaTime;
+
+    if (totalTime >= 1.0f)
+    {
+        fps = static_cast<float>(frameCount) / totalTime;
+
+        frameCount = 0;
+        totalTime = 0.0f;
     }
 
     m_prevTime = m_currentTime;
-
-    m_deltaTime = (float)m_elapsedSecond.count();
-
-
 }

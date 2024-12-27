@@ -132,8 +132,6 @@ void Game::OnUpdateScene(float deltaTime)
 {
     m_camera->Update(deltaTime);
 
-    //enginePlayer->OnUpdate(deltaTime);
-
     UpdateGlobalConstantBuffers();
 
     if (renderWireframe)DXRasterizerState::SetRasterizerState(RasterizerState::CULL_WIREFRAME,GetDXContext());
@@ -143,11 +141,8 @@ void Game::OnUpdateScene(float deltaTime)
 
 void Game::OnRenderScene()
 {
-    //DrawGrid(GetDXContext(), gridSize);
-
     entityManager->OnRender(GetDXContext());
     RenderGrid();
-    //DXBasicBatch::Instance->DrawRect(50, 50, 250, 250);
 }
 
 void Game::UpdateGlobalConstantBuffers()
@@ -168,7 +163,7 @@ void Game::UpdateGlobalConstantBuffers()
 void Game::CreateCamera()
 {
     m_camera = new Camera(65.f, GetAspectRatio(), 0.01f, 1000.0f);
-    m_camera->SetPosition(vec3f(0, 0, -10));
+    m_camera->SetPosition(vec3f(0, 10, 0));
 }
 
 void Game::CreateFileSystem()
@@ -204,7 +199,7 @@ void Game::SetGameState(GameState gs)
 
 void Game::CreateGrid()
 {
-    SetGridBuffer(BuiltInMesh::CreateGrid<VertexPC>(100.0f, 100.0f, 100, 100, vec4f(0.5f, 0.5f, 0.5f, 0.5f)));
+    SetGridBuffer(BuiltInMesh::CreateGrid<VertexPC>(200.0f, 200.0f, 100, 100, vec4f(0.25f, 0.25f, 0.25f, 1.f)));
 
     m_gridConstantBuffer = std::make_unique<DXConstantBuffer>();
 
@@ -215,19 +210,17 @@ void Game::CreateGrid()
     cbd.cbSize = sizeof(ObjectConstantBuffer);
     m_gridConstantBuffer->Create(cbd);
 
-
     m_gridVS = ShaderCache::GetVertexShader("GridVS");
     m_gridPS = ShaderCache::GetPixelShader("GridPS");
 }
 
 void Game::RenderGrid()
 {
-    mat4x4 matrix;
-    matrix.SetIdentity();
-    matrix.translated({ 0.0f,0.0f,0.0f });
+    gridMatrix.SetIdentity();
+    gridMatrix.translated({ 0.0f,0.0f,0.0f });
 
-    gridConstantBufferData.world = matrix;
-    gridConstantBufferData.worldInverseTranspose = matrix.InverseTranspose();
+    gridConstantBufferData.world                 = gridMatrix;
+    gridConstantBufferData.worldInverseTranspose = gridMatrix.InverseTranspose();
 
     m_gridConstantBuffer->MapAndUnMap(sizeof(ObjectConstantBuffer), &gridConstantBufferData);
 
@@ -254,9 +247,9 @@ void Game::SetGridBuffer(const MeshData<VertexPC, DWORD>& meshData)
     vbd.cbSize = (UINT)meshData.vVertex.size() * sizeof(VertexPC);
     vbd.cbStride = sizeof(VertexPC);
     vbd.pData = meshData.vVertex.data();
-    if (m_gridVertexBuffer == nullptr)m_gridVertexBuffer = std::make_unique<DXVertexBuffer>();
+
+    m_gridVertexBuffer = std::make_unique<DXVertexBuffer>();
     m_gridVertexBuffer->Create(vbd);
-    //m_gridVertexBuffer->BindPipeline(0);
 
     //Storing indices count
     m_gridIndices = (UINT)meshData.vIndices.size();
@@ -265,9 +258,9 @@ void Game::SetGridBuffer(const MeshData<VertexPC, DWORD>& meshData)
     IndexBufferDesc ibd{};
     ibd.cbSize = m_gridIndices * sizeof(DWORD);
     ibd.pData = meshData.vIndices.data();
-    if (m_gridIndexBuffer == nullptr)m_gridIndexBuffer = std::make_unique<DXIndexBuffer>();
+
+    m_gridIndexBuffer = std::make_unique<DXIndexBuffer>();
     m_gridIndexBuffer->Create(ibd);
-    //m_gridIndexBuffer->BindPipeline(0);
 }
 
 void Game::CreateGlobalConstantBuffers()

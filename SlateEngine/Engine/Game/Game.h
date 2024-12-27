@@ -97,5 +97,6 @@ private:
     DXPixelShader* m_gridPS;
     std::unique_ptr<DXConstantBuffer> m_gridConstantBuffer;
     ObjectConstantBuffer   gridConstantBufferData{};
+    mat4x4 gridMatrix;
     //-----------------------------------------------------------------------|
 };

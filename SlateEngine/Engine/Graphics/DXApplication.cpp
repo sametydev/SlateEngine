@@ -88,25 +88,23 @@ int DXApplication::OnRun()
             InputSystem::Update(hWindow);
             if (!bPaused)
             {
-                enginePlayer->NewFrame();
 
                 //Render Scene
                 sceneBuffer->BeginFrame();
-
                 sceneBuffer->Clear(clear);
-                enginePlayer->ClearViewport(clear);
+                OnUpdateScene(mTimer->deltaTime());
                 OnRenderScene();
-
                 sceneBuffer->EndFrame(m_renderTargetView.Get(), m_depthStencilView.Get());
 
-                OnUpdateScene(mTimer->deltaTime());
-
-                OnLateUpdate(mTimer->deltaTime());
+                //Render Player
+                enginePlayer->NewFrame();
+                enginePlayer->ClearViewport(clear);
                 enginePlayer->OnUpdate(mTimer->deltaTime());
-
-                OnLateRender();
                 enginePlayer->OnRender(clear);
 
+
+                OnLateUpdate(mTimer->deltaTime());
+                OnLateRender();
 
                 SwapChainPresent();
             }

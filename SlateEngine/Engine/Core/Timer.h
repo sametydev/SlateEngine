@@ -10,12 +10,15 @@ public:
 	void OnReset(); 
 	void OnTick();
 
+	float fps;
 
-	Timer* Instance = nullptr;
+	static Timer* Instance;
 private:
 	float m_deltaTime;
 	std::chrono::system_clock::time_point m_prevTime;
 	std::chrono::system_clock::time_point m_currentTime;
 	std::chrono::duration<double> m_elapsedSecond;
 	bool bIsActive;
+	int frameCount = 0;
+	float totalTime = 0;
 };

@@ -84,6 +84,7 @@ public:
 
     static float clear[4];
 
+    D3D11_QUERY_DATA_PIPELINE_STATISTICS pipelineStatics = {};
 protected:
     bool InitializeWindow();
     bool InitializeGraphics();
