@@ -4,7 +4,7 @@
 #include <filesystem>
 #include <unordered_map>
 #include <SlateEngine/Engine/Utils.h>
-
+#include <simdjson.h>
 
 enum FILE_TYPE {
 	MISC,
@@ -30,6 +30,8 @@ public:
 	~FileSystem();
 
 	void Init();
+
+	void LateInit();
 
 	inline FILE_TYPE GetFileTypeFromExt(std::filesystem::path ext)
 	{

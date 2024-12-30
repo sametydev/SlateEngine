@@ -130,6 +130,7 @@
     <ClCompile Include="Engine\NativeScripting\ScriptRegistry.cpp" />
     <ClCompile Include="LibarySources\ConvertUTF.c" />
     <ClCompile Include="LibarySources\DDSTextureLoader11.cpp" />
+    <ClCompile Include="LibarySources\simdjson.cpp" />
     <ClCompile Include="LibarySources\WICTextureLoader11.cpp" />
     <ClCompile Include="Engine\Component\LuaScript.cpp" />
     <ClCompile Include="Main.cpp" />

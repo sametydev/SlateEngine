@@ -133,3 +133,11 @@ inline std::wstring s2ws(const std::string& str)
     MultiByteToWideChar(CP_UTF8, 0, &str[0], (int)str.size(), &wstrTo[0], size_needed);
     return wstrTo;
 }
+
+inline std::string removeQuotesFromStartAndBack(std::string str) {
+    if (!str.empty() && str.front() == '"' && str.back() == '"') {
+        str = str.substr(1, str.size() - 2);
+    }
+
+    return str;
+}

@@ -170,6 +170,7 @@ void Game::CreateFileSystem()
 {
     fileSystem = std::make_shared<FileSystem>();
     fileSystem->Init();
+    fileSystem->LateInit();
 }
 
 void Game::OnLateRender()

@@ -30,15 +30,43 @@ void FileSystem::Init()
 {
     errorMetaData = new SMetaData();
     errorMetaData->uuid = "";
-    errorMetaData->path = "ERROR";
+    errorMetaData->path = "";
 
     InitFWatcher();
+
+    simdjson::ondemand::parser parser;
+    simdjson::padded_string docdata = R"({
+    "Project": {
+        "name": "Test Project",
+        "version": 0.1,
+        "vsync": 0
+    }
+})"_padded;
+    simdjson::ondemand::document doc = parser.iterate(docdata);
+    simdjson::ondemand::object obj = doc.get_object();
+    std::string_view token;
+
+    token = obj["Project"]["name"].raw_json_token();
+    std::string projectName(token);
+    projectName = removeQuotesFromStartAndBack(projectName);
+
+    token = obj["Project"]["version"].raw_json_token();
+    std::string projectVersion(token);
+    projectVersion = removeQuotesFromStartAndBack(projectVersion);
+
+    token = obj["Project"]["vsync"].raw_json_token();
+    std::string projectVsync(token);
+    projectVsync = removeQuotesFromStartAndBack(projectVsync);
+
+}
+
+void FileSystem::LateInit()
+{
     for (std::filesystem::recursive_directory_iterator i(gDXApp->GetWorkingDir()), end; i != end; ++i) {
         if (!std::filesystem::is_directory(i->path())) {
             ImportFile(i->path());
         }
     }
-
 }
 
 void FileSystem::InitFWatcher()
