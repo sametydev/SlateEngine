@@ -2,16 +2,17 @@
 
 #include <iostream>
 #include <filesystem>
+#include <map>
 #include <unordered_map>
 #include <SlateEngine/Engine/Utils.h>
 #include <simdjson.h>
 
-enum FILE_TYPE {
-	MISC,
-	SHADER,
+enum FILE_TYPE : int {
+	LUA = 0,
 	TEXTURE_WIC,
 	TEXTURE_DDS,
-	LUA,
+	SHADER,
+	MISC,
 	MESH,
 	AUDIO,
 	SMETA
@@ -35,24 +36,7 @@ public:
 
 	inline FILE_TYPE GetFileTypeFromExt(std::filesystem::path ext)
 	{
-		if (ext == ".lua") {
-			return FILE_TYPE::LUA;
-		}
-		else if (ext == ".png" ||
-			ext == ".jpg" ||
-			ext == ".jpeg" ||
-			ext == ".bmp" ||
-			ext == ".tiff")
-		{
-			return FILE_TYPE::TEXTURE_WIC;
-		}
-		else if (ext == ".dds") {
-			return FILE_TYPE::TEXTURE_DDS;
-		}
-		else if (ext == ".sinfo") {
-			return FILE_TYPE::SHADER;
-		}
-		return FILE_TYPE::MISC;
+		return (FILE_TYPE)m_extensionLookupTable[ext.string()];
 	}
 
 	//Callbacks;
@@ -99,30 +83,17 @@ private:
 	void ProcessShaderFile(std::filesystem::path _p);
 	void ProcessMetaFile(std::filesystem::path _p);
 
+	void BuildExtensions();
+
 	inline std::string GetExtFromP(std::filesystem::path _p)
 	{
-		if (_p.extension() == ".lua") {
-			return "LUA";
-		}
-		else if (_p.extension() == ".png"	||
-			_p.extension() == ".jpg"		||
-			_p.extension() == ".jpeg"		||
-			_p.extension() == ".bmp"		||
-			_p.extension() == ".tiff")
-		{
-			return "TEXTURE";
-		}
-		else if (_p.extension() == ".dds") {
-			return "TEXTURE";
-		}
-		else if (_p.extension() == ".sinfo") {
-			return "SHADER";
-		}
-		return "MISC";
+		return FTypeToString((FILE_TYPE)m_extensionLookupTable[_p.string()]);
 	}
 
 	//first is uuid, second is meta file path
 	std::unordered_map<std::string, SMetaData> metaMap;
+
+	std::map<std::string, UINT> m_extensionLookupTable;
 
 	SMetaData* errorMetaData;
 };

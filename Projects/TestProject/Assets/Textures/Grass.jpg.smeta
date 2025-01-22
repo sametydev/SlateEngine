@@ -1,4 +1,4 @@
 [Asset]
-uuid = 087b5169-b087-4ed4-a6be-1f1fdd98e48a
-type = TEXTURE
-path = TestProject\Assets\Textures\Grass.jpg
+uuid = 4074a1ba-a446-4257-98b3-1f4cba83239d
+type = LUA
+path = Projects\TestProject\Assets\Textures\Grass.jpg

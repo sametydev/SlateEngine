@@ -28,6 +28,8 @@ FileSystem::~FileSystem()
 
 void FileSystem::Init()
 {
+    BuildExtensions();
+
     errorMetaData = new SMetaData();
     errorMetaData->uuid = "";
     errorMetaData->path = "";
@@ -215,6 +217,37 @@ void FileSystem::ProcessMetaFile(std::filesystem::path _p)
     smd.path = metaFile;
     smd.uuid = ini.GetValue("Asset", "uuid");
     metaMap.emplace(smd.uuid, smd);
+}
+
+void FileSystem::BuildExtensions()
+{
+    if (m_extensionLookupTable.size() > 0) m_extensionLookupTable.clear();
+
+    int id = iota(true);
+
+    /*
+    Lua = 0
+    WIC Textures = 1-5
+    DDS = 6
+    SINFO = 7
+    */
+
+    m_extensionLookupTable.insert({ ".lua",     id });
+    iota();
+
+    id = iota();
+    m_extensionLookupTable.insert({ ".png",     id });
+    m_extensionLookupTable.insert({ ".jpg",     id });
+    m_extensionLookupTable.insert({ ".jpeg",    id });
+    m_extensionLookupTable.insert({ ".bmp",     id });
+    m_extensionLookupTable.insert({ ".tiff",    id });
+
+    m_extensionLookupTable.insert({ ".dds",     iota() });
+    m_extensionLookupTable.insert({ ".sinfo",   iota() });
+
+    m_extensionLookupTable.insert({ ".smeta",   INT_MAX });
+
+    iota(true);
 }
 
 void FileSystem::OnFileAdded(std::filesystem::path _p)

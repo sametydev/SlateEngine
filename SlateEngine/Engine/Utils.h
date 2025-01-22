@@ -141,3 +141,12 @@ inline std::string removeQuotesFromStartAndBack(std::string str) {
 
     return str;
 }
+
+inline static int iota(bool reset = false) {
+    static int counter = 0; 
+    if (reset) {
+        counter = 0;
+        return counter;
+    }
+    return counter++;
+}

@@ -1,4 +1,4 @@
 [Asset]
-uuid = 6aa915f2-120f-4781-9f29-0282f908bf9a
+uuid = f22ea96b-50cf-4dcf-b1be-3bc666e0e3cf
 type = LUA
-path = TestProject\Assets\Scripts\Test.lua
+path = Projects\TestProject\Assets\Scripts\Test.lua
