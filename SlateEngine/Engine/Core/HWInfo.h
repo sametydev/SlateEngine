@@ -11,5 +11,5 @@ struct __declspec(dllexport) HWInfo  {
     static const char* gpuName_cstr;
     static bool sseSupported;
 
-    static void initialize(const char* _gpuName);
+    static void initialize(std::string _gpuName);
 };

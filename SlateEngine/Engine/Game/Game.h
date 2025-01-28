@@ -28,10 +28,10 @@ public:
 
     bool OnInit();
     void OnResize();
-    void OnUpdateScene(float deltaTime);
+    void OnUpdateScene(float deltaTime, ID3D11DeviceContext* pContext);
 
     //Todo, Scene*
-    void OnRenderScene();
+    void OnRenderScene(ID3D11DeviceContext* pContext);
 
     void OnLateRender();
     void OnLateUpdate(float deltaTime);
@@ -84,19 +84,5 @@ private:
     //C++ Native runtime scripting
     Script *script1 = nullptr;
     HMODULE hModule = 0;
-    //-----------------------------------------------------------------------|
-
-    //Grid
-    void CreateGrid();
-    void RenderGrid();
-    void SetGridBuffer(const MeshData<VertexPC, DWORD>& meshData);
-    UINT m_gridIndices = 0;
-    std::unique_ptr<DXVertexBuffer> m_gridVertexBuffer;
-    std::unique_ptr<DXIndexBuffer> m_gridIndexBuffer;
-    DXVertexShader* m_gridVS;
-    DXPixelShader* m_gridPS;
-    std::unique_ptr<DXConstantBuffer> m_gridConstantBuffer;
-    ObjectConstantBuffer   gridConstantBufferData{};
-    mat4x4 gridMatrix;
     //-----------------------------------------------------------------------|
 };

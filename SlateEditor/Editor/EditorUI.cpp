@@ -74,6 +74,7 @@ void EditorUI::OnInit(HWND wnd, ID3D11Device* pDevice, ID3D11DeviceContext* pDev
 	nativeScriptingDebuggerWindow->OnInit();
 	inspectorWindow->OnInit();
 	logWindow->AddLog("[Renderer] - DX11(DirectX 11_1) Renderer OnInit");
+	CreateGrid();
 }
 
 void EditorUI::NewFrame()
@@ -435,4 +436,75 @@ void EditorUI::OnRender(float rgba[4])
 	ImGui::UpdatePlatformWindows();
     ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
 	ImGui::RenderPlatformWindowsDefault();
+}
+
+void EditorUI::OnRenderScene(ID3D11DeviceContext* pContext)
+{
+	RenderGrid(pContext);
+}
+
+void EditorUI::CreateGrid()
+{
+	SetGridBuffer(BuiltInMesh::CreateGrid<VertexPC>(200.0f, 200.0f, 100, 100, vec4f(0.25f, 0.25f, 0.25f, 1.f)));
+
+	m_gridConstantBuffer = std::make_unique<DXConstantBuffer>();
+
+	gridConstantBufferData.world = mat4x4();
+	gridConstantBufferData.worldInverseTranspose = mat4x4();
+
+	ConstantBufferDesc cbd{};
+	cbd.cbSize = sizeof(ObjectConstantBuffer);
+	m_gridConstantBuffer->Create(cbd);
+
+	m_gridVS = ShaderCache::GetVertexShader("GridVS");
+	m_gridPS = ShaderCache::GetPixelShader("GridPS");
+}
+
+void EditorUI::RenderGrid(ID3D11DeviceContext* pContext)
+{
+	gridMatrix.SetIdentity();
+	gridMatrix.translated({ 0.0f,0.0f,0.0f });
+
+	gridConstantBufferData.world = gridMatrix;
+	gridConstantBufferData.worldInverseTranspose = gridMatrix.InverseTranspose();
+
+	m_gridConstantBuffer->MapAndUnMap(sizeof(ObjectConstantBuffer), &gridConstantBufferData);
+
+	m_gridVS->Bind();
+	m_gridPS->Bind();
+
+	m_gridConstantBuffer->BindPipeline(0);
+	m_gridIndexBuffer->BindPipeline(0);
+	m_gridVertexBuffer->BindPipeline(0);
+	DXRasterizerState::SetRasterizerState(RasterizerState::CULL_WIREFRAME, pContext);
+
+	pContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
+	pContext->DrawIndexed(m_gridIndices, 0u, 0u);
+}
+
+void EditorUI::SetGridBuffer(const MeshData<VertexPC, DWORD>& meshData)
+{
+	//Reset old buffers
+	if (m_gridVertexBuffer)m_gridVertexBuffer->Reset();
+	if (m_gridIndexBuffer)m_gridIndexBuffer->Reset();
+
+	//Creating Vertex Buffer
+	VertexBufferDesc vbd{};
+	vbd.cbSize = (UINT)meshData.vVertex.size() * sizeof(VertexPC);
+	vbd.cbStride = sizeof(VertexPC);
+	vbd.pData = meshData.vVertex.data();
+
+	m_gridVertexBuffer = std::make_unique<DXVertexBuffer>();
+	m_gridVertexBuffer->Create(vbd);
+
+	//Storing indices count
+	m_gridIndices = (UINT)meshData.vIndices.size();
+
+	//Creating Index Buffer
+	IndexBufferDesc ibd{};
+	ibd.cbSize = m_gridIndices * sizeof(DWORD);
+	ibd.pData = meshData.vIndices.data();
+
+	m_gridIndexBuffer = std::make_unique<DXIndexBuffer>();
+	m_gridIndexBuffer->Create(ibd);
 }

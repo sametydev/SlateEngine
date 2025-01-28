@@ -4,8 +4,8 @@
 
 void RenderableGeometry::OnInternalInit()
 {
-    mTransform = GetEntity()->GetComponentAsPointer<Transform>();
-    SetBuffer(BuiltInMesh::CreateBox<VertexPNT>());
+    mTransform = &GetEntity()->GetComponent<Transform>();
+    this->SetBuffer(BuiltInMesh::CreateBox<VertexPNT>());
 
     m_constantBuffer = std::make_unique<DXConstantBuffer>();
 
@@ -22,8 +22,6 @@ void RenderableGeometry::OnInternalInit()
     ConstantBufferDesc cbd{};
     cbd.cbSize = sizeof(ObjectConstantBuffer);
     m_constantBuffer->Create(cbd);
-    //m_constantBuffer->BindVS(BUFFER_ID::OBJECT_CONSTANT_BUFFER_ID);
-    //m_constantBuffer->BindPS(BUFFER_ID::OBJECT_CONSTANT_BUFFER_ID);
 
     buffers.emplace_back(m_vertexBuffer.get());
     buffers.emplace_back(m_indexBuffer.get());
@@ -48,6 +46,7 @@ void RenderableGeometry::OnUpdate(float deltaTime)
     cbData.material.specular = *mat_spec;
 
     m_constantBuffer->MapAndUnMap(sizeof(ObjectConstantBuffer), &cbData);
+    //m_constantBuffer->SubData(&cbData);
 }
 
 void RenderableGeometry::OnRender(ID3D11DeviceContext* pDeviceContext)

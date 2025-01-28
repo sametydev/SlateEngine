@@ -43,7 +43,7 @@ void FileSystem::Init()
         "version": 0.1,
         "vsync": 0
     }
-})"_padded;
+    })"_padded;
     simdjson::ondemand::document doc = parser.iterate(docdata);
     simdjson::ondemand::object obj = doc.get_object();
     std::string_view token;
@@ -244,10 +244,12 @@ void FileSystem::BuildExtensions()
 
     m_extensionLookupTable.insert({ ".dds",     iota() });
     m_extensionLookupTable.insert({ ".sinfo",   iota() });
-
-    m_extensionLookupTable.insert({ ".smeta",   INT_MAX });
-
     iota(true);
+
+
+    //For excluding
+    m_extensionLookupTable.insert({ ".smeta",   INT_MAX });
+    m_extensionLookupTable.insert({ ".json",   INT_MAX });
 }
 
 void FileSystem::OnFileAdded(std::filesystem::path _p)

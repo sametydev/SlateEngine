@@ -3,6 +3,8 @@
 #include <sstream>
 #include <SlateEngine/Engine/Input/InputSystem.h>
 #include <SlateEngine/Engine/Graphics/DXBasicBatch.h>
+#include <codecvt>
+
 #pragma warning(disable: 6031)
 
 extern "C"
@@ -88,12 +90,12 @@ int DXApplication::OnRun()
             InputSystem::Update(hWindow);
             if (!bPaused)
             {
-
                 //Render Scene
                 sceneBuffer->BeginFrame();
                 sceneBuffer->Clear(clear);
-                OnUpdateScene(mTimer->deltaTime());
-                OnRenderScene();
+                OnUpdateScene(mTimer->deltaTime(),m_d3dContext.Get());
+                OnRenderScene(m_d3dContext.Get());
+                enginePlayer->OnRenderScene(m_d3dContext.Get());
                 sceneBuffer->EndFrame(m_renderTargetView.Get(), m_depthStencilView.Get());
 
                 //Render Player
@@ -170,8 +172,6 @@ void DXApplication::OnResize()
         depthStencilDesc.SampleDesc.Count = 1;
         depthStencilDesc.SampleDesc.Quality = 0;
     }
-
-
 
     depthStencilDesc.Usage = D3D11_USAGE_DEFAULT;
     depthStencilDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
@@ -435,19 +435,28 @@ bool DXApplication::InitializeGraphics()
     dxgiFactory1->MakeWindowAssociation(hWindow, DXGI_MWA_NO_ALT_ENTER | DXGI_MWA_NO_WINDOW_CHANGES);
     dxgiAdapter->GetDesc(&adapterDesc);
 
+
+    //Needs refactoring here;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
     new DXBasicBatch(m_d3dDevice.Get(), m_d3dContext.Get());
     DXBasicBatch::Instance->Init();
+    ////////////////////////////////////////////////////////////////////////////////////
 
+    InitializeHardwareInfo();
+    InitializeFrameBuffers();
+    InitializeDebugLayer();
 
-    _bstr_t __desc_w(adapterDesc.Description);
-    const char *__desc_cc = __desc_w;
-    
-    HWInfo::initialize(__desc_cc);
+    return true;
+}
 
+void DXApplication::InitializeHardwareInfo()
+{
+    std::wstring __desc_w(adapterDesc.Description);
+    HWInfo::initialize(std::string(__desc_w.begin(),__desc_w.end()));
+}
+
+void DXApplication::InitializeFrameBuffers()
+{
     sceneBuffer = new DXFrameBuffer(m_d3dDevice.Get(), m_d3dContext.Get());
-
-    OnResize();
-
 
     FrameBufferDesc desc{};
     desc.bDepthStencil = true;
@@ -456,9 +465,12 @@ bool DXApplication::InitializeGraphics()
     desc.nRenderPass = 1;
     sceneBuffer->Create(desc);
 
+    OnResize();
+}
+
+void DXApplication::InitializeDebugLayer()
+{
     ComPtr<ID3D11Debug> debugLayer;
     m_d3dDevice->QueryInterface(IID_PPV_ARGS(&debugLayer));
     debugLayer->ReportLiveDeviceObjects(D3D11_RLDO_DETAIL);
-
-    return true;
 }

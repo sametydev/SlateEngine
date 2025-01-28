@@ -26,6 +26,7 @@ public:
 
 	void NewFrame() override;
 	void OnRender(float rgba[4]) override;
+	void OnRenderScene(ID3D11DeviceContext* pContext) override;
 
 	//Update first render later
 	void OnUpdate(float deltaTime) override;
@@ -67,4 +68,17 @@ private:
 
 	HCURSOR cursorNormal;
 	HCURSOR cursorGrab;
+
+private:
+	void CreateGrid();
+	void RenderGrid(ID3D11DeviceContext* pContext);
+	void SetGridBuffer(const MeshData<VertexPC, DWORD>& meshData);
+	UINT m_gridIndices = 0;
+	std::unique_ptr<DXVertexBuffer> m_gridVertexBuffer;
+	std::unique_ptr<DXIndexBuffer> m_gridIndexBuffer;
+	DXVertexShader* m_gridVS;
+	DXPixelShader* m_gridPS;
+	std::unique_ptr<DXConstantBuffer> m_gridConstantBuffer;
+	ObjectConstantBuffer   gridConstantBufferData{};
+	mat4x4 gridMatrix;
 };

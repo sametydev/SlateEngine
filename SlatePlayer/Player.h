@@ -12,6 +12,7 @@ public:
 
 	void NewFrame() override;
 	void OnRender(float rgba[4]) override;
+	void OnRenderScene(ID3D11DeviceContext* pContext) override;
 
 	//Update first render later
 	void OnUpdate(float deltaTime) override;

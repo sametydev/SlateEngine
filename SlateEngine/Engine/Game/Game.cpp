@@ -23,13 +23,12 @@ Game::~Game()
 bool Game::OnInit()
 {
     if (!DXApplication::OnInit()) { return 0; }
+    CreateFileSystem();
 
     CreateCamera();
 
     enginePlayer->OnInit(hWindow, m_d3dDevice.Get(), m_d3dContext.Get());
     enginePlayer->ResizeViewport(m_clientW, m_clientH);
-
-    CreateFileSystem();
 
     entityManager = std::make_shared<EntityManager>();
     PhysicsFactory* pfactory = new PhysicsFactory();
@@ -110,8 +109,6 @@ bool Game::OnInit()
 
     // --- TEMPORARY CODE ---- //
 
-    CreateGrid();
-
     return true;
 }
 
@@ -128,36 +125,33 @@ void Game::OnResize()
     }
 }
 
-void Game::OnUpdateScene(float deltaTime)
+void Game::OnUpdateScene(float deltaTime, ID3D11DeviceContext* pContext)
 {
     m_camera->Update(deltaTime);
 
     UpdateGlobalConstantBuffers();
 
-    if (renderWireframe)DXRasterizerState::SetRasterizerState(RasterizerState::CULL_WIREFRAME,GetDXContext());
+    if (renderWireframe)DXRasterizerState::SetRasterizerState(RasterizerState::CULL_WIREFRAME, pContext);
 
     entityManager->OnUpdate(deltaTime,gameState);
 }
 
-void Game::OnRenderScene()
+void Game::OnRenderScene(ID3D11DeviceContext* pContext)
 {
-    entityManager->OnRender(GetDXContext());
-    RenderGrid();
+    entityManager->OnRender(pContext);
 }
 
 void Game::UpdateGlobalConstantBuffers()
 {
-    FrameBufferConstantObject.eyePos = m_camera->GetPos();
-    FrameBufferConstantObject.view = m_camera->GetViewMatrix();
-    FrameBufferConstantObject.proj = m_camera->GetProjectionMatrix();
+    FrameBufferConstantObject.eyePos    = m_camera->GetPos();
+    FrameBufferConstantObject.view      = m_camera->GetViewMatrix();
+    FrameBufferConstantObject.proj      = m_camera->GetProjectionMatrix();
 
     //Updating VS Cbuffer
-    m_frameConstantBuffer->Map(sizeof(FrameConstantBuffer), &FrameBufferConstantObject);
-    m_frameConstantBuffer->UnMap();
+    m_frameConstantBuffer->MapAndUnMap(sizeof(FrameConstantBuffer), &FrameBufferConstantObject);
 
     //Updating PS Cbuffer
-    m_lightConstantBuffer->Map(sizeof(LightConstantBuffer), &LightConstantObject);
-    m_lightConstantBuffer->UnMap();
+    m_lightConstantBuffer->MapAndUnMap(sizeof(LightConstantBuffer), &LightConstantObject);
 }
 
 void Game::CreateCamera()
@@ -198,86 +192,21 @@ void Game::SetGameState(GameState gs)
 
 }
 
-void Game::CreateGrid()
-{
-    SetGridBuffer(BuiltInMesh::CreateGrid<VertexPC>(200.0f, 200.0f, 100, 100, vec4f(0.25f, 0.25f, 0.25f, 1.f)));
-
-    m_gridConstantBuffer = std::make_unique<DXConstantBuffer>();
-
-    gridConstantBufferData.world                    = mat4x4();
-    gridConstantBufferData.worldInverseTranspose    = mat4x4();
-
-    ConstantBufferDesc cbd{};
-    cbd.cbSize = sizeof(ObjectConstantBuffer);
-    m_gridConstantBuffer->Create(cbd);
-
-    m_gridVS = ShaderCache::GetVertexShader("GridVS");
-    m_gridPS = ShaderCache::GetPixelShader("GridPS");
-}
-
-void Game::RenderGrid()
-{
-    gridMatrix.SetIdentity();
-    gridMatrix.translated({ 0.0f,0.0f,0.0f });
-
-    gridConstantBufferData.world                 = gridMatrix;
-    gridConstantBufferData.worldInverseTranspose = gridMatrix.InverseTranspose();
-
-    m_gridConstantBuffer->MapAndUnMap(sizeof(ObjectConstantBuffer), &gridConstantBufferData);
-
-    m_gridVS->Bind();
-    m_gridPS->Bind();
-
-    m_gridConstantBuffer->BindPipeline(0);
-    m_gridIndexBuffer->BindPipeline(0);
-    m_gridVertexBuffer->BindPipeline(0);
-    DXRasterizerState::SetRasterizerState(RasterizerState::CULL_WIREFRAME, GetDXContext());
-
-    GetDXContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
-    GetDXContext()->DrawIndexed(m_gridIndices, 0u, 0u);
-}
-
-void Game::SetGridBuffer(const MeshData<VertexPC, DWORD>& meshData)
-{   
-    //Reset old buffers
-    if (m_gridVertexBuffer)m_gridVertexBuffer->Reset();
-    if (m_gridIndexBuffer)m_gridIndexBuffer->Reset();
-
-    //Creating Vertex Buffer
-    VertexBufferDesc vbd{};
-    vbd.cbSize = (UINT)meshData.vVertex.size() * sizeof(VertexPC);
-    vbd.cbStride = sizeof(VertexPC);
-    vbd.pData = meshData.vVertex.data();
-
-    m_gridVertexBuffer = std::make_unique<DXVertexBuffer>();
-    m_gridVertexBuffer->Create(vbd);
-
-    //Storing indices count
-    m_gridIndices = (UINT)meshData.vIndices.size();
-
-    //Creating Index Buffer
-    IndexBufferDesc ibd{};
-    ibd.cbSize = m_gridIndices * sizeof(DWORD);
-    ibd.pData = meshData.vIndices.data();
-
-    m_gridIndexBuffer = std::make_unique<DXIndexBuffer>();
-    m_gridIndexBuffer->Create(ibd);
-}
-
 void Game::CreateGlobalConstantBuffers()
 {
-    m_frameConstantBuffer = std::make_unique<DXConstantBuffer>();
-    m_lightConstantBuffer = std::make_unique<DXConstantBuffer>();
-
     ConstantBufferDesc cbd{};
+
+    m_frameConstantBuffer = std::make_unique<DXConstantBuffer>();
     cbd.cbSize = sizeof(FrameConstantBuffer);
     m_frameConstantBuffer->Create(cbd);
 
+    m_frameConstantBuffer->BindVS(BUFFER_ID::FRAME_CONSTANT_BUFFER_ID);
+    m_frameConstantBuffer->BindPS(BUFFER_ID::FRAME_CONSTANT_BUFFER_ID);
+
+
+    m_lightConstantBuffer = std::make_unique<DXConstantBuffer>();
     cbd.cbSize = sizeof(LightConstantBuffer);
     m_lightConstantBuffer->Create(cbd);
 
-    m_frameConstantBuffer->BindVS(BUFFER_ID::FRAME_CONSTANT_BUFFER_ID);
-
-    m_frameConstantBuffer->BindPS(BUFFER_ID::FRAME_CONSTANT_BUFFER_ID);
     m_lightConstantBuffer->BindPS(BUFFER_ID::LIGHT_CONSTANT_BUFFER_ID);
 }

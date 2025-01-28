@@ -30,6 +30,10 @@ void Player::OnRender(float rgba[4])
 {
 }
 
+void Player::OnRenderScene(ID3D11DeviceContext* pContext)
+{
+}
+
 void Player::OnUpdate(float deltaTime)
 {
 }

@@ -11,6 +11,8 @@ public:
 	virtual void NewFrame() = 0;
 	virtual void OnRender(float rgba[4]) = 0;
 
+	virtual void OnRenderScene(ID3D11DeviceContext* pContext) = 0;
+
 	//Update first render later
 	virtual void OnUpdate(float deltaTime) = 0;
 

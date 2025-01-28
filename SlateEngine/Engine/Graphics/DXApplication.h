@@ -28,10 +28,10 @@ public:
     int OnRun();                                  
     virtual bool OnInit();                        
     virtual void OnResize();                   
-    virtual void OnUpdateScene(float deltaTime) = 0;     
-    virtual void OnRenderScene()         = 0;   
-    virtual void OnLateRender() = 0;
-    virtual void OnLateUpdate(float deltaTime) = 0;
+    virtual void OnUpdateScene(float deltaTime, ID3D11DeviceContext* pContext)  = 0;
+    virtual void OnRenderScene(ID3D11DeviceContext* pContext)                   = 0;
+    virtual void OnLateRender()                                                 = 0;
+    virtual void OnLateUpdate(float deltaTime)                                  = 0;
     virtual LRESULT MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
     void ClearRenderTarget(float rgba[4]);
@@ -88,6 +88,9 @@ public:
 protected:
     bool InitializeWindow();
     bool InitializeGraphics();
+    void InitializeHardwareInfo();
+    void InitializeFrameBuffers();
+    void InitializeDebugLayer();
 
 protected:
     HINSTANCE hInstance;       
