@@ -108,6 +108,7 @@
     <ClCompile Include="Engine\Component\Transform.cpp" />
     <ClCompile Include="Engine\Entity\EntityRegistrar.cpp" />
     <ClCompile Include="Engine\Graphics\Buffer\BufferCache.cpp" />
+    <ClCompile Include="Engine\Graphics\Rendering\RenderQueueManager.cpp" />
     <ClCompile Include="Engine\Graphics\Shader\RenderPassManager.cpp" />
     <ClCompile Include="Engine\Graphics\Shader\ShaderCache.cpp" />
     <ClCompile Include="Engine\Graphics\Texture\DXTexture.cpp" />
@@ -139,6 +140,7 @@
     <ClCompile Include="Engine\Physics\PhysicsFactory.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Engine\Graphics\Bindable.h" />
     <ClInclude Include="Engine\Graphics\Buffer\DXFrameBuffer.h" />
     <ClInclude Include="Engine\Graphics\DXBasicBatch.h" />
     <ClInclude Include="Engine\Graphics\DXSpriteBatch.h" />
@@ -147,6 +149,7 @@
     <ClInclude Include="Engine\Core\AssetStreamer.h" />
     <ClInclude Include="Engine\Core\ILogger.h" />
     <ClInclude Include="Engine\Entity\EntityRegistrar.h" />
+    <ClInclude Include="Engine\Graphics\Rendering\RenderQueueManager.h" />
     <ClInclude Include="Engine\NativeScripting\ScriptRegistry.h" />
     <ClInclude Include="Engine\PCH.h" />
     <ClInclude Include="Engine\Core\EnginePlayer.h" />

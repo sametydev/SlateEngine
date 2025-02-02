@@ -437,8 +437,8 @@ bool DXApplication::InitializeGraphics()
 
 
     //Needs refactoring here;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-    new DXBasicBatch(m_d3dDevice.Get(), m_d3dContext.Get());
-    DXBasicBatch::Instance->Init();
+    //new DXBasicBatch(m_d3dDevice.Get(), m_d3dContext.Get());
+    //DXBasicBatch::Instance->Init();
     ////////////////////////////////////////////////////////////////////////////////////
 
     InitializeHardwareInfo();

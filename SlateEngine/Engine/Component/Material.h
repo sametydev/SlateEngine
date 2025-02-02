@@ -7,6 +7,8 @@
 #include <SlateEngine/Engine/Graphics/DXRasterizerState.h>
 #include <vector>
 #include <SlateEngine/Engine/Graphics/Shader/ShaderCache.h>
+#include <typeindex>
+
 struct MaterialData
 {
     vec4f ambient;
@@ -41,6 +43,21 @@ enum MaterialPropertyType {
     SSTRING,
     SUNDEFINED
 };
+
+constexpr std::array<MaterialPropertyType, std::variant_size_v<MaterialProperty>> TYPE_LOOKUP = {
+    MaterialPropertyType::SINT,       // int
+    MaterialPropertyType::SUINT,      // uint32_t
+    MaterialPropertyType::SFLOAT,     // float
+    MaterialPropertyType::SVEC2,      // vec2f
+    MaterialPropertyType::SVEC3,      // vec3f
+    MaterialPropertyType::SVEC4,      // vec4f
+    MaterialPropertyType::SM4X4,      // mat4x4
+    MaterialPropertyType::SVECTORF,   // std::vector<float>
+    MaterialPropertyType::SVECTORV4,  // std::vector<vec4f>
+    MaterialPropertyType::SVECTORM4X4,// std::vector<mat4x4>
+    MaterialPropertyType::SSTRING     // std::string
+};
+
 
 class ENGINE_API MaterialComponent : public Component {
 public:
@@ -110,43 +127,12 @@ public:
 
     MaterialPropertyType GetType(std::string_view name) {
         MaterialProperty mprop = TryGetMProp(name);
-        if (std::holds_alternative<float>(mprop))
-        {
-            return MaterialPropertyType::SFLOAT;
-        }
-        else if (std::holds_alternative<int>(mprop)) {
-            return MaterialPropertyType::SINT;
-        }
-        else if (std::holds_alternative<uint32_t>(mprop)) {
-            return MaterialPropertyType::SUINT;
-        }
-        else if (std::holds_alternative<vec2f>(mprop)) {
-            return MaterialPropertyType::SVEC2;
-        }
-        else if (std::holds_alternative<vec3f>(mprop)) {
-            return MaterialPropertyType::SVEC3;
-        }
-        else if (std::holds_alternative<vec4f>(mprop)) {
-            return MaterialPropertyType::SVEC4;
-        }
-        else if (std::holds_alternative<mat4x4>(mprop)) {
-            return MaterialPropertyType::SM4X4;
-        }
-        else if (std::holds_alternative<std::vector<float>>(mprop)) {
-            return MaterialPropertyType::SVECTORF;
-        }
-        else if (std::holds_alternative<std::vector<vec4f>>(mprop)) {
-            return MaterialPropertyType::SVECTORV4;
-        }
-        else if (std::holds_alternative<std::vector<mat4x4>>(mprop)) {
-            return MaterialPropertyType::SVECTORM4X4;
-        }
-        else if (std::holds_alternative<std::string>(mprop)) {
-            return MaterialPropertyType::SSTRING;
-        }
-        else{
+        size_t index = mprop.index();
+
+        if (index >= TYPE_LOOKUP.size()) {
             return MaterialPropertyType::SUNDEFINED;
         }
+        return TYPE_LOOKUP[index];
     }
 
     template<class T>
@@ -178,6 +164,7 @@ public:
     }
 
     inline void SetIndices(UINT i) { indices = i; }
+
 
 private:
     MaterialProperty TryGetMProp(std::string_view name)

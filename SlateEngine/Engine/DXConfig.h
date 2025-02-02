@@ -151,7 +151,7 @@ inline HRESULT CreateShaderFromFile(
 
     HRESULT hr = S_OK;
 
-    if (IS_COOKED && csoFileNameInOut && D3DReadFileToBlob(csoFileNameInOut, ppBlobOut) == S_OK)
+    if (csoFileNameInOut && D3DReadFileToBlob(csoFileNameInOut, ppBlobOut) == S_OK)
     {
         return hr;
     }
@@ -174,7 +174,7 @@ inline HRESULT CreateShaderFromFile(
             SAFE_RELEASE(errorBlob);
             return hr;
         }
-        if (csoFileNameInOut && IS_COOKED)
+        if (csoFileNameInOut)
         {
             return D3DWriteBlobToFile(*ppBlobOut, csoFileNameInOut, FALSE);
         }
