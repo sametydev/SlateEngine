@@ -28,5 +28,12 @@ public:
 	static Player* Instance;
 
 	Game* game = nullptr;
+private:
+	DXVertexBuffer* dxVertexBuffer = nullptr;
+	DXIndexBuffer* dxIndexBuffer = nullptr;
+	DXVertexShader* vertexShader = nullptr;
+	DXPixelShader* pixelShader = nullptr;
+
+	ID3D11SamplerState* samplerState = nullptr;
 };
 

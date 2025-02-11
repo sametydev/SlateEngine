@@ -96,7 +96,7 @@ int DXApplication::OnRun()
                 OnUpdateScene(mTimer->deltaTime(),m_d3dContext.Get());
                 OnRenderScene(m_d3dContext.Get());
                 enginePlayer->OnRenderScene(m_d3dContext.Get());
-                sceneBuffer->EndFrame(m_renderTargetView.Get(), m_depthStencilView.Get());
+                sceneBuffer->EndFrame(m_renderTargetView.Get(),m_depthStencilView.Get());
 
                 //Render Player
                 enginePlayer->NewFrame();
@@ -130,7 +130,7 @@ bool DXApplication::OnInit()
 
     DXRasterizerState::Initialize(GetDXDevice(), GetDXContext(), bEnableMsaa);
     m_d3dContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-
+    m_d3dContext->Flush();
     return true;
 }
 
