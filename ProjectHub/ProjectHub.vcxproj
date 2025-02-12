@@ -148,7 +148,11 @@
     <ClCompile Include="LibrarySources\imgui_tables.cpp" />
     <ClCompile Include="LibrarySources\imgui_widgets.cpp" />
     <ClCompile Include="LibrarySources\ImSequencer.cpp" />
+    <ClCompile Include="Main.cpp" />
     <ClCompile Include="ProjectHub.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="ProjectHub.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
