@@ -4,9 +4,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.5.33516.290
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SlateEngine", "SlateEngine\SlateEngine.vcxproj", "{DABA3522-CA28-4EAD-831A-3A888890DEFD}"
-	ProjectSection(ProjectDependencies) = postProject
-		{29B19BAD-663C-49CD-903C-BC25A3E86C45} = {29B19BAD-663C-49CD-903C-BC25A3E86C45}
-	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SlateEditor", "SlateEditor\SlateEditor.vcxproj", "{62B1AE60-33B0-44BD-8FB9-ACF1ABF0E002}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -19,6 +16,9 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GamePlugin", "GamePlugin\Ga
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SlatePlayer", "SlatePlayer\SlatePlayer.vcxproj", "{29B19BAD-663C-49CD-903C-BC25A3E86C45}"
+	ProjectSection(ProjectDependencies) = postProject
+		{DABA3522-CA28-4EAD-831A-3A888890DEFD} = {DABA3522-CA28-4EAD-831A-3A888890DEFD}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

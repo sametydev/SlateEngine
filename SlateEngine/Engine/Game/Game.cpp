@@ -157,7 +157,7 @@ void Game::UpdateGlobalConstantBuffers()
 void Game::CreateCamera()
 {
     m_camera = new Camera(65.f, GetAspectRatio(), 0.01f, 1000.0f);
-    m_camera->SetPosition(vec3f(0, 10, 0));
+    m_camera->SetPosition(vec3f(0, 3, -5));
 }
 
 void Game::CreateFileSystem()
