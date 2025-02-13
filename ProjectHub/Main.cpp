@@ -4,5 +4,6 @@
 
 int main(int, char**) {
 	new ProjectHub();
-	return ProjectHub::Instance->Init();
+	ProjectHub::Instance->Init();
+	return ProjectHub::Instance->OnRender();
 }

@@ -16,6 +16,7 @@ public:
 	void CreateRenderTarget();
 	void CleanupRenderTarget();
 	void RenderPanel();
+	int OnRender();
 	int Init();
 
 	static ProjectHub* Instance;
@@ -27,4 +28,6 @@ private:
 	Microsoft::WRL::ComPtr<IDXGISwapChain>				p_SwapChain = nullptr;
 	bool												swapChainOccluded = false;
 	Microsoft::WRL::ComPtr<ID3D11RenderTargetView>		mainRenderTargetView = nullptr;
+
+	HWND												mHWND = 0;
 };

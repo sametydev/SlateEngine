@@ -12,6 +12,12 @@ ProjectHub::ProjectHub()
 
 ProjectHub::~ProjectHub()
 {
+    ImGui_ImplDX11_Shutdown();
+    ImGui_ImplWin32_Shutdown();
+    ImGui::DestroyContext();
+
+    CleanupDeviceD3D();
+    ::DestroyWindow(mHWND);
 }
 
 int ProjectHub::Init()
@@ -19,7 +25,7 @@ int ProjectHub::Init()
     WNDCLASSEXW wc = { sizeof(wc), CS_CLASSDC, WndProc, 0L, 0L, GetModuleHandle(nullptr), nullptr, nullptr, nullptr, nullptr, L"ProjectHub", nullptr };
     ::RegisterClassExW(&wc);
     HWND hwnd = ::CreateWindowW(wc.lpszClassName, L"Slate Engine Project Hub", WS_OVERLAPPEDWINDOW, 100, 100, 1280, 800, nullptr, nullptr, wc.hInstance, nullptr);
-
+    mHWND = hwnd;
     if (!CreateDeviceD3D(hwnd))
     {
         CleanupDeviceD3D();
@@ -41,9 +47,10 @@ int ProjectHub::Init()
     ImGui_ImplWin32_Init(hwnd);
     ImGui_ImplDX11_Init(p_d3dDevice.Get(), p_d3dDeviceContext.Get());
 
+    return 0;
+}
 
-    bool show_demo_window = true;
-    bool show_another_window = false;
+int ProjectHub::OnRender() {
     ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
     bool done = false;
@@ -78,7 +85,7 @@ int ProjectHub::Init()
         ImGui_ImplDX11_NewFrame();
         ImGui_ImplWin32_NewFrame();
         ImGui::NewFrame();
-        
+
         RenderPanel();
 
 
@@ -92,15 +99,7 @@ int ProjectHub::Init()
         swapChainOccluded = (hr == DXGI_STATUS_OCCLUDED);
     }
 
-    ImGui_ImplDX11_Shutdown();
-    ImGui_ImplWin32_Shutdown();
-    ImGui::DestroyContext();
-
-    CleanupDeviceD3D();
-    ::DestroyWindow(hwnd);
-    ::UnregisterClassW(wc.lpszClassName, wc.hInstance);
-
-    return 0;
+    return -1;
 }
 
 void ProjectHub::RenderPanel() {
@@ -159,7 +158,6 @@ void ProjectHub::RenderPanel() {
     }
     ImGui::End();
 }
-
 
 bool ProjectHub::CreateDeviceD3D(HWND hWnd)
 {
