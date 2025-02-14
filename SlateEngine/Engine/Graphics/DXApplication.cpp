@@ -68,7 +68,7 @@ HWND DXApplication::MainWnd()const
 
 float DXApplication::GetAspectRatio()const
 {
-    return static_cast<float>(m_clientW) / m_clientH;
+    return static_cast<float>(m_clientW) / static_cast<float>(m_clientH);
 }
 
 int DXApplication::OnRun()

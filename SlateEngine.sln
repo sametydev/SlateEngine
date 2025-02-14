@@ -20,6 +20,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SlatePlayer", "SlatePlayer\
 		{DABA3522-CA28-4EAD-831A-3A888890DEFD} = {DABA3522-CA28-4EAD-831A-3A888890DEFD}
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ProjectHub", "ProjectHub\ProjectHub.vcxproj", "{DC718044-E779-4413-9E72-077853A7D115}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -42,6 +44,10 @@ Global
 		{29B19BAD-663C-49CD-903C-BC25A3E86C45}.Debug|x64.Build.0 = Debug|x64
 		{29B19BAD-663C-49CD-903C-BC25A3E86C45}.Release|x64.ActiveCfg = Release|x64
 		{29B19BAD-663C-49CD-903C-BC25A3E86C45}.Release|x64.Build.0 = Release|x64
+		{DC718044-E779-4413-9E72-077853A7D115}.Debug|x64.ActiveCfg = Debug|x64
+		{DC718044-E779-4413-9E72-077853A7D115}.Debug|x64.Build.0 = Debug|x64
+		{DC718044-E779-4413-9E72-077853A7D115}.Release|x64.ActiveCfg = Release|x64
+		{DC718044-E779-4413-9E72-077853A7D115}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

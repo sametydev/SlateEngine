@@ -1,0 +1,8 @@
+{
+    "projects":[
+        {
+            "projectName":"TestProject",
+            "projectPath":"Projects/TestProject"
+        }
+    ]
+}
