@@ -324,6 +324,10 @@ void EditorUI::OnUpdate(float deltaTime)
 
 	}ImGui::End();
 
+	if (ImGui::Begin("Raw Render")) {
+		ImGui::Image(Game::Instance->GetSceneBuffer()->mRenderPass[0]->GetShaderResourceView(), ImGui::GetContentRegionAvail());
+	}ImGui::End();
+
 }
 
 void EditorUI::ClearViewport(float rgba[4])
