@@ -34,6 +34,6 @@ private:
 	DXVertexShader* vertexShader = nullptr;
 	DXPixelShader* pixelShader = nullptr;
 
-	ID3D11SamplerState* samplerState = nullptr;
+	ID3D11DeviceContext* context = nullptr;
 };
 

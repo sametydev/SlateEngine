@@ -231,7 +231,7 @@ void EditorUI::OnUpdate(float deltaTime)
 		mainCamera->SetAspectRatio(win_region.x / win_region.y);
 		game->FrameBufferConstantObject.proj = mainCamera->GetProjectionMatrix();
 
-		ImGui::Image(Game::Instance->GetRenderTarget()->mRenderPass[0]->GetShaderResourceView(), win_region);
+		ImGui::Image(Game::Instance->GetOutputBuffer()->mRenderPass[0]->GetShaderResourceView(), win_region);
 		
 		/*
 		float originalWidth = rtt->GetWidth();
@@ -480,6 +480,10 @@ void EditorUI::RenderGrid(ID3D11DeviceContext* pContext)
 
 	pContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
 	pContext->DrawIndexed(m_gridIndices, 0u, 0u);
+	
+	
+	pContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	DXRasterizerState::SetRasterizerState(RasterizerState::CULL_BACK, pContext);
 }
 
 void EditorUI::SetGridBuffer(const MeshData<VertexPC, DWORD>& meshData)

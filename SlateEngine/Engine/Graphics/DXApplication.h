@@ -5,6 +5,9 @@
 #include <SlateEngine/Engine/Graphics/DXRasterizerState.h>
 #include <SlateEngine/Engine/Graphics/Buffer/DXFrameBuffer.h>
 #include <SlateEngine/Engine/Core/ILogger.h>
+#include <SlateEngine/Engine/Graphics/Buffer/DXVertexBuffer.h>
+#include <SlateEngine/Engine/Graphics/Buffer/DXIndexBuffer.h>
+#include <SlateEngine/Engine/Graphics/Shader/ShaderCache.h>
 
 #include <SlateEngine/Engine/Core/EnginePlayer.h>
 
@@ -80,11 +83,14 @@ public:
         workingDirectory = dir;
     }
 
-    inline DXFrameBuffer* GetRenderTarget() { return sceneBuffer; }
+    inline DXFrameBuffer* GetSceneBuffer() { return sceneBuffer; }
+    inline DXFrameBuffer* GetOutputBuffer() { return outputBuffer; }
 
     static float clear[4];
 
     D3D11_QUERY_DATA_PIPELINE_STATISTICS pipelineStatics = {};
+
+
 protected:
     bool InitializeWindow();
     bool InitializeGraphics();
@@ -127,6 +133,16 @@ protected:
     ILogger* logSystem = nullptr;
     std::string workingDirectory = "";
 
-
+    //Testing+
     DXFrameBuffer* sceneBuffer = nullptr;
+    DXFrameBuffer* outputBuffer = nullptr;
+
+private:
+    void CreateOutputBufferResources();
+    void RenderOutputBuffer();
+
+    DXVertexBuffer* pOutputVertexBuffer = nullptr;
+    DXIndexBuffer* pOutputIndexBuffer = nullptr;
+    DXVertexShader* pOutputVertexShader = nullptr;
+    DXPixelShader* pOutputPixelShader = nullptr;
 };
