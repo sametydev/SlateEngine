@@ -90,13 +90,21 @@ int DXApplication::OnRun()
             InputSystem::Update(hWindow);
             if (!bPaused)
             {
-                //Render Scene
-                sceneBuffer->BeginFrame();
+                //Frame buffer 1 (drawing operation)
+                sceneBuffer->BeginFrameById(0);
                 sceneBuffer->Clear(clear);
                 OnUpdateScene(mTimer->deltaTime(),m_d3dContext.Get());
                 OnRenderScene(m_d3dContext.Get());
                 enginePlayer->OnRenderScene(m_d3dContext.Get());
                 sceneBuffer->EndFrame(m_renderTargetView.Get(),m_depthStencilView.Get());
+
+                //Frame buffer 2 (drawing framebuffer 1 output as a fullscreen quad)
+                outputBuffer->BeginFrameById(0);
+                outputBuffer->Clear(clear);
+                RenderOutputBuffer();
+                outputBuffer->EndFrame(m_renderTargetView.Get(), m_depthStencilView.Get());
+
+                ClearRenderTarget(clear);
 
                 //Render Player
                 enginePlayer->NewFrame();
@@ -131,6 +139,8 @@ bool DXApplication::OnInit()
     DXRasterizerState::Initialize(GetDXDevice(), GetDXContext(), bEnableMsaa);
     m_d3dContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
     m_d3dContext->Flush();
+
+    CreateOutputBufferResources();
     return true;
 }
 
@@ -142,6 +152,7 @@ void DXApplication::OnResize()
     desc.width = m_clientW;
     desc.nRenderPass = 1;
     sceneBuffer->Create(desc);
+    outputBuffer->Create(desc);
 
     m_renderTargetView.Reset();
     m_depthStencilView.Reset();
@@ -457,6 +468,7 @@ void DXApplication::InitializeHardwareInfo()
 void DXApplication::InitializeFrameBuffers()
 {
     sceneBuffer = new DXFrameBuffer(m_d3dDevice.Get(), m_d3dContext.Get());
+    outputBuffer = new DXFrameBuffer(m_d3dDevice.Get(), m_d3dContext.Get());
 
     FrameBufferDesc desc{};
     desc.bDepthStencil = true;
@@ -464,6 +476,7 @@ void DXApplication::InitializeFrameBuffers()
     desc.width = m_clientW;
     desc.nRenderPass = 1;
     sceneBuffer->Create(desc);
+    outputBuffer->Create(desc);
 
     OnResize();
 }
@@ -473,4 +486,70 @@ void DXApplication::InitializeDebugLayer()
     ComPtr<ID3D11Debug> debugLayer;
     m_d3dDevice->QueryInterface(IID_PPV_ARGS(&debugLayer));
     debugLayer->ReportLiveDeviceObjects(D3D11_RLDO_DETAIL);
+}
+
+void DXApplication::CreateOutputBufferResources()
+{
+    VertexPT quadVertices[] = {
+    { {-1.0f,  1.0f, 0.0f}, {0.0f, 0.0f} },
+    { { 1.0f,  1.0f, 0.0f}, {1.0f, 0.0f} },
+    { {-1.0f, -1.0f, 0.0f}, {0.0f, 1.0f} },
+    { { 1.0f, -1.0f, 0.0f}, {1.0f, 1.0f} }
+    };
+
+    DWORD quadIndices[] = {
+        0, 1, 2,
+        1, 3, 2
+    };
+
+    //Creating Vertex Buffer
+    pOutputVertexBuffer = new DXVertexBuffer();
+    VertexBufferDesc vbdesc;
+    vbdesc.cbSize = sizeof(VertexPT) * 4;
+    vbdesc.cbStride = sizeof(VertexPT);
+    vbdesc.pData = quadVertices;
+    pOutputVertexBuffer->Create(vbdesc);
+
+    //Creating Index Buffer
+    pOutputIndexBuffer = new DXIndexBuffer();
+    IndexBufferDesc ibd{};
+    ibd.cbSize = 6 * sizeof(DWORD);
+    ibd.pData = quadIndices;
+    pOutputIndexBuffer->Create(ibd);
+
+    ShaderInformation vsinfo{};
+    vsinfo.displayName = "FullscreenQuadVS";
+    vsinfo.shaderType = "Vertex";
+    vsinfo.entryPoint = "VS";
+    vsinfo.hlslFile = "Shaders\\FullscreenQuadVS.hlsl";
+    vsinfo.csoName = "Shaders\\FullscreenQuadVS.cso";
+
+    pOutputVertexShader = ShaderCache::CreateVertexShader(vsinfo);
+
+    ShaderInformation psinfo{};
+    psinfo.displayName = "FullscreenQuadPS";
+    psinfo.shaderType = "Pixel";
+    psinfo.entryPoint = "PS";
+    psinfo.hlslFile = "Shaders\\FullscreenQuadPS.hlsl";
+    psinfo.csoName = "Shaders\\FullscreenQuadPS.cso";
+
+    pOutputPixelShader = ShaderCache::CreatePixelShader(psinfo);
+
+    pOutputVertexShader->CreateInputLayout(VertexPT::inputLayout, std::size(VertexPT::inputLayout));
+}
+
+void DXApplication::RenderOutputBuffer()
+{
+    pOutputVertexBuffer->BindPipeline(0);
+    pOutputIndexBuffer->BindPipeline(0);
+    pOutputVertexShader->Bind();
+    pOutputVertexShader->UpdateInputLayout();
+    pOutputPixelShader->Bind();
+    ID3D11ShaderResourceView* srv = sceneBuffer->mRenderPass[0]->GetShaderResourceView();
+    m_d3dContext->PSSetShaderResources(0, 1, &srv);
+    m_d3dContext->PSSetSamplers(0, 1, DXRasterizerState::SSClamp.GetAddressOf());
+    m_d3dContext->DrawIndexed(6, 0, 0);
+
+    ID3D11ShaderResourceView* const nullSRV[1] = { (ID3D11ShaderResourceView*)0 };
+    m_d3dContext->PSSetShaderResources(0, 1, nullSRV);
 }

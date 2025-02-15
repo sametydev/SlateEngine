@@ -133,6 +133,19 @@ void DXFrameBuffer::BeginFrame()
 	}
 }
 
+void DXFrameBuffer::BeginFrameById(UINT id)
+{
+	pContext->OMSetRenderTargets(1, mRenderTargetViews[id].GetAddressOf(),
+		mDepthStencilView.Get());
+
+	const float color[4] = { 0.f,0.f,0.f,0.f };
+	pContext->ClearRenderTargetView(mRenderTargetViews[id].Get(), color);
+
+	if (mDepthStencilView) {
+		pContext->ClearDepthStencilView(mDepthStencilView.Get(), D3D11_CLEAR_DEPTH, 1.f, 0);
+	}
+}
+
 void DXFrameBuffer::EndFrame(ID3D11RenderTargetView* newRenderTarget,ID3D11DepthStencilView* newDepthStencil)
 {
 	//set back main render target

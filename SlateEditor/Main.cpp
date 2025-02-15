@@ -13,7 +13,7 @@ int WINAPI WinMain(
     _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 #endif
 
-    Game game(hInstance, L"> SlateEngine | Editor[DirectX11.1]", 1280, 720);
+    Game game(hInstance, L"> SlateEngine | Editor[DirectX11.1]", 1920, 1080);
 
     new EditorUI();
 

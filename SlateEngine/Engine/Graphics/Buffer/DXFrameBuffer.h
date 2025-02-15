@@ -18,6 +18,7 @@ public:
 	void Create(const FrameBufferDesc& desc);
 
 	void BeginFrame();
+	void BeginFrameById(UINT id);
 	void EndFrame(ID3D11RenderTargetView* newRenderTarget, ID3D11DepthStencilView* newDepthStencil);
 	void Clear(float* rgba);
 
