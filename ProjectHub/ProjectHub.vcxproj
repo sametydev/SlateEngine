@@ -133,6 +133,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Components\ComponentLookup.cpp" />
+    <ClCompile Include="Components\CProjectItemUI.cpp" />
     <ClCompile Include="LibrarySources\ConvertUTF.c" />
     <ClCompile Include="LibrarySources\DDSTextureLoader11.cpp" />
     <ClCompile Include="LibrarySources\GraphEditor.cpp" />
@@ -152,6 +154,9 @@
     <ClCompile Include="ProjectHub.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Components\ComponentLookup.h" />
+    <ClInclude Include="Components\UIComponent.h" />
+    <ClInclude Include="Components\CProjectItemUI.h" />
     <ClInclude Include="ProjectHub.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

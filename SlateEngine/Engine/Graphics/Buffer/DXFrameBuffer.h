@@ -3,14 +3,14 @@
 #include <SlateEngine/Engine/Graphics/Texture/RenderTTexture.h>
 #include <SlateEngine/Engine/Graphics/Texture/DXTexture.h>
 
-struct FrameBufferDesc {
+struct ENGINE_API FrameBufferDesc {
 	UINT width;
 	UINT height;
 	bool bDepthStencil;
 	UINT nRenderPass;
 };
 
-class DXFrameBuffer
+class ENGINE_API DXFrameBuffer
 {
 public:
 	DXFrameBuffer(ID3D11Device* device,ID3D11DeviceContext* context);

@@ -15,9 +15,12 @@ void RenderableGeometry::OnInternalInit()
     if (!GetEntity()->HasComponent<MaterialComponent>())
     {
         GetEntity()->AddComponent<MaterialComponent>();
+
     }
     
     m_material = &GetEntity()->GetComponent<MaterialComponent>();
+    m_material->AddShader("Lit3DVS");
+    m_material->AddShader("Lit3DPS");
 
     ConstantBufferDesc cbd{};
     cbd.cbSize = sizeof(ObjectConstantBuffer);

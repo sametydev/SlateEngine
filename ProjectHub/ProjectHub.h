@@ -5,7 +5,7 @@
 #include <d3d11.h>
 #include <tchar.h>
 #include <wrl.h>
-
+#include "Components\CProjectItemUI.h"
 class ProjectHub
 {
 public:
@@ -30,4 +30,6 @@ private:
 	Microsoft::WRL::ComPtr<ID3D11RenderTargetView>		mainRenderTargetView = nullptr;
 
 	HWND												mHWND = 0;
+
+	std::vector<CProjectItemUI*> projectItemUIs;
 };

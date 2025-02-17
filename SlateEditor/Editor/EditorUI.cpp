@@ -309,6 +309,30 @@ void EditorUI::OnUpdate(float deltaTime)
 
 	inspectorWindow->OnDraw(sceneWindow->selectedEntity);
 	nativeScriptingDebuggerWindow->OnDraw(&nativeScriptingDebugger_Open);
+
+	if (ImGui::Begin("Raw Render")) {
+		float originalWidth = Game::Instance->GetSceneBuffer()->width;
+		float originalHeight = Game::Instance->GetSceneBuffer()->height;
+
+		ImVec2 availableRegion = ImGui::GetContentRegionAvail();
+		float regionWidth = availableRegion.x;
+		float regionHeight = availableRegion.y;
+
+		float aspectRatio = originalWidth / originalHeight;
+		float regionAspectRatio = regionWidth / regionHeight;
+
+		float drawWidth, drawHeight;
+		if (regionAspectRatio > aspectRatio) {
+			drawHeight = regionHeight;
+			drawWidth = drawHeight * aspectRatio;
+		}
+		else {
+			drawWidth = regionWidth;
+			drawHeight = drawWidth / aspectRatio;
+		}
+		ImGui::Image(Game::Instance->GetSceneBuffer()->mRenderPass[0]->GetShaderResourceView(), ImVec2(drawWidth, drawHeight));
+	}ImGui::End();
+
 	if (ImGui::Begin("Render")) {
 		ImGui::ColorEdit3("Clear Color", game->clear);
 
@@ -322,10 +346,6 @@ void EditorUI::OnUpdate(float deltaTime)
 		ImGui::Text("Draw Call : %f", DXApplication::Instance->pipelineStatics.CPrimitives);
 
 
-	}ImGui::End();
-
-	if (ImGui::Begin("Raw Render")) {
-		ImGui::Image(Game::Instance->GetSceneBuffer()->mRenderPass[0]->GetShaderResourceView(), ImGui::GetContentRegionAvail());
 	}ImGui::End();
 
 }

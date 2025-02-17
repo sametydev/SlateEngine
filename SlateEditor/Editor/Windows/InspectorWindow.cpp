@@ -92,7 +92,9 @@ void InspectorWindow::OnDraw(Entity* entity)
 				{
 					if (ImGui::MenuItem("Renderable Component"))
 					{
-						if (!entity->HasComponent<RenderableGeometry>()) { entity->AddComponent<RenderableGeometry>(); }
+						if (!entity->HasComponent<RenderableGeometry>()) { 
+							entity->AddComponent<RenderableGeometry>();
+						}
 
 						ImGui::CloseCurrentPopup();
 					}
