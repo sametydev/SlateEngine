@@ -47,6 +47,12 @@ int ProjectHub::Init()
     ImGui_ImplWin32_Init(hwnd);
     ImGui_ImplDX11_Init(p_d3dDevice.Get(), p_d3dDeviceContext.Get());
 
+    CProjectItemUI* project1 = new CProjectItemUI();
+    CProjectItemUI* project2 = new CProjectItemUI();
+
+    projectItemUIs.push_back(project1);
+    projectItemUIs.push_back(project2);
+
     return 0;
 }
 
@@ -87,8 +93,6 @@ int ProjectHub::OnRender() {
         ImGui::NewFrame();
 
         RenderPanel();
-
-
         ImGui::Render();
         const float clear_color_with_alpha[4] = { clear_color.x * clear_color.w, clear_color.y * clear_color.w, clear_color.z * clear_color.w, clear_color.w };
         p_d3dDeviceContext->OMSetRenderTargets(1, mainRenderTargetView.GetAddressOf(), nullptr);
@@ -156,6 +160,18 @@ void ProjectHub::RenderPanel() {
 
         ImGui::EndMenuBar();
     }
+    ImDrawList* draw_list = ImGui::GetWindowDrawList();
+
+    static float sz = 36.0f;
+    static ImVec4 col = ImVec4(1.0f, 1.0f, 0.4f, 1.0f);
+    const ImVec2 p = ImGui::GetCursorScreenPos();
+    const ImVec2 av = ImGui::GetContentRegionAvail();
+
+    for (auto& project : projectItemUIs)
+    {
+        project->Render(draw_list, p, av, 36.0f);
+    }
+
     ImGui::End();
 }
 

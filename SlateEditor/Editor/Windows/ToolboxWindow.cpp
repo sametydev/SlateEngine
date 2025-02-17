@@ -24,9 +24,10 @@ void ToolboxWindow::OnDraw(bool* closable)
 	ImGui::SameLine();
 	if (ImGui::Button("STOP")) { game->SetGameState((GameState)0); }
 
-	ImGui::SameLine();
-	ImGui::Dummy({ 20.f,20.f });
-	ImGui::SameLine();
+	//ImGui::SameLine();
+	//ImGui::Dummy({ 10.f,10.f });
+	//ImGui::SameLine();
+
 	ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.8f, 0.1f, 0.15f, 1.0f });
 	if (ImGui::Button("T")) { gizmoType = ImGuizmo::OPERATION::TRANSLATE; }
 	ImGui::PopStyleColor(1);
@@ -41,7 +42,6 @@ void ToolboxWindow::OnDraw(bool* closable)
 	if (ImGui::Button("S")) { gizmoType = ImGuizmo::OPERATION::SCALE; }
 	ImGui::PopStyleColor(1);
 
-	ImGui::Dummy({ 175.f,20.f });
 	ImGui::SameLine();
 	ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0, 0.3f, 0.3f, 0.3f });
 	if (ImGui::Button("U")) { gizmoType = ImGuizmo::OPERATION::UNIVERSAL; }

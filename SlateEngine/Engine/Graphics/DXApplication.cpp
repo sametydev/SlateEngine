@@ -518,20 +518,20 @@ void DXApplication::CreateOutputBufferResources()
     pOutputIndexBuffer->Create(ibd);
 
     ShaderInformation vsinfo{};
-    vsinfo.displayName = "FullscreenQuadVS";
+    vsinfo.displayName = "PP_VS";
     vsinfo.shaderType = "Vertex";
     vsinfo.entryPoint = "VS";
-    vsinfo.hlslFile = "Shaders\\FullscreenQuadVS.hlsl";
-    vsinfo.csoName = "Shaders\\FullscreenQuadVS.cso";
+    vsinfo.hlslFile = "Shaders\\PP_VS.hlsl";
+    vsinfo.csoName = "Shaders\\PP_VS.cso";
 
     pOutputVertexShader = ShaderCache::CreateVertexShader(vsinfo);
 
     ShaderInformation psinfo{};
-    psinfo.displayName = "FullscreenQuadPS";
+    psinfo.displayName = "PP_PS";
     psinfo.shaderType = "Pixel";
     psinfo.entryPoint = "PS";
-    psinfo.hlslFile = "Shaders\\FullscreenQuadPS.hlsl";
-    psinfo.csoName = "Shaders\\FullscreenQuadPS.cso";
+    psinfo.hlslFile = "Shaders\\PP_PS.hlsl";
+    psinfo.csoName = "Shaders\\PP_PS.cso";
 
     pOutputPixelShader = ShaderCache::CreatePixelShader(psinfo);
 
