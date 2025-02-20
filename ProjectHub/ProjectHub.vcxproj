@@ -109,6 +109,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -135,6 +136,8 @@
   <ItemGroup>
     <ClCompile Include="Components\ComponentLookup.cpp" />
     <ClCompile Include="Components\CProjectItemUI.cpp" />
+    <ClCompile Include="Windows\CreateProjectWindow.cpp" />
+    <ClCompile Include="Manager\FileSystemManager.cpp" />
     <ClCompile Include="LibrarySources\ConvertUTF.c" />
     <ClCompile Include="LibrarySources\DDSTextureLoader11.cpp" />
     <ClCompile Include="LibrarySources\GraphEditor.cpp" />
@@ -157,7 +160,11 @@
     <ClInclude Include="Components\ComponentLookup.h" />
     <ClInclude Include="Components\UIComponent.h" />
     <ClInclude Include="Components\CProjectItemUI.h" />
+    <ClInclude Include="Windows\CreateProjectWindow.h" />
+    <ClInclude Include="Manager\FileSystemManager.h" />
     <ClInclude Include="ProjectHub.h" />
+    <ClInclude Include="Types.h" />
+    <ClInclude Include="Windows\Window.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

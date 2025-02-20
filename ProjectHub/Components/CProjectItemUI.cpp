@@ -40,9 +40,9 @@ void CProjectItemUI::Render()
     ImGui::Text("C:/TestUser/BlaBla/Test Project");
     ImGui::PopStyleColor();
 
-    ImGui::SetCursorScreenPos({ cursorPos.x + itemWidth - 58, cursorPos.y + 5 });
+    ImGui::SetCursorScreenPos({ cursorPos.x + itemWidth - 78, cursorPos.y + 5 });
     ImGui::PushID(mUUID.c_str());
-    if (ImGui::Button("OPEN", {50, 30})) {
+    if (ImGui::Button("OPEN", {70, 30})) {
         MessageBox(0, L"Coming Soon", L"Coming Soon", 0);
     }
     ImGui::PopID();
