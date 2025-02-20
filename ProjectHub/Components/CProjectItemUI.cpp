@@ -1,25 +1,57 @@
 #include "CProjectItemUI.h"
+#include <Windows.h>
+#include <cstdlib> 
+#include <ctime> 
+#include <iostream>
 
 CProjectItemUI::CProjectItemUI()
 {
-    int compID = ComponentLookup::componentLookupTable[typeid(this).name()];
+    unsigned int compID = ComponentLookup::componentLookupTable[typeid(this).name()];
     objectID = (ComponentLookup::globalCounter[compID] = ComponentLookup::globalCounter[compID] + 1);
+
+    UUID uuid;
+    UuidCreate(&uuid);
+
+    unsigned char* str;
+    UuidToStringA(&uuid, &str);
+
+    mUUID = ((char*)str);
+
+    RpcStringFreeA(&str);
 }
 
 
-
-void CProjectItemUI::Render(ImDrawList* draw_list,ImVec2 pos,ImVec2 av, float size)
+void CProjectItemUI::Render()
 {
-    float x = pos.x + 4.0f, y = pos.y + 4.0f;
-    ImColor color = ImColor(38, 44, 54);
-    draw_list->AddRectFilled(ImVec2(x, y + (objectID * damping)), ImVec2(av.x, (y + size) + (objectID * damping)), color);
-    draw_list->AddText(ImVec2(x, y + (objectID * damping)), 0xffffffff, "Test Project");
-    ImGui::SetCursorPos({ av.x - 50.0f,y + (objectID * damping)});
-    ImGui::Button("OPEN", { 50,size });
+    const ImVec2 cursorPos = ImGui::GetCursorScreenPos();
+    const float itemWidth = ImGui::GetContentRegionAvail().x;
+    const float itemHeight = 40.0f;
+
+    ImDrawList* draw_list = ImGui::GetWindowDrawList();
+    draw_list->AddRectFilled(cursorPos,
+        { cursorPos.x + itemWidth, cursorPos.y + itemHeight },
+        IM_COL32(50, 50, 50, 255));
+
+    ImGui::SetCursorScreenPos({ cursorPos.x + 8, cursorPos.y+3 });
+    ImGui::Text("Test Project");
+
+    ImGui::SetCursorScreenPos({ cursorPos.x + 8, cursorPos.y + 20 });
+    ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(255, 255, 255, 125));
+    ImGui::Text("C:/TestUser/BlaBla/Test Project");
+    ImGui::PopStyleColor();
+
+    ImGui::SetCursorScreenPos({ cursorPos.x + itemWidth - 58, cursorPos.y + 5 });
+    ImGui::PushID(mUUID.c_str());
+    if (ImGui::Button("OPEN", {50, 30})) {
+        MessageBox(0, L"Coming Soon", L"Coming Soon", 0);
+    }
+    ImGui::PopID();
+    ImGui::SetCursorScreenPos({ cursorPos.x, cursorPos.y + itemHeight + 5 });
 }
+
 
 CProjectItemUI::~CProjectItemUI()
 {
-    int compID = ComponentLookup::componentLookupTable[typeid(this).name()];
+    unsigned int compID = ComponentLookup::componentLookupTable[typeid(this).name()];
     ComponentLookup::globalCounter[compID] = ComponentLookup::globalCounter[compID] - 1;
 }

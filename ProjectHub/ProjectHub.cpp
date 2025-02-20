@@ -47,11 +47,11 @@ int ProjectHub::Init()
     ImGui_ImplWin32_Init(hwnd);
     ImGui_ImplDX11_Init(p_d3dDevice.Get(), p_d3dDeviceContext.Get());
 
-    CProjectItemUI* project1 = new CProjectItemUI();
-    CProjectItemUI* project2 = new CProjectItemUI();
-
-    projectItemUIs.push_back(project1);
-    projectItemUIs.push_back(project2);
+    CProjectItemUI* test_projects[20];
+    for (auto* p : test_projects) {
+        p = new CProjectItemUI();
+        projectItemUIs.push_back(p);
+    }
 
     return 0;
 }
@@ -164,12 +164,10 @@ void ProjectHub::RenderPanel() {
 
     static float sz = 36.0f;
     static ImVec4 col = ImVec4(1.0f, 1.0f, 0.4f, 1.0f);
-    const ImVec2 p = ImGui::GetCursorScreenPos();
-    const ImVec2 av = ImGui::GetContentRegionAvail();
 
     for (auto& project : projectItemUIs)
     {
-        project->Render(draw_list, p, av, 36.0f);
+        project->Render();
     }
 
     ImGui::End();
