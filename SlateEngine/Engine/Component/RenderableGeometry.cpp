@@ -15,7 +15,6 @@ void RenderableGeometry::OnInternalInit()
     if (!GetEntity()->HasComponent<MaterialComponent>())
     {
         GetEntity()->AddComponent<MaterialComponent>();
-
     }
     
     m_material = &GetEntity()->GetComponent<MaterialComponent>();
@@ -25,10 +24,6 @@ void RenderableGeometry::OnInternalInit()
     ConstantBufferDesc cbd{};
     cbd.cbSize = sizeof(ObjectConstantBuffer);
     m_constantBuffer->Create(cbd);
-
-    buffers.emplace_back(m_vertexBuffer.get());
-    buffers.emplace_back(m_indexBuffer.get());
-    buffers.emplace_back(m_constantBuffer.get());
 
     //Calling Update once
     mat_ambient = m_material->GetPointer<vec4f>("$Ambient");
@@ -54,10 +49,9 @@ void RenderableGeometry::OnUpdate(float deltaTime)
 
 void RenderableGeometry::OnRender(ID3D11DeviceContext* pDeviceContext)
 {
-    for (short i = 0; i < buffers.size(); i++)
-    {
-        buffers[i]->BindPipeline(0);
-    }
+    m_vertexBuffer->BindPipeline(0);
+    m_indexBuffer->BindPipeline(0);
+    m_constantBuffer->BindPipeline(0);
 
     m_material->SetIndices(m_indices);
 }

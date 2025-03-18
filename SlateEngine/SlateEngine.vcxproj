@@ -96,6 +96,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Engine\Core\Project.cpp" />
     <ClCompile Include="Engine\Graphics\Buffer\DXFrameBuffer.cpp" />
     <ClCompile Include="Engine\Graphics\DXBasicBatch.cpp" />
     <ClCompile Include="Engine\Graphics\DXSpriteBatch.cpp" />
@@ -202,6 +203,7 @@
     <ClInclude Include="Engine\Graphics\Shader\IRenderPass.h" />
     <ClInclude Include="Engine\Core\HWInfo.h" />
     <ClInclude Include="Engine\Physics\PhysicsFactory.h" />
+    <ClInclude Include="Engine\Core\Project.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\LightsHeader.hlsli" />

@@ -44,8 +44,6 @@ private:
     ObjectConstantBuffer   cbData{};
     std::unique_ptr<DXConstantBuffer> m_constantBuffer;
 
-    std::vector<DXBuffer*> buffers;
-
     UINT m_indices                           = 0;
 
     vec4f *mat_ambient, *mat_diff, *mat_spec;

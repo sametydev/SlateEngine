@@ -9,7 +9,7 @@
 #include <SlateEngine/Engine/Core/EngineConfig.h>
 #include <SlateEngine/Engine/Graphics/Shader/ShaderCache.h>
 #include <SlateEngine/Engine/Graphics/Vertex.h>
-
+#include <stdexcept>
 #include <SlateEngine/Engine/Graphics/DXApplication.h>
 
 FileSystem* FileSystem::Instance = nullptr;
@@ -36,29 +36,27 @@ void FileSystem::Init()
 
     InitFWatcher();
 
-    simdjson::ondemand::parser parser;
-    simdjson::padded_string docdata = R"({
-    "Project": {
-        "name": "Test Project",
-        "version": 0.1,
-        "vsync": 0
+    simdjson::dom::parser parser;
+    simdjson::dom::element doc;
+    
+    auto error = parser.load(PathMaker::Make(gDXApp->GetWorkingDir(),"Project.json")).get(doc);
+    if (error) {
+        throw std::runtime_error("Project json load failure");
     }
-    })"_padded;
-    simdjson::ondemand::document doc = parser.iterate(docdata);
-    simdjson::ondemand::object obj = doc.get_object();
-    std::string_view token;
+    
+    Project* proj = new Project();
 
-    token = obj["Project"]["name"].raw_json_token();
-    std::string projectName(token);
-    projectName = removeQuotesFromStartAndBack(projectName);
 
-    token = obj["Project"]["version"].raw_json_token();
-    std::string projectVersion(token);
-    projectVersion = removeQuotesFromStartAndBack(projectVersion);
+    std::string_view projectName;
+    std::string_view projectVersion;
+    uint64_t projectVsync;
 
-    token = obj["Project"]["vsync"].raw_json_token();
-    std::string projectVsync(token);
-    projectVsync = removeQuotesFromStartAndBack(projectVsync);
+    doc["Project"]["name"].get(projectName);
+    doc["Project"]["version"].get(projectVersion);
+    doc["Project"]["vsync"].get(projectVsync);
+
+
+    Project::Instance->SetProjectName(std::string(projectName));
 
 }
 
@@ -101,30 +99,9 @@ void FileSystem::InitFWatcher()
     );
 }
 
-std::string FileSystem::GetUUIDFromFPath(std::filesystem::path _p)
-{
-    for (auto& i : metaMap)
-    {
-        if (i.second.path == _p)
-        {
-            return i.first;
-        }
-    }
-    return "";
-}
-
 SMetaData& FileSystem::GetSMetaDataFromFPath(std::filesystem::path _p)
 {
-    std::string xp = _p.string() + ".smeta";
-    for (auto& i : metaMap)
-    {
-        if (i.second.path == xp)
-        {
-            return i.second;
-        }
-    }
-
-    return *errorMetaData;
+    return metaMap[metaPathMap[_p.string()]];
 }
 
 void FileSystem::ProcessScriptFile(std::filesystem::path _p)
@@ -214,9 +191,11 @@ void FileSystem::ProcessMetaFile(std::filesystem::path _p)
     
     SMetaData smd;
     smd.ftype = GetFileTypeFromExt(_p.extension());
-    smd.path = metaFile;
+    smd.path = xp.string();
+    smd.metaPath = metaFile;
     smd.uuid = ini.GetValue("Asset", "uuid");
     metaMap.emplace(smd.uuid, smd);
+    metaPathMap.emplace(xp.string(), smd.uuid);
 }
 
 void FileSystem::BuildExtensions()
@@ -227,9 +206,9 @@ void FileSystem::BuildExtensions()
 
     /*
     Lua = 0
-    WIC Textures = 1-5
-    DDS = 6
-    SINFO = 7
+    WIC Textures = 1
+    DDS = 2
+    SINFO(Shader) = 3
     */
 
     m_extensionLookupTable.insert({ ".lua",     id });

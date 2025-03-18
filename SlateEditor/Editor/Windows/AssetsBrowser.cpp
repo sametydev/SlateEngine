@@ -64,7 +64,7 @@ void AssetsBrowser::OnDraw(bool* closable)
 		{
 			ImGui::Dummy(ImVec2(3.f, 3.f));
 			ImGui::Text("File Path : %s", selectedFile.string().c_str());
-			SMetaData smd = FileSystem::Instance->GetSMetaDataFromFPath(selectedFile);
+			SMetaData& smd = FileSystem::Instance->GetSMetaDataFromFPath(selectedFile);
 			ImGui::Text("File Type : %s",FileSystem::FTypeToString(smd.ftype));
 			ImGui::Text("UUID : %s", smd.uuid.c_str());
 		};

@@ -6,6 +6,7 @@
 #include <unordered_map>
 #include <SlateEngine/Engine/Utils.h>
 #include <simdjson.h>
+#include <SlateEngine/Engine/Core/Project.h>
 
 enum FILE_TYPE : int {
 	LUA = 0,
@@ -21,8 +22,12 @@ enum FILE_TYPE : int {
 struct SMetaData {
 	std::string uuid;
 	std::string path;
+	std::string metaPath;
 	FILE_TYPE ftype;
 };
+
+using SLATE_UUID = std::string;
+using SLATE_PATH = std::string;
 
 class ENGINE_API FileSystem
 {
@@ -46,7 +51,6 @@ public:
 	void OnFileRenamedOld(std::filesystem::path		oldName);
 	void OnFileRenamedNew(std::filesystem::path		newName);
 
-	std::string GetUUIDFromFPath(std::filesystem::path _p);
 	SMetaData& GetSMetaDataFromFPath(std::filesystem::path _p);
 
 	static FileSystem* Instance;
@@ -90,8 +94,9 @@ private:
 		return FTypeToString((FILE_TYPE)m_extensionLookupTable[_p.string()]);
 	}
 
-	//first is uuid, second is meta file path
-	std::unordered_map<std::string, SMetaData> metaMap;
+	//they are pair
+	std::unordered_map<SLATE_UUID, SMetaData> metaMap;
+	std::unordered_map<SLATE_PATH, SLATE_UUID> metaPathMap;
 
 	std::map<std::string, UINT> m_extensionLookupTable;
 

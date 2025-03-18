@@ -80,10 +80,8 @@ void Transform::OnUpdate(float deltaTime)
 	mat4x4 ry = mat4x4::rotateY(mRotation.y);
 	mat4x4 rz = mat4x4::rotateZ(mRotation.z);
 
-	mat4x4 R = rx * rz * ry;
-
 	//mLocal = S * R * T;
-	mLocal = T * R * S;
+	mLocal = T * (rx*ry*rz) * S;
 
 	if (!hasParent)
 	{
