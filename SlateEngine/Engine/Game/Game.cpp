@@ -17,7 +17,6 @@ Game::Game(HINSTANCE hInstance, const std::wstring& windowName, int initWidth, i
 Game::~Game()
 {
     delete script1;
-    FreeLibrary(hModule);
 }
 
 bool Game::OnInit()
@@ -30,7 +29,7 @@ bool Game::OnInit()
     enginePlayer->OnInit(hWindow, m_d3dDevice.Get(), m_d3dContext.Get());
     enginePlayer->ResizeViewport(m_clientW, m_clientH);
 
-    entityManager = std::make_shared<EntityManager>();
+    entityManager = std::make_unique<EntityManager>();
     PhysicsFactory* pfactory = new PhysicsFactory();
     pfactory->Init();
 
@@ -79,24 +78,18 @@ bool Game::OnInit()
     //Creating Constant Buffers;
     CreateGlobalConstantBuffers();
 
+
+    //Init GameModule
+    gameModule = std::make_unique<GameModule>();
+    gameModule->Initialize();
+
+    scriptRegistry = std::make_unique<ScriptRegistry>();
+
     // --- TEMPORARY CODE ---- //
     // NATIVE SCRIPTING CONCEPT!! NOT FINAL
 
-    hModule = LoadLibrary(L"GamePlugin.dll");
-    if (!hModule) {
-        std::cerr << "Error on DLL load!" << std::endl;
-        MessageBoxA(0,"Error on DLL load!",0,0);
-        return 1;
-    }
-
-
-
-    new ScriptRegistry();
-
-    std::string scriptToCreate = "MyTestScript";
-    //using string for checking object eol
-
-    script1 = ScriptRegistry::Instance->Create(scriptToCreate.c_str());
+    std::string str = "MyTestScript";
+    script1 = ScriptRegistry::Instance->Create(str);
 
     Entity* dummy = new Entity();
     entityManager->RegisterEntity(dummy, "MyTestScript Entity!");
@@ -162,7 +155,7 @@ void Game::CreateCamera()
 
 void Game::CreateFileSystem()
 {
-    fileSystem = std::make_shared<FileSystem>();
+    fileSystem = std::make_unique<FileSystem>();
     fileSystem->Init();
     fileSystem->LateInit();
 }

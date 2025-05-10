@@ -41,6 +41,9 @@ public:
 
 	inline FILE_TYPE GetFileTypeFromExt(std::filesystem::path ext)
 	{
+		if (m_extensionLookupTable.count(ext.string()) == 0) {
+			return FILE_TYPE::MISC;
+		}
 		return (FILE_TYPE)m_extensionLookupTable[ext.string()];
 	}
 

@@ -46,18 +46,18 @@ void FileSystem::Init()
     
     Project* proj = new Project();
 
-
     std::string_view projectName;
     std::string_view projectVersion;
     uint64_t projectVsync;
+    
 
     doc["Project"]["name"].get(projectName);
     doc["Project"]["version"].get(projectVersion);
     doc["Project"]["vsync"].get(projectVsync);
 
-
     Project::Instance->SetProjectName(std::string(projectName));
-
+    Project::Instance->SetProjectVersion(std::string(projectVersion));
+    Project::Instance->SetProjectVSYNC(projectVsync);
 }
 
 void FileSystem::LateInit()
@@ -224,11 +224,6 @@ void FileSystem::BuildExtensions()
     m_extensionLookupTable.insert({ ".dds",     iota() });
     m_extensionLookupTable.insert({ ".sinfo",   iota() });
     iota(true);
-
-
-    //For excluding
-    m_extensionLookupTable.insert({ ".smeta",   INT_MAX });
-    m_extensionLookupTable.insert({ ".json",   INT_MAX });
 }
 
 void FileSystem::OnFileAdded(std::filesystem::path _p)

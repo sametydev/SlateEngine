@@ -130,6 +130,7 @@
     <ClCompile Include="Engine\FileSystem\FileSystem.cpp" />
     <ClCompile Include="Engine\Input\Gamepad.cpp" />
     <ClCompile Include="Engine\NativeScripting\ScriptRegistry.cpp" />
+    <ClCompile Include="Engine\Module\GameModule.cpp" />
     <ClCompile Include="LibarySources\ConvertUTF.c" />
     <ClCompile Include="LibarySources\DDSTextureLoader11.cpp" />
     <ClCompile Include="LibarySources\simdjson.cpp" />
@@ -139,6 +140,8 @@
     <ClCompile Include="Engine\Core\Timer.cpp" />
     <ClCompile Include="Engine\Graphics\Texture\RenderTTexture.cpp" />
     <ClCompile Include="Engine\Physics\PhysicsFactory.cpp" />
+    <ClCompile Include="Engine\Core\Scene.cpp" />
+    <ClCompile Include="Engine\Parser\SceneParser.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Graphics\Bindable.h" />
@@ -204,6 +207,9 @@
     <ClInclude Include="Engine\Core\HWInfo.h" />
     <ClInclude Include="Engine\Physics\PhysicsFactory.h" />
     <ClInclude Include="Engine\Core\Project.h" />
+    <ClInclude Include="Engine\Module\GameModule.h" />
+    <ClInclude Include="Engine\Core\Scene.h" />
+    <ClInclude Include="Engine\Parser\SceneParser.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\LightsHeader.hlsli" />

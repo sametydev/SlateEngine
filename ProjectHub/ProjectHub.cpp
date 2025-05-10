@@ -222,7 +222,7 @@ void ProjectHub::RenderPanel() {
     bool* p_open = new bool;
     *p_open = true;
 
-    ImGui::Begin("DockSpace Demo", p_open, window_flags);
+    ImGui::Begin("DockSpace", p_open, window_flags);
 
     ImGui::PopStyleVar(2);
 
@@ -237,7 +237,9 @@ void ProjectHub::RenderPanel() {
     {
         if (ImGui::BeginMenu("Project"))
         {
-            ImGui::MenuItem("Create Project");
+            if(ImGui::MenuItem("Create Project")) {
+                createProjectWindow->SetOpen(true);
+            }
             ImGui::EndMenu();
         }
         if (ImGui::BeginMenu("Options"))
@@ -255,6 +257,7 @@ void ProjectHub::RenderPanel() {
     if(ImGui::Button("Create Project")) {
         createProjectWindow->SetOpen(true);
     }
+
     createProjectWindow->Render();
 
     for (auto& project : projectItemUIs)
