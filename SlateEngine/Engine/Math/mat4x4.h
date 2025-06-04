@@ -2,7 +2,6 @@
 #include <SlateEngine/Engine/Math/LineerMath.h>
 #include <iomanip>
 
-
 __declspec(align(16))
 struct ENGINE_API mat4x4 {
 	//static float radians = 3.14159265358979323846f / 180.f;
@@ -53,6 +52,7 @@ struct ENGINE_API mat4x4 {
 	union {
 		float f[16];
 		float m[4][4];
+		__m128 row[4];
 	};
 
 	operator float* () {
@@ -79,21 +79,7 @@ inline mat4x4::mat4x4(
 	m[2][0] = m20; m[2][1] = m21; m[2][2] = m22; m[2][3] = m23;
 	m[3][0] = m30; m[3][1] = m31; m[3][2] = m32; m[3][3] = m33;
 }
-inline mat4x4 mat4x4::MatrixShadow(const vec3f& lightDir, const vec3f& planeNormal)
-{
-	mat4x4 shadowMatrix;
 
-	// Calculate dot product of plane normal and light direction
-	float dotProduct = vec3f::dot(planeNormal, lightDir);
-
-	// Calculate shadow matrix
-	shadowMatrix[0][0] = dotProduct + 1.0f;
-	shadowMatrix[1][1] = dotProduct + 1.0f;
-	shadowMatrix[2][2] = dotProduct + 1.0f;
-	shadowMatrix[3][3] = dotProduct;
-
-	return shadowMatrix;
-}
 inline mat4x4 mat4x4::operator*(const mat4x4& rhs) {
 	mat4x4 mat;
 	//00 01 02 03          //00 01 02 03
@@ -111,7 +97,24 @@ inline mat4x4 mat4x4::operator*(const mat4x4& rhs) {
 	//			  mat[1][2] * rhs[2][1] +
 	//			  mat[1][3] * rhs[3][1];
 
+#ifdef USE_SSE2
 
+	for (int i = 0; i < 4; ++i) {
+		__m128 r = row[i];
+		__m128 m0 = _mm_shuffle_ps((r), (r), _MM_SHUFFLE(0, 0, 0, 0));
+
+		__m128 m1 = _mm_shuffle_ps((r), (r), _MM_SHUFFLE(1, 1, 1, 1));
+		__m128 m2 = _mm_shuffle_ps((r), (r), _MM_SHUFFLE(2, 2, 2, 2));
+		__m128 m3 = _mm_shuffle_ps((r), (r), _MM_SHUFFLE(3, 3, 3, 3));
+		__m128 sum0 = _mm_mul_ps(m0, rhs.row[0]);
+		__m128 sum1 = _mm_mul_ps(m1, rhs.row[1]);
+		__m128 sum2 = _mm_mul_ps(m2, rhs.row[2]);
+		__m128 sum3 = _mm_mul_ps(m3, rhs.row[3]);
+		__m128 tmp = _mm_add_ps(sum0, sum1);
+		__m128 tmp2 = _mm_add_ps(sum2, sum3);
+		mat.row[i] = _mm_add_ps(tmp, tmp2);
+	}
+#else
 	for (int row = 0; row < 4; row++)
 	{
 		for (int col = 0; col < 4; col++)
@@ -122,6 +125,7 @@ inline mat4x4 mat4x4::operator*(const mat4x4& rhs) {
 				m[row][3] * rhs[3][col];
 		}
 	}
+#endif
 	return mat;
 }
 inline mat4x4 mat4x4::NDCToScreen(float widht, float height)
@@ -141,6 +145,45 @@ inline mat4x4 mat4x4::NDCToScreen(float widht, float height)
 }
 inline mat4x4 mat4x4::InverseTranspose() {
 	mat4x4 result;
+
+#ifdef USE_SSE2
+	__m128 row0 = row[0];
+	__m128 row1 = row[1];
+	__m128 row2 = row[2];
+
+	float a00 = m[0][0], a01 = m[1][0], a02 = m[2][0];
+	float a10 = m[0][1], a11 = m[1][1], a12 = m[2][1];
+	float a20 = m[0][2], a21 = m[1][2], a22 = m[2][2];
+
+	float det =
+		a00 * (a11 * a22 - a12 * a21) -
+		a01 * (a10 * a22 - a12 * a20) +
+		a02 * (a10 * a21 - a11 * a20);
+
+	if (fabsf(det) < 1e-6f) {
+		return result; 
+	}
+
+	float invDet = 1.0f / det;
+
+	result.m[0][0] = a00 * invDet;
+	result.m[0][1] = a01 * invDet;
+	result.m[0][2] = a02 * invDet;
+
+	result.m[1][0] = a10 * invDet;
+	result.m[1][1] = a11 * invDet;
+	result.m[1][2] = a12 * invDet;
+
+	result.m[2][0] = a20 * invDet;
+	result.m[2][1] = a21 * invDet;
+	result.m[2][2] = a22 * invDet;
+
+	result.row[0] = _mm_insert_ps(result.row[0], _mm_setzero_ps(), 0x30);
+	result.row[1] = _mm_insert_ps(result.row[1], _mm_setzero_ps(), 0x30);
+	result.row[2] = _mm_insert_ps(result.row[2], _mm_setzero_ps(), 0x30);
+	result.row[3] = _mm_set_ps(1.0f, 0.0f, 0.0f, 0.0f);
+
+#else
 
 	// Calculate the inverse of the transpose of the upper-left 3x3 matrix
 	float invTranspose[3][3];
@@ -182,6 +225,7 @@ inline mat4x4 mat4x4::InverseTranspose() {
 	result.m[3][1] = 0.0f;
 	result.m[3][2] = 0.0f;
 	result.m[3][3] = 1.0f;
+#endif
 
 	return result;
 }
@@ -396,43 +440,6 @@ inline mat4x4 mat4x4::translated(const vec3f& t) {
 	return mat;
 }
 
-//ROTATE Functions;
-//inline mat4x4 mat4x4::rotateX(float angle) {
-//	float theta = angle * RADIANS;
-//	mat4x4 mat = {
-//	1.f,0.f,0.f,0.f,
-//	0.f,cos(theta),-sin(theta),0.f,
-//	0.f,sin(theta),cos(theta),0.f,
-//	0.f,0.f,0.f,1.f
-//	};
-//
-//	return mat;
-//}
-//inline mat4x4 mat4x4::rotateY(float angle) {
-//	float theta = angle * RADIANS;
-//	mat4x4 mat = {
-//	cos(theta),0.f,sin(theta),0.f,
-//	0.f,1.f,0.f,0.f,
-//	-sin(theta),0.f,cos(theta),0.f,
-//	0.f,0.f,0.f,1.f
-//	};
-//
-//	return mat;
-//}
-//inline mat4x4 mat4x4::rotateZ(float angle) {
-//	float theta = angle * RADIANS;
-//	float sinx = sin(theta);
-//	float cosx = cos(theta);
-//	mat4x4 mat = {
-//	cosx,-sinx,0.f,0.f,
-//	sinx,cosx,0.f,0.f,
-//	0.f,0.f,1.f,0.f,
-//	0.f,0.f,0.f,1.f
-//	};
-//
-//	return mat;
-//}
-// 
 inline mat4x4 mat4x4::rotateX(float angle) {
 	float theta = angle * RADIANS;
 	float sinx = sin(theta);

@@ -73,7 +73,7 @@ void EntityManager::OnRender(ID3D11DeviceContext* pDeviceContext)
 	{
 		RenderableGeometry* r = &RenderableGeometrys.get<RenderableGeometry>(entity);
 		r->OnRender(pDeviceContext);
-		r->GetMaterial().OnRender(pDeviceContext);
+		r->GetMaterialPointer()->OnRender(pDeviceContext);
 		//Materials.get<MaterialComponent>(entity).OnRender(pDeviceContext);
 	}
 }
@@ -81,31 +81,30 @@ void EntityManager::OnRender(ID3D11DeviceContext* pDeviceContext)
 void EntityManager::SendSignalToComponents(ECSignalCommand cmd)
 {
 	auto transforms = EntityRegistrar::GetRegistry().view<Transform>();
-
 	auto renderableGeometrys = EntityRegistrar::GetRegistry().view<RenderableGeometry>();
 	auto materials = EntityRegistrar::GetRegistry().view<MaterialComponent>();
 	auto scripts = EntityRegistrar::GetRegistry().view<LuaScript>();
 
 	switch (cmd)
 	{
-	case ON_INIT:
+		case ON_INIT:
 
-			for (auto entity : transforms,renderableGeometrys,scripts)
-			{
-				transforms.get<Transform>(entity).OnInit();
-				scripts.get<LuaScript>(entity).OnInit();
-				renderableGeometrys.get<RenderableGeometry>(entity).OnInit();
-				materials.get<MaterialComponent>(entity).OnInit();
-			}
+				for (auto entity : transforms,renderableGeometrys,scripts)
+				{
+					transforms.get<Transform>(entity).OnInit();
+					scripts.get<LuaScript>(entity).OnInit();
+					renderableGeometrys.get<RenderableGeometry>(entity).OnInit();
+					materials.get<MaterialComponent>(entity).OnInit();
+				}
 
-		break;
-	case ON_DESTROY:
-		break;
-	case ON_SCENE_CHANGED:
-		break;
-	case ON_EDITOR_LOAD:
-		break;
-	default:
-		break;
+			break;
+		case ON_DESTROY:
+			break;
+		case ON_SCENE_CHANGED:
+			break;
+		case ON_EDITOR_LOAD:
+			break;
+		default:
+			break;
 	}
 }

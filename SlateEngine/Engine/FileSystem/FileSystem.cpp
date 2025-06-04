@@ -11,6 +11,7 @@
 #include <SlateEngine/Engine/Graphics/Vertex.h>
 #include <stdexcept>
 #include <SlateEngine/Engine/Graphics/DXApplication.h>
+#include "AssetImporter.h"
 
 FileSystem* FileSystem::Instance = nullptr;
 
@@ -64,7 +65,7 @@ void FileSystem::LateInit()
 {
     for (std::filesystem::recursive_directory_iterator i(gDXApp->GetWorkingDir()), end; i != end; ++i) {
         if (!std::filesystem::is_directory(i->path())) {
-            ImportFile(i->path());
+            AssetImporter::importers[GetFileTypeFromExt(i->path().extension())]->ImportAsset(this, i->path());
         }
     }
 }
@@ -101,53 +102,9 @@ void FileSystem::InitFWatcher()
 
 SMetaData& FileSystem::GetSMetaDataFromFPath(std::filesystem::path _p)
 {
-    return metaMap[metaPathMap[_p.string()]];
+    return metaMap[metaPathMap[_p.string()].uuid];
 }
 
-void FileSystem::ProcessScriptFile(std::filesystem::path _p)
-{
-    ProcessMetaFile(_p);
-}
-
-void FileSystem::ProcessTextureFileWIC(std::filesystem::path _p)
-{
-    ProcessMetaFile(_p);
-}
-
-void FileSystem::ProcessTextureFileDDS(std::filesystem::path _p)
-{
-    ProcessMetaFile(_p);
-}
-
-void FileSystem::ProcessShaderFile(std::filesystem::path _p)
-{
-    CSimpleIniA ini;
-    ini.SetUnicode();
-    ini.LoadFile(_p.c_str());
-
-    ShaderInformation sinfo{};
-    sinfo.displayName = ini.GetValue("Shader", "DisplayName");
-    sinfo.csoName = ini.GetValue("Shader", "CSOName");
-    sinfo.hlslFile = ini.GetValue("Shader", "HLSLFile");
-    sinfo.entryPoint = ini.GetValue("Shader", "EntryPoint");
-
-    std::string shaderType(ini.GetValue("Shader", "ShaderType"));
-
-    if (shaderType == "Pixel") {
-        ShaderCache::CreatePixelShader(sinfo);
-    }
-    else if (shaderType == "Vertex") {
-        sinfo.inputLayout = ini.GetValue("Shader", "InputLayout");
-        std::string sInputLayout = sinfo.inputLayout;
-
-        if (sInputLayout == "VertexPNT") {
-            ShaderCache::CreateVertexShader(sinfo)->CreateInputLayout(VertexPNT::inputLayout, ARRAYSIZE(VertexPNT::inputLayout));
-        }
-        else if (sInputLayout == "VertexPC") {
-            ShaderCache::CreateVertexShader(sinfo)->CreateInputLayout(VertexPC::inputLayout, ARRAYSIZE(VertexPC::inputLayout));
-        }
-    }
-}
 
 void FileSystem::ProcessMetaFile(std::filesystem::path _p)
 {
@@ -195,7 +152,12 @@ void FileSystem::ProcessMetaFile(std::filesystem::path _p)
     smd.metaPath = metaFile;
     smd.uuid = ini.GetValue("Asset", "uuid");
     metaMap.emplace(smd.uuid, smd);
-    metaPathMap.emplace(xp.string(), smd.uuid);
+
+    SlateUUIDType uuid_type;
+    uuid_type.type = GetFileTypeFromExt(_p.extension());
+    uuid_type.uuid = smd.uuid;
+
+    metaPathMap.emplace(xp.string(), uuid_type);
 }
 
 void FileSystem::BuildExtensions()
@@ -253,7 +215,8 @@ void FileSystem::OnFileAdded(std::filesystem::path _p)
         }
         else
         {
-            ImportFile(_p);
+            //Import assets
+            AssetImporter::importers[GetFileTypeFromExt(_p.extension())]->ImportAsset(this, _p);
         }
     }
 }
@@ -272,25 +235,5 @@ void FileSystem::OnFileRenamedOld(std::filesystem::path oldName)
 
 void FileSystem::OnFileRenamedNew(std::filesystem::path newName)
 {
-}
-
-void FileSystem::ImportFile(std::filesystem::path _p)
-{
-    
-    switch (GetFileTypeFromExt(_p.extension()))
-    {
-        case FILE_TYPE::LUA:
-            ProcessScriptFile(_p);
-            break;
-        case FILE_TYPE::TEXTURE_WIC:
-            ProcessTextureFileWIC(_p);
-            break;
-        case FILE_TYPE::TEXTURE_DDS:
-            ProcessTextureFileDDS(_p);
-            break;
-        case FILE_TYPE::SHADER:
-            ProcessShaderFile(_p);
-            break;
-    }
 }
 

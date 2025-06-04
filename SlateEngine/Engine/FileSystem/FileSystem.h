@@ -8,6 +8,9 @@
 #include <simdjson.h>
 #include <SlateEngine/Engine/Core/Project.h>
 
+using SLATE_UUID = std::string;
+using SLATE_PATH = std::string;
+
 enum FILE_TYPE : int {
 	LUA = 0,
 	TEXTURE_WIC,
@@ -26,8 +29,14 @@ struct SMetaData {
 	FILE_TYPE ftype;
 };
 
-using SLATE_UUID = std::string;
-using SLATE_PATH = std::string;
+struct SlateFileSystemContainer {
+	std::unordered_map<FILE_TYPE, std::unordered_map<SLATE_UUID, SMetaData>> leafs;
+};
+
+struct SlateUUIDType {
+	SLATE_UUID uuid;
+	FILE_TYPE type;
+};
 
 class ENGINE_API FileSystem
 {
@@ -76,6 +85,8 @@ public:
 		}
 	}
 
+	void ProcessMetaFile(std::filesystem::path _p);
+
 private:
 	std::vector
 	<std::filesystem::path> lastRemovedFiles;
@@ -83,12 +94,6 @@ private:
 private:
 	friend class AssetStreamer;
 	void InitFWatcher();
-	void ImportFile(std::filesystem::path _p);
-	void ProcessScriptFile(std::filesystem::path _p);
-	void ProcessTextureFileWIC(std::filesystem::path _p);
-	void ProcessTextureFileDDS(std::filesystem::path _p);
-	void ProcessShaderFile(std::filesystem::path _p);
-	void ProcessMetaFile(std::filesystem::path _p);
 
 	void BuildExtensions();
 
@@ -99,7 +104,7 @@ private:
 
 	//they are pair
 	std::unordered_map<SLATE_UUID, SMetaData> metaMap;
-	std::unordered_map<SLATE_PATH, SLATE_UUID> metaPathMap;
+	std::unordered_map<SLATE_PATH, SlateUUIDType> metaPathMap;
 
 	std::map<std::string, UINT> m_extensionLookupTable;
 

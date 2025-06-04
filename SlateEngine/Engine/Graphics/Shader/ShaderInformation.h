@@ -1,5 +1,6 @@
 #pragma once
 #include <SimpleIni.h>
+#include <SlateEngine/Engine/Utils.h>
 
 struct ShaderInformation
 {

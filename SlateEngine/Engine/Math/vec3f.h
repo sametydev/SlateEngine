@@ -94,18 +94,44 @@ inline vec3f& vec3f::operator-=(const vec3f& v)
 
 inline vec3f& vec3f::operator*=(const vec3f& v)
 {
+#ifdef USE_SSE2
+	__m128 a = _mm_set_ps(0.0f, z, y, x);
+	__m128 b = _mm_set_ps(0.0f, v.z, v.y, v.x);
+	__m128 result = _mm_mul_ps(a, b);
+	float temp[4];
+	_mm_store_ps(temp, result);
+	//for avoiding temporary vector, we need add padding on our class! we will handle this in future
+	x = temp[0];
+	y = temp[1];
+	z = temp[2];
+	return *this;
+#else
 	x *= v.x;
 	y *= v.y;
 	z *= v.z;
 	return *this;
+#endif
 }
 
 inline vec3f& vec3f::operator/=(const vec3f& v)
 {
+#ifdef USE_SSE2
+	__m128 a = _mm_set_ps(0.0f, z, y, x);
+	__m128 b = _mm_set_ps(0.0f, v.z, v.y, v.x);
+	__m128 result = _mm_div_ps(a, b);
+	//for avoiding temporary vector, we need add padding on our class! we will handle this in future
+	float temp[4];
+	_mm_store_ps(temp, result);
+	x = temp[0];
+	y = temp[1];
+	z = temp[2];
+	return *this;
+#else
 	x /= v.x;
 	y /= v.y;
 	z /= v.z;
 	return *this;
+#endif
 }
 
 inline vec3f& vec3f::operator*=(const float& f)
