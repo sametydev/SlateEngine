@@ -1,7 +1,6 @@
 #pragma once
 #include "../Types.h"
-
-struct UIComponent
-{
+class Window {
+public:
 	virtual void Render() = 0;
 };

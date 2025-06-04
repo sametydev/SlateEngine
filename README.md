@@ -27,7 +27,7 @@ SlateEngine will be a completely user friendly engine for making games.
  Ambient Occulision,\
  Tessellation Support,\
  Particle System,\
- Asset Packaging! (.asset, .sasset, .spackage, .spkg)\
+ Asset Packaging! (.asset, .sasset, .spackage, .spkg)
 
  # Planned Features; (just an idea, not a priority)
  Custom Shading Language (Slate Shading Lang)\

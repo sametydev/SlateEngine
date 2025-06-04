@@ -6,6 +6,8 @@
 #include <tchar.h>
 #include <wrl.h>
 #include "Components\CProjectItemUI.h"
+#include "Windows/CreateProjectWindow.h"
+
 class ProjectHub
 {
 public:
@@ -21,6 +23,8 @@ public:
 
 	static ProjectHub* Instance;
 
+	void InitializeTheme();
+
 	UINT						g_ResizeWidth = 0, g_ResizeHeight = 0;
 private:
 	Microsoft::WRL::ComPtr<ID3D11Device>				p_d3dDevice = nullptr;
@@ -32,4 +36,5 @@ private:
 	HWND												mHWND = 0;
 
 	std::vector<CProjectItemUI*> projectItemUIs;
+	CreateProjectWindow* createProjectWindow;
 };

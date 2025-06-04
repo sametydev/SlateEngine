@@ -182,7 +182,7 @@ protected:
     std::vector<DXTexture*> textures;
 
     std::unordered_map<std::string_view, MaterialProperty> properties;
-    RasterizerState rs;
+    RasterizerState rs = (RasterizerState)0;
     D3D11_PRIMITIVE_TOPOLOGY topology = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
 
     UINT indices = 0;

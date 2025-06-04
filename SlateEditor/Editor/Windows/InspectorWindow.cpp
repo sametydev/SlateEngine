@@ -228,7 +228,7 @@ void InspectorWindow::DrawLuaScriptComponent(Entity* entity)
 	{
 		if (x.second.ftype == FILE_TYPE::LUA) {
 			std::string extractedPath = x.second.path;
-			extractedPath.replace(extractedPath.find(".smeta"), sizeof(".smeta")-1,"");
+			//extractedPath.replace(extractedPath.find(".smeta"), sizeof(".smeta")-1,"");
 			scriptsTextTmp.push_back(extractedPath);
 		}
 	}

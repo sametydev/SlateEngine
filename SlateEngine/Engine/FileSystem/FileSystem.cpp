@@ -9,8 +9,9 @@
 #include <SlateEngine/Engine/Core/EngineConfig.h>
 #include <SlateEngine/Engine/Graphics/Shader/ShaderCache.h>
 #include <SlateEngine/Engine/Graphics/Vertex.h>
-
+#include <stdexcept>
 #include <SlateEngine/Engine/Graphics/DXApplication.h>
+#include "AssetImporter.h"
 
 FileSystem* FileSystem::Instance = nullptr;
 
@@ -36,37 +37,35 @@ void FileSystem::Init()
 
     InitFWatcher();
 
-    simdjson::ondemand::parser parser;
-    simdjson::padded_string docdata = R"({
-    "Project": {
-        "name": "Test Project",
-        "version": 0.1,
-        "vsync": 0
+    simdjson::dom::parser parser;
+    simdjson::dom::element doc;
+    
+    auto error = parser.load(PathMaker::Make(gDXApp->GetWorkingDir(),"Project.json")).get(doc);
+    if (error) {
+        throw std::runtime_error("Project json load failure");
     }
-    })"_padded;
-    simdjson::ondemand::document doc = parser.iterate(docdata);
-    simdjson::ondemand::object obj = doc.get_object();
-    std::string_view token;
+    
+    Project* proj = new Project();
 
-    token = obj["Project"]["name"].raw_json_token();
-    std::string projectName(token);
-    projectName = removeQuotesFromStartAndBack(projectName);
+    std::string_view projectName;
+    std::string_view projectVersion;
+    uint64_t projectVsync;
+    
 
-    token = obj["Project"]["version"].raw_json_token();
-    std::string projectVersion(token);
-    projectVersion = removeQuotesFromStartAndBack(projectVersion);
+    doc["Project"]["name"].get(projectName);
+    doc["Project"]["version"].get(projectVersion);
+    doc["Project"]["vsync"].get(projectVsync);
 
-    token = obj["Project"]["vsync"].raw_json_token();
-    std::string projectVsync(token);
-    projectVsync = removeQuotesFromStartAndBack(projectVsync);
-
+    Project::Instance->SetProjectName(std::string(projectName));
+    Project::Instance->SetProjectVersion(std::string(projectVersion));
+    Project::Instance->SetProjectVSYNC(projectVsync);
 }
 
 void FileSystem::LateInit()
 {
     for (std::filesystem::recursive_directory_iterator i(gDXApp->GetWorkingDir()), end; i != end; ++i) {
         if (!std::filesystem::is_directory(i->path())) {
-            ImportFile(i->path());
+            AssetImporter::importers[GetFileTypeFromExt(i->path().extension())]->ImportAsset(this, i->path());
         }
     }
 }
@@ -101,76 +100,11 @@ void FileSystem::InitFWatcher()
     );
 }
 
-std::string FileSystem::GetUUIDFromFPath(std::filesystem::path _p)
-{
-    for (auto& i : metaMap)
-    {
-        if (i.second.path == _p)
-        {
-            return i.first;
-        }
-    }
-    return "";
-}
-
 SMetaData& FileSystem::GetSMetaDataFromFPath(std::filesystem::path _p)
 {
-    std::string xp = _p.string() + ".smeta";
-    for (auto& i : metaMap)
-    {
-        if (i.second.path == xp)
-        {
-            return i.second;
-        }
-    }
-
-    return *errorMetaData;
+    return metaMap[metaPathMap[_p.string()].uuid];
 }
 
-void FileSystem::ProcessScriptFile(std::filesystem::path _p)
-{
-    ProcessMetaFile(_p);
-}
-
-void FileSystem::ProcessTextureFileWIC(std::filesystem::path _p)
-{
-    ProcessMetaFile(_p);
-}
-
-void FileSystem::ProcessTextureFileDDS(std::filesystem::path _p)
-{
-    ProcessMetaFile(_p);
-}
-
-void FileSystem::ProcessShaderFile(std::filesystem::path _p)
-{
-    CSimpleIniA ini;
-    ini.SetUnicode();
-    ini.LoadFile(_p.c_str());
-
-    ShaderInformation sinfo{};
-    sinfo.displayName = ini.GetValue("Shader", "DisplayName");
-    sinfo.csoName = ini.GetValue("Shader", "CSOName");
-    sinfo.hlslFile = ini.GetValue("Shader", "HLSLFile");
-    sinfo.entryPoint = ini.GetValue("Shader", "EntryPoint");
-
-    std::string shaderType(ini.GetValue("Shader", "ShaderType"));
-
-    if (shaderType == "Pixel") {
-        ShaderCache::CreatePixelShader(sinfo);
-    }
-    else if (shaderType == "Vertex") {
-        sinfo.inputLayout = ini.GetValue("Shader", "InputLayout");
-        std::string sInputLayout = sinfo.inputLayout;
-
-        if (sInputLayout == "VertexPNT") {
-            ShaderCache::CreateVertexShader(sinfo)->CreateInputLayout(VertexPNT::inputLayout, ARRAYSIZE(VertexPNT::inputLayout));
-        }
-        else if (sInputLayout == "VertexPC") {
-            ShaderCache::CreateVertexShader(sinfo)->CreateInputLayout(VertexPC::inputLayout, ARRAYSIZE(VertexPC::inputLayout));
-        }
-    }
-}
 
 void FileSystem::ProcessMetaFile(std::filesystem::path _p)
 {
@@ -214,9 +148,16 @@ void FileSystem::ProcessMetaFile(std::filesystem::path _p)
     
     SMetaData smd;
     smd.ftype = GetFileTypeFromExt(_p.extension());
-    smd.path = metaFile;
+    smd.path = xp.string();
+    smd.metaPath = metaFile;
     smd.uuid = ini.GetValue("Asset", "uuid");
     metaMap.emplace(smd.uuid, smd);
+
+    SlateUUIDType uuid_type;
+    uuid_type.type = GetFileTypeFromExt(_p.extension());
+    uuid_type.uuid = smd.uuid;
+
+    metaPathMap.emplace(xp.string(), uuid_type);
 }
 
 void FileSystem::BuildExtensions()
@@ -227,9 +168,9 @@ void FileSystem::BuildExtensions()
 
     /*
     Lua = 0
-    WIC Textures = 1-5
-    DDS = 6
-    SINFO = 7
+    WIC Textures = 1
+    DDS = 2
+    SINFO(Shader) = 3
     */
 
     m_extensionLookupTable.insert({ ".lua",     id });
@@ -245,11 +186,6 @@ void FileSystem::BuildExtensions()
     m_extensionLookupTable.insert({ ".dds",     iota() });
     m_extensionLookupTable.insert({ ".sinfo",   iota() });
     iota(true);
-
-
-    //For excluding
-    m_extensionLookupTable.insert({ ".smeta",   INT_MAX });
-    m_extensionLookupTable.insert({ ".json",   INT_MAX });
 }
 
 void FileSystem::OnFileAdded(std::filesystem::path _p)
@@ -279,7 +215,8 @@ void FileSystem::OnFileAdded(std::filesystem::path _p)
         }
         else
         {
-            ImportFile(_p);
+            //Import assets
+            AssetImporter::importers[GetFileTypeFromExt(_p.extension())]->ImportAsset(this, _p);
         }
     }
 }
@@ -298,25 +235,5 @@ void FileSystem::OnFileRenamedOld(std::filesystem::path oldName)
 
 void FileSystem::OnFileRenamedNew(std::filesystem::path newName)
 {
-}
-
-void FileSystem::ImportFile(std::filesystem::path _p)
-{
-    
-    switch (GetFileTypeFromExt(_p.extension()))
-    {
-        case FILE_TYPE::LUA:
-            ProcessScriptFile(_p);
-            break;
-        case FILE_TYPE::TEXTURE_WIC:
-            ProcessTextureFileWIC(_p);
-            break;
-        case FILE_TYPE::TEXTURE_DDS:
-            ProcessTextureFileDDS(_p);
-            break;
-        case FILE_TYPE::SHADER:
-            ProcessShaderFile(_p);
-            break;
-    }
 }
 

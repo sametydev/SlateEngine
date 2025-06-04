@@ -33,6 +33,7 @@ public:
     Transform& GetTransform() { return GetEntity()->GetComponent<Transform>(); };
     ObjectConstantBuffer& GetObjectCb() { return cbData; };
     MaterialComponent& GetMaterial() { return *m_material; };
+    MaterialComponent* GetMaterialPointer() { return m_material; };
 
     const bool bStaticBuffer = false;
 private:
@@ -43,8 +44,6 @@ private:
     
     ObjectConstantBuffer   cbData{};
     std::unique_ptr<DXConstantBuffer> m_constantBuffer;
-
-    std::vector<DXBuffer*> buffers;
 
     UINT m_indices                           = 0;
 

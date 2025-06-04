@@ -6,6 +6,10 @@
 #include <unordered_map>
 #include <SlateEngine/Engine/Utils.h>
 #include <simdjson.h>
+#include <SlateEngine/Engine/Core/Project.h>
+
+using SLATE_UUID = std::string;
+using SLATE_PATH = std::string;
 
 enum FILE_TYPE : int {
 	LUA = 0,
@@ -21,7 +25,17 @@ enum FILE_TYPE : int {
 struct SMetaData {
 	std::string uuid;
 	std::string path;
+	std::string metaPath;
 	FILE_TYPE ftype;
+};
+
+struct SlateFileSystemContainer {
+	std::unordered_map<FILE_TYPE, std::unordered_map<SLATE_UUID, SMetaData>> leafs;
+};
+
+struct SlateUUIDType {
+	SLATE_UUID uuid;
+	FILE_TYPE type;
 };
 
 class ENGINE_API FileSystem
@@ -36,6 +50,9 @@ public:
 
 	inline FILE_TYPE GetFileTypeFromExt(std::filesystem::path ext)
 	{
+		if (m_extensionLookupTable.count(ext.string()) == 0) {
+			return FILE_TYPE::MISC;
+		}
 		return (FILE_TYPE)m_extensionLookupTable[ext.string()];
 	}
 
@@ -46,7 +63,6 @@ public:
 	void OnFileRenamedOld(std::filesystem::path		oldName);
 	void OnFileRenamedNew(std::filesystem::path		newName);
 
-	std::string GetUUIDFromFPath(std::filesystem::path _p);
 	SMetaData& GetSMetaDataFromFPath(std::filesystem::path _p);
 
 	static FileSystem* Instance;
@@ -69,6 +85,8 @@ public:
 		}
 	}
 
+	void ProcessMetaFile(std::filesystem::path _p);
+
 private:
 	std::vector
 	<std::filesystem::path> lastRemovedFiles;
@@ -76,12 +94,6 @@ private:
 private:
 	friend class AssetStreamer;
 	void InitFWatcher();
-	void ImportFile(std::filesystem::path _p);
-	void ProcessScriptFile(std::filesystem::path _p);
-	void ProcessTextureFileWIC(std::filesystem::path _p);
-	void ProcessTextureFileDDS(std::filesystem::path _p);
-	void ProcessShaderFile(std::filesystem::path _p);
-	void ProcessMetaFile(std::filesystem::path _p);
 
 	void BuildExtensions();
 
@@ -90,8 +102,9 @@ private:
 		return FTypeToString((FILE_TYPE)m_extensionLookupTable[_p.string()]);
 	}
 
-	//first is uuid, second is meta file path
-	std::unordered_map<std::string, SMetaData> metaMap;
+	//they are pair
+	std::unordered_map<SLATE_UUID, SMetaData> metaMap;
+	std::unordered_map<SLATE_PATH, SlateUUIDType> metaPathMap;
 
 	std::map<std::string, UINT> m_extensionLookupTable;
 
