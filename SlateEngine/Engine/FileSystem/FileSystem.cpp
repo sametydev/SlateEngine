@@ -29,6 +29,7 @@ FileSystem::~FileSystem()
 
 void FileSystem::Init()
 {
+    fileSystemContainer = new SlateFileSystemContainer();
     BuildExtensions();
 
     errorMetaData = new SMetaData();
@@ -102,7 +103,7 @@ void FileSystem::InitFWatcher()
 
 SMetaData& FileSystem::GetSMetaDataFromFPath(std::filesystem::path _p)
 {
-    return metaMap[metaPathMap[_p.string()].uuid];
+    return fileSystemContainer->leafs[metaPathMap[_p.string()].type][metaPathMap[_p.string()].uuid];
 }
 
 
@@ -122,7 +123,7 @@ void FileSystem::ProcessMetaFile(std::filesystem::path _p)
         (void)UuidCreate(&uuid);
         char* str;
         (void)UuidToStringA(&uuid, (RPC_CSTR*)&str);
-        
+
         /*
         SMeta (SlateEngine Meta File) Example;
             [Asset]
@@ -145,13 +146,14 @@ void FileSystem::ProcessMetaFile(std::filesystem::path _p)
     }
 
     ini.LoadFile(metaFile.c_str());
-    
+
     SMetaData smd;
     smd.ftype = GetFileTypeFromExt(_p.extension());
     smd.path = xp.string();
     smd.metaPath = metaFile;
     smd.uuid = ini.GetValue("Asset", "uuid");
-    metaMap.emplace(smd.uuid, smd);
+
+    fileSystemContainer->leafs[GetFileTypeFromExt(_p.extension())][smd.uuid] = (smd);
 
     SlateUUIDType uuid_type;
     uuid_type.type = GetFileTypeFromExt(_p.extension());

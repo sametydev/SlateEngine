@@ -72,7 +72,7 @@ void Player::NewFrame()
 
 }
 
-void Player::OnRender(float rgba[4])
+void Player::OnRender(float rgba[4], DXFrameBuffer* frameBuffer)
 {
     game->ClearRenderTarget(rgba);
 
@@ -84,7 +84,7 @@ void Player::OnRender(float rgba[4])
     vertexShader->UpdateInputLayout();
     pixelShader->Bind();
 
-    ID3D11ShaderResourceView* srv = Game::Instance->GetOutputBuffer()->mRenderPass[0]->GetShaderResourceView();
+    ID3D11ShaderResourceView* srv = frameBuffer->mRenderPass[0]->GetShaderResourceView();
     context->PSSetShaderResources(0, 1, &srv);
     context->PSSetSamplers(0, 1, DXRasterizerState::SSClamp.GetAddressOf());
 

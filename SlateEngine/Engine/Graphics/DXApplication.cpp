@@ -110,7 +110,7 @@ int DXApplication::OnRun()
                 enginePlayer->NewFrame();
                 enginePlayer->ClearViewport(clear);
                 enginePlayer->OnUpdate(mTimer->deltaTime());
-                enginePlayer->OnRender(clear);
+                enginePlayer->OnRender(clear,GetOutputBuffer());
 
 
                 OnLateUpdate(mTimer->deltaTime());

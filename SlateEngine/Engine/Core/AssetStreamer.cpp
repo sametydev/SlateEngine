@@ -16,6 +16,7 @@ AssetStreamer::~AssetStreamer()
 
 Asset* AssetStreamer::RequestAsset(const char* assetPath)
 {
+	/*
 	for (auto& it : FileSystem::Instance->metaMap)
 	{
 		if (it.second.path == assetPath)
@@ -39,6 +40,7 @@ Asset* AssetStreamer::RequestAsset(const char* assetPath)
 			}
 		}
 	}
+	*/
     return nullptr;
 }
 

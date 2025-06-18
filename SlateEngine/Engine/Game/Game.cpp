@@ -1,8 +1,7 @@
 ﻿#include <SlateEngine/Engine/Game/Game.h>
 #include <SlateEngine/Engine/Input/InputSystem.h>
-#include <SlateEngine/Engine/Physics/PhysicsFactory.h>
-#include <SlateEngine/Engine/NativeScripting/ScriptRegistry.h>
 #include <SlateEngine/Engine/Graphics/DXBasicBatch.h>
+
 Game* Game::Instance = nullptr;
 
 Game::Game(HINSTANCE hInstance, const std::wstring& windowName, int initWidth, int initHeight)
@@ -22,6 +21,9 @@ Game::~Game()
 bool Game::OnInit()
 {
     if (!DXApplication::OnInit()) { return 0; }
+
+    new ProfileTimerFactory();
+
     CreateFileSystem();
 
     CreateCamera();
@@ -29,9 +31,16 @@ bool Game::OnInit()
     enginePlayer->OnInit(hWindow, m_d3dDevice.Get(), m_d3dContext.Get());
     enginePlayer->ResizeViewport(m_clientW, m_clientH);
 
-    entityManager = std::make_unique<EntityManager>();
-    PhysicsFactory* pfactory = new PhysicsFactory();
-    pfactory->Init();
+    entityManager   = std::make_unique<EntityManager>();
+    physicsFactory  = std::make_unique<PhysicsFactory>();
+
+    //Init GameModule
+    gameModule = std::make_unique<GameModule>();
+    gameModule->Initialize();
+
+    scriptRegistry = std::make_unique<ScriptRegistry>();
+
+    physicsFactory->Init();
 
     //Temporary Game Scope
     {
@@ -53,7 +62,7 @@ bool Game::OnInit()
 
 
         testEntity->AddComponent<LuaScript>();
-        testEntity->GetComponent<LuaScript>().SetScriptPath(PathMaker::Make(gDXApp->GetWorkingDir(), "Assets\\Scripts\\Test.lua").c_str());
+        testEntity->GetComponent<LuaScript>().SetScriptByPath(PathMaker::Make(GetWorkingDir(), "Assets\\Scripts\\Test.lua").c_str());
 
         testEntity->GetComponent<Transform>().SetPosition({ 0.f,2.f,0.f });
 
@@ -79,15 +88,8 @@ bool Game::OnInit()
     CreateGlobalConstantBuffers();
 
 
-    //Init GameModule
-    gameModule = std::make_unique<GameModule>();
-    gameModule->Initialize();
-
-    scriptRegistry = std::make_unique<ScriptRegistry>();
-
     // --- TEMPORARY CODE ---- //
     // NATIVE SCRIPTING CONCEPT!! NOT FINAL
-
     std::string str = "MyTestScript";
     script1 = ScriptRegistry::Instance->Create(str);
 
@@ -98,8 +100,6 @@ bool Game::OnInit()
     if (script1) {
         script1->OnInit();
     }
-
-
     // --- TEMPORARY CODE ---- //
 
     return true;

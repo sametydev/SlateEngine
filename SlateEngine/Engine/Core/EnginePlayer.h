@@ -1,5 +1,7 @@
 #pragma once
 #include <SlateEngine/Engine/DXConfig.h>
+#include <SlateEngine/Engine/Graphics/Buffer/DXFrameBuffer.h>
+
 class ENGINE_API EnginePlayer
 {
 public:
@@ -9,7 +11,7 @@ public:
 	virtual void OnInit(HWND wnd, ID3D11Device* pDevice, ID3D11DeviceContext* pDeviceContext) = 0;
 
 	virtual void NewFrame() = 0;
-	virtual void OnRender(float rgba[4]) = 0;
+	virtual void OnRender(float rgba[4],DXFrameBuffer* frameBuffer) = 0;
 
 	virtual void OnRenderScene(ID3D11DeviceContext* pContext) = 0;
 

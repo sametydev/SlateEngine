@@ -9,6 +9,7 @@
 #include <SlateEditor/Editor/Windows/LightingSettingsWindow.h>
 #include <SlateEditor/Editor/Windows/NativeScriptingDebugger.h>
 #include <SlateEditor/Editor/Windows/ToolboxWindow.h>
+#include <SlateEditor\Editor\Windows\ProfilerWindow.h>
 #include <imgui.h>
 #include <imgui_impl_dx11.h>
 #include <imgui_impl_win32.h>
@@ -25,7 +26,7 @@ public:
 	void OnInit(HWND wnd, ID3D11Device* pDevice, ID3D11DeviceContext* pDeviceContext) override;
 
 	void NewFrame() override;
-	void OnRender(float rgba[4]) override;
+	void OnRender(float rgba[4],DXFrameBuffer* frameBuffer) override;
 	void OnRenderScene(ID3D11DeviceContext* pContext) override;
 
 	//Update first render later
@@ -59,12 +60,14 @@ private:
 	LightingSettingsWindow* light    = nullptr;
 	AssetsBrowser* assetBrowser      = nullptr;
 	ToolboxWindow* toolboxWindow	 = nullptr;
+	ProfilerWindow* profilerWindow	 = nullptr;
 	NativeScriptingDebugger* nativeScriptingDebuggerWindow = nullptr;
 
 	std::unique_ptr<Gamepad> gamepad;
 	Camera* mainCamera = nullptr;
 
 	bool nativeScriptingDebugger_Open = false;
+	bool profilerWindow_Open = false;
 
 	HCURSOR cursorNormal;
 	HCURSOR cursorGrab;

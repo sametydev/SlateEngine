@@ -101,3 +101,8 @@ void LuaScript::OnShutdown()
 {
     lua_close(m_luaState);
 }
+
+void LuaScript::SetScriptByUUID(std::string UUID)
+{
+    scriptPath = FileSystem::Instance->GetFileSystemContainer()->leafs[FILE_TYPE::LUA][UUID].path;
+}

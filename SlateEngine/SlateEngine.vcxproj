@@ -106,7 +106,6 @@
     <ClCompile Include="Engine\Core\AssetStreamer.cpp" />
     <ClCompile Include="Engine\Component\Material.cpp" />
     <ClCompile Include="Engine\Core\HWInfo.cpp" />
-    <ClCompile Include="Engine\Core\EnginePlayer.cpp" />
     <ClCompile Include="Engine\Component\RenderableGeometry.cpp" />
     <ClCompile Include="Engine\Component\Camera.cpp" />
     <ClCompile Include="Engine\Component\Transform.cpp" />
@@ -148,6 +147,7 @@
     <ClCompile Include="Engine\Parser\SceneParser.cpp" />
     <ClCompile Include="Engine\FileSystem\Importers\ShaderFileImporter.cpp" />
     <ClCompile Include="Engine\FileSystem\Importers\WICTextureFileImporter.cpp" />
+    <ClCompile Include="Engine\Core\ProfileTimerFactory.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\FileSystem\Importers\DDSTextureFileImporter.h" />
@@ -223,6 +223,8 @@
     <ClInclude Include="Engine\FileSystem\Importers\ShaderFileImporter.h" />
     <ClInclude Include="Engine\FileSystem\Importers\LuaScriptFileImporter.h" />
     <ClInclude Include="Engine\FileSystem\Importers\WICTextureFileImporter.h" />
+    <ClInclude Include="Engine\Core\ProfileTimer.h" />
+    <ClInclude Include="Engine\Core\ProfileTimerFactory.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\LightsHeader.hlsli" />

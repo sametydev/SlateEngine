@@ -58,6 +58,7 @@
       <LanguageStandard>stdcpp17</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
+      <Optimization>Disabled</Optimization>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -108,6 +109,7 @@
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Editor\Windows\NativeScriptingDebugger.cpp" />
     <ClCompile Include="Editor\Windows\ToolboxWindow.cpp" />
+    <ClCompile Include="Editor\Windows\ProfilerWindow.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Editor\EditorUI.h" />
@@ -119,6 +121,7 @@
     <ClInclude Include="Editor\Windows\SceneHierarchy.h" />
     <ClInclude Include="Editor\Windows\NativeScriptingDebugger.h" />
     <ClInclude Include="Editor\Windows\ToolboxWindow.h" />
+    <ClInclude Include="Editor\Windows\ProfilerWindow.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

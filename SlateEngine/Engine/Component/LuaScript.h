@@ -23,7 +23,8 @@ public:
 	void OnShutdown() override;
 
 	std::string GetScriptPath() { return scriptPath; };
-	void SetScriptPath(const char* val) { scriptPath = val; };
+	void SetScriptByPath(const char* val) { scriptPath = val; };
+	void SetScriptByUUID(std::string UUID);
 
 private:
 	lua_State* m_luaState = nullptr;

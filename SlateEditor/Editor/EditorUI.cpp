@@ -60,6 +60,7 @@ void EditorUI::OnInit(HWND wnd, ID3D11Device* pDevice, ID3D11DeviceContext* pDev
     light							= new LightingSettingsWindow();
 	assetBrowser					= new AssetsBrowser();
 	nativeScriptingDebuggerWindow	= new NativeScriptingDebugger();
+	profilerWindow					= new ProfilerWindow();
 
 	toolboxWindow->OnInit();
     windows.emplace(sceneWindow);
@@ -72,6 +73,8 @@ void EditorUI::OnInit(HWND wnd, ID3D11Device* pDevice, ID3D11DeviceContext* pDev
     }
 
 	nativeScriptingDebuggerWindow->OnInit();
+	profilerWindow->OnInit();
+
 	inspectorWindow->OnInit();
 	logWindow->AddLog("[Renderer] - DX11(DirectX 11_1) Renderer OnInit");
 	CreateGrid();
@@ -193,6 +196,10 @@ void EditorUI::OnUpdate(float deltaTime)
 			{
 				nativeScriptingDebugger_Open = true;
 			}
+			if (ImGui::MenuItem("Profiler Window", NULL))
+			{
+				profilerWindow_Open = true;
+			}
 			ImGui::EndMenu();
 		}
 		
@@ -309,6 +316,7 @@ void EditorUI::OnUpdate(float deltaTime)
 
 	inspectorWindow->OnDraw(sceneWindow->selectedEntity);
 	nativeScriptingDebuggerWindow->OnDraw(&nativeScriptingDebugger_Open);
+	profilerWindow->OnDraw(&profilerWindow_Open);
 
 	if (ImGui::Begin("Raw Render")) {
 		float originalWidth = Game::Instance->GetSceneBuffer()->width;
@@ -454,7 +462,7 @@ void EditorUI::InitTheme()
 	style.Colors[ImGuiCol_ModalWindowDimBg] = ImVec4(0.800000011920929f, 0.800000011920929f, 0.800000011920929f, 0.3499999940395355f);
 }
 
-void EditorUI::OnRender(float rgba[4])
+void EditorUI::OnRender(float rgba[4], DXFrameBuffer* frameBuffer)
 {
     ImGui::Render();
 	ImGui::UpdatePlatformWindows();

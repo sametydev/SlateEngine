@@ -222,21 +222,16 @@ void InspectorWindow::DrawLuaScriptComponent(Entity* entity)
 
 	static int currentScriptItem = 0;
 
-	scriptsTextTmp.clear();
+	scriptsMapBuffer.clear();
+	scriptNames.clear();
+	scriptNamePtrs.clear();
 
-	for (auto x : FileSystem::Instance->GetMetaMap())
+	SlateFileSystemContainer* container = FileSystem::Instance->GetFileSystemContainer();
+	for (auto& x : container->leafs[FILE_TYPE::LUA])
 	{
-		if (x.second.ftype == FILE_TYPE::LUA) {
-			std::string extractedPath = x.second.path;
-			//extractedPath.replace(extractedPath.find(".smeta"), sizeof(".smeta")-1,"");
-			scriptsTextTmp.push_back(extractedPath);
-		}
-	}
-
-	scriptCChTMP.clear();
-
-	for (std::string const& str : scriptsTextTmp) {
-		scriptCChTMP.push_back(str.data());
+		scriptNames.push_back(x.second.path);
+		scriptNamePtrs.push_back(scriptNames.back().c_str());
+		scriptsMapBuffer[x.second.path] = x.second.uuid;
 	}
 
 	if (ImGui::TreeNode("Script"))
@@ -244,9 +239,9 @@ void InspectorWindow::DrawLuaScriptComponent(Entity* entity)
 		ImGui::Dummy(ImVec2(0.0f, 4.0f));
 		
 		ImGui::Text(ls.GetScriptPath().c_str());
-		if (ImGui::Combo("Mesh", &currentScriptItem, scriptCChTMP.data(), scriptCChTMP.size())) {
+		if (ImGui::Combo("Mesh", &currentScriptItem, scriptNamePtrs.data(), scriptNamePtrs.size())) {
 			//DXApplication::Instance->GetLogger()->AddLog(tempData[currentScriptItem]);
-			ls.SetScriptPath(scriptCChTMP[currentScriptItem]);
+			ls.SetScriptByPath(scriptNamePtrs[currentScriptItem]);
 		}
 
 		if (ImGui::Button("Remove <Script> Component")) {
