@@ -31,6 +31,7 @@ struct SMetaData {
 
 struct SlateFileSystemContainer {
 	std::unordered_map<FILE_TYPE, std::unordered_map<SLATE_UUID, SMetaData>> leafs;
+	std::unordered_map<SLATE_UUID, FILE_TYPE> typeLookup;
 };
 
 struct SlateUUIDType {

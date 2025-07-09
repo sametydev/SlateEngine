@@ -120,6 +120,7 @@ void Game::OnResize()
 
 void Game::OnUpdateScene(float deltaTime, ID3D11DeviceContext* pContext)
 {
+    PROFILER_START("Game::OnUpdateScene");
     m_camera->Update(deltaTime);
 
     UpdateGlobalConstantBuffers();
@@ -127,11 +128,14 @@ void Game::OnUpdateScene(float deltaTime, ID3D11DeviceContext* pContext)
     if (renderWireframe)DXRasterizerState::SetRasterizerState(RasterizerState::CULL_WIREFRAME, pContext);
 
     entityManager->OnUpdate(deltaTime,gameState);
+    PROFILER_STOP();
 }
 
 void Game::OnRenderScene(ID3D11DeviceContext* pContext)
 {
+    PROFILER_START("Game::OnRenderScene");
     entityManager->OnRender(pContext);
+    PROFILER_STOP();
 }
 
 void Game::UpdateGlobalConstantBuffers()
@@ -190,14 +194,14 @@ void Game::CreateGlobalConstantBuffers()
     ConstantBufferDesc cbd{};
 
     m_frameConstantBuffer = std::make_unique<DXConstantBuffer>();
+
     cbd.cbSize = sizeof(FrameConstantBuffer);
     m_frameConstantBuffer->Create(cbd);
 
-    m_frameConstantBuffer->BindVS(BUFFER_ID::FRAME_CONSTANT_BUFFER_ID);
-    m_frameConstantBuffer->BindPS(BUFFER_ID::FRAME_CONSTANT_BUFFER_ID);
-
+    m_frameConstantBuffer->BindPipeline(BUFFER_ID::FRAME_CONSTANT_BUFFER_ID);
 
     m_lightConstantBuffer = std::make_unique<DXConstantBuffer>();
+
     cbd.cbSize = sizeof(LightConstantBuffer);
     m_lightConstantBuffer->Create(cbd);
 

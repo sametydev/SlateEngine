@@ -27,8 +27,8 @@ void DXConstantBuffer::BindVS(UINT slot)
 
 void DXConstantBuffer::BindPipeline(UINT offset)
 {
-    BindVS(0);
-    BindPS(0);
+    BindVS(offset);
+    BindPS(offset);
 }
 
 void DXConstantBuffer::Create(const ConstantBufferDesc& desc)

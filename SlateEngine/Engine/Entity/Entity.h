@@ -36,8 +36,8 @@ private:
 struct EntityName {
 public:
 	EntityName() = default;
-	EntityName(const char* n, Entity* e) : name(n), entityClass(e) {};
-	const char* name;
+	EntityName(std::string n, Entity* e) : name(n), entityClass(e) {};
+	std::string name;
 	Entity* entityClass = nullptr;
 
 	inline void SetEntity(Entity* entity) {

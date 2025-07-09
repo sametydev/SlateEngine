@@ -148,6 +148,7 @@
     <ClCompile Include="Engine\FileSystem\Importers\ShaderFileImporter.cpp" />
     <ClCompile Include="Engine\FileSystem\Importers\WICTextureFileImporter.cpp" />
     <ClCompile Include="Engine\Core\ProfileTimerFactory.cpp" />
+    <ClCompile Include="Engine\Component\NativeScriptComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\FileSystem\Importers\DDSTextureFileImporter.h" />
@@ -225,6 +226,7 @@
     <ClInclude Include="Engine\FileSystem\Importers\WICTextureFileImporter.h" />
     <ClInclude Include="Engine\Core\ProfileTimer.h" />
     <ClInclude Include="Engine\Core\ProfileTimerFactory.h" />
+    <ClInclude Include="Engine\Component\NativeScriptComponent.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\LightsHeader.hlsli" />

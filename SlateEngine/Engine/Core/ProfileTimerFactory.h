@@ -4,6 +4,10 @@
 #include <unordered_map>
 #include <functional>
 
+constexpr bool PROFILER_ENABLED = true;
+
+#define PROFILER_START(name) ProfileTimerFactory::Instance->CreateTimer(name);
+#define PROFILER_STOP() ProfileTimerFactory::Instance->StopCurrentTimer();
 
 class ENGINE_API ProfileTimerFactory
 {
@@ -14,6 +18,7 @@ public:
 	void CreateTimer(std::string Name);
 
 	inline void StopCurrentTimer() {
+		if (!PROFILER_ENABLED) return;
 		currentTimer->Stop();
 	};
 

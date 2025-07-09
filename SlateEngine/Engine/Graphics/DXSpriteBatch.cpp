@@ -181,7 +181,7 @@ void DXSpriteBatch::CreateBatches(/*int max_batch*/)
 void DXSpriteBatch::RenderBatches()
 {
 	gDXContext->OMSetDepthStencilState(nullptr, 0);
-	mScreenVS->Bind();
+	mScreenVS->Bind(gDXContext);
 	mCBO->BindVS(1);
 
 	UINT stride = sizeof(VertexPT);

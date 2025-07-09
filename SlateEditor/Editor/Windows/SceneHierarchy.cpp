@@ -32,7 +32,7 @@ void SceneHierarchy::OnDraw(bool* closable)
 			ImGuiTreeNodeFlags flags = (isSelected ? ImGuiTreeNodeFlags_Selected : 0) | ImGuiTreeNodeFlags_OpenOnArrow;
 			flags |= ImGuiTreeNodeFlags_SpanAvailWidth;
 
-			if (ImGui::TreeNodeEx(name.name, flags))
+			if (ImGui::TreeNodeEx(name.name.c_str(), flags))
 			{
 				ImGui::TreePop();
 			}

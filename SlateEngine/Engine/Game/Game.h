@@ -40,7 +40,7 @@ public:
     void OnLateUpdate(float deltaTime);
     
     void SetGameState(GameState gs);
-    GameState GetGameState() { return gameState; };
+    GameState& GetGameState() { return gameState; };
 
     static Game* Instance;
 
@@ -53,12 +53,12 @@ public:
     DXTexture* m_crateTexture = nullptr;
     std::unique_ptr<DXTexture> m_grassTexture = nullptr;
 
+    inline Camera* GetCurrentCamera() { return m_camera; };
+
     Entity* testEntity;
     Entity* testEntity2;
 
     //--
-
-    Camera* m_camera{};
 private:
     void CreateGlobalConstantBuffers();
     void UpdateGlobalConstantBuffers();
@@ -68,7 +68,7 @@ private:
 
 
     GameState gameState = GameState::NONE;
-
+    Camera* m_camera{};
     //-----------------------------------------------------------------------|
 
 

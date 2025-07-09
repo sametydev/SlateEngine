@@ -19,7 +19,7 @@ void MyTestScript::OnInit()
 {
 	myTransform = GetEntity()->GetComponentAsPointer<Transform>();
 
-	Game::Instance->GetLogger()->AddLog(GetEntity()->GetComponent<EntityName>().name);
+	Game::Instance->GetLogger()->AddLog(GetEntity()->GetComponent<EntityName>().name.c_str());
 	GetEntity()->GetComponent<Transform>().SetPosition({3.2f,3.f,0.0f});
 }
 

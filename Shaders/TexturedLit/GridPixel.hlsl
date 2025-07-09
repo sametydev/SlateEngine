@@ -6,6 +6,11 @@ struct PSInput
     float4 color : COLOR;
 };
 
+cbuffer GridParams : register(b3)
+{
+    float4 color;
+};
+
 float4 main(PSInput input) : SV_TARGET
 {
     float gridScale = 1.0f;
@@ -18,7 +23,7 @@ float4 main(PSInput input) : SV_TARGET
 
     float linex = step(lineThickness, gridLineX) * step(lineThickness, gridLineZ);
 
-    float4 gridColor = lerp(float4(1.0f, 1.0f, 1.0f, 1.0f), float4(0.2f, 0.2f, 0.2f, 1.0f), linex);
+    float4 gridColor = lerp(color, float4(0.2f, 0.2f, 0.2f, 1.0f), linex);
 
     return gridColor * input.color;
 }

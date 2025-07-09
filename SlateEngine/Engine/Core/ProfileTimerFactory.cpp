@@ -14,6 +14,8 @@ ProfileTimerFactory::~ProfileTimerFactory()
 
 void ProfileTimerFactory::CreateTimer(std::string Name)
 {
+	if (!PROFILER_ENABLED) return;
+
 	if (timers.count(Name)) {
 		delete timers[Name];
 	}

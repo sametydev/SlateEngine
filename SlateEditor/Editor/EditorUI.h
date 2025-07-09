@@ -17,6 +17,11 @@
 #include <set>
 #include <SlateEngine/Engine/Input/Gamepad.h>
 
+
+struct GridParams {
+	vec4f color;
+};
+
 class EditorUI : public EnginePlayer
 {
 public:
@@ -26,7 +31,7 @@ public:
 	void OnInit(HWND wnd, ID3D11Device* pDevice, ID3D11DeviceContext* pDeviceContext) override;
 
 	void NewFrame() override;
-	void OnRender(float rgba[4],DXFrameBuffer* frameBuffer) override;
+	void OnRender(float rgba[4], DXFrameBuffer* frameBuffer) override;
 	void OnRenderScene(ID3D11DeviceContext* pContext) override;
 
 	//Update first render later
@@ -55,12 +60,12 @@ private:
 	std::set<IWindow*> windows;
 
 	InspectorWindow* inspectorWindow = nullptr;
-	SceneHierarchy* sceneWindow      = nullptr;
-	LogWindow* logWindow             = nullptr;
-	LightingSettingsWindow* light    = nullptr;
-	AssetsBrowser* assetBrowser      = nullptr;
-	ToolboxWindow* toolboxWindow	 = nullptr;
-	ProfilerWindow* profilerWindow	 = nullptr;
+	SceneHierarchy* sceneWindow = nullptr;
+	LogWindow* logWindow = nullptr;
+	LightingSettingsWindow* light = nullptr;
+	AssetsBrowser* assetBrowser = nullptr;
+	ToolboxWindow* toolboxWindow = nullptr;
+	ProfilerWindow* profilerWindow = nullptr;
 	NativeScriptingDebugger* nativeScriptingDebuggerWindow = nullptr;
 
 	std::unique_ptr<Gamepad> gamepad;
@@ -82,6 +87,8 @@ private:
 	DXVertexShader* m_gridVS;
 	DXPixelShader* m_gridPS;
 	std::unique_ptr<DXConstantBuffer> m_gridConstantBuffer;
-	ObjectConstantBuffer   gridConstantBufferData{};
+	std::unique_ptr<DXConstantBuffer> m_gridParamsBuffer;
+	ObjectConstantBuffer	gridConstantBufferData{};
+	GridParams				gridParamsBufferData{};
 	mat4x4 gridMatrix;
 };

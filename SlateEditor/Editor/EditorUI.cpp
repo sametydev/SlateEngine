@@ -52,7 +52,7 @@ void EditorUI::OnInit(HWND wnd, ID3D11Device* pDevice, ID3D11DeviceContext* pDev
 	cursorGrab						= LoadCursor(NULL, IDC_HAND);
 
 	game							= Game::Instance;
-	mainCamera						= game->m_camera;
+	mainCamera						= game->GetCurrentCamera();;
 
 	toolboxWindow					= new ToolboxWindow();
     inspectorWindow					= new InspectorWindow();
@@ -97,20 +97,20 @@ void EditorUI::HandleInput(float deltaTime) {
 
 		vec2f delta = InputSystem::delta;
 
-		game->m_camera->mRot.y += delta.x * mouseSpeed;
-		game->m_camera->mRot.x += delta.y * mouseSpeed;
+		mainCamera->mRot.y += delta.x * mouseSpeed;
+		mainCamera->mRot.x += delta.y * mouseSpeed;
 
 		if (ImGui::IsKeyDown(ImGuiKey_W)) {
-			game->m_camera->mPos += game->m_camera->mForward * movementSpeed * deltaTime;
+			mainCamera->mPos += mainCamera->mForward * movementSpeed * deltaTime;
 		}
 		if (ImGui::IsKeyDown(ImGuiKey_S)) {
-			game->m_camera->mPos -= game->m_camera->mForward * movementSpeed * deltaTime;
+			mainCamera->mPos -= mainCamera->mForward * movementSpeed * deltaTime;
 		}
 		if (ImGui::IsKeyDown(ImGuiKey_D)) {
-			game->m_camera->mPos += game->m_camera->mRight * movementSpeed * deltaTime;
+			mainCamera->mPos += mainCamera->mRight * movementSpeed * deltaTime;
 		}
 		if (ImGui::IsKeyDown(ImGuiKey_A)) {
-			game->m_camera->mPos -= game->m_camera->mRight * movementSpeed * deltaTime;
+			mainCamera->mPos -= mainCamera->mRight * movementSpeed * deltaTime;
 		}
 	}
 	else
@@ -136,6 +136,8 @@ void EditorUI::OnUpdate(float deltaTime)
 {
     static bool dockspaceOpen = true;
 
+	//------------------------
+	//GAMEPAD TEST
 	if (gamepad->IsConnected()) {
 		if (gamepad->IsButtonPressed(SLATE_GAMEPAD_A)) {
 			MessageBoxA(0, "Gamepad A Button Pressed", 0, 0);
@@ -147,6 +149,7 @@ void EditorUI::OnUpdate(float deltaTime)
 			gamepad->ResetVibration();
 		}
 	}
+	//------------------------
 
 	ImGuiWindowFlags window_flags = ImGuiWindowFlags_MenuBar;
 
@@ -272,8 +275,8 @@ void EditorUI::OnUpdate(float deltaTime)
 
 			ImGuizmo::SetRect(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y, w, h);
 
-			mat4x4 cproj = mat4x4::transposed(game->m_camera->GetProjectionMatrix());
-			mat4x4 cview = mat4x4::transposed(game->m_camera->GetViewMatrix());
+			mat4x4 cproj = mat4x4::transposed(mainCamera->GetProjectionMatrix());
+			mat4x4 cview = mat4x4::transposed(mainCamera->GetViewMatrix());
 			Transform& tc = sceneWindow->selectedEntity->GetComponent<Transform>();
 
 
@@ -478,15 +481,26 @@ void EditorUI::OnRenderScene(ID3D11DeviceContext* pContext)
 void EditorUI::CreateGrid()
 {
 	SetGridBuffer(BuiltInMesh::CreateGrid<VertexPC>(200.0f, 200.0f, 100, 100, vec4f(0.25f, 0.25f, 0.25f, 1.f)));
+	ConstantBufferDesc cbd{};
 
 	m_gridConstantBuffer = std::make_unique<DXConstantBuffer>();
 
-	gridConstantBufferData.world = mat4x4();
-	gridConstantBufferData.worldInverseTranspose = mat4x4();
+	gridMatrix.SetIdentity();
+	gridMatrix.translated({ 0.0f,0.0f,0.0f });
 
-	ConstantBufferDesc cbd{};
+	gridConstantBufferData.world = gridMatrix;
+	gridConstantBufferData.worldInverseTranspose = gridMatrix.InverseTranspose();
+
 	cbd.cbSize = sizeof(ObjectConstantBuffer);
 	m_gridConstantBuffer->Create(cbd);
+
+	m_gridParamsBuffer = std::make_unique<DXConstantBuffer>();
+
+	gridParamsBufferData.color = vec4f(0.3f, 1.0f, 0.3f, 1.0f);
+
+	cbd.cbSize = sizeof(GridParams);
+	m_gridParamsBuffer->Create(cbd);
+
 
 	m_gridVS = ShaderCache::GetVertexShader("GridVS");
 	m_gridPS = ShaderCache::GetPixelShader("GridPS");
@@ -494,18 +508,15 @@ void EditorUI::CreateGrid()
 
 void EditorUI::RenderGrid(ID3D11DeviceContext* pContext)
 {
-	gridMatrix.SetIdentity();
-	gridMatrix.translated({ 0.0f,0.0f,0.0f });
-
-	gridConstantBufferData.world = gridMatrix;
-	gridConstantBufferData.worldInverseTranspose = gridMatrix.InverseTranspose();
-
 	m_gridConstantBuffer->MapAndUnMap(sizeof(ObjectConstantBuffer), &gridConstantBufferData);
+	m_gridParamsBuffer->MapAndUnMap(sizeof(GridParams), &gridParamsBufferData);
 
-	m_gridVS->Bind();
-	m_gridPS->Bind();
+	m_gridVS->Bind(pContext);
+	m_gridPS->Bind(pContext);
 
 	m_gridConstantBuffer->BindPipeline(0);
+	m_gridParamsBuffer->BindPipeline(3);
+
 	m_gridIndexBuffer->BindPipeline(0);
 	m_gridVertexBuffer->BindPipeline(0);
 	DXRasterizerState::SetRasterizerState(RasterizerState::CULL_WIREFRAME, pContext);

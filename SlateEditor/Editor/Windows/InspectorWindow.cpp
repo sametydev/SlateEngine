@@ -34,7 +34,7 @@ void InspectorWindow::OnDraw(Entity* entity)
 			Transform& t = entity->GetComponent<Transform>();
 			EntityName& e = entity->GetComponent<EntityName>();
 
-			char* bufpass = _strdup(e.name);
+			char* bufpass = _strdup(e.name.c_str());
 			if (ImGui::InputText("Name", bufpass, 64)) {
 				e.name = bufpass && !bufpass[0] ? "Entity" : bufpass;
 			}

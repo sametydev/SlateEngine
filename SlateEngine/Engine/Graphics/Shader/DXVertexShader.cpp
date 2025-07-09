@@ -10,10 +10,10 @@ DXVertexShader::~DXVertexShader()
 {
 }
 
-void DXVertexShader::Bind()
+void DXVertexShader::Bind(ID3D11DeviceContext* pDeviceContext)
 {
 	_NULL_CHECK
-	Game::Instance->GetDXContext()->VSSetShader(m_vertexShader.Get(), nullptr, 0);
+	pDeviceContext->VSSetShader(m_vertexShader.Get(), nullptr, 0);
 	UpdateInputLayout();
 }
 
@@ -36,7 +36,7 @@ void DXVertexShader::UpdateInputLayout()
 	Game::Instance->GetDXContext()->IASetInputLayout(m_inputLayout.Get());
 }
 
-void DXVertexShader::SetConstantBuffer(uint32_t slot, uint32_t numOfBuffers,ID3D11Buffer* const* buffer)
+void DXVertexShader::SetConstantBuffer(ID3D11DeviceContext* pDeviceContext,uint32_t slot, uint32_t numOfBuffers,ID3D11Buffer* const* buffer)
 {
 	Game::Instance->GetDXContext()->VSSetConstantBuffers(0, 1, buffer);
 }

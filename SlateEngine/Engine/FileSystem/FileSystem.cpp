@@ -153,10 +153,11 @@ void FileSystem::ProcessMetaFile(std::filesystem::path _p)
     smd.metaPath = metaFile;
     smd.uuid = ini.GetValue("Asset", "uuid");
 
-    fileSystemContainer->leafs[GetFileTypeFromExt(_p.extension())][smd.uuid] = (smd);
+    fileSystemContainer->leafs[smd.ftype][smd.uuid] = (smd);
+    fileSystemContainer->typeLookup[smd.uuid] = smd.ftype;
 
     SlateUUIDType uuid_type;
-    uuid_type.type = GetFileTypeFromExt(_p.extension());
+    uuid_type.type = smd.ftype;
     uuid_type.uuid = smd.uuid;
 
     metaPathMap.emplace(xp.string(), uuid_type);
