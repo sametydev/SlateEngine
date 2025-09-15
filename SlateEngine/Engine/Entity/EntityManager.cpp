@@ -22,7 +22,7 @@ void EntityManager::RegisterEntity(Entity* entity)
 	EntityRegistrar::GetRegistry().emplace<Transform>(entity->rawEntity);
 }
 
-void EntityManager::RegisterEntity(Entity* entity, const char* name)
+void EntityManager::RegisterEntity(Entity* entity, std::string name)
 {
 	entity->rawEntity = EntityRegistrar::GetRegistry().create();
 	EntityRegistrar::GetRegistry().emplace<EntityName>(entity->rawEntity, name,entity);

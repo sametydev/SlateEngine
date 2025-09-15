@@ -19,6 +19,9 @@
 #include <SlateEngine/Engine/Component/Script.h>
 #include <SlateEngine/Engine/Module/GameModule.h>
 #include <SlateEngine/Engine/Graphics/Shader/RenderPassManager.h>
+#include <SlateEngine/Engine/Core/ProfileTimerFactory.h>
+#include <SlateEngine/Engine/Physics/PhysicsFactory.h>
+#include <SlateEngine/Engine/NativeScripting/ScriptRegistry.h>
 
 class ENGINE_API Game : public DXApplication
 {
@@ -37,7 +40,7 @@ public:
     void OnLateUpdate(float deltaTime);
     
     void SetGameState(GameState gs);
-    GameState GetGameState() { return gameState; };
+    GameState& GetGameState() { return gameState; };
 
     static Game* Instance;
 
@@ -50,12 +53,12 @@ public:
     DXTexture* m_crateTexture = nullptr;
     std::unique_ptr<DXTexture> m_grassTexture = nullptr;
 
+    inline Camera* GetCurrentCamera() { return m_camera; };
+
     Entity* testEntity;
     Entity* testEntity2;
 
     //--
-
-    Camera* m_camera{};
 private:
     void CreateGlobalConstantBuffers();
     void UpdateGlobalConstantBuffers();
@@ -65,7 +68,7 @@ private:
 
 
     GameState gameState = GameState::NONE;
-
+    Camera* m_camera{};
     //-----------------------------------------------------------------------|
 
 
@@ -80,6 +83,7 @@ private:
     std::unique_ptr<FileSystem> fileSystem;
     std::unique_ptr<GameModule> gameModule;
     std::unique_ptr<ScriptRegistry> scriptRegistry;
+    std::unique_ptr<PhysicsFactory> physicsFactory;
     //-----------------------------------------------------------------------|
 
 

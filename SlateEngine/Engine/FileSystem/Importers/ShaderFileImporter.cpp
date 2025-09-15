@@ -4,8 +4,6 @@
 #include <SlateEngine\Engine\Graphics\Shader\ShaderCache.h>
 #include <SlateEngine\Engine\Graphics\Vertex.h>
 
-#pragma comment(lib, "rpcrt4.lib")
-
 ShaderFileImporter::ShaderFileImporter()
 {
 }

@@ -95,10 +95,10 @@ void DXBasicBatch::End()
 {
 	if (mIsBegin && (mQueueIndex <= 0)) return;
 
-	mShaderVS->Bind();
+	mShaderVS->Bind(mContext);
 	mShaderVS->UpdateInputLayout();
 
-	mShaderPS->Bind();
+	mShaderPS->Bind(mContext);
 
 	UINT stride = sizeof(vec4f), offset = 0;
 

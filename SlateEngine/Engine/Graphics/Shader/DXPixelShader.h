@@ -8,10 +8,10 @@ public:
 	virtual ~DXPixelShader();
 
 
-	virtual void Bind();
+	virtual void Bind(ID3D11DeviceContext* pDeviceContext);
 
 	virtual void Compile(const WCHAR* csoName, const WCHAR* hlslName, LPCSTR entryName);
-	virtual void SetConstantBuffer(uint32_t slot, uint32_t numOfBuffers, ID3D11Buffer* const* buffer);
+	virtual void SetConstantBuffer(ID3D11DeviceContext* pDeviceContext,uint32_t slot, uint32_t numOfBuffers, ID3D11Buffer* const* buffer);
 
 private:
 	ComPtr<ID3D11PixelShader> m_pixelShader;

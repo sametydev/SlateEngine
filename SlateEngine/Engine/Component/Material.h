@@ -71,7 +71,7 @@ public:
 
     void AddTexture(DXTexture* tex);
 
-    void BindPipeline();
+    void BindPipeline(ID3D11DeviceContext* pDeviceContext);
 
     template<class T>
     void Set(std::string_view name, const T& value)

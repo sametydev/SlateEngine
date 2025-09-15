@@ -11,7 +11,7 @@ public:
 	void OnInit(HWND wnd, ID3D11Device* pDevice, ID3D11DeviceContext* pDeviceContext) override;
 
 	void NewFrame() override;
-	void OnRender(float rgba[4]) override;
+	void OnRender(float rgba[4], DXFrameBuffer* frameBuffer) override;
 	void OnRenderScene(ID3D11DeviceContext* pContext) override;
 
 	//Update first render later

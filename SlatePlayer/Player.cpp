@@ -69,10 +69,9 @@ void Player::OnInit(HWND wnd, ID3D11Device* pDevice, ID3D11DeviceContext* pDevic
 
 void Player::NewFrame()
 {
-
 }
 
-void Player::OnRender(float rgba[4])
+void Player::OnRender(float rgba[4], DXFrameBuffer* frameBuffer)
 {
     game->ClearRenderTarget(rgba);
 
@@ -80,11 +79,11 @@ void Player::OnRender(float rgba[4])
     dxIndexBuffer->BindPipeline(0);
     context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
-    vertexShader->Bind();
+    vertexShader->Bind(context);
     vertexShader->UpdateInputLayout();
-    pixelShader->Bind();
+    pixelShader->Bind(context);
 
-    ID3D11ShaderResourceView* srv = Game::Instance->GetOutputBuffer()->mRenderPass[0]->GetShaderResourceView();
+    ID3D11ShaderResourceView* srv = frameBuffer->mRenderPass[0]->GetShaderResourceView();
     context->PSSetShaderResources(0, 1, &srv);
     context->PSSetSamplers(0, 1, DXRasterizerState::SSClamp.GetAddressOf());
 
@@ -93,8 +92,6 @@ void Player::OnRender(float rgba[4])
     ID3D11ShaderResourceView* const nullSRV[1] = { (ID3D11ShaderResourceView*)0 };
     context->PSSetShaderResources(0, 1, nullSRV);
 }
-
-float rgba[4] = { 0,0,0,0 };
 
 void Player::OnRenderScene(ID3D11DeviceContext* pContext)
 {

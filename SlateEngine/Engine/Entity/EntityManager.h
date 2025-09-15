@@ -17,7 +17,7 @@ public:
 	~EntityManager();
 
 	void RegisterEntity(Entity* entity);
-	void RegisterEntity(Entity* entity,const char* name);
+	void RegisterEntity(Entity* entity, std::string name);
 
 	Entity* GetEntityFromRaw(entt::entity e);
 

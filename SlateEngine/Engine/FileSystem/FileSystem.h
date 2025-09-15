@@ -23,14 +23,15 @@ enum FILE_TYPE : int {
 };
 
 struct SMetaData {
-	std::string uuid;
-	std::string path;
-	std::string metaPath;
+	SLATE_UUID uuid;
+	SLATE_PATH path;
+	SLATE_PATH metaPath;
 	FILE_TYPE ftype;
 };
 
 struct SlateFileSystemContainer {
 	std::unordered_map<FILE_TYPE, std::unordered_map<SLATE_UUID, SMetaData>> leafs;
+	std::unordered_map<SLATE_UUID, FILE_TYPE> typeLookup;
 };
 
 struct SlateUUIDType {
@@ -50,10 +51,10 @@ public:
 
 	inline FILE_TYPE GetFileTypeFromExt(std::filesystem::path ext)
 	{
-		if (m_extensionLookupTable.count(ext.string()) == 0) {
-			return FILE_TYPE::MISC;
-		}
-		return (FILE_TYPE)m_extensionLookupTable[ext.string()];
+		auto it = m_extensionLookupTable.find(ext.string());
+		return (it == m_extensionLookupTable.end())
+			? FILE_TYPE::MISC
+			: (FILE_TYPE)it->second;
 	}
 
 	//Callbacks;
@@ -67,7 +68,7 @@ public:
 
 	static FileSystem* Instance;
 
-	std::unordered_map<std::string, SMetaData>& GetMetaMap() { return metaMap; }
+	SlateFileSystemContainer* GetFileSystemContainer() { return fileSystemContainer; };
 
 	inline static const char* FTypeToString(FILE_TYPE v)
 	{
@@ -103,7 +104,7 @@ private:
 	}
 
 	//they are pair
-	std::unordered_map<SLATE_UUID, SMetaData> metaMap;
+	SlateFileSystemContainer* fileSystemContainer;
 	std::unordered_map<SLATE_PATH, SlateUUIDType> metaPathMap;
 
 	std::map<std::string, UINT> m_extensionLookupTable;

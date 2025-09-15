@@ -110,7 +110,7 @@ int DXApplication::OnRun()
                 enginePlayer->NewFrame();
                 enginePlayer->ClearViewport(clear);
                 enginePlayer->OnUpdate(mTimer->deltaTime());
-                enginePlayer->OnRender(clear);
+                enginePlayer->OnRender(clear,GetOutputBuffer());
 
 
                 OnLateUpdate(mTimer->deltaTime());
@@ -542,9 +542,9 @@ void DXApplication::RenderOutputBuffer()
 {
     pOutputVertexBuffer->BindPipeline(0);
     pOutputIndexBuffer->BindPipeline(0);
-    pOutputVertexShader->Bind();
+    pOutputVertexShader->Bind(GetDXContext());
     pOutputVertexShader->UpdateInputLayout();
-    pOutputPixelShader->Bind();
+    pOutputPixelShader->Bind(GetDXContext());
     ID3D11ShaderResourceView* srv = sceneBuffer->mRenderPass[0]->GetShaderResourceView();
     m_d3dContext->PSSetShaderResources(0, 1, &srv);
     m_d3dContext->PSSetSamplers(0, 1, DXRasterizerState::SSClamp.GetAddressOf());

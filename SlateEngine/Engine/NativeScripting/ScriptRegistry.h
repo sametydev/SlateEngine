@@ -15,6 +15,10 @@ public:
 
     std::vector<std::string> GetRegisteredScripts() const;
 
+    inline bool Exists(std::string name) {
+        return (registry.count(name) > 0);
+    }
+
 private:
     std::unordered_map<std::string, ScriptFactory> registry;
 };

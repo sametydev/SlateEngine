@@ -69,16 +69,6 @@ std::cout << "\033[1;31m**************************\n" <<"Error on this file : \n
 #define SAFE_RELEASE(x) if(x) {x->Release(); x = nullptr;}
 #define SAFE_DELETE(x) if(x) {delete x; x = nullptr;}
 
-//inline DirectX::XMMATRIX XM_CALLCONV InverseTranspose(DirectX::FXMMATRIX M)
-//{
-//    using namespace DirectX;
-//
-//    XMMATRIX A = M;
-//    A.r[3] = g_XMIdentityR3;
-//
-//    return XMMatrixTranspose(XMMatrixInverse(nullptr, A));
-//}
-
 //For Debugging
 inline HRESULT WINAPI DXTraceW(_In_z_ const WCHAR * strFile, _In_ DWORD dwLine, _In_ HRESULT hr,
     _In_opt_ const WCHAR * strMsg, _In_ bool bPopMsgBox)

@@ -13,10 +13,10 @@ void MaterialComponent::AddTexture(DXTexture* tex)
 	textures.emplace_back(tex);
 }
 
-void MaterialComponent::BindPipeline()
+void MaterialComponent::BindPipeline(ID3D11DeviceContext* pDeviceContext)
 {
 	for (auto& s : shaders) {
-		s->Bind();
+		s->Bind(pDeviceContext);
 	}
 	for (auto& t : textures) {
 		t->Bind();
@@ -25,7 +25,7 @@ void MaterialComponent::BindPipeline()
 
 void MaterialComponent::OnRender(ID3D11DeviceContext* pDeviceContext)
 {
-	BindPipeline();
+	BindPipeline(pDeviceContext);
 
 	DXRasterizerState::SetRasterizerState(rs, pDeviceContext);
 

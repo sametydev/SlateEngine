@@ -23,8 +23,8 @@ private:
 
 	Game* game = nullptr;
 
-	std::vector<std::string> scriptsTextTmp;
-	std::vector<const char*> scriptCChTMP;
-
+	std::unordered_map<std::string, SLATE_UUID> scriptsMapBuffer;
+	std::vector<std::string> scriptNames;
+	std::vector<const char*> scriptNamePtrs;
 };
 
