@@ -93,8 +93,6 @@ void Player::OnRender(float rgba[4], DXFrameBuffer* frameBuffer)
     context->PSSetShaderResources(0, 1, nullSRV);
 }
 
-float rgba[4] = { 0,0,0,0 };
-
 void Player::OnRenderScene(ID3D11DeviceContext* pContext)
 {
 }
